@@ -58,14 +58,15 @@ are required.
 
 ## Visual assets
 
-`hall.png`, `house-exterior.png`, `living-room.png`, `study.png`, `basement.png`,
-`bridge.png`, `house-map.png` and `app-icon.png` are already in `Bridge/Assets.xcassets/`,
-generated from the photorealistic reference photos provided. Still needed: `kids-room.png`,
-`kitchen.png`, and `ending.png` (the closing-screen/voice-snapshot background) — see
-`Docs/BRIDGE_asset_prompts.md` for prompts matching the established photorealistic style.
-Until then, `RoomBackgroundImage` falls back to a plain warm beige background per spec (and
-the House Map falls back to a plain numbered list), so the app runs and is fully testable
-without them.
+All ten backgrounds are in `Bridge/Assets.xcassets/` — `house-exterior.png`,
+`house-map.png`, `hall.png`, `living-room.png`, `study.png`, `kids-room.png`,
+`kitchen.png`, `basement.png`, `bridge.png`, `ending.png` — plus `app-icon.png`, all
+generated from the photorealistic reference photos provided. See
+`Docs/BRIDGE_asset_prompts.md` for one open item: the provided app icon is a circular
+medallion on a white square, so the Home Screen icon will show a visible white margin
+around it rather than running edge-to-edge — cosmetic only, easy to swap later if wanted.
+`RoomBackgroundImage` still falls back to a plain warm beige background (and the House Map
+to a plain numbered list) if any asset is ever removed, so the app never blocks on art.
 
 ## Judgment calls worth knowing about
 

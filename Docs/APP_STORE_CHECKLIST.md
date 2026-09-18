@@ -52,8 +52,9 @@ Connect metadata, hosting, or a real device/account that only the developer can 
    call site.
 6. **Support URL and Marketing URL** fields in App Store Connect — even a one-page site
    satisfies this.
-7. **Screenshots** must be taken from the actual running app once the remaining art assets
-   (`Docs/BRIDGE_asset_prompts.md`) are in place, so they match what reviewers see.
+7. **Screenshots.** All art assets are now in place (`Docs/BRIDGE_asset_prompts.md`) —
+   screenshots just need to be taken from the actual running app once it's on a device or
+   simulator, so they match what reviewers see.
 8. **Timeline:** budget 1–3 weeks from "app finished" to "live," not days — review itself
    is typically 24–48 hours, but ~30–40% of first submissions get one fixable rejection
    (most commonly a missing privacy policy URL or Restore Purchases button — both already
