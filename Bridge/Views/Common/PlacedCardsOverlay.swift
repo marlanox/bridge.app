@@ -25,7 +25,7 @@ struct PlacedCardsOverlay: View {
         if let custom = play.customText { return custom }
         let deck = DeckData.deck(play.deckID)
         if let card = deck.cards.first(where: { $0.id == play.cardID }) {
-            return NSLocalizedString(card.textKey, comment: "")
+            return L(card.textKey)
         }
         return ""
     }

@@ -16,7 +16,15 @@ struct RoomView: View {
             RoomBackgroundImage(imageName: config.backgroundImageName)
             Color.black.opacity(0.18).ignoresSafeArea()
 
-            if isSequential {
+            if isSequential, let handoff = vm.pendingHandoff {
+                HandoffView(
+                    fromName: vm.session.name(for: handoff.from),
+                    fromColor: vm.session.color(for: handoff.from),
+                    toName: vm.session.name(for: handoff.to),
+                    cards: handoff.cards,
+                    onContinue: { vm.confirmHandoff() }
+                )
+            } else if isSequential {
                 ActivePartnerContainer(
                     activePartner: vm.activePartner,
                     partnerName: { vm.session.name(for: $0) },
@@ -115,7 +123,7 @@ struct RoomView: View {
         Button {
             vm.markRoomDone(role)
         } label: {
-            Text(LocalizedStringKey("room.done"))
+            Text(L("room.done"))
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(done ? .secondary : .white)
                 .padding(.horizontal, 14)
@@ -142,15 +150,15 @@ struct RoomView: View {
                         .font(.caption)
                 }
             }
-            Text(LocalizedStringKey(config.nameKey))
-                .font(.largeTitle.weight(.bold))
-            Text(LocalizedStringKey(config.questionKey))
+            Text(L(config.nameKey))
+                .font(.bridgeSerifTitle(32, weight: .bold))
+            Text(L(config.questionKey))
                 .font(.title3)
                 .foregroundStyle(.secondary)
             if let forbiddenKey = config.forbiddenKey {
                 HStack(alignment: .top, spacing: 4) {
-                    Text(LocalizedStringKey("room.forbidden_prefix")).font(.caption.weight(.bold))
-                    Text(LocalizedStringKey(forbiddenKey)).font(.caption)
+                    Text(L("room.forbidden_prefix")).font(.caption.weight(.bold))
+                    Text(L(forbiddenKey)).font(.caption)
                 }
                 .foregroundStyle(.red.opacity(0.85))
             }
@@ -169,7 +177,7 @@ struct RoomView: View {
             }
             Spacer()
             Button { vm.markRoomDone(role) } label: {
-                Text(LocalizedStringKey("room.done"))
+                Text(L("room.done"))
                     .font(.headline)
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)

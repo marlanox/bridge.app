@@ -22,7 +22,7 @@ struct ProfileSwitcherView: View {
                                     Text(profileTitle(profile))
                                         .font(.subheadline.weight(.medium))
                                         .foregroundStyle(.primary)
-                                    Text(String(format: NSLocalizedString("profiles.summary", comment: ""), profile.currency, profile.sessionHistory.count))
+                                    Text(String(format: L("profiles.summary"), profile.currency, profile.sessionHistory.count))
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -35,28 +35,28 @@ struct ProfileSwitcherView: View {
                     }
                 }
                 Section {
-                    Text(LocalizedStringKey("profiles.new_profile_prompt"))
+                    Text(L("profiles.new_profile_prompt"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Button(LocalizedStringKey("profiles.start_new")) {
+                    Button(L("profiles.start_new")) {
                         showingNewProfileConfirm = true
                     }
                 }
             }
-            .navigationTitle(Text(LocalizedStringKey("profiles.title")))
+            .navigationTitle(Text(L("profiles.title")))
             .navigationBarTitleDisplayMode(.inline)
             .confirmationDialog(
-                Text(LocalizedStringKey("profiles.start_new")),
+                Text(L("profiles.start_new")),
                 isPresented: $showingNewProfileConfirm,
                 titleVisibility: .visible
             ) {
-                Button(LocalizedStringKey("profiles.start_new")) {
+                Button(L("profiles.start_new")) {
                     appState.createProfile(displayName: "")
                     dismiss()
                 }
-                Button(LocalizedStringKey("nav.skip"), role: .cancel) { }
+                Button(L("nav.skip"), role: .cancel) { }
             } message: {
-                Text(LocalizedStringKey("profiles.new_profile_prompt"))
+                Text(L("profiles.new_profile_prompt"))
             }
         }
     }
@@ -65,6 +65,6 @@ struct ProfileSwitcherView: View {
         if !profile.partnerAName.isEmpty && !profile.partnerBName.isEmpty {
             return "\(profile.partnerAName) & \(profile.partnerBName)"
         }
-        return profile.displayName.isEmpty ? NSLocalizedString("profiles.new_relationship_fallback", comment: "") : profile.displayName
+        return profile.displayName.isEmpty ? L("profiles.new_relationship_fallback") : profile.displayName
     }
 }

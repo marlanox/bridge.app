@@ -19,9 +19,9 @@ struct OnboardingTextPage: View {
                 }
             }
             Spacer()
-            Text(LocalizedStringKey(titleKey))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey(bodyKey))
+            Text(L(titleKey))
+                .font(.bridgeSerifTitle(26))
+            Text(L(bodyKey))
                 .font(.body)
                 .foregroundStyle(.secondary)
             Spacer()
@@ -54,8 +54,8 @@ struct OnboardingModesPage: View {
                 }
             }
             Spacer()
-            Text(LocalizedStringKey("onboarding.modes.title"))
-                .font(.title.weight(.semibold))
+            Text(L("onboarding.modes.title"))
+                .font(.bridgeSerifTitle(26))
 
             VStack(spacing: 14) {
                 ForEach(modes, id: \.labelKey) { mode in
@@ -63,7 +63,7 @@ struct OnboardingModesPage: View {
                         Image(systemName: mode.icon)
                             .font(.title3)
                             .frame(width: 32)
-                        Text(LocalizedStringKey(mode.labelKey))
+                        Text(L(mode.labelKey))
                             .font(.body)
                         Spacer()
                     }
@@ -71,7 +71,7 @@ struct OnboardingModesPage: View {
                     .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                 }
             }
-            Text(LocalizedStringKey("onboarding.modes.body"))
+            Text(L("onboarding.modes.body"))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             Spacer()

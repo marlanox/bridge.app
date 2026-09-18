@@ -63,11 +63,22 @@
 "settings.cancel" = "Cancel";
 "settings.version_row" = "Version";
 "settings.done" = "Done";
+"settings.language_row" = "Language";
+"settings.view_path_row" = "View the path";
 
 // MARK: - Legal
 
 "privacy.title" = "Privacy Policy";
 "terms.title" = "Terms of Use";
+"privacy.full_text" = "Last updated: this text ships with the app and should be re-dated whenever it changes.\n\nBridge is designed to work without a server. This policy describes exactly what the app does, matching its actual architecture — nothing here describes aspirational or future behavior.\n\nWHAT BRIDGE COLLECTS\n\n• Partner names, session data (intensity, state, cards played, token counts), and your Couple's Agreement are stored only in the app's local storage on your device. None of it is sent to us or to any third party.\n• Voice snapshots (the optional 10-second recordings at the Bridge) are saved only as audio files on your device. They are never uploaded, synced, or shared — including with us.\n• Bridge does not require an account, sign-in, or internet connection to work.\n• Bridge does not use analytics, advertising SDKs, or third-party trackers.\n\nWHAT BRIDGE DOES NOT DO\n\n• We do not sell your data. There is no data to sell — it never leaves your device.\n• We do not share your data with third parties, because we never receive it in the first place.\n\nDELETING YOUR DATA\n\nYou can permanently delete a relationship profile — its tokens, session history, couple's agreement, and any voice notes — from Settings → Delete this relationship's data. Deleting the app itself also removes all of its local data, per standard iOS behavior.\n\nCHILDREN\n\nBridge is not directed at children and is rated 12+ due to mature emotional themes.\n\nCHANGES\n\nIf this policy changes, the updated text will ship with the app update and the \"Last updated\" line above will change accordingly.\n\nCONTACT\n\nQuestions about this policy can be sent to the support address listed on Bridge's App Store page.";
+"terms.full_text" = "Last updated: this text ships with the app and should be re-dated whenever it changes.\n\nBy using Bridge, you agree to these terms.\n\nWHAT BRIDGE IS\n\nBridge is a guided communication tool for couples — a structured set of prompts, cards, and rituals meant to help two people talk through a conflict. It is not therapy, counseling, or any form of medical or mental health treatment, and it does not replace professional support. If you or your partner are experiencing abuse, crisis, or ongoing distress, please contact a licensed professional or a crisis line in your country (see Settings → Need help now?).\n\nPURCHASES\n\nBridge's first full session is free. The full version is unlocked with a one-time, non-subscription in-app purchase, processed by Apple. You can restore a previous purchase on a new device from the paywall's Restore Purchases button. Refunds are handled by Apple under the App Store's standard refund policy — Bridge cannot issue refunds directly.\n\nYOUR CONTENT\n\nAnything you type or record in Bridge (names, cards, voice notes) stays on your device, as described in the Privacy Policy. You're responsible for what you and your partner choose to write, say, or record.\n\nNO WARRANTY\n\nBridge is provided \"as is.\" We don't guarantee it will resolve any particular conflict or improve any particular relationship — it's a tool, not a promise.\n\nLIMITATION OF LIABILITY\n\nTo the fullest extent permitted by law, Bridge's developer is not liable for any indirect, incidental, or consequential damages arising from use of the app.\n\nCHANGES\n\nIf these terms change, the updated text will ship with the app update and the \"Last updated\" line above will change accordingly.\n\nCONTACT\n\nQuestions about these terms can be sent to the support address listed on Bridge's App Store page.";
+
+// MARK: - House Map
+
+"housemap.title" = "This is your house tonight.";
+"housemap.body" = "You'll walk through every room together, one at a time, in the order shown. Each room asks one honest question. When you've been through them all, you'll step outside into the garden, and finally onto the bridge — where you meet each other in the middle. That's the whole shape of the game: walk the path, then meet on the bridge.";
+"housemap.button_first" = "I understand — let's begin";
+"housemap.button_reopen" = "Got it";
 
 // MARK: - Names Entry
 
@@ -157,8 +168,6 @@
 "room.kids_room.forbidden" = "No arguing with the other's feelings.";
 "room.kitchen.name" = "Kitchen";
 "room.kitchen.question" = "What would help us avoid this?";
-"room.needs_room.name" = "Needs Room";
-"room.needs_room.question" = "What do I need from you now?";
 "room.next" = "Next room";
 "room.write_your_own" = "Write your own";
 "room.write_your_own_placeholder" = "Type what fits, in your own words";
@@ -166,6 +175,9 @@
 "room.a_bit_more_time" = "A bit more time";
 "room.time_up_banner" = "Time's up — finish your thought";
 "room.forbidden_prefix" = "Not now:";
+"handoff.shared_title" = "%@ shared:";
+"handoff.prompt" = "When you're ready, %@.";
+"handoff.continue" = "Continue";
 
 // MARK: - Basement (Fears)
 
@@ -193,6 +205,7 @@
 "bridge.mandatory_card_prompt" = "Complete this aloud, together:";
 "bridge.together_line" = "I choose to be on your side of this, not against you.";
 "bridge.same_side_button" = "We're on the same side";
+"bridge.choose_all_prompt" = "Choose a card from each: a step toward, a need, a gift.";
 
 // MARK: - Voice Snapshot
 

@@ -15,10 +15,10 @@ struct WelcomeView: View {
 
             VStack {
                 Spacer()
-                Text(LocalizedStringKey("app.name"))
-                    .font(.system(size: 40, weight: .semibold, design: .serif))
+                Text(L("app.name"))
+                    .font(.bridgeSerifTitle(42))
                     .foregroundStyle(.white)
-                Text(LocalizedStringKey("app.tagline"))
+                Text(L("app.tagline"))
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.white.opacity(0.9))
@@ -26,8 +26,10 @@ struct WelcomeView: View {
                     .padding(.top, 8)
                 Spacer()
                 Button(action: onBegin) {
-                    Text(LocalizedStringKey("welcome.begin"))
-                        .font(.headline)
+                    Text(L("welcome.begin"))
+                        .font(.bridgeButton)
+                        .textCase(.uppercase)
+                        .tracking(0.8)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
                 }

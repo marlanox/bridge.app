@@ -21,14 +21,14 @@ struct PaywallView: View {
             Image(systemName: "lock.open.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(Color(red: 0.36, green: 0.31, blue: 0.27))
-            Text(LocalizedStringKey("paywall.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("paywall.body"))
+            Text(L("paywall.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("paywall.body"))
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
-            Text(LocalizedStringKey("paywall.packs_coming_soon"))
+            Text(L("paywall.packs_coming_soon"))
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -37,7 +37,7 @@ struct PaywallView: View {
             PrimaryButton(titleKey: "paywall.unlock_button") {
                 unlock()
             }
-            Button(LocalizedStringKey("paywall.restore")) {
+            Button(L("paywall.restore")) {
                 restore()
             }
             .font(.subheadline.weight(.medium))
@@ -46,9 +46,9 @@ struct PaywallView: View {
             }
 
             HStack(spacing: 16) {
-                Button(LocalizedStringKey("terms.title")) { showingTerms = true }
+                Button(L("terms.title")) { showingTerms = true }
                 Text("·").foregroundStyle(.secondary)
-                Button(LocalizedStringKey("privacy.title")) { showingPrivacy = true }
+                Button(L("privacy.title")) { showingPrivacy = true }
             }
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -61,7 +61,7 @@ struct PaywallView: View {
             get: { restoreAlertMessage != nil },
             set: { if !$0 { restoreAlertMessage = nil } }
         )) {
-            Button(LocalizedStringKey("paywall.ok")) { restoreAlertMessage = nil }
+            Button(L("paywall.ok")) { restoreAlertMessage = nil }
         }
     }
 
@@ -76,10 +76,10 @@ struct PaywallView: View {
     /// actually has (the local unlock flag) rather than pretending to contact a store.
     private func restore() {
         if appState.activeProfile?.hasUnlockedFullVersion == true {
-            restoreAlertMessage = NSLocalizedString("paywall.restore_success", comment: "")
+            restoreAlertMessage = L("paywall.restore_success")
             dismiss()
         } else {
-            restoreAlertMessage = NSLocalizedString("paywall.restore_none_found", comment: "")
+            restoreAlertMessage = L("paywall.restore_none_found")
         }
     }
 }

@@ -9,9 +9,9 @@ struct ComprehensionAgreementView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             Spacer()
-            Text(LocalizedStringKey("agree.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("agree.summary"))
+            Text(L("agree.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("agree.summary"))
                 .font(.body)
                 .foregroundStyle(.secondary)
             Spacer()
@@ -39,7 +39,7 @@ struct ComprehensionAgreementView: View {
                 if confirmed {
                     Image(systemName: "checkmark.circle.fill").foregroundStyle(color.color)
                 } else {
-                    Text(LocalizedStringKey("agree.button"))
+                    Text(L("agree.button"))
                         .font(.caption.weight(.semibold))
                 }
             }

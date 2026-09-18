@@ -16,8 +16,8 @@ struct IntensityStateView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                Text(LocalizedStringKey("intensity.title"))
-                    .font(.title.weight(.semibold))
+                Text(L("intensity.title"))
+                    .font(.bridgeSerifTitle(26))
 
                 partnerSection(role: .partnerA, color: .purple, intensity: $intensityA, state: $stateA)
                 partnerSection(role: .partnerB, color: .green, intensity: $intensityB, state: $stateB)
@@ -46,7 +46,7 @@ struct IntensityStateView: View {
                 Text(vm.session.name(for: role)).font(.headline)
             }
 
-            Text(LocalizedStringKey("intensity.slider_label"))
+            Text(L("intensity.slider_label"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             HStack {
@@ -57,7 +57,7 @@ struct IntensityStateView: View {
                     .frame(width: 24)
             }
 
-            Text(LocalizedStringKey("intensity.state_label"))
+            Text(L("intensity.state_label"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 8)], spacing: 8) {
@@ -65,7 +65,7 @@ struct IntensityStateView: View {
                     Button {
                         state.wrappedValue = option
                     } label: {
-                        Text(LocalizedStringKey(option.textKey))
+                        Text(L(option.textKey))
                             .font(.caption.weight(.medium))
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)

@@ -7,9 +7,9 @@ struct OathView: View {
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
-            Text(LocalizedStringKey("oath.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("oath.text"))
+            Text(L("oath.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("oath.text"))
                 .font(.title3)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 12)

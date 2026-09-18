@@ -12,12 +12,12 @@ struct TimerBanner: View {
     var body: some View {
         VStack(spacing: 10) {
             if timeUpBannerShown {
-                Text(LocalizedStringKey("room.time_up_banner"))
+                Text(L("room.time_up_banner"))
                     .font(.subheadline.weight(.semibold))
                 HStack(spacing: 12) {
                     SecondaryButton(titleKey: "room.a_bit_more_time", action: onMoreTime)
                     Button(action: onDone) {
-                        Text(LocalizedStringKey("room.done"))
+                        Text(L("room.done"))
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)

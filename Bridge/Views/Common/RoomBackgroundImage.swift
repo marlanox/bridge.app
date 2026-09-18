@@ -9,6 +9,10 @@ struct RoomBackgroundImage: View {
 
     private static let fallbackBeige = Color(red: 0.96, green: 0.92, blue: 0.85)
 
+    static func exists(_ name: String) -> Bool {
+        UIImage(named: name) != nil
+    }
+
     var body: some View {
         GeometryReader { geometry in
             if UIImage(named: imageName) != nil {

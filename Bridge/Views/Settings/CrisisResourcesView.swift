@@ -9,20 +9,20 @@ struct CrisisResourcesView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text(LocalizedStringKey("crisis.body"))
+                    Text(L("crisis.body"))
                         .font(.body)
-                    Text(LocalizedStringKey("crisis.us_line"))
+                    Text(L("crisis.us_line"))
                         .font(.subheadline.weight(.medium))
-                    Text(LocalizedStringKey("crisis.international_line"))
+                    Text(L("crisis.international_line"))
                         .font(.subheadline.weight(.medium))
                 }
                 .padding(24)
             }
-            .navigationTitle(Text(LocalizedStringKey("crisis.title")))
+            .navigationTitle(Text(L("crisis.title")))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(LocalizedStringKey("crisis.close")) { dismiss() }
+                    Button(L("crisis.close")) { dismiss() }
                 }
             }
         }

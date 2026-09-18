@@ -15,33 +15,37 @@ struct ClosingScreenView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
-            Spacer()
-            markCard
-            Text(LocalizedStringKey("closing.save_prompt"))
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-            Spacer()
-            PrimaryButton(titleKey: "closing.save_to_gallery", isEnabled: !didSave, action: saveToGallery)
-            SecondaryButton(titleKey: "closing.close", action: onClose)
+        ZStack {
+            RoomBackgroundImage(imageName: "ending")
+            Color.black.opacity(0.25).ignoresSafeArea()
+
+            VStack(spacing: 24) {
+                Spacer()
+                markCard
+                Text(L("closing.save_prompt"))
+                    .font(.footnote)
+                    .foregroundStyle(.white.opacity(0.85))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+                Spacer()
+                PrimaryButton(titleKey: "closing.save_to_gallery", isEnabled: !didSave, action: saveToGallery)
+                SecondaryButton(titleKey: "closing.close", color: .white.opacity(0.85), action: onClose)
+            }
+            .padding(28)
         }
-        .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
     }
 
     private var markCard: some View {
         VStack(spacing: 24) {
-            Text(LocalizedStringKey("closing.title"))
-                .font(.largeTitle.weight(.semibold))
+            Text(L("closing.title"))
+                .font(.bridgeSerifTitle(30))
             Text(dateString)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             VStack(spacing: 10) {
-                Text(LocalizedStringKey("closing.line_1"))
+                Text(L("closing.line_1"))
                     .font(.title3)
-                Text(LocalizedStringKey(encouragingLineIsCourage ? "closing.line_2b" : "closing.line_2a"))
+                Text(L(encouragingLineIsCourage ? "closing.line_2b" : "closing.line_2a"))
                     .font(.title3.weight(.medium))
             }
             .multilineTextAlignment(.center)

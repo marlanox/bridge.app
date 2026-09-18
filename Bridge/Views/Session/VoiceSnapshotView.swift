@@ -8,33 +8,38 @@ struct VoiceSnapshotView: View {
     @StateObject private var recorderB = VoiceRecorder()
 
     var body: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            Text(LocalizedStringKey("voice.title"))
-                .font(.title2.weight(.semibold))
-                .multilineTextAlignment(.center)
-            Text(LocalizedStringKey("voice.body"))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
+        ZStack {
+            RoomBackgroundImage(imageName: "ending")
+            Color.black.opacity(0.3).ignoresSafeArea()
 
-            partnerRow(role: .partnerA, color: .purple, recorder: recorderA)
-            partnerRow(role: .partnerB, color: .green, recorder: recorderB)
+            VStack(spacing: 20) {
+                Spacer()
+                Text(L("voice.title"))
+                    .font(.bridgeSerifTitle(24))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                Text(L("voice.body"))
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.85))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
 
-            Spacer()
-            PrimaryButton(titleKey: "voice.save", action: onContinue)
-            SecondaryButton(titleKey: "voice.not_this_time", action: onContinue)
+                partnerRow(role: .partnerA, color: .purple, recorder: recorderA)
+                partnerRow(role: .partnerB, color: .green, recorder: recorderB)
+
+                Spacer()
+                PrimaryButton(titleKey: "voice.save", action: onContinue)
+                SecondaryButton(titleKey: "voice.not_this_time", color: .white.opacity(0.85), action: onContinue)
+            }
+            .padding(28)
         }
-        .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
     }
 
     @ViewBuilder
     private func partnerRow(role: PartnerRole, color: PartnerColor, recorder: VoiceRecorder) -> some View {
         HStack {
             Circle().fill(color.color).frame(width: 10, height: 10)
-            Text(vm.session.name(for: role)).font(.subheadline.weight(.medium))
+            Text(vm.session.name(for: role)).font(.subheadline.weight(.medium)).foregroundStyle(.white)
             Spacer()
             Button {
                 let url = PersistenceManager.shared.voiceNoteURL(sessionID: vm.session.id, role: role)
@@ -51,6 +56,8 @@ struct VoiceSnapshotView: View {
             }
         }
         .padding(14)
-        .background(color.color.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+        .background(.ultraThinMaterial)
+        .background(color.color.opacity(0.18))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }

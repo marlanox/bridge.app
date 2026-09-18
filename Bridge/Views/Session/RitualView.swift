@@ -10,20 +10,20 @@ struct RitualView: View {
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
-            Text(LocalizedStringKey("ritual.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("ritual.instruction"))
+            Text(L("ritual.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("ritual.instruction"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
             Picker("", selection: $chosenLine) {
-                Text(LocalizedStringKey("ritual.line_1")).tag(0)
-                Text(LocalizedStringKey("ritual.line_2")).tag(1)
+                Text(L("ritual.line_1")).tag(0)
+                Text(L("ritual.line_2")).tag(1)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 20)
 
-            Text(LocalizedStringKey(chosenLine == 0 ? "ritual.line_1" : "ritual.line_2"))
+            Text(L(chosenLine == 0 ? "ritual.line_1" : "ritual.line_2"))
                 .font(.title2.weight(.medium))
                 .italic()
                 .padding(.top, 8)
@@ -37,7 +37,7 @@ struct RitualView: View {
                     onContinue()
                 }
             } label: {
-                Text(LocalizedStringKey("ritual.continue"))
+                Text(L("ritual.continue"))
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)

@@ -11,9 +11,9 @@ struct DiceView: View {
     var body: some View {
         VStack(spacing: 28) {
             Spacer()
-            Text(LocalizedStringKey("dice.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("dice.subtitle"))
+            Text(L("dice.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("dice.subtitle"))
                 .foregroundStyle(.secondary)
 
             Image(systemName: "die.face.5.fill")
@@ -22,7 +22,7 @@ struct DiceView: View {
                 .foregroundStyle(Color(red: 0.36, green: 0.31, blue: 0.27))
 
             if let winner {
-                Text(String(format: NSLocalizedString("dice.result", comment: ""), vm.session.name(for: winner)))
+                Text(String(format: L("dice.result"), vm.session.name(for: winner)))
                     .font(.headline)
                     .foregroundStyle(vm.session.color(for: winner).color)
             }

@@ -21,8 +21,10 @@ enum RoomMode: String, Codable, Hashable {
 }
 
 /// One "room" in the universal room screen (spec section 6 / section 11 item 8).
-/// Hall, Living Room, Study, Kids' Room, Kitchen and Needs Room are all instances
-/// of the same reusable component, driven by this config.
+/// Hall, Living Room, Study, Kids' Room and Kitchen are all instances of the same
+/// reusable component, driven by this config. Basement and Bridge are special screens
+/// with their own views. There is no separate Needs Room or Garden: the "Needs &
+/// Connection" and gift/step-toward cards are all chosen together at the Bridge finale.
 enum RoomKind: Int, Codable, CaseIterable, Identifiable, Hashable {
     case hall = 1
     case livingRoom = 2
@@ -30,8 +32,6 @@ enum RoomKind: Int, Codable, CaseIterable, Identifiable, Hashable {
     case kidsRoom = 4
     case kitchen = 5
     case basement = 6
-    case needsRoom = 7
-    case bridge = 8
 
     var id: Int { rawValue }
 
@@ -100,16 +100,6 @@ struct RoomConfig {
             forbiddenKey: nil,
             deckIDs: ["step_toward"],
             backgroundImageName: "kitchen"
-        ),
-        .needsRoom: RoomConfig(
-            kind: .needsRoom,
-            nameKey: "room.needs_room.name",
-            questionKey: "room.needs_room.question",
-            timeMinutes: 5,
-            modes: [.discussion],
-            forbiddenKey: nil,
-            deckIDs: ["needs_connection"],
-            backgroundImageName: "needs-room"
         ),
     ]
 }

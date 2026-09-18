@@ -8,6 +8,28 @@ for the art.
 > **Amendment (visual style, see section 2 and section 6):** the app's visual style changed
 > from flat illustration to photorealistic architectural rendering, since real photographic
 > reference images were provided directly. This file reflects that amendment.
+>
+> **Amendment (route, see section 4 and section 6):** the Needs Room and Garden are no
+> longer separate stops. "Needs & Connection" cards are chosen at the Bridge finale itself,
+> alongside Step Toward and Gift cards. The route is now 7 stops: Hall → Living Room →
+> Study → Kids' Room → Kitchen → Basement → Bridge (finale).
+>
+> **Amendment (house map, see section 3 and section 6):** a new "House Map" overview screen
+> was added as the last onboarding step (after "How Bridge works," before Names entry), and
+> is reachable anytime afterward from Settings as "View the path." It shows the 7-stop route
+> on a full-bleed `house-map.png` background, falling back to a plain numbered list if the
+> asset is missing.
+>
+> **Amendment (turn-passing, see section 2):** the original "screen flips 180°" mechanic
+> was replaced. Nothing in the app ever renders upside down. Instead, when a partner
+> finishes their turn in a sequential room, the incoming partner sees a brief upright
+> "handoff" screen — what the previous partner shared, then a Continue button — before
+> their own turn begins. See `HandoffView.swift`.
+>
+> **Amendment (language):** the app ships with a language picker (English/Russian) at
+> first launch, independent of the device's system language, changeable anytime from
+> Settings. Every string in the app — UI copy, all 9 card decks, legal text — is natively
+> translated into both languages. See `Bridge/Resources/{en,ru}.lproj/Localizable.strings`.
 
 ## 1. Concept
 
@@ -26,11 +48,12 @@ Core principle: we are not against each other. We are together against what happ
 - **Device:** single phone, shared. No partner names use gender — real first names, entered
   at onboarding, used everywhere in the UI (never "Partner A/B" — that's internal dev
   shorthand only)
-- **Interaction model — turn-based full screen, not mirrored halves:** only one partner's
-  turn is large and active at a time, filling the whole screen. The waiting partner sees
-  only a small rotated (180°) status indicator in their corner (e.g. "listening"). When
-  turn passes, the whole screen flips 180° so the new active partner doesn't need to move
-  the phone.
+- **Interaction model — turn-based full screen, not mirrored halves (amended):** only one
+  partner's turn is large and active at a time, filling the whole screen. The waiting
+  partner sees a small, upright status indicator in their corner (e.g. "listening"). Nothing
+  in the app ever renders upside down: when a turn passes in a sequential room, the incoming
+  partner first sees a brief upright "handoff" screen — what the previous partner shared,
+  read right-side up — then taps Continue themselves once ready.
 - **Color coding:** Partner colors — purple and green (assigned per partner, shown
   consistently on their turn screens, card slots, intensity sliders)
 - **Cards — always visible, no swipe-through:** a partner's full deck for the current room
@@ -70,20 +93,29 @@ Core principle: we are not against each other. We are together against what happ
    admission of guilt, it's acknowledgment of the other's pain — and why this small act works
 4. How the modes work — explains the icons (one speaks, only listens, discussion allowed,
    silence) and why not interrupting matters
-5. Names entry — both partners enter their names
-6. Comprehension + agreement — a short summary is shown; each partner in turn taps "I
+5. Wellness disclaimer — not therapy, crisis resources link (App Store checklist addendum)
+6. **House Map overview (added)** — "This is your house tonight," the 7-stop route shown on
+   a full-bleed `house-map.png` background, button "I understand — let's begin"
+7. Names entry — both partners enter their names
+8. Comprehension + agreement — a short summary is shown; each partner in turn taps "I
    understand and agree." The game cannot start until both have confirmed.
-7. Couple's Agreement setup — fill in forbidden actions (can be skipped and filled later)
+9. Couple's Agreement setup — fill in forbidden actions (can be skipped and filled later)
 
 ## 4. Game flow
 
 ```
-WELCOME → HOW IT WORKS (mandatory read+agree) →
+WELCOME → HOW IT WORKS (mandatory read+agree) → DISCLAIMER → HOUSE MAP →
 NAMES → AGREEMENT → DICE (who speaks first) → OATH →
 RITUAL (apology, hands together) → INTENSITY & STATE →
 HALL → LIVING ROOM → STUDY → KIDS' ROOM → KITCHEN →
-BASEMENT (fears) → NEEDS ROOM → GARDEN → BRIDGE (finale) → SUMMARY
+BASEMENT (fears) → BRIDGE (finale, includes Needs & Connection) → SUMMARY
 ```
+
+**Route amendment:** there is no separate Needs Room or Garden stop. The route is 7 rooms
+(down from 9): Hall, Living Room, Study, Kids' Room, Kitchen, Basement, Bridge. At the
+Bridge finale, each partner chooses from all three decks — Step Toward, Needs & Connection,
+and Gifts — together, with an explicit on-screen prompt ("Choose a card from each") rather
+than a silent empty screen.
 
 ## 5. Calm-down step + the oath (before every session)
 
@@ -113,18 +145,23 @@ cards visually placed on it as chosen.
 lowercase, hyphenated, `.png`):
 
 - Welcome → `house-exterior.png`
+- House Map overview → `house-map.png`
 - Hall → `hall.png`
 - Living room → `living-room.png`
 - Study → `study.png`
 - Kids' room → `kids-room.png`
 - Kitchen → `kitchen.png`
 - Basement → `basement.png`
-- Needs room → `needs-room.png`
 - Bridge (finale) → `bridge.png`
+- Closing screen / voice snapshot → `ending.png`
 - App icon → `app-icon.png`
 
-**`hall.png`, `living-room.png`, `house-exterior.png` — already provided, photorealistic
-style, treat as the visual reference for all remaining assets.**
+There is no `needs-room.png` or `garden.png` — see the route amendment above.
+
+**`hall.png`, `living-room.png`, `house-exterior.png`, `study.png`, `basement.png`,
+`bridge.png`, `house-map.png`, `app-icon.png` — already provided, photorealistic style,
+treat as the visual reference for all remaining assets (`kids-room.png`, `kitchen.png`,
+`ending.png`).**
 
 If an image is missing at build time, fall back to a plain warm beige background for that
 screen rather than blocking — images can be dropped in later without breaking the build.
@@ -170,16 +207,18 @@ based on one fear card. The other answers with only one of four responses, then 
 
 Forbidden: arguing with the other's fear, long defensive explanations before answering
 
-### 7. Needs room
+### 7. Bridge (finale)
 
-Time: 5 min · Deck: Needs & Connection (merged — see below)
+No time pressure on the final ritual (soft cap ~10 min). The screen shows all three decks
+at once — Step Toward, Needs & Connection, Gifts — with an explicit prompt ("Choose a card
+from each: a step toward, a need, a gift") rather than an empty screen. Each partner must
+choose at least one from each. Both walk to the center, hold hands, say together: "I choose
+to be on your side of this, not against you." Each then completes the mandatory final card
+from the "Step toward" deck aloud.
 
-### 8. Garden → Bridge (finale)
-
-No time pressure on the final ritual (soft cap ~10 min). Each partner must choose at least:
-one "Step toward" card, one "Needs & Connection" card, one gift card. Both walk to the
-center, hold hands, say together: "I choose to be on your side of this, not against you."
-Each then completes the mandatory final card from the "Step toward" deck aloud.
+There is no separate Needs Room or Garden stop (route amendment above) — Needs & Connection
+cards, always intended for the closing ritual, are chosen right here instead of in their
+own room beforehand.
 
 ### Voice snapshot (optional, offered at the Bridge)
 
@@ -280,20 +319,23 @@ Deck {
 
 ## 11. Screens list (for build order)
 
-1. Welcome / splash
-2. How Bridge works (onboarding, mandatory read+agree)
-3. Names entry
-4. Couple's Agreement setup
-5. Dice / who starts
-6. Oath + ritual
-7. Intensity & state
-8. Universal room screen (reused for Hall, Living room, Study, Kids' room, Kitchen, Needs
-   room — same component, different deck/timer/mode/illustration)
-9. Basement (fears) — special question/answer protocol
-10. Bridge (finale)
-11. Voice snapshot (optional) + Closing screen ("Today's Mark" — no stats, no score, no gift recap)
-12. Relationship profile switcher (settings)
-13. Paywall (after first free session)
+1. Language picker (English / Russian, first launch, changeable later in Settings)
+2. Welcome / splash
+3. How Bridge works (onboarding, mandatory read+agree)
+4. Wellness disclaimer + crisis resources
+5. House Map overview (onboarding, once; also in Settings as "View the path")
+6. Names entry
+7. Couple's Agreement setup
+8. Dice / who starts
+9. Oath + ritual
+10. Intensity & state
+11. Universal room screen (reused for Hall, Living room, Study, Kids' room, Kitchen — same
+    component, different deck/timer/mode/illustration)
+12. Basement (fears) — special question/answer protocol
+13. Bridge (finale) — Step Toward, Needs & Connection and Gifts all chosen here
+14. Voice snapshot (optional) + Closing screen ("Today's Mark" — no stats, no score, no gift recap)
+15. Relationship profile switcher (settings)
+16. Paywall (after first free session)
 
 **Note for future (not v1):** a separate mode for parent–child conflict repair is planned
 later — same room-by-room structure and flow, but the Gifts deck (and some Needs cards)

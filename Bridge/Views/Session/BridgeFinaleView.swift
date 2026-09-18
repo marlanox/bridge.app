@@ -1,18 +1,22 @@
 import SwiftUI
 
-/// Garden → Bridge finale (spec section 6, room 8). Each partner picks a Step Toward
-/// card, a Need card and a gift, then completes the one fixed mandatory card aloud.
+/// Bridge finale (spec section 6, room 8 — Garden and Bridge are one screen, no
+/// separate Needs Room). Each partner picks a Step Toward card, a Need card and a
+/// gift, then completes the one fixed mandatory card aloud.
+///
+/// All three decks are shown at once, stacked, with an explicit prompt at the top —
+/// the game actively tells each partner what to do here rather than leaving an empty
+/// screen they have to guess at.
 struct BridgeFinaleView: View {
     @ObservedObject var vm: SessionViewModel
     let onContinue: () -> Void
 
     @State private var activeTab: PartnerRole = .partnerA
-    @State private var category: SessionViewModel.BridgeCardKind = .stepToward
 
     var body: some View {
         ZStack {
             RoomBackgroundImage(imageName: "bridge")
-            Color.black.opacity(0.3).ignoresSafeArea()
+            Color.black.opacity(0.32).ignoresSafeArea()
 
             VStack(spacing: 0) {
                 header
@@ -25,17 +29,15 @@ struct BridgeFinaleView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
 
-                Picker("", selection: $category) {
-                    Text(LocalizedStringKey("bridge.choose_step_toward")).tag(SessionViewModel.BridgeCardKind.stepToward)
-                    Text(LocalizedStringKey("bridge.choose_need")).tag(SessionViewModel.BridgeCardKind.need)
-                    Text(LocalizedStringKey("bridge.choose_gift")).tag(SessionViewModel.BridgeCardKind.gift)
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        deckSection(kind: .stepToward, deck: DeckData.stepToward, promptKey: "bridge.choose_step_toward")
+                        deckSection(kind: .need, deck: DeckData.needsConnection, promptKey: "bridge.choose_need")
+                        deckSection(kind: .gift, deck: DeckData.gifts, promptKey: "bridge.choose_gift")
+                    }
+                    .padding(16)
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 16)
-                .padding(.top, 6)
-
-                categoryGrid
-                    .frame(maxHeight: 260)
+                .frame(maxHeight: 380)
 
                 mandatorySection
                 togetherSection
@@ -47,58 +49,54 @@ struct BridgeFinaleView: View {
         DeckData.stepToward.cards.first(where: { $0.id == DeckData.mandatoryStepTowardCardID })?.textKey ?? ""
     }
 
-    private var currentDeck: Deck {
-        switch category {
-        case .stepToward: return DeckData.stepToward
-        case .need: return DeckData.needsConnection
-        case .gift: return DeckData.gifts
-        }
-    }
-
-    private func selectedCardID(role: PartnerRole) -> String? {
+    private func selectedCardID(kind: SessionViewModel.BridgeCardKind, role: PartnerRole) -> String? {
         let selection = vm.session.bridgeFinal[role]
-        switch category {
+        switch kind {
         case .stepToward: return selection?.stepTowardCardID
         case .need: return selection?.needCardID
         case .gift: return selection?.giftCardID
         }
     }
 
-    private var categoryGrid: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: 10)], spacing: 10) {
-                ForEach(currentDeck.cards.filter { $0.id != DeckData.mandatoryStepTowardCardID || category != .stepToward }) { card in
-                    let isSelected = selectedCardID(role: activeTab) == card.id
+    @ViewBuilder
+    private func deckSection(kind: SessionViewModel.BridgeCardKind, deck: Deck, promptKey: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(L(promptKey))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 130), spacing: 8)], spacing: 8) {
+                ForEach(deck.cards.filter { $0.id != DeckData.mandatoryStepTowardCardID || kind != .stepToward }) { card in
+                    let isSelected = selectedCardID(kind: kind, role: activeTab) == card.id
                     Button {
-                        vm.selectBridgeCard(card.id, kind: category, for: activeTab)
+                        vm.selectBridgeCard(card.id, kind: kind, for: activeTab)
                     } label: {
                         HStack(spacing: 6) {
                             if isSelected {
                                 Image(systemName: "checkmark.circle.fill")
                             }
-                            Text(LocalizedStringKey(card.textKey))
-                                .font(.system(size: 14, weight: .medium))
+                            Text(L(card.textKey))
+                                .font(.system(size: 13, weight: .medium))
                                 .multilineTextAlignment(.leading)
                         }
-                        .padding(10)
-                        .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+                        .padding(9)
+                        .frame(maxWidth: .infinity, minHeight: 46, alignment: .leading)
                     }
                     .background(.ultraThinMaterial)
-                    .background(vm.session.color(for: activeTab).color.opacity(isSelected ? 0.4 : 0.18))
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(vm.session.color(for: activeTab).color.opacity(isSelected ? 0.45 : 0.18))
+                    .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
                     .buttonStyle(.plain)
                 }
             }
-            .padding(16)
         }
     }
 
     private var mandatorySection: some View {
         VStack(spacing: 10) {
-            Text(LocalizedStringKey("bridge.mandatory_card_prompt"))
+            Text(L("bridge.mandatory_card_prompt"))
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text(LocalizedStringKey(mandatoryCardTextKey))
+            Text(L(mandatoryCardTextKey))
                 .font(.subheadline.weight(.semibold))
                 .multilineTextAlignment(.center)
             HStack(spacing: 12) {
@@ -132,7 +130,7 @@ struct BridgeFinaleView: View {
 
     private var togetherSection: some View {
         VStack(spacing: 12) {
-            Text(LocalizedStringKey("bridge.together_line"))
+            Text(L("bridge.together_line"))
                 .font(.title3.weight(.medium))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.white)
@@ -143,17 +141,18 @@ struct BridgeFinaleView: View {
 
     private var header: some View {
         VStack(spacing: 4) {
-            Text(LocalizedStringKey("bridge.title"))
-                .font(.largeTitle.weight(.bold))
+            Text(L("bridge.title"))
+                .font(.bridgeSerifTitle(34, weight: .bold))
                 .foregroundStyle(.white)
-            Text(LocalizedStringKey("bridge.question"))
+            Text(L("bridge.question"))
                 .font(.subheadline)
                 .foregroundStyle(.white.opacity(0.85))
-            Text(LocalizedStringKey("bridge.instruction"))
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.75))
+            Text(L("bridge.choose_all_prompt"))
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.white.opacity(0.9))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
+                .padding(.top, 2)
         }
         .padding(.top, 16)
     }

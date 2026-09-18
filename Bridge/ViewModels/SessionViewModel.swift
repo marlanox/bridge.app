@@ -19,6 +19,11 @@ final class SessionViewModel: ObservableObject {
     @Published var timeUpBannerShown: Bool = false
     @Published var placedCardsThisTurn: [CardPlay] = []
 
+    /// Set when one partner finishes their turn in a sequential room and the other
+    /// hasn't gone yet — shows a brief, upright "here's what they shared" screen before
+    /// control actually passes, instead of flipping the phone. Cleared by `confirmHandoff()`.
+    @Published var pendingHandoff: (from: PartnerRole, to: PartnerRole, cards: [CardPlay])?
+
     // Basement runtime state
     @Published var basementQuestionsAsked: [PartnerRole: Int] = [.partnerA: 0, .partnerB: 0]
     @Published var basementCurrentAsker: PartnerRole = .partnerA
@@ -111,6 +116,8 @@ final class SessionViewModel: ObservableObject {
         case .howItWorksModes:
             flow = .disclaimer
         case .disclaimer:
+            flow = .houseMap
+        case .houseMap:
             flow = .names
         case .names:
             flow = .comprehensionAgreement
@@ -130,21 +137,17 @@ final class SessionViewModel: ObservableObject {
             flow = .room(.hall)
             startRoom(.hall)
         case .room(let kind):
-            switch kind {
-            case .kitchen:
+            if kind == .kitchen {
                 flow = .basement
                 startBasement()
-            case .needsRoom:
-                flow = .bridgeFinale
-            default:
-                if let next = kind.next {
-                    flow = .room(next)
-                    startRoom(next)
-                }
+            } else if let next = kind.next {
+                flow = .room(next)
+                startRoom(next)
             }
         case .basement:
-            flow = .room(.needsRoom)
-            startRoom(.needsRoom)
+            // No separate Needs Room or Garden — straight to the Bridge finale, where
+            // Needs & Connection, Step Toward and Gift cards are all chosen together.
+            flow = .bridgeFinale
         case .bridgeFinale:
             TokenManager.awardBridgeFinale(session: &session)
             flow = .voiceSnapshot
@@ -173,6 +176,7 @@ final class SessionViewModel: ObservableObject {
         let config = RoomConfig.all[kind]
         roomDoneFlags = [.partnerA: false, .partnerB: false]
         placedCardsThisTurn = []
+        pendingHandoff = nil
         timerFired = false
         timeUpBannerShown = false
 
@@ -207,11 +211,9 @@ final class SessionViewModel: ObservableObject {
                 TokenManager.awardRoomCompleted(session: &session)
                 advance()
             } else {
-                activePartner = role.other
-                placedCardsThisTurn = []
-                roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
-                timerFired = false
-                timeUpBannerShown = false
+                // Don't flip yet — let the incoming partner read what was shared first,
+                // upright, and advance to their own turn only once they tap Continue.
+                pendingHandoff = (from: role, to: role.other, cards: placedCardsThisTurn)
             }
         } else {
             roomDoneFlags[role] = true
@@ -220,6 +222,17 @@ final class SessionViewModel: ObservableObject {
                 advance()
             }
         }
+    }
+
+    /// The incoming partner taps this after reading what the previous partner shared.
+    func confirmHandoff() {
+        guard let handoff = pendingHandoff else { return }
+        activePartner = handoff.to
+        placedCardsThisTurn = []
+        roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
+        timerFired = false
+        timeUpBannerShown = false
+        pendingHandoff = nil
     }
 
     func addMoreTime() {

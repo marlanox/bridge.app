@@ -1,0 +1,550 @@
+/*
+  Localizable.strings (Русский)
+  Bridge
+
+  Полный нативный перевод — не через системный язык устройства, а через выбор
+  языка внутри приложения (см. LocalizationManager.swift).
+*/
+
+// MARK: - App / Welcome
+
+"app.name" = "Мост";
+"app.tagline" = "Мы не враги. Мы два человека, которые пытаются снова найти друг друга.";
+"welcome.begin" = "Начать";
+
+// MARK: - Onboarding — How Bridge Works
+
+"onboarding.what_is_bridge.title" = "Что такое «Мост»";
+"onboarding.what_is_bridge.body" = "Это для момента конфликта, а не «когда-нибудь потом». Даже когда тяжело, даже когда не хочется разговаривать, даже если вы сейчас злитесь на партнёра — это поможет узнать друг о друге то, чего вы не знали, даже спустя годы вместе.";
+"onboarding.apology.title" = "Почему важен ритуал извинения";
+"onboarding.apology.body" = "«Мне жаль, что тебе было больно» — это не признание вины, а признание боли другого человека. Этот маленький жест работает.";
+"onboarding.modes.title" = "Как работают режимы";
+"onboarding.modes.speaks" = "Один партнёр говорит";
+"onboarding.modes.listens_only" = "Другой только слушает";
+"onboarding.modes.discussion" = "Обсуждение разрешено";
+"onboarding.modes.silence" = "Тишина";
+"onboarding.modes.body" = "Важно не перебивать — так говорящий знает, что его выслушают до конца.";
+"onboarding.next" = "Далее";
+"onboarding.got_it" = "Понятно";
+
+// MARK: - Wellness Disclaimer (App Store checklist B.1)
+
+"disclaimer.title" = "Прежде чем начать";
+"disclaimer.body" = "«Мост» — это инструмент общения для пар. Это не терапия и не заменяет профессиональную психологическую помощь. Если вы или ваш партнёр переживаете насилие, кризис или постоянный стресс, пожалуйста, обратитесь к специалисту или на горячую линию в вашей стране.";
+"disclaimer.continue" = "Продолжить";
+"disclaimer.need_help_now" = "Нужна помощь прямо сейчас?";
+
+// MARK: - Crisis Resources
+
+"crisis.title" = "Нужна помощь прямо сейчас?";
+"crisis.body" = "Если вы или ваш партнёр в опасности, в кризисе или думаете о том, чтобы навредить себе или друг другу, пожалуйста, обратитесь за помощью немедленно. «Мост» не предназначен для помощи в экстренной ситуации.";
+"crisis.us_line" = "В США: позвоните или напишите 988 (линия помощи при кризисе и суициде), круглосуточно.";
+"crisis.international_line" = "За пределами США: найдите номер экстренной помощи или горячую линию в вашей стране, либо обратитесь в местные экстренные службы.";
+"crisis.close" = "Закрыть";
+
+// MARK: - Settings
+
+"settings.title" = "Настройки";
+"settings.section_relationship" = "Отношения";
+"settings.relationships_row" = "Отношения";
+"settings.section_support" = "Поддержка";
+"settings.disclaimer_row" = "О «Мосте»";
+"settings.crisis_row" = "Нужна помощь прямо сейчас?";
+"settings.section_legal" = "Правовая информация";
+"settings.privacy_row" = "Политика конфиденциальности";
+"settings.terms_row" = "Условия использования";
+"settings.restore_purchases_row" = "Восстановить покупки";
+"settings.section_data" = "Данные";
+"settings.delete_data_row" = "Удалить данные этих отношений";
+"settings.delete_confirm_title" = "Удалить все данные этих отношений?";
+"settings.delete_confirm_message" = "Это навсегда удалит жетоны, историю сессий, договор пары и все голосовые записи для этих отношений. Это нельзя отменить.";
+"settings.delete_confirm_button" = "Удалить";
+"settings.cancel" = "Отмена";
+"settings.version_row" = "Версия";
+"settings.done" = "Готово";
+"settings.language_row" = "Язык";
+"settings.view_path_row" = "Посмотреть маршрут";
+
+// MARK: - Legal
+
+"privacy.title" = "Политика конфиденциальности";
+"terms.title" = "Условия использования";
+"privacy.full_text" = "Последнее обновление: этот текст поставляется вместе с приложением и должен обновляться при каждом изменении.\n\n«Мост» устроен так, чтобы работать без сервера. Эта политика описывает именно то, что делает приложение, в точности соответствуя его реальной архитектуре — здесь нет ничего про будущие или желаемые функции.\n\nЧТО СОБИРАЕТ «МОСТ»\n\n• Имена партнёров, данные сессий (интенсивность, состояние, сыгранные карты, счёт жетонов) и ваш договор пары хранятся только в локальном хранилище приложения на вашем устройстве. Ничего из этого не отправляется нам или третьим лицам.\n• Голосовые послания (необязательная 10-секундная запись на Мосту) сохраняются только как аудиофайлы на вашем устройстве. Они никогда не загружаются, не синхронизируются и не передаются — даже нам.\n• «Мосту» не нужен аккаунт, вход в систему или интернет-соединение для работы.\n• «Мост» не использует аналитику, рекламные SDK или сторонние трекеры.\n\nЧЕГО «МОСТ» НЕ ДЕЛАЕТ\n\n• Мы не продаём ваши данные. Их просто нечего продавать — они никогда не покидают ваше устройство.\n• Мы не передаём ваши данные третьим лицам, потому что мы их вообще не получаем.\n\nУДАЛЕНИЕ ВАШИХ ДАННЫХ\n\nВы можете навсегда удалить профиль отношений — его жетоны, историю сессий, договор пары и голосовые записи — в разделе Настройки → Удалить данные этих отношений. Удаление самого приложения тоже удаляет все его локальные данные, как это принято в iOS.\n\nДЕТИ\n\n«Мост» не предназначен для детей и имеет возрастной рейтинг 12+ из-за серьёзных эмоциональных тем.\n\nИЗМЕНЕНИЯ\n\nЕсли эта политика изменится, обновлённый текст выйдет вместе с обновлением приложения, а строка «Последнее обновление» изменится соответственно.\n\nКОНТАКТЫ\n\nВопросы об этой политике можно направить на адрес поддержки, указанный на странице «Моста» в App Store.";
+"terms.full_text" = "Последнее обновление: этот текст поставляется вместе с приложением и должен обновляться при каждом изменении.\n\nИспользуя «Мост», вы соглашаетесь с этими условиями.\n\nЧТО ТАКОЕ «МОСТ»\n\n«Мост» — это инструмент направленного общения для пар: структурированный набор вопросов, карт и ритуалов, помогающий двум людям поговорить о конфликте. Это не терапия, не консультирование и не какая-либо форма медицинской или психологической помощи, и оно не заменяет профессиональную поддержку. Если вы или ваш партнёр переживаете насилие, кризис или постоянный стресс, пожалуйста, обратитесь к специалисту или на горячую линию в вашей стране (см. Настройки → Нужна помощь прямо сейчас?).\n\nПОКУПКИ\n\nПервая полная сессия в «Мосте» бесплатна. Полная версия открывается разовой покупкой внутри приложения (не подпиской), которую обрабатывает Apple. Вы можете восстановить предыдущую покупку на новом устройстве кнопкой «Восстановить покупки» на экране оплаты. Возвраты обрабатывает Apple по стандартной политике возвратов App Store — «Мост» не может оформить возврат напрямую.\n\nВАШ КОНТЕНТ\n\nВсё, что вы вводите или записываете в «Мосте» (имена, карты, голосовые записи), остаётся на вашем устройстве, как описано в Политике конфиденциальности. Вы несёте ответственность за то, что вы и ваш партнёр решаете написать, сказать или записать.\n\nОТСУТСТВИЕ ГАРАНТИЙ\n\n«Мост» предоставляется «как есть». Мы не гарантируем, что он разрешит какой-либо конкретный конфликт или улучшит какие-либо конкретные отношения — это инструмент, а не обещание.\n\nОГРАНИЧЕНИЕ ОТВЕТСТВЕННОСТИ\n\nВ максимально допустимой законом степени разработчик «Моста» не несёт ответственности за любой косвенный, случайный или сопутствующий ущерб, возникший в результате использования приложения.\n\nИЗМЕНЕНИЯ\n\nЕсли эти условия изменятся, обновлённый текст выйдет вместе с обновлением приложения, а строка «Последнее обновление» изменится соответственно.\n\nКОНТАКТЫ\n\nВопросы об этих условиях можно направить на адрес поддержки, указанный на странице «Моста» в App Store.";
+
+// MARK: - House Map
+
+"housemap.title" = "Сегодня вечером это твой дом.";
+"housemap.body" = "Вы вместе пройдёте через каждую комнату, по одной, в показанном порядке. Каждая комната задаёт один честный вопрос. Когда вы пройдёте через все, вы выйдете в сад и, наконец, на мост — где встретитесь друг с другом на середине. В этом вся суть игры: пройти путь, а затем встретиться на мосту.";
+"housemap.button_first" = "Понятно — начинаем";
+"housemap.button_reopen" = "Понятно";
+
+// MARK: - Names Entry
+
+"names.title" = "Как вас зовут?";
+"names.partner_a_placeholder" = "Имя первого партнёра";
+"names.partner_b_placeholder" = "Имя второго партнёра";
+"names.continue" = "Продолжить";
+
+// MARK: - Comprehension + Agreement
+
+"agree.title" = "Прежде чем начать";
+"agree.summary" = "Сейчас вы вместе пройдёте по дому, комната за комнатой. Каждая комната задаёт один честный вопрос. Здесь никого не оценивают, никто не выигрывает. Когда будете готовы, подтвердите это ниже — по очереди.";
+"agree.button" = "Я понимаю и согласен(на)";
+"agree.waiting_for" = "Ждём %@";
+
+// MARK: - Couple's Agreement Setup
+
+"couples_agreement.title" = "Ваш договор пары";
+"couples_agreement.subtitle" = "Несколько вещей, которые вы оба обещаете никогда не делать — ни во время этой сессии, ни после неё. Можно пропустить и заполнить позже.";
+"couples_agreement.add_rule" = "Добавить правило";
+"couples_agreement.skip_for_now" = "Пропустить пока";
+"couples_agreement.save" = "Сохранить договор";
+"couples_agreement.placeholder" = "например: Мы не угрожаем расстаться";
+"couples_agreement.example.01" = "Мы никогда не говорим «я тебя не люблю»";
+"couples_agreement.example.02" = "Мы не угрожаем расстаться";
+"couples_agreement.example.03" = "Мы не блокируем друг друга";
+"couples_agreement.example.04" = "Мы не исчезаем без объяснений";
+"couples_agreement.example.05" = "Мы не уходим ночевать в другое место назло";
+"couples_agreement.example.06" = "Мы не флиртуем с другими назло";
+"couples_agreement.example.07" = "Мы не оскорбляем и не высмеиваем чувства друг друга";
+
+// MARK: - Dice
+
+"dice.title" = "Кто говорит первым?";
+"dice.subtitle" = "Бросьте кубик, чтобы узнать.";
+"dice.roll" = "Бросить";
+"dice.result" = "%@ говорит первым(ой)";
+
+// MARK: - Calm-down Step
+
+"calm_down.title" = "Прежде чем начать";
+"calm_down.body" = "Сделайте вместе 5 медленных вдохов, прежде чем начать.";
+"calm_down.start_breathing" = "Начать дыхание";
+"calm_down.skip" = "Пропустить";
+
+// MARK: - Oath + Ritual
+
+"oath.title" = "Клятва";
+"oath.text" = "Я обещаю быть честным(ой). Я обещаю слушать до конца. Я не буду использовать услышанное против тебя. Сегодня мы не ищем виноватых. Сегодня мы выбираем понять друг друга.";
+"oath.ready" = "Мы готовы";
+"ritual.title" = "Возьмитесь за руки";
+"ritual.line_1" = "Мне жаль, что тебе было больно из-за этого.";
+"ritual.line_2" = "Мне жаль, что это причинило тебе боль.";
+"ritual.instruction" = "Скажите это вместе, так, как вам ближе.";
+"ritual.continue" = "Взяться за руки и продолжить";
+
+// MARK: - Intensity & State
+
+"intensity.title" = "Прямо сейчас";
+"intensity.slider_label" = "Насколько сильно это ощущается, от 0 до 10?";
+"intensity.state_label" = "Что ближе всего?";
+"intensity.continue" = "Продолжить";
+"state.hurt" = "Мне больно";
+"state.guilty" = "Я чувствую вину";
+"state.both" = "И то, и другое";
+"state.confused" = "Я в замешательстве";
+"state.dont_know" = "Я не знаю";
+
+// MARK: - Room Modes
+
+"mode.speaks" = "Говорит";
+"mode.listens_only" = "Только слушает";
+"mode.discussion" = "Обсуждение разрешено";
+"mode.silent_protocol" = "Строгая очередность, без перебиваний";
+
+// MARK: - Rooms
+
+"room.hall.name" = "Прихожая";
+"room.hall.question" = "Что произошло?";
+"room.hall.forbidden" = "Не спорить, не оправдываться, не поправлять версию другого.";
+"room.living_room.name" = "Гостиная";
+"room.living_room.question" = "Что я почувствовал(а)?";
+"room.study.name" = "Кабинет";
+"room.study.question" = "Что это для меня значило?";
+"room.kids_room.name" = "Детская";
+"room.kids_room.question" = "Что это задело из моего прошлого?";
+"room.kids_room.forbidden" = "Не спорить с чувствами другого.";
+"room.kitchen.name" = "Кухня";
+"room.kitchen.question" = "Что помогло бы нам избежать этого?";
+"room.next" = "Следующая комната";
+"room.write_your_own" = "Написать своё";
+"room.write_your_own_placeholder" = "Напишите, как вам ближе, своими словами";
+"room.done" = "Готово";
+"room.a_bit_more_time" = "Ещё немного времени";
+"room.time_up_banner" = "Время вышло — договорите мысль";
+"room.forbidden_prefix" = "Сейчас нельзя:";
+"handoff.shared_title" = "%@ поделился(ась):";
+"handoff.prompt" = "Когда будешь готов(а), %@.";
+"handoff.continue" = "Продолжить";
+
+// MARK: - Basement (Fears)
+
+"room.basement.name" = "Подвал";
+"room.basement.question" = "Страхи";
+"room.basement.forbidden" = "Не спорить со страхом другого, не давать долгих оправданий перед ответом.";
+"basement.instruction" = "Задайте до 15 вопросов, каждый на основе одной карты страха. Партнёр отвечает одним из четырёх вариантов, затем может коротко объяснить.";
+"basement.ask" = "Спросить";
+"basement.pick_a_fear_card" = "Выберите карту страха, чтобы спросить о ней";
+"basement.response.yes" = "Да";
+"basement.response.no" = "Нет";
+"basement.response.partially" = "Отчасти";
+"basement.response.understand" = "Я понимаю, почему это так ощущалось";
+"basement.explain_briefly" = "Коротко объяснить (необязательно)";
+"basement.questions_remaining" = "Осталось %d из 15 вопросов";
+
+// MARK: - Garden / Bridge Finale
+
+"bridge.title" = "Мост";
+"bridge.question" = "Какой один шаг навстречу друг другу?";
+"bridge.instruction" = "Каждый из вас выбирает минимум одну карту «Шаг навстречу», одну карту «Потребности и близость» и один подарок.";
+"bridge.choose_step_toward" = "Выбрать шаг навстречу";
+"bridge.choose_need" = "Выбрать потребность";
+"bridge.choose_gift" = "Выбрать подарок";
+"bridge.mandatory_card_prompt" = "Произнесите это вслух вместе:";
+"bridge.together_line" = "Я выбираю быть на твоей стороне в этом, а не против тебя.";
+"bridge.same_side_button" = "Мы на одной стороне";
+"bridge.choose_all_prompt" = "Выберите по одной карте из каждой колоды: шаг навстречу, потребность, подарок.";
+
+// MARK: - Voice Snapshot
+
+"voice.title" = "Хотите оставить короткое голосовое сообщение друг другу?";
+"voice.body" = "10 секунд, сохранённых только для вас двоих — маленькая память об этом моменте, а не запись самого конфликта, просто что-то тёплое из его финала, что можно переслушать позже.";
+"voice.record" = "Записать сообщение";
+"voice.not_this_time" = "Не в этот раз";
+"voice.save" = "Сохранить";
+"voice.recording" = "Идёт запись…";
+"voice.stop" = "Стоп";
+"voice.re_record" = "Записать заново";
+
+// MARK: - Closing Screen — Today's Mark
+
+"closing.title" = "Отметка сегодняшнего дня";
+"closing.date_shown_line" = "Сегодняшняя дата";
+"closing.line_1" = "Сегодня вы это сделали.";
+"closing.line_2a" = "Это немало.";
+"closing.line_2b" = "Для этого нужна смелость.";
+"closing.save_prompt" = "Сохраните это в галерею — момент, который вы узнаете позже.";
+"closing.save_to_gallery" = "Сохранить в галерею";
+"closing.close" = "Закрыть";
+
+// MARK: - Profile Switcher
+
+"profiles.title" = "Отношения";
+"profiles.switch" = "Переключить отношения";
+"profiles.start_new" = "Начать новые";
+"profiles.new_profile_prompt" = "Новые отношения ведут свою отдельную историю и жетоны — ничего не переносится из предыдущих.";
+"profiles.summary" = "%d накоплено · %d сессий";
+"profiles.new_relationship_fallback" = "Новые отношения";
+
+// MARK: - Paywall
+
+"paywall.title" = "Открыть полную версию";
+"paywall.body" = "Ваша первая полная сессия была бесплатной. Разблокировка открывает каждую комнату и каждую колоду для этих отношений — навсегда.";
+"paywall.unlock_button" = "Открыть полную версию — $14.99";
+"paywall.maybe_later" = "Может быть позже";
+"paywall.packs_coming_soon" = "Дополнительные наборы карт (после измены, длинные расстояния и другие) появятся позже.";
+"paywall.restore" = "Восстановить покупки";
+"paywall.restore_none_found" = "Предыдущая покупка для этого устройства не найдена.";
+"paywall.restore_success" = "Ваша покупка восстановлена.";
+"paywall.ok" = "ОК";
+
+// MARK: - Deck Names
+
+"deck.events.name" = "События";
+"deck.emotions.name" = "Эмоции";
+"deck.interpretations.name" = "Что я подумал(а)";
+"deck.body_sensations.name" = "Ощущения в теле";
+"deck.childhood.name" = "Опыт из детства";
+"deck.fears.name" = "Страхи";
+"deck.needs_connection.name" = "Потребности и близость";
+"deck.step_toward.name" = "Шаг навстречу";
+"deck.gifts.name" = "Подарки";
+"deck.unknown.name" = "Карты";
+
+// MARK: - Card Category Headers
+
+"category.pain" = "Боль";
+"category.fear" = "Страх";
+"category.shame" = "Стыд";
+"category.guilt" = "Вина";
+"category.anger" = "Злость";
+"category.anxiety" = "Тревога";
+"category.presence" = "Присутствие / телесное";
+"category.words" = "Слова / близость";
+"category.material" = "Материальное";
+"category.nonmaterial" = "Нематериальное";
+
+// MARK: - Card Grid
+
+"card.write_your_own" = "Написать своё";
+
+// MARK: - Misc
+
+"nav.back" = "Назад";
+"nav.turn_indicator" = "Очередь %@";
+"nav.listening" = "слушает";
+"nav.skip" = "Пропустить";
+
+
+// MARK: - Deck 1 — Events
+
+"card.events.01" = "На меня кричали";
+"card.events.02" = "Меня перебили";
+"card.events.03" = "Меня игнорировали";
+"card.events.04" = "Из разговора ушли";
+"card.events.05" = "Мне солгали";
+"card.events.06" = "Повышали голос";
+"card.events.07" = "Мне не ответили";
+"card.events.08" = "Меня отмахнулись";
+"card.events.09" = "Планы отменили";
+"card.events.10" = "От меня отвернулись";
+"card.events.11" = "Меня не предупредили";
+"card.events.12" = "Мне не перезвонили";
+"card.events.13" = "Со мной говорили саркастично";
+"card.events.14" = "Меня перебили при других";
+"card.events.15" = "Я просил(а) о помощи и не получил(а) её";
+"card.events.16" = "Меня сравнили с кем-то другим";
+"card.events.17" = "Обещание не сдержали";
+"card.events.18" = "Я узнал(а) о том, о чём мне не сказали";
+
+// MARK: - Deck 2 — Emotions: Pain
+
+"card.emotions.pain.01" = "Это больно";
+"card.emotions.pain.02" = "Мне грустно";
+"card.emotions.pain.03" = "Я чувствую потерю";
+"card.emotions.pain.04" = "Я чувствую себя одиноко";
+"card.emotions.pain.05" = "Я разочарован(а)";
+"card.emotions.pain.06" = "Я чувствую пустоту";
+"card.emotions.pain.07" = "Я чувствую себя невидимым(ой)";
+"card.emotions.pain.08" = "Я чувствую себя забытым(ой)";
+"card.emotions.pain.09" = "Я чувствую себя маленьким(ой)";
+"card.emotions.pain.10" = "Я чувствую внутреннюю пустоту";
+
+// MARK: - Deck 2 — Emotions: Fear
+
+"card.emotions.fear.01" = "Мне страшно прямо сейчас";
+"card.emotions.fear.02" = "У меня паника";
+"card.emotions.fear.03" = "Я замер(ла)";
+"card.emotions.fear.04" = "Я тревожусь прямо сейчас";
+"card.emotions.fear.05" = "У меня сжимается грудь";
+"card.emotions.fear.06" = "Я чувствую себя в опасности";
+
+// MARK: - Deck 2 — Emotions: Shame
+
+"card.emotions.shame.01" = "Мне стыдно";
+"card.emotions.shame.02" = "Я чувствую себя плохим партнёром";
+"card.emotions.shame.03" = "Мне стыдно за то, что я сказал(а)";
+"card.emotions.shame.04" = "Я не могу смотреть тебе в глаза";
+"card.emotions.shame.05" = "Я чувствую, что всё разрушил(а)";
+"card.emotions.shame.06" = "Я чувствую себя уязвимым(ой)";
+"card.emotions.shame.07" = "Я чувствую, что меня недостаточно";
+
+// MARK: - Deck 2 — Emotions: Guilt
+
+"card.emotions.guilt.01" = "Я чувствую вину";
+"card.emotions.guilt.02" = "Я подвёл(а) тебя";
+"card.emotions.guilt.03" = "Я сделал(а) тебе больно";
+"card.emotions.guilt.04" = "Мне жаль";
+"card.emotions.guilt.05" = "Я хочу это исправить";
+"card.emotions.guilt.06" = "Жаль, что я поступил(а) иначе";
+"card.emotions.guilt.07" = "Я чувствую ответственность";
+
+// MARK: - Deck 2 — Emotions: Anger
+
+"card.emotions.anger.01" = "Я злюсь";
+"card.emotions.anger.02" = "Я считаю это несправедливым";
+"card.emotions.anger.03" = "Я раздражён(а)";
+"card.emotions.anger.04" = "Меня не слышат";
+"card.emotions.anger.05" = "Я чувствую бессилие";
+"card.emotions.anger.06" = "Меня игнорируют";
+"card.emotions.anger.07" = "Меня не уважают";
+"card.emotions.anger.08" = "Меня провоцируют";
+
+// MARK: - Deck 2 — Emotions: Anxiety
+
+"card.emotions.anxiety.01" = "Я в замешательстве";
+"card.emotions.anxiety.02" = "Я не понимаю, что происходит";
+"card.emotions.anxiety.03" = "Мне страшно говорить";
+"card.emotions.anxiety.04" = "Я боюсь новой ссоры";
+"card.emotions.anxiety.05" = "Я на пределе";
+"card.emotions.anxiety.06" = "Я как будто хожу по яичной скорлупе";
+"card.emotions.anxiety.07" = "Я не могу успокоиться";
+
+// MARK: - Deck 3 — What I Thought
+
+"card.interpretations.01" = "Мне показалось, что ты меня больше не любишь";
+"card.interpretations.02" = "Мне показалось, что ты меня не уважаешь";
+"card.interpretations.03" = "Мне показалось, что я перестал(а) иметь значение";
+"card.interpretations.04" = "Мне показалось, что тебе всё равно";
+"card.interpretations.05" = "Мне показалось, что ты мне не доверяешь";
+"card.interpretations.06" = "Мне показалось, что ты меня осуждаешь";
+"card.interpretations.07" = "Мне показалось, что ты считаешь меня плохим человеком";
+"card.interpretations.08" = "Мне показалось, что ты хочешь меня изменить";
+"card.interpretations.09" = "Мне показалось, что мои чувства для тебя не важны";
+"card.interpretations.10" = "Мне показалось, что ты меня отвергаешь";
+"card.interpretations.11" = "Мне показалось, что ты хочешь победить, а не понять";
+"card.interpretations.12" = "Мне показалось, что ты мной манипулируешь";
+"card.interpretations.13" = "Мне показалось, что ты специально делаешь мне больно";
+"card.interpretations.14" = "Мне показалось, что ты меня контролируешь";
+"card.interpretations.15" = "Мне показалось, что ты меня проверяешь";
+"card.interpretations.16" = "Мне показалось, что ты меня используешь";
+"card.interpretations.17" = "Мне показалось, что ты мне лжёшь";
+"card.interpretations.18" = "Мне показалось, что ты скрываешь правду";
+"card.interpretations.19" = "Мне показалось, что ты меня предал(а)";
+"card.interpretations.20" = "Мне показалось, что ты меня не выбираешь";
+
+// MARK: - Deck 4 — Body Sensations
+
+"card.body_sensations.01" = "Ком в горле";
+"card.body_sensations.02" = "Тяжесть";
+"card.body_sensations.03" = "Дрожь";
+"card.body_sensations.04" = "Пустота";
+"card.body_sensations.05" = "Слёзы";
+"card.body_sensations.06" = "Жар";
+"card.body_sensations.07" = "Холод";
+"card.body_sensations.08" = "Онемение";
+"card.body_sensations.09" = "Учащённое сердцебиение";
+"card.body_sensations.10" = "Узел в животе";
+"card.body_sensations.11" = "Напряжение в плечах";
+
+// MARK: - Deck 5 — Childhood Experiences
+
+"card.childhood.01" = "Меня не выбирают";
+"card.childhood.02" = "Меня не любят";
+"card.childhood.03" = "Меня бросят";
+"card.childhood.04" = "Меня не слышат";
+"card.childhood.05" = "Меня не защищают";
+"card.childhood.06" = "Меня критикуют";
+"card.childhood.07" = "Меня заменят";
+"card.childhood.08" = "Мне недостаточно хорош(а)";
+"card.childhood.09" = "Любовь нужно заслужить";
+"card.childhood.10" = "Меня игнорируют";
+"card.childhood.11" = "Меня наказывали за мои чувства";
+"card.childhood.12" = "Мне не разрешали злиться";
+"card.childhood.13" = "Мне нужно было быть удобным(ой)";
+"card.childhood.14" = "Меня сравнивали с другими";
+
+// MARK: - Deck 6 — Fears
+
+"card.fears.01" = "Я боюсь потерять тебя";
+"card.fears.02" = "Я боюсь потерять эти отношения";
+"card.fears.03" = "Я боюсь, что ты уйдёшь";
+"card.fears.04" = "Я боюсь быть отвергнутым(ой)";
+"card.fears.05" = "Я боюсь быть ненужным(ой)";
+"card.fears.06" = "Я боюсь, что меня больше не любят";
+"card.fears.07" = "Я боюсь, что ты выберешь кого-то другого";
+"card.fears.08" = "Я боюсь, что мне больше нельзя доверять";
+"card.fears.09" = "Я боюсь заново пережить старую боль";
+"card.fears.10" = "Я боюсь быть наказанным(ой)";
+"card.fears.11" = "Я боюсь быть обвинённым(ой)";
+"card.fears.12" = "Я боюсь тебя разочаровать";
+"card.fears.13" = "Я боюсь совершить ошибку";
+"card.fears.14" = "Мне страшно открыться";
+"card.fears.15" = "Я боюсь снова быть отвергнутым(ой)";
+"card.fears.16" = "Я боюсь остаться один(одна)";
+"card.fears.17" = "Я боюсь, что меня не простят";
+"card.fears.18" = "Я боюсь, что это повторится";
+"card.fears.19" = "Я боюсь быть непонятым(ой)";
+"card.fears.20" = "Мне страшно сказать правду";
+"card.fears.21" = "Я боюсь, что меня не выбирают";
+"card.fears.22" = "Я теряю чувство безопасности";
+"card.fears.23" = "Я боюсь, что меня заменят";
+"card.fears.24" = "Я боюсь, что меня любят не так, как раньше";
+"card.fears.25" = "Я чувствую, что меня несправедливо обвиняют";
+"card.fears.26" = "Я чувствую, что мной манипулируют";
+"card.fears.27" = "Сейчас я не могу доверять партнёру";
+"card.fears.28" = "Я чувствую, что на меня давят виной";
+"card.fears.29" = "Меня не слышат";
+"card.fears.30" = "Я чувствую, что мои слова используют против меня";
+"card.fears.31" = "Я боюсь, что мы не сможем это исправить";
+"card.fears.32" = "Я чувствую, что я в этом один(одна)";
+"card.fears.33" = "Мне страшно показать, насколько это на самом деле больно";
+"card.fears.34" = "Я чувствую, что меня контролируют";
+"card.fears.35" = "Я чувствую себя непринятым(ой)";
+"card.fears.36" = "Я чувствую, что от меня требуют слишком многого";
+"card.fears.37" = "Я чувствую, что всё, что я скажу, будет использовано против меня";
+"card.fears.38" = "Я хочу замкнуться в себе";
+"card.fears.39" = "Я хочу уйти";
+"card.fears.40" = "Я хочу молчать";
+"card.fears.41" = "Я хочу побыть один(одна) прямо сейчас";
+"card.fears.42" = "Я боюсь совершить ещё одну ошибку";
+"card.fears.43" = "Я боюсь показаться плохим человеком";
+"card.fears.44" = "Я боюсь, что доверие разрушено навсегда";
+
+// MARK: - Deck 7 — Needs & Connection: Presence
+
+"card.needs_connection.presence.01" = "Объятия";
+"card.needs_connection.presence.02" = "Чай";
+"card.needs_connection.presence.03" = "Посидеть вместе";
+"card.needs_connection.presence.04" = "Помолчать вместе";
+"card.needs_connection.presence.05" = "Побыть немного одному(ой)";
+"card.needs_connection.presence.06" = "Чтобы ты был(а) рядом, не разговаривая";
+"card.needs_connection.presence.07" = "Совместный выходной";
+"card.needs_connection.presence.08" = "Прогулка";
+"card.needs_connection.presence.09" = "Секс";
+"card.needs_connection.presence.10" = "Поцелуй";
+"card.needs_connection.presence.11" = "Держаться за руки";
+"card.needs_connection.presence.12" = "Посмотреть фильм вместе";
+"card.needs_connection.presence.13" = "Помощь";
+"card.needs_connection.presence.14" = "Сон";
+"card.needs_connection.presence.15" = "Чувство безопасности";
+
+// MARK: - Deck 7 — Needs & Connection: Words
+
+"card.needs_connection.words.01" = "Посмотри мне в глаза";
+"card.needs_connection.words.02" = "Возьми меня за руку";
+"card.needs_connection.words.03" = "Обними меня";
+"card.needs_connection.words.04" = "Скажи, что любишь меня";
+"card.needs_connection.words.05" = "Скажи, что мы справимся";
+"card.needs_connection.words.06" = "Посиди со мной в тишине";
+"card.needs_connection.words.07" = "Выслушай меня полностью";
+"card.needs_connection.words.08" = "Не перебивай меня";
+"card.needs_connection.words.09" = "Спроси меня снова";
+"card.needs_connection.words.10" = "Улыбнись мне";
+"card.needs_connection.words.11" = "Поцелуй меня";
+"card.needs_connection.words.12" = "Скажи, что я важен(на) для тебя";
+"card.needs_connection.words.13" = "Не уходи прямо сейчас";
+"card.needs_connection.words.14" = "Давай начнём сначала";
+"card.needs_connection.words.15" = "Прими моё извинение";
+"card.needs_connection.words.16" = "Скажи, что я всё ещё в безопасности с тобой";
+
+// MARK: - Deck 8 — Step Toward
+
+"card.step_toward.01" = "Я готов(а) слушать внимательнее";
+"card.step_toward.02" = "Я готов(а) говорить честнее";
+"card.step_toward.03" = "Я готов(а) чаще спрашивать, что ты чувствуешь";
+"card.step_toward.04" = "Я готов(а) перестать избегать разговора";
+"card.step_toward.05" = "Я готов(а) успокаиваться, прежде чем говорить";
+"card.step_toward.06" = "Я готов(а) помнить, что ты не мой враг";
+"card.step_toward.07" = "Я готов(а) быть мягче";
+"card.step_toward.08" = "Я готов(а) доверять тебе";
+"card.step_toward.09" = "Я готов(а) начать сначала";
+"card.step_toward.10" = "Я выбираю наши отношения";
+"card.step_toward.11" = "Я выбираю остаться";
+"card.step_toward.12" = "Я выбираю бороться с проблемой, а не с тобой";
+
+// MARK: - Deck 9 — Gifts: Material
+
+"card.gifts.material.01" = "цветы";
+"card.gifts.material.02" = "кольцо";
+"card.gifts.material.03" = "часы";
+"card.gifts.material.04" = "сумка";
+"card.gifts.material.05" = "поездка";
+"card.gifts.material.06" = "машина";
+"card.gifts.material.07" = "любимая книга";
+"card.gifts.material.08" = "украшение";
+
+// MARK: - Deck 9 — Gifts: Non-material
+
+"card.gifts.nonmaterial.01" = "массаж";
+"card.gifts.nonmaterial.02" = "свидание";
+"card.gifts.nonmaterial.03" = "завтрак";
+"card.gifts.nonmaterial.04" = "письмо";
+"card.gifts.nonmaterial.05" = "день вместе";
+"card.gifts.nonmaterial.06" = "вечер без телефонов";
+"card.gifts.nonmaterial.07" = "приготовить ужин";
+"card.gifts.nonmaterial.08" = "объятия";
+"card.gifts.nonmaterial.09" = "танец";
+"card.gifts.nonmaterial.10" = "любимая песня";
+"card.gifts.nonmaterial.11" = "совместная поездка";

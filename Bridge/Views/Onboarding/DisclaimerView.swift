@@ -12,7 +12,7 @@ struct DisclaimerView: View {
         VStack(alignment: .leading, spacing: 20) {
             Spacer()
             DisclaimerContent()
-            Button(LocalizedStringKey("disclaimer.need_help_now")) {
+            Button(L("disclaimer.need_help_now")) {
                 showingCrisisResources = true
             }
             .font(.footnote.weight(.medium))
@@ -31,9 +31,9 @@ struct DisclaimerView: View {
 struct DisclaimerContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(LocalizedStringKey("disclaimer.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("disclaimer.body"))
+            Text(L("disclaimer.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("disclaimer.body"))
                 .font(.body)
                 .foregroundStyle(.secondary)
         }

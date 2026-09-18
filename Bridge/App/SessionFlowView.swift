@@ -51,6 +51,9 @@ struct SessionFlowView: View {
         case .disclaimer:
             DisclaimerView { vm.advance() }
 
+        case .houseMap:
+            HouseMapView(context: .onboarding, onContinue: { vm.advance() })
+
         case .names:
             NamesEntryView(vm: vm) { vm.advance() }
 

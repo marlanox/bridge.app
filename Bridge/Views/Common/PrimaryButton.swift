@@ -8,8 +8,10 @@ struct PrimaryButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(LocalizedStringKey(titleKey))
-                .font(.headline)
+            Text(L(titleKey))
+                .font(.bridgeButton)
+                .textCase(.uppercase)
+                .tracking(0.8)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
         }
@@ -22,13 +24,16 @@ struct PrimaryButton: View {
 
 struct SecondaryButton: View {
     let titleKey: String
+    var color: Color = .secondary
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text(LocalizedStringKey(titleKey))
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
+            Text(L(titleKey))
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .textCase(.uppercase)
+                .tracking(0.6)
+                .foregroundStyle(color)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
         }

@@ -20,13 +20,13 @@ struct CardGridView: View {
                 ForEach(decks) { deck in
                     VStack(alignment: .leading, spacing: 14) {
                         if decks.count > 1 {
-                            Text(LocalizedStringKey(deck.nameKey))
+                            Text(L(deck.nameKey))
                                 .font(.headline)
                         }
                         ForEach(Array(deck.sections.enumerated()), id: \.offset) { _, section in
                             VStack(alignment: .leading, spacing: 8) {
                                 if let category = section.category {
-                                    Text(LocalizedStringKey("category.\(category)"))
+                                    Text(L("category.\(category)"))
                                         .font(.caption.weight(.semibold))
                                         .foregroundStyle(.secondary)
                                         .textCase(.uppercase)
@@ -64,10 +64,10 @@ struct CardGridView: View {
     private var writeYourOwnSheet: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                Text(LocalizedStringKey("room.write_your_own_placeholder"))
+                Text(L("room.write_your_own_placeholder"))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                TextField(NSLocalizedString("room.write_your_own_placeholder", comment: ""), text: $customText, axis: .vertical)
+                TextField(L("room.write_your_own_placeholder"), text: $customText, axis: .vertical)
                     .lineLimit(3...6)
                     .textFieldStyle(.roundedBorder)
                 Spacer()
@@ -79,7 +79,7 @@ struct CardGridView: View {
                 }
             }
             .padding()
-            .navigationTitle(Text(LocalizedStringKey("card.write_your_own")))
+            .navigationTitle(Text(L("card.write_your_own")))
             .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.medium])

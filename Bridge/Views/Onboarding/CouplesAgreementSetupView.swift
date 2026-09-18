@@ -12,9 +12,9 @@ struct CouplesAgreementSetupView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text(LocalizedStringKey("couples_agreement.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("couples_agreement.subtitle"))
+            Text(L("couples_agreement.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("couples_agreement.subtitle"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
@@ -35,16 +35,16 @@ struct CouplesAgreementSetupView: View {
                     }
 
                     if vm.couplesAgreement.isEmpty {
-                        Text(LocalizedStringKey("couples_agreement.subtitle"))
+                        Text(L("couples_agreement.subtitle"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         ForEach(exampleKeys, id: \.self) { key in
                             Button {
-                                vm.addAgreementRule(NSLocalizedString(key, comment: ""))
+                                vm.addAgreementRule(L(key))
                             } label: {
                                 HStack {
                                     Image(systemName: "plus.circle")
-                                    Text(LocalizedStringKey(key)).font(.caption)
+                                    Text(L(key)).font(.caption)
                                     Spacer()
                                 }
                             }
@@ -56,9 +56,9 @@ struct CouplesAgreementSetupView: View {
             }
 
             HStack {
-                TextField(NSLocalizedString("couples_agreement.placeholder", comment: ""), text: $newRule)
+                TextField(L("couples_agreement.placeholder"), text: $newRule)
                     .textFieldStyle(.roundedBorder)
-                Button(LocalizedStringKey("couples_agreement.add_rule")) {
+                Button(L("couples_agreement.add_rule")) {
                     vm.addAgreementRule(newRule)
                     newRule = ""
                 }

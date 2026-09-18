@@ -11,7 +11,7 @@ struct CardView: View {
 
     var body: some View {
         Button(action: action) {
-            Text(LocalizedStringKey(card.textKey))
+            Text(L(card.textKey))
                 .font(.system(size: 14.5, weight: .medium))
                 .multilineTextAlignment(.center)
                 .lineLimit(4)

@@ -21,16 +21,28 @@ are required.
 
 ## What's implemented
 
-- Full flow from Welcome through onboarding, dice, calm-down, oath, ritual, all six
-  universal rooms, Basement's Q&A protocol, the Bridge finale, voice snapshot, and the
-  closing screen ("Today's Mark") — see `Bridge/App/SessionFlowView.swift`.
+- Full flow from a language picker through onboarding (including the wellness disclaimer
+  and the House Map overview), dice, calm-down, oath, ritual, all six universal rooms,
+  Basement's Q&A protocol, the Bridge finale, voice snapshot, and the closing screen
+  ("Today's Mark") — see `Bridge/App/SessionFlowView.swift`. The route is 7 rooms (Hall,
+  Living Room, Study, Kids' Room, Kitchen, Basement, Bridge) — there is no separate Needs
+  Room or Garden; those cards are chosen at the Bridge finale itself, shown as three
+  simultaneous decks with an explicit "choose one from each" prompt.
 - All 9 card decks transcribed verbatim from the spec (`Bridge/Data/DeckData.swift`),
   ~215 cards, every deck's grid ending in a "Write your own" free-text tile.
-- Every UI string and card string lives in `Bridge/Resources/en.lproj/Localizable.strings`
-  — nothing user-facing is hardcoded in Swift, so the app is translation-ready.
-- Turn-based full-screen UI: only the active partner's screen is upright and large: the
-  waiting partner sees a small corner indicator, and the whole screen flips 180° when the
-  turn passes (`Bridge/Views/Common/ActivePartnerContainer.swift`).
+- **Fully bilingual (English/Russian)**, natively translated — not machine-translated
+  filler. The app ships its own language chooser at first launch, independent of the
+  device's system language, changeable anytime from Settings. `L()`/`LF()`
+  (`Bridge/ViewModels/LocalizationManager.swift`) replace the standard
+  `LocalizedStringKey`/`NSLocalizedString` app-wide so the in-app choice — not the device
+  locale — decides which `.lproj` bundle strings load from.
+- Turn-based full-screen UI: only the active partner's screen is large. Nothing ever
+  renders upside down — when a turn passes in a sequential room, the incoming partner sees
+  a brief upright "handoff" screen (what the previous partner shared, then a Continue
+  button) instead of the phone flipping 180°
+  (`Bridge/Views/Common/ActivePartnerContainer.swift`, `Bridge/Views/Session/HandoffView.swift`).
+- A small premium type system — serif headings, bold upright tracked-caps buttons, never
+  italic — applied consistently app-wide (`Bridge/Views/Common/Font+Bridge.swift`).
 - Green/red token economy, folded into the profile at session end
   (`Bridge/ViewModels/TokenManager.swift`).
 - Multiple relationship profiles, each with its own tokens/currency/history, persisted as
@@ -39,20 +51,21 @@ are required.
 - Voice snapshot record/playback (AVFoundation) and "save to gallery" for the closing card
   (rendered to an image and written to Photos).
 - App Store compliance (see `Docs/APP_STORE_CHECKLIST.md` for the full picture): wellness
-  disclaimer + crisis resources, in-app Privacy Policy/Terms of Use, in-app data deletion,
-  Restore Purchases button, and system-sound/haptic feedback only — all reachable from a
-  new Settings hub (`Bridge/Views/Settings/SettingsView.swift`, opened from the gear icon
-  on the Welcome screen).
+  disclaimer + crisis resources, in-app Privacy Policy/Terms of Use (also natively
+  bilingual), in-app data deletion, Restore Purchases button, and system-sound/haptic
+  feedback only — all reachable from a Settings hub
+  (`Bridge/Views/Settings/SettingsView.swift`, opened from the gear icon on Welcome).
 
 ## Visual assets
 
-`hall.png`, `house-exterior.png` and `living-room.png` are already in
-`Bridge/Assets.xcassets/`, generated from the photorealistic reference photos provided.
-Everything else (`study.png`, `kids-room.png`, `kitchen.png`, `basement.png`,
-`needs-room.png`, `bridge.png`, `app-icon.png`) still needs to be generated — see
+`hall.png`, `house-exterior.png`, `living-room.png`, `study.png`, `basement.png`,
+`bridge.png`, `house-map.png` and `app-icon.png` are already in `Bridge/Assets.xcassets/`,
+generated from the photorealistic reference photos provided. Still needed: `kids-room.png`,
+`kitchen.png`, and `ending.png` (the closing-screen/voice-snapshot background) — see
 `Docs/BRIDGE_asset_prompts.md` for prompts matching the established photorealistic style.
-Until then, `RoomBackgroundImage` falls back to a plain warm beige background per spec, so
-the app runs and is fully testable without them.
+Until then, `RoomBackgroundImage` falls back to a plain warm beige background per spec (and
+the House Map falls back to a plain numbered list), so the app runs and is fully testable
+without them.
 
 ## Judgment calls worth knowing about
 

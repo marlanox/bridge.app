@@ -10,18 +10,18 @@ struct NamesEntryView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             Spacer()
-            Text(LocalizedStringKey("names.title"))
-                .font(.title.weight(.semibold))
+            Text(L("names.title"))
+                .font(.bridgeSerifTitle(26))
 
             VStack(spacing: 14) {
                 HStack {
                     Circle().fill(PartnerColor.purple.color).frame(width: 10, height: 10)
-                    TextField(NSLocalizedString("names.partner_a_placeholder", comment: ""), text: $nameA)
+                    TextField(L("names.partner_a_placeholder"), text: $nameA)
                         .textFieldStyle(.roundedBorder)
                 }
                 HStack {
                     Circle().fill(PartnerColor.green.color).frame(width: 10, height: 10)
-                    TextField(NSLocalizedString("names.partner_b_placeholder", comment: ""), text: $nameB)
+                    TextField(L("names.partner_b_placeholder"), text: $nameB)
                         .textFieldStyle(.roundedBorder)
                 }
             }

@@ -17,6 +17,9 @@ enum AppFlowStep: Equatable {
     /// Wellness disclaimer (App Store checklist B.1) — shown once at first-launch
     /// onboarding, and separately reachable anytime from Settings.
     case disclaimer
+    /// House map overview — shown once, last in onboarding, and reachable anytime
+    /// from Settings as "View the path."
+    case houseMap
     case names
     case comprehensionAgreement
     case couplesAgreementSetup
@@ -38,15 +41,16 @@ enum AppFlowStep: Equatable {
         case .howItWorksApology: return 2
         case .howItWorksModes: return 3
         case .disclaimer: return 4
-        case .names: return 5
-        case .comprehensionAgreement: return 6
-        case .couplesAgreementSetup: return 7
-        case .dice: return 8
-        case .intensityState: return 9
-        case .calmDown: return 10
-        case .oath: return 11
-        case .ritual: return 12
-        case .room(let kind): return 13 + kind.rawValue
+        case .houseMap: return 5
+        case .names: return 6
+        case .comprehensionAgreement: return 7
+        case .couplesAgreementSetup: return 8
+        case .dice: return 9
+        case .intensityState: return 10
+        case .calmDown: return 11
+        case .oath: return 12
+        case .ritual: return 13
+        case .room(let kind): return 14 + kind.rawValue
         case .basement: return 30
         case .bridgeFinale: return 31
         case .voiceSnapshot: return 32

@@ -9,9 +9,9 @@ struct CalmDownView: View {
     var body: some View {
         VStack(spacing: 28) {
             Spacer()
-            Text(LocalizedStringKey("calm_down.title"))
-                .font(.title.weight(.semibold))
-            Text(LocalizedStringKey("calm_down.body"))
+            Text(L("calm_down.title"))
+                .font(.bridgeSerifTitle(26))
+            Text(L("calm_down.body"))
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)

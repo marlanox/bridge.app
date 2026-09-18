@@ -30,7 +30,7 @@ struct BasementView: View {
     private var askingContent: some View {
         VStack(spacing: 0) {
             header
-            Text(LocalizedStringKey("basement.pick_a_fear_card"))
+            Text(L("basement.pick_a_fear_card"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.top, 8)
@@ -60,7 +60,7 @@ struct BasementView: View {
 
             HStack {
                 Button { vm.markBasementDone(vm.activePartner) } label: {
-                    Text(LocalizedStringKey("room.done"))
+                    Text(L("room.done"))
                         .font(.headline)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 12)
@@ -83,7 +83,7 @@ struct BasementView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
 
-            Text(LocalizedStringKey("basement.instruction"))
+            Text(L("basement.instruction"))
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -106,7 +106,7 @@ struct BasementView: View {
         Button {
             vm.submitBasementResponse(response, explanation: nil)
         } label: {
-            Text(LocalizedStringKey("basement.response.\(response.rawValue)"))
+            Text(L("basement.response.\(response.rawValue)"))
                 .font(.subheadline.weight(.medium))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
@@ -118,15 +118,15 @@ struct BasementView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(LocalizedStringKey("room.basement.name"))
-                .font(.largeTitle.weight(.bold))
-            Text(LocalizedStringKey("room.basement.question"))
+            Text(L("room.basement.name"))
+                .font(.bridgeSerifTitle(32, weight: .bold))
+            Text(L("room.basement.question"))
                 .font(.title3)
                 .foregroundStyle(.secondary)
-            Text(LocalizedStringKey("room.basement.forbidden"))
+            Text(L("room.basement.forbidden"))
                 .font(.caption)
                 .foregroundStyle(.red.opacity(0.85))
-            Text(String(format: NSLocalizedString("basement.questions_remaining", comment: ""), max(15 - (vm.basementQuestionsAsked[vm.basementCurrentAsker] ?? 0), 0)))
+            Text(String(format: L("basement.questions_remaining"), max(15 - (vm.basementQuestionsAsked[vm.basementCurrentAsker] ?? 0), 0)))
                 .font(.caption.weight(.semibold))
         }
         .padding(16)
@@ -135,7 +135,7 @@ struct BasementView: View {
 
     private func fearText(for id: String) -> String {
         if let card = fearsDeck.cards.first(where: { $0.id == id }) {
-            return NSLocalizedString(card.textKey, comment: "")
+            return L(card.textKey)
         }
         return ""
     }
