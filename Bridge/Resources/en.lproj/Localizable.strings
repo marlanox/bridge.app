@@ -1,0 +1,493 @@
+/*
+  Localizable.strings
+  Bridge
+
+  All UI copy and card text live here so the app stays translation-ready
+  (spec section 2: "Language: English for launch; all UI and card text
+  stored as string resources"). Nothing user-facing is hardcoded in Swift.
+*/
+
+// MARK: - App / Welcome
+
+"app.name" = "Bridge";
+"app.tagline" = "We are not enemies. We are two people trying to get back to each other.";
+"welcome.begin" = "Begin";
+
+// MARK: - Onboarding — How Bridge Works
+
+"onboarding.what_is_bridge.title" = "What is Bridge";
+"onboarding.what_is_bridge.body" = "This is for the moment of conflict, not “someday.” Even when it's hard, even when you don't want to talk, even if you're furious with your partner right now, this can help you learn things about each other you never knew, even after years together.";
+"onboarding.apology.title" = "Why the apology ritual matters";
+"onboarding.apology.body" = "“I'm sorry you were hurt” is not admission of guilt — it's acknowledgment of the other's pain. That small act works.";
+"onboarding.modes.title" = "How the modes work";
+"onboarding.modes.speaks" = "One partner speaks";
+"onboarding.modes.listens_only" = "The other only listens";
+"onboarding.modes.discussion" = "Discussion is allowed";
+"onboarding.modes.silence" = "Silence";
+"onboarding.modes.body" = "Not interrupting matters — it's how the person speaking knows they'll be heard all the way through.";
+"onboarding.next" = "Next";
+"onboarding.got_it" = "Got it";
+
+// MARK: - Names Entry
+
+"names.title" = "What are your names?";
+"names.partner_a_placeholder" = "First partner's name";
+"names.partner_b_placeholder" = "Second partner's name";
+"names.continue" = "Continue";
+
+// MARK: - Comprehension + Agreement
+
+"agree.title" = "Before we begin";
+"agree.summary" = "You're about to walk through a house together, room by room. Each room asks one honest question. No one is graded, no one wins. When you're ready, each of you confirms below.";
+"agree.button" = "I understand and agree";
+"agree.waiting_for" = "Waiting for %@";
+
+// MARK: - Couple's Agreement Setup
+
+"couples_agreement.title" = "Your Couple's Agreement";
+"couples_agreement.subtitle" = "A few things you both agree never to do — during this session or after it. You can skip this and fill it in later.";
+"couples_agreement.add_rule" = "Add a rule";
+"couples_agreement.skip_for_now" = "Skip for now";
+"couples_agreement.save" = "Save agreement";
+"couples_agreement.placeholder" = "e.g. We don't threaten to break up";
+"couples_agreement.example.01" = "We never say “I don't love you”";
+"couples_agreement.example.02" = "We don't threaten to break up";
+"couples_agreement.example.03" = "We don't block each other";
+"couples_agreement.example.04" = "We don't disappear without explanation";
+"couples_agreement.example.05" = "We don't sleep somewhere else out of spite";
+"couples_agreement.example.06" = "We don't flirt with others out of spite";
+"couples_agreement.example.07" = "We don't insult or mock each other's feelings";
+
+// MARK: - Dice
+
+"dice.title" = "Who speaks first?";
+"dice.subtitle" = "Roll to decide.";
+"dice.roll" = "Roll";
+"dice.result" = "%@ speaks first";
+
+// MARK: - Calm-down Step
+
+"calm_down.title" = "Before we start";
+"calm_down.body" = "Take 5 slow breaths together before we begin.";
+"calm_down.start_breathing" = "Start breathing";
+"calm_down.skip" = "Skip this";
+
+// MARK: - Oath + Ritual
+
+"oath.title" = "The Oath";
+"oath.text" = "I promise to be honest. I promise to listen until the end. I won't use what I hear against you. Today we're not looking for who's guilty. Today we choose to understand each other.";
+"oath.ready" = "We're ready";
+"ritual.title" = "Hold hands";
+"ritual.line_1" = "I'm sorry you were hurt in this.";
+"ritual.line_2" = "I'm sorry that hurt you.";
+"ritual.instruction" = "Say it together, however it fits you.";
+"ritual.continue" = "Hold and continue";
+
+// MARK: - Intensity & State
+
+"intensity.title" = "Right now";
+"intensity.slider_label" = "How intense does this feel, 0 to 10?";
+"intensity.state_label" = "Which feels closest?";
+"intensity.continue" = "Continue";
+"state.hurt" = "I feel hurt";
+"state.guilty" = "I feel guilty";
+"state.both" = "Both";
+"state.confused" = "I'm confused";
+"state.dont_know" = "I don't know";
+
+// MARK: - Room Modes
+
+"mode.speaks" = "Speaks";
+"mode.listens_only" = "Listens only";
+"mode.discussion" = "Discussion allowed";
+"mode.silent_protocol" = "Strict turn-taking, no interrupting";
+
+// MARK: - Rooms
+
+"room.hall.name" = "Hall";
+"room.hall.question" = "What happened?";
+"room.hall.forbidden" = "No arguing, no making excuses, no correcting the other's account.";
+"room.living_room.name" = "Living Room";
+"room.living_room.question" = "What did I feel?";
+"room.study.name" = "Study";
+"room.study.question" = "What did it mean to me?";
+"room.kids_room.name" = "Kids' Room";
+"room.kids_room.question" = "What did this touch from my past?";
+"room.kids_room.forbidden" = "No arguing with the other's feelings.";
+"room.kitchen.name" = "Kitchen";
+"room.kitchen.question" = "What would help us avoid this?";
+"room.needs_room.name" = "Needs Room";
+"room.needs_room.question" = "What do I need from you now?";
+"room.next" = "Next room";
+"room.write_your_own" = "Write your own";
+"room.write_your_own_placeholder" = "Type what fits, in your own words";
+"room.done" = "Done";
+"room.a_bit_more_time" = "A bit more time";
+"room.time_up_banner" = "Time's up — finish your thought";
+"room.forbidden_prefix" = "Not now:";
+
+// MARK: - Basement (Fears)
+
+"room.basement.name" = "Basement";
+"room.basement.question" = "Fears";
+"room.basement.forbidden" = "No arguing with the other's fear, no long defensive explanations before answering.";
+"basement.instruction" = "Ask up to 15 questions, each based on one fear card. Your partner answers with one of four responses, then may briefly explain.";
+"basement.ask" = "Ask";
+"basement.pick_a_fear_card" = "Pick a fear card to ask about";
+"basement.response.yes" = "Yes";
+"basement.response.no" = "No";
+"basement.response.partially" = "Partially";
+"basement.response.understand" = "I understand why it felt that way";
+"basement.explain_briefly" = "Explain briefly (optional)";
+"basement.questions_remaining" = "%d of 15 questions left";
+
+// MARK: - Garden / Bridge Finale
+
+"bridge.title" = "The Bridge";
+"bridge.question" = "What's one step toward each other?";
+"bridge.instruction" = "Each of you chooses at least one Step Toward card, one Needs & Connection card, and one gift.";
+"bridge.choose_step_toward" = "Choose a step toward";
+"bridge.choose_need" = "Choose a need";
+"bridge.choose_gift" = "Choose a gift";
+"bridge.mandatory_card_prompt" = "Complete this aloud, together:";
+"bridge.together_line" = "I choose to be on your side of this, not against you.";
+"bridge.same_side_button" = "We're on the same side";
+
+// MARK: - Voice Snapshot
+
+"voice.title" = "Want to leave a short voice message for each other?";
+"voice.body" = "10 seconds, saved just for the two of you — a small keepsake of this moment, not a recording of the conflict itself, just something warm from the end of it, that you can listen back to later.";
+"voice.record" = "Record a message";
+"voice.not_this_time" = "Not this time";
+"voice.save" = "Save";
+"voice.recording" = "Recording…";
+"voice.stop" = "Stop";
+"voice.re_record" = "Re-record";
+
+// MARK: - Closing Screen — Today's Mark
+
+"closing.title" = "Today's Mark";
+"closing.date_shown_line" = "Today's date";
+"closing.line_1" = "You showed up for this today.";
+"closing.line_2a" = "That's not nothing.";
+"closing.line_2b" = "That took courage.";
+"closing.save_prompt" = "Save this to your gallery — a moment you'll recognize later.";
+"closing.save_to_gallery" = "Save to gallery";
+"closing.close" = "Close";
+
+// MARK: - Profile Switcher
+
+"profiles.title" = "Relationships";
+"profiles.switch" = "Switch relationship";
+"profiles.start_new" = "Start a new one";
+"profiles.new_profile_prompt" = "Starting a new relationship keeps its own separate history and tokens — nothing carries over from the last one.";
+"profiles.summary" = "%d saved · %d sessions";
+"profiles.new_relationship_fallback" = "New relationship";
+
+// MARK: - Paywall
+
+"paywall.title" = "Unlock the full version";
+"paywall.body" = "Your first full session was free. Unlocking gives you every room, every deck, for this relationship, for good.";
+"paywall.unlock_button" = "Unlock the full version — $14.99";
+"paywall.maybe_later" = "Maybe later";
+"paywall.packs_coming_soon" = "More card packs (After infidelity, Long distance, and others) are coming later.";
+
+// MARK: - Deck Names
+
+"deck.events.name" = "Events";
+"deck.emotions.name" = "Emotions";
+"deck.interpretations.name" = "What I Thought";
+"deck.body_sensations.name" = "Body Sensations";
+"deck.childhood.name" = "Childhood Experiences";
+"deck.fears.name" = "Fears";
+"deck.needs_connection.name" = "Needs & Connection";
+"deck.step_toward.name" = "Step Toward";
+"deck.gifts.name" = "Gifts";
+"deck.unknown.name" = "Cards";
+
+// MARK: - Card Category Headers
+
+"category.pain" = "Pain";
+"category.fear" = "Fear";
+"category.shame" = "Shame";
+"category.guilt" = "Guilt";
+"category.anger" = "Anger";
+"category.anxiety" = "Anxiety";
+"category.presence" = "Presence / Physical";
+"category.words" = "Words / Connection";
+"category.material" = "Material";
+"category.nonmaterial" = "Non-material";
+
+// MARK: - Card Grid
+
+"card.write_your_own" = "Write your own";
+
+// MARK: - Misc
+
+"nav.back" = "Back";
+"nav.turn_indicator" = "%@'s turn";
+"nav.listening" = "listening";
+"nav.skip" = "Skip";
+
+
+// MARK: - Deck 1 — Events
+
+"card.events.01" = "I was yelled at";
+"card.events.02" = "I was interrupted";
+"card.events.03" = "I was ignored";
+"card.events.04" = "They walked out of the conversation";
+"card.events.05" = "I was lied to";
+"card.events.06" = "Voices were raised";
+"card.events.07" = "I wasn't answered";
+"card.events.08" = "I was dismissed";
+"card.events.09" = "Plans were cancelled";
+"card.events.10" = "They turned away from me";
+"card.events.11" = "I wasn't warned";
+"card.events.12" = "I wasn't called back";
+"card.events.13" = "They spoke to me sarcastically";
+"card.events.14" = "I was cut off in front of others";
+"card.events.15" = "I asked for help and didn't get it";
+"card.events.16" = "I was compared to someone else";
+"card.events.17" = "A promise wasn't kept";
+"card.events.18" = "I found out something I wasn't told";
+
+// MARK: - Deck 2 — Emotions: Pain
+
+"card.emotions.pain.01" = "It hurts";
+"card.emotions.pain.02" = "I feel sad";
+"card.emotions.pain.03" = "I feel a sense of loss";
+"card.emotions.pain.04" = "I feel alone";
+"card.emotions.pain.05" = "I'm disappointed";
+"card.emotions.pain.06" = "I feel empty";
+"card.emotions.pain.07" = "I feel unseen";
+"card.emotions.pain.08" = "I feel forgotten";
+"card.emotions.pain.09" = "I feel small";
+"card.emotions.pain.10" = "I feel hollow";
+
+// MARK: - Deck 2 — Emotions: Fear
+
+"card.emotions.fear.01" = "I'm scared right now";
+"card.emotions.fear.02" = "I'm panicking";
+"card.emotions.fear.03" = "I froze";
+"card.emotions.fear.04" = "I feel anxious right now";
+"card.emotions.fear.05" = "My chest feels tight";
+"card.emotions.fear.06" = "I feel unsafe";
+
+// MARK: - Deck 2 — Emotions: Shame
+
+"card.emotions.shame.01" = "I feel ashamed";
+"card.emotions.shame.02" = "I feel like a bad partner";
+"card.emotions.shame.03" = "I'm ashamed of what I said";
+"card.emotions.shame.04" = "I can't look you in the eye";
+"card.emotions.shame.05" = "I feel like I ruined everything";
+"card.emotions.shame.06" = "I feel exposed";
+"card.emotions.shame.07" = "I feel like I'm not enough";
+
+// MARK: - Deck 2 — Emotions: Guilt
+
+"card.emotions.guilt.01" = "I feel guilty";
+"card.emotions.guilt.02" = "I let you down";
+"card.emotions.guilt.03" = "I hurt you";
+"card.emotions.guilt.04" = "I'm sorry";
+"card.emotions.guilt.05" = "I want to fix this";
+"card.emotions.guilt.06" = "I wish I'd done it differently";
+"card.emotions.guilt.07" = "I feel responsible";
+
+// MARK: - Deck 2 — Emotions: Anger
+
+"card.emotions.anger.01" = "I'm angry";
+"card.emotions.anger.02" = "I feel this is unfair";
+"card.emotions.anger.03" = "I feel irritated";
+"card.emotions.anger.04" = "I feel unheard";
+"card.emotions.anger.05" = "I feel powerless";
+"card.emotions.anger.06" = "I feel dismissed";
+"card.emotions.anger.07" = "I feel disrespected";
+"card.emotions.anger.08" = "I feel provoked";
+
+// MARK: - Deck 2 — Emotions: Anxiety
+
+"card.emotions.anxiety.01" = "I'm confused";
+"card.emotions.anxiety.02" = "I don't understand what's happening";
+"card.emotions.anxiety.03" = "I'm scared to talk";
+"card.emotions.anxiety.04" = "I'm afraid of another fight";
+"card.emotions.anxiety.05" = "I feel on edge";
+"card.emotions.anxiety.06" = "I feel like I'm walking on eggshells";
+"card.emotions.anxiety.07" = "I can't settle down";
+
+// MARK: - Deck 3 — What I Thought
+
+"card.interpretations.01" = "It felt like you don't love me anymore";
+"card.interpretations.02" = "It felt like you don't respect me";
+"card.interpretations.03" = "It felt like I stopped mattering";
+"card.interpretations.04" = "It felt like you don't care";
+"card.interpretations.05" = "It felt like you don't trust me";
+"card.interpretations.06" = "It felt like you're judging me";
+"card.interpretations.07" = "It felt like you think I'm a bad person";
+"card.interpretations.08" = "It felt like you want to change me";
+"card.interpretations.09" = "It felt like you think my feelings don't matter";
+"card.interpretations.10" = "It felt like you're rejecting me";
+"card.interpretations.11" = "It felt like you want to win, not understand";
+"card.interpretations.12" = "It felt like you're manipulating me";
+"card.interpretations.13" = "It felt like you're deliberately hurting me";
+"card.interpretations.14" = "It felt like you're controlling me";
+"card.interpretations.15" = "It felt like you're testing me";
+"card.interpretations.16" = "It felt like you're using me";
+"card.interpretations.17" = "It felt like you're lying to me";
+"card.interpretations.18" = "It felt like you're hiding the truth";
+"card.interpretations.19" = "It felt like you betrayed me";
+"card.interpretations.20" = "It felt like you're not choosing me";
+
+// MARK: - Deck 4 — Body Sensations
+
+"card.body_sensations.01" = "A lump in my throat";
+"card.body_sensations.02" = "Heaviness";
+"card.body_sensations.03" = "Trembling";
+"card.body_sensations.04" = "Emptiness";
+"card.body_sensations.05" = "Tears";
+"card.body_sensations.06" = "Heat";
+"card.body_sensations.07" = "Cold";
+"card.body_sensations.08" = "Numbness";
+"card.body_sensations.09" = "Racing heart";
+"card.body_sensations.10" = "A knot in my stomach";
+"card.body_sensations.11" = "Tension in my shoulders";
+
+// MARK: - Deck 5 — Childhood Experiences
+
+"card.childhood.01" = "I'm not chosen";
+"card.childhood.02" = "I'm not loved";
+"card.childhood.03" = "I'll be abandoned";
+"card.childhood.04" = "I'm not heard";
+"card.childhood.05" = "I'm not protected";
+"card.childhood.06" = "I'm being criticized";
+"card.childhood.07" = "I'll be replaced";
+"card.childhood.08" = "I'm not good enough";
+"card.childhood.09" = "Love has to be earned";
+"card.childhood.10" = "I'm being ignored";
+"card.childhood.11" = "I was punished for my feelings";
+"card.childhood.12" = "I wasn't allowed to be angry";
+"card.childhood.13" = "I had to be easy/convenient";
+"card.childhood.14" = "I was compared to others";
+
+// MARK: - Deck 6 — Fears
+
+"card.fears.01" = "I'm afraid of losing you";
+"card.fears.02" = "I'm afraid of losing this relationship";
+"card.fears.03" = "I'm afraid you'll leave";
+"card.fears.04" = "I'm afraid of being rejected";
+"card.fears.05" = "I'm afraid of being unneeded";
+"card.fears.06" = "I'm afraid I'm no longer loved";
+"card.fears.07" = "I'm afraid you'll choose someone else";
+"card.fears.08" = "I'm afraid I can no longer be trusted";
+"card.fears.09" = "I'm afraid of reliving old pain";
+"card.fears.10" = "I'm afraid of being punished";
+"card.fears.11" = "I'm afraid of being blamed";
+"card.fears.12" = "I'm afraid of disappointing you";
+"card.fears.13" = "I'm afraid of making a mistake";
+"card.fears.14" = "I'm afraid to open up";
+"card.fears.15" = "I'm afraid of being rejected again";
+"card.fears.16" = "I'm afraid of being alone";
+"card.fears.17" = "I'm afraid I won't be forgiven";
+"card.fears.18" = "I'm afraid this will happen again";
+"card.fears.19" = "I'm afraid of being misunderstood";
+"card.fears.20" = "I'm afraid to tell the truth";
+"card.fears.21" = "I'm afraid I'm not chosen";
+"card.fears.22" = "I'm losing my sense of safety";
+"card.fears.23" = "I'm afraid I'll be replaced";
+"card.fears.24" = "I'm afraid I'm not loved like before";
+"card.fears.25" = "I feel accused unfairly";
+"card.fears.26" = "I feel manipulated";
+"card.fears.27" = "I can't trust my partner right now";
+"card.fears.28" = "I feel guilt is being forced on me";
+"card.fears.29" = "I feel unheard";
+"card.fears.30" = "I feel my words are used against me";
+"card.fears.31" = "I'm afraid we can't fix this";
+"card.fears.32" = "I feel like I'm alone in this";
+"card.fears.33" = "I'm afraid to show how much this actually hurts";
+"card.fears.34" = "I feel controlled";
+"card.fears.35" = "I feel unaccepted";
+"card.fears.36" = "I feel too much is being asked of me";
+"card.fears.37" = "I feel anything I say will be used against me";
+"card.fears.38" = "I want to shut down";
+"card.fears.39" = "I want to leave";
+"card.fears.40" = "I want to be quiet";
+"card.fears.41" = "I want to be alone right now";
+"card.fears.42" = "I'm afraid of making another mistake";
+"card.fears.43" = "I'm afraid of seeming like a bad person";
+"card.fears.44" = "I'm afraid this broke trust for good";
+
+// MARK: - Deck 7 — Needs & Connection: Presence
+
+"card.needs_connection.presence.01" = "A hug";
+"card.needs_connection.presence.02" = "Tea";
+"card.needs_connection.presence.03" = "To sit together";
+"card.needs_connection.presence.04" = "To be silent together";
+"card.needs_connection.presence.05" = "To be alone for a bit";
+"card.needs_connection.presence.06" = "For you to stay near me without talking";
+"card.needs_connection.presence.07" = "A shared day off";
+"card.needs_connection.presence.08" = "A walk";
+"card.needs_connection.presence.09" = "Sex";
+"card.needs_connection.presence.10" = "A kiss";
+"card.needs_connection.presence.11" = "Holding hands";
+"card.needs_connection.presence.12" = "A movie together";
+"card.needs_connection.presence.13" = "Help";
+"card.needs_connection.presence.14" = "Sleep";
+"card.needs_connection.presence.15" = "Safety";
+
+// MARK: - Deck 7 — Needs & Connection: Words
+
+"card.needs_connection.words.01" = "Look me in the eyes";
+"card.needs_connection.words.02" = "Take my hand";
+"card.needs_connection.words.03" = "Hold me";
+"card.needs_connection.words.04" = "Tell me you love me";
+"card.needs_connection.words.05" = "Tell me we'll get through this";
+"card.needs_connection.words.06" = "Sit with me in silence";
+"card.needs_connection.words.07" = "Listen to me fully";
+"card.needs_connection.words.08" = "Don't interrupt me";
+"card.needs_connection.words.09" = "Ask me again";
+"card.needs_connection.words.10" = "Smile at me";
+"card.needs_connection.words.11" = "Kiss me";
+"card.needs_connection.words.12" = "Tell me I matter";
+"card.needs_connection.words.13" = "Don't leave right now";
+"card.needs_connection.words.14" = "Let's start over";
+"card.needs_connection.words.15" = "Hear my apology";
+"card.needs_connection.words.16" = "Tell me I'm still safe with you";
+
+// MARK: - Deck 8 — Step Toward
+
+"card.step_toward.01" = "I'm willing to listen more carefully";
+"card.step_toward.02" = "I'm willing to speak more honestly";
+"card.step_toward.03" = "I'm willing to ask more often what you feel";
+"card.step_toward.04" = "I'm willing to stop running from the conversation";
+"card.step_toward.05" = "I'm willing to calm down before speaking";
+"card.step_toward.06" = "I'm willing to remember you're not my enemy";
+"card.step_toward.07" = "I'm willing to be softer";
+"card.step_toward.08" = "I'm willing to trust you";
+"card.step_toward.09" = "I'm willing to start over";
+"card.step_toward.10" = "I choose our relationship";
+"card.step_toward.11" = "I choose to stay";
+"card.step_toward.12" = "I choose to fight the problem, not you";
+
+// MARK: - Deck 9 — Gifts: Material
+
+"card.gifts.material.01" = "flowers";
+"card.gifts.material.02" = "a ring";
+"card.gifts.material.03" = "a watch";
+"card.gifts.material.04" = "a bag";
+"card.gifts.material.05" = "a trip";
+"card.gifts.material.06" = "a car";
+"card.gifts.material.07" = "a favorite book";
+"card.gifts.material.08" = "jewelry";
+
+// MARK: - Deck 9 — Gifts: Non-material
+
+"card.gifts.nonmaterial.01" = "a massage";
+"card.gifts.nonmaterial.02" = "a date";
+"card.gifts.nonmaterial.03" = "breakfast";
+"card.gifts.nonmaterial.04" = "a letter";
+"card.gifts.nonmaterial.05" = "a day together";
+"card.gifts.nonmaterial.06" = "an evening without phones";
+"card.gifts.nonmaterial.07" = "cooking dinner";
+"card.gifts.nonmaterial.08" = "a hug";
+"card.gifts.nonmaterial.09" = "a dance";
+"card.gifts.nonmaterial.10" = "a favorite song";
+"card.gifts.nonmaterial.11" = "a trip together";
