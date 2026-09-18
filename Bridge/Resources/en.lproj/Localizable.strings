@@ -28,6 +28,47 @@
 "onboarding.next" = "Next";
 "onboarding.got_it" = "Got it";
 
+// MARK: - Wellness Disclaimer (App Store checklist B.1)
+
+"disclaimer.title" = "Before we begin";
+"disclaimer.body" = "Bridge is a communication tool for couples. It is not therapy and does not replace professional mental health support. If you or your partner are experiencing abuse, crisis, or ongoing distress, please reach out to a licensed professional or a crisis line in your country.";
+"disclaimer.continue" = "Continue";
+"disclaimer.need_help_now" = "Need help now?";
+
+// MARK: - Crisis Resources
+
+"crisis.title" = "Need help now?";
+"crisis.body" = "If you or your partner are in danger, in crisis, or thinking about harming yourselves or each other, please reach out right away. Bridge is not equipped to help in an emergency.";
+"crisis.us_line" = "In the US: call or text 988 (Suicide & Crisis Lifeline), available 24/7.";
+"crisis.international_line" = "Outside the US: search for your country's emergency number or a local crisis line, or contact local emergency services.";
+"crisis.close" = "Close";
+
+// MARK: - Settings
+
+"settings.title" = "Settings";
+"settings.section_relationship" = "Relationship";
+"settings.relationships_row" = "Relationships";
+"settings.section_support" = "Support";
+"settings.disclaimer_row" = "About Bridge";
+"settings.crisis_row" = "Need help now?";
+"settings.section_legal" = "Legal";
+"settings.privacy_row" = "Privacy Policy";
+"settings.terms_row" = "Terms of Use";
+"settings.restore_purchases_row" = "Restore Purchases";
+"settings.section_data" = "Data";
+"settings.delete_data_row" = "Delete this relationship's data";
+"settings.delete_confirm_title" = "Delete all data for this relationship?";
+"settings.delete_confirm_message" = "This permanently removes tokens, session history, the couple's agreement, and any voice notes for this relationship. This can't be undone.";
+"settings.delete_confirm_button" = "Delete";
+"settings.cancel" = "Cancel";
+"settings.version_row" = "Version";
+"settings.done" = "Done";
+
+// MARK: - Legal
+
+"privacy.title" = "Privacy Policy";
+"terms.title" = "Terms of Use";
+
 // MARK: - Names Entry
 
 "names.title" = "What are your names?";
@@ -191,6 +232,10 @@
 "paywall.unlock_button" = "Unlock the full version — $14.99";
 "paywall.maybe_later" = "Maybe later";
 "paywall.packs_coming_soon" = "More card packs (After infidelity, Long distance, and others) are coming later.";
+"paywall.restore" = "Restore Purchases";
+"paywall.restore_none_found" = "No previous purchase found for this device.";
+"paywall.restore_success" = "Your purchase has been restored.";
+"paywall.ok" = "OK";
 
 // MARK: - Deck Names
 

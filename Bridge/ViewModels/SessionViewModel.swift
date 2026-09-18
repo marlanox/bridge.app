@@ -109,6 +109,8 @@ final class SessionViewModel: ObservableObject {
         case .howItWorksApology:
             flow = .howItWorksModes
         case .howItWorksModes:
+            flow = .disclaimer
+        case .disclaimer:
             flow = .names
         case .names:
             flow = .comprehensionAgreement
@@ -166,6 +168,7 @@ final class SessionViewModel: ObservableObject {
     }
 
     func startRoom(_ kind: RoomKind) {
+        FeedbackSounds.roomTransition()
         session.currentRoom = kind
         let config = RoomConfig.all[kind]
         roomDoneFlags = [.partnerA: false, .partnerB: false]
@@ -192,6 +195,7 @@ final class SessionViewModel: ObservableObject {
         )
         session.cardsPlayed.append(play)
         placedCardsThisTurn.append(play)
+        FeedbackSounds.cardPlaced()
     }
 
     /// Called when `role` taps "Done" in the current room.
@@ -230,6 +234,7 @@ final class SessionViewModel: ObservableObject {
     // MARK: - Basement
 
     func startBasement() {
+        FeedbackSounds.roomTransition()
         session.currentRoom = .basement
         roomDoneFlags = [.partnerA: false, .partnerB: false]
         basementQuestionsAsked = [.partnerA: 0, .partnerB: 0]
@@ -321,6 +326,7 @@ final class SessionViewModel: ObservableObject {
         roomTimeRemainingSeconds -= 1
         if roomTimeRemainingSeconds == 60 {
             timerFired = true
+            FeedbackSounds.timerWarning()
         }
         if roomTimeRemainingSeconds == 0 {
             timeUpBannerShown = true

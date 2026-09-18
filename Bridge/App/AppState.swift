@@ -63,7 +63,12 @@ final class AppState: ObservableObject {
         profile.partnerBName = session.session.partnerB.name
         profile.hasCompletedFirstSession = true
         profile.sessionHistory.append(
-            SessionSummary(date: Date(), greenEarned: session.session.greenTokensEarned, redEarned: session.session.redTokensEarned)
+            SessionSummary(
+                id: session.session.id,
+                date: Date(),
+                greenEarned: session.session.greenTokensEarned,
+                redEarned: session.session.redTokensEarned
+            )
         )
         activeProfile = profile
         session = SessionViewModel(profile: profile)
@@ -79,5 +84,28 @@ final class AppState: ObservableObject {
     var canStartSession: Bool {
         guard let profile = activeProfile else { return false }
         return !profile.hasCompletedFirstSession || profile.hasUnlockedFullVersion
+    }
+
+    /// Permanently deletes the active relationship profile — its tokens, session
+    /// history, couple's agreement, and every voice note it ever recorded — per the
+    /// App Store checklist's in-app deletion requirement. Always leaves at least one
+    /// (fresh) profile behind so the app has somewhere to land.
+    func deleteActiveProfileData() {
+        guard let profile = activeProfile else { return }
+
+        var sessionIDs = Set(profile.sessionHistory.map(\.id))
+        sessionIDs.insert(session.session.id)
+        for sessionID in sessionIDs {
+            for role in PartnerRole.allCases {
+                try? FileManager.default.removeItem(at: persistence.voiceNoteURL(sessionID: sessionID, role: role))
+            }
+        }
+
+        profiles.removeAll { $0.id == profile.id }
+        if profiles.isEmpty {
+            profiles = [RelationshipProfile()]
+        }
+        persistence.saveProfiles(profiles)
+        selectProfile(profiles[0].id)
     }
 }

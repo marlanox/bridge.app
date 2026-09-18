@@ -7,19 +7,19 @@ struct SessionFlowView: View {
     @ObservedObject var vm: SessionViewModel
 
     @State private var showingPaywall = false
-    @State private var showingProfiles = false
+    @State private var showingSettings = false
 
     var body: some View {
         ZStack(alignment: .topLeading) {
             content
 
             if vm.flow == .welcome {
-                profileButton
+                settingsButton
             }
         }
         .onReceive(vm.tickerPublisher) { _ in vm.tick() }
         .sheet(isPresented: $showingPaywall) { PaywallView() }
-        .sheet(isPresented: $showingProfiles) { ProfileSwitcherView() }
+        .sheet(isPresented: $showingSettings) { SettingsView() }
         .animation(.easeInOut(duration: 0.3), value: vm.flow)
     }
 
@@ -47,6 +47,9 @@ struct SessionFlowView: View {
 
         case .howItWorksModes:
             OnboardingModesPage { vm.advance() }
+
+        case .disclaimer:
+            DisclaimerView { vm.advance() }
 
         case .names:
             NamesEntryView(vm: vm) { vm.advance() }
@@ -102,11 +105,11 @@ struct SessionFlowView: View {
         }
     }
 
-    private var profileButton: some View {
+    private var settingsButton: some View {
         Button {
-            showingProfiles = true
+            showingSettings = true
         } label: {
-            Image(systemName: "person.2.circle.fill")
+            Image(systemName: "gearshape.fill")
                 .font(.title2)
                 .foregroundStyle(.white)
                 .padding(10)

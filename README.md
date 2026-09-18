@@ -38,6 +38,11 @@ are required.
 - Paywall gate after the first free session; profile switcher.
 - Voice snapshot record/playback (AVFoundation) and "save to gallery" for the closing card
   (rendered to an image and written to Photos).
+- App Store compliance (see `Docs/APP_STORE_CHECKLIST.md` for the full picture): wellness
+  disclaimer + crisis resources, in-app Privacy Policy/Terms of Use, in-app data deletion,
+  Restore Purchases button, and system-sound/haptic feedback only — all reachable from a
+  new Settings hub (`Bridge/Views/Settings/SettingsView.swift`, opened from the gear icon
+  on the Welcome screen).
 
 ## Visual assets
 
@@ -75,8 +80,12 @@ called out with a code comment at the point of the decision:
 
 - Real StoreKit purchase flow for the $14.99 unlock (`PaywallView.unlock()` currently just
   flips a local flag — the call site is isolated so wiring in StoreKit later doesn't touch
-  the rest of the app).
+  the rest of the app). Restore Purchases is wired but, honestly, has nothing real to
+  restore from yet.
 - Themed card packs (After infidelity, Long distance, etc.) — intentionally out of scope
   for v1 per the spec.
 - Automated tests and a TestFlight build (needs the remaining art assets and a real device
   first, per the spec's own build order).
+- Hosting the privacy policy and terms of use at a real URL, and the rest of the App Store
+  Connect metadata (age rating, App Privacy answers, support/marketing URLs) — see
+  `Docs/APP_STORE_CHECKLIST.md` for the exact, ready-to-use answers.
