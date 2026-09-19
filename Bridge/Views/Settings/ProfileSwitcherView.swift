@@ -35,6 +35,12 @@ struct ProfileSwitcherView: View {
             }
             .navigationTitle(Text(L("profiles.title")))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(L("settings.done")) { dismiss() }
+                        .accessibilityIdentifier("uitest.profile.done")
+                }
+            }
             .confirmationDialog(
                 Text(L("profiles.start_new")),
                 isPresented: $showingNewProfileConfirm,

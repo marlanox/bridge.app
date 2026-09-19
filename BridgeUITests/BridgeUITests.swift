@@ -257,7 +257,7 @@ final class BridgeUITests: XCTestCase {
         app.buttons["uitest.settings.relationships"].tap()
         XCTAssertTrue(app.buttons["uitest.profile.row"].waitForExistence(timeout: 10))
         attach(app, "D02-profile-switcher")
-        app.swipeDown()
+        app.buttons["uitest.profile.done"].tap()
 
         XCTAssertTrue(waitUntilHittable(app.buttons["uitest.settings.viewpath"]))
         app.buttons["uitest.settings.viewpath"].tap()
