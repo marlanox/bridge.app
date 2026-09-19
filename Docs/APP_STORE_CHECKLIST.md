@@ -40,9 +40,16 @@ Connect metadata, hosting, or a real device/account that only the developer can 
 
 ## Still needed before submission (not code — see notes)
 
-1. **Host the privacy policy and terms at a real URL.** `Docs/PRIVACY_POLICY.md` and
-   `Docs/TERMS_OF_USE.md` are ready to publish as-is (any static page host works). App
-   Store Connect requires a live URL, not just the in-app screens.
+1. **Host the privacy policy and terms at a real URL.** Done, pending one manual toggle: a
+   bilingual (EN/RU) static site — same text as the in-app screens, verbatim — is already
+   pushed to this repo's `gh-pages` branch (`index.html`, `privacy.html`, `terms.html`,
+   `style.css`). To make it live: repo **Settings → Pages → Source → Deploy from a
+   branch → `gh-pages` / `(root)`**. It will then serve at
+   `https://marlanox.github.io/bridge.app/`, `.../privacy.html`, `.../terms.html` — use
+   those two as the Privacy Policy URL and (if App Store Connect asks separately) the
+   Terms of Use / EULA URL. **Before submitting**, replace the placeholder support email
+   in `index.html` (`mailto:support@example.com`) with a real one — that page is the
+   only place it appears.
 2. **App Privacy "nutrition label"** (filled in App Store Connect, not in the app). Based
    on this build's actual architecture:
    - *User content* (names, session data) → collected, but **not linked to identity** and
