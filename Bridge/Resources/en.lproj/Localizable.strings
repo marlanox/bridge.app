@@ -192,7 +192,7 @@
 "room.basement.name" = "Basement";
 "room.basement.question" = "Fears";
 "room.basement.forbidden" = "• No arguing with the other's fear\n• No long defensive explanations before answering";
-"basement.instruction" = "Say your fear out loud, in your own words — for example: “I was afraid you don't love me anymore.” A card can help you find the words, but you don't need one. Your partner answers with just one of three words: Yes, No, or I understand why it seemed that way. Ask as many fears as you need — around 15 is usually enough for one visit. No arguing with someone's fear.";
+"basement.instruction" = "This room is for confessing fears — subjective, even irrational ones you felt during the conflict. Example: “I was afraid you don't love me anymore.” Say it in your own words, or pick a card below. Your partner answers with only one of the three fixed words — then it becomes their turn to voice a fear of their own. You may each ask up to 15 fears total; fewer is fine. Tap Done whenever you're finished asking — the room ends once you both have.";
 "basement.ask" = "Ask";
 "basement.pick_a_fear_card" = "Pick a fear card, or say your own";
 "basement.response.yes" = "Yes";
