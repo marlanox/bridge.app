@@ -24,40 +24,42 @@ struct RoomView: View {
     private var decks: [Deck] { config.deckIDs.map { DeckData.deck($0) } }
 
     var body: some View {
-        ZStack {
-            // The room interior always renders for the current `activePartner` and never
-            // rotates while someone is only reading — see RevealCardOverlay's doc comment.
-            // The photo rotates together with the header/cards/buttons as one unit — a
-            // couple sitting across from each other must see a single consistent room,
-            // not a right-side-up photo under upside-down text.
-            if isSequential {
-                ActivePartnerContainer(
-                    activePartner: vm.activePartner,
-                    partnerName: { vm.session.name(for: $0) },
-                    partnerColor: { vm.session.color(for: $0) }
-                ) {
+        GeometryReader { geo in
+            ZStack {
+                // The room interior always renders for the current `activePartner` and never
+                // rotates while someone is only reading — see RevealCardOverlay's doc comment.
+                // The photo rotates together with the header/cards/buttons as one unit — a
+                // couple sitting across from each other must see a single consistent room,
+                // not a right-side-up photo under upside-down text.
+                if isSequential {
+                    ActivePartnerContainer(
+                        activePartner: vm.activePartner,
+                        partnerName: { vm.session.name(for: $0) },
+                        partnerColor: { vm.session.color(for: $0) }
+                    ) {
+                        ZStack {
+                            RoomBackgroundImage(imageName: config.backgroundImageName)
+                            Color.black.opacity(0.18).ignoresSafeArea()
+                            turnContent(for: vm.activePartner, safeArea: geo.safeAreaInsets)
+                        }
+                    }
+                } else {
                     ZStack {
                         RoomBackgroundImage(imageName: config.backgroundImageName)
                         Color.black.opacity(0.18).ignoresSafeArea()
-                        turnContent(for: vm.activePartner)
+                        discussionContent
                     }
                 }
-            } else {
-                ZStack {
-                    RoomBackgroundImage(imageName: config.backgroundImageName)
-                    Color.black.opacity(0.18).ignoresSafeArea()
-                    discussionContent
-                }
-            }
 
-            if let reveal = vm.pendingReveal {
-                RevealCardOverlay(
-                    fromName: vm.session.name(for: reveal.from),
-                    fromColor: vm.session.color(for: reveal.from),
-                    toRole: reveal.to,
-                    cards: reveal.cards,
-                    onRead: { vm.confirmReveal() }
-                )
+                if let reveal = vm.pendingReveal {
+                    RevealCardOverlay(
+                        fromName: vm.session.name(for: reveal.from),
+                        fromColor: vm.session.color(for: reveal.from),
+                        toRole: reveal.to,
+                        cards: reveal.cards,
+                        onRead: { vm.confirmReveal() }
+                    )
+                }
             }
         }
         .animation(.spring(response: 0.45, dampingFraction: 0.8), value: vm.pendingReveal == nil)
@@ -65,8 +67,14 @@ struct RoomView: View {
 
     // MARK: - Sequential (one speaks, one listens)
 
+    /// A 180° rotation swaps which physical edge is "top" — laying this out with the
+    /// system's normal (top=notch, bottom=home-indicator) safe area, then rotating the
+    /// whole thing, would land the Done row under the notch and the header over the home
+    /// indicator instead. Ignoring the safe area here and swapping the padding manually
+    /// for the rotated partner keeps the bigger notch-side clearance physically at the top.
     @ViewBuilder
-    private func turnContent(for role: PartnerRole) -> some View {
+    private func turnContent(for role: PartnerRole, safeArea: EdgeInsets) -> some View {
+        let rotated = role.seatRotationDegrees != 0
         VStack(spacing: 0) {
             header(activeRole: role)
             Spacer(minLength: 8)
@@ -89,6 +97,11 @@ struct RoomView: View {
 
             doneRow(role: role)
         }
+        .padding(.top, rotated ? safeArea.bottom : safeArea.top)
+        .padding(.bottom, rotated ? safeArea.top + roomChromeTopExtra : safeArea.bottom)
+        .padding(.leading, rotated ? safeArea.trailing : safeArea.leading)
+        .padding(.trailing, rotated ? safeArea.leading : safeArea.trailing)
+        .ignoresSafeArea()
     }
 
     // MARK: - Discussion (both partners visible at once)
@@ -300,7 +313,7 @@ struct RoomView: View {
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
             }
-            .background(vm.placedCardsThisTurn.isEmpty ? AnyShapeStyle(.secondary.opacity(0.3)) : AnyShapeStyle(vm.session.color(for: role).color), in: Capsule())
+            .background(vm.placedCardsThisTurn.isEmpty ? AnyShapeStyle(Color.gray.opacity(0.55)) : AnyShapeStyle(vm.session.color(for: role).color), in: Capsule())
             .foregroundStyle(.white)
             .buttonStyle(PressableButtonStyle())
             .disabled(vm.placedCardsThisTurn.isEmpty)

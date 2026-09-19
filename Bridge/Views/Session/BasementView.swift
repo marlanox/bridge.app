@@ -20,26 +20,42 @@ struct BasementView: View {
     }
 
     var body: some View {
-        // The photo rotates together with the header/cards/buttons as one unit — see
-        // RoomView's equivalent fix: a couple sitting across from each other must see a
-        // single consistent room, not a right-side-up photo under upside-down text.
-        ActivePartnerContainer(
-            activePartner: vm.activePartner,
-            partnerName: { vm.session.name(for: $0) },
-            partnerColor: { vm.session.color(for: $0) }
-        ) {
-            ZStack {
-                RoomBackgroundImage(imageName: "basement")
-                Color.black.opacity(0.3).ignoresSafeArea()
+        GeometryReader { geo in
+            // The photo rotates together with the header/cards/buttons as one unit — see
+            // RoomView's equivalent fix: a couple sitting across from each other must see a
+            // single consistent room, not a right-side-up photo under upside-down text.
+            ActivePartnerContainer(
+                activePartner: vm.activePartner,
+                partnerName: { vm.session.name(for: $0) },
+                partnerColor: { vm.session.color(for: $0) }
+            ) {
+                ZStack {
+                    RoomBackgroundImage(imageName: "basement")
+                    Color.black.opacity(0.3).ignoresSafeArea()
 
-                if let pending = vm.pendingBasementFearCardID {
-                    answeringContent(fearCardID: pending)
-                } else {
-                    askingContent
+                    Group {
+                        if let pending = vm.pendingBasementFearCardID {
+                            answeringContent(fearCardID: pending)
+                        } else {
+                            askingContent
+                        }
+                    }
+                    // Same fix as RoomView's turnContent: a 180° rotation swaps which
+                    // physical edge is "top", so the safe area has to be applied manually,
+                    // swapped, rather than left to the system's un-rotated default — and
+                    // the edge that ends up physically on top needs extra clearance for
+                    // the global nav bar, not just the notch (see roomChromeTopExtra).
+                    .padding(.top, isRotated ? geo.safeAreaInsets.bottom : geo.safeAreaInsets.top)
+                    .padding(.bottom, isRotated ? geo.safeAreaInsets.top + roomChromeTopExtra : geo.safeAreaInsets.bottom)
+                    .padding(.leading, isRotated ? geo.safeAreaInsets.trailing : geo.safeAreaInsets.leading)
+                    .padding(.trailing, isRotated ? geo.safeAreaInsets.leading : geo.safeAreaInsets.trailing)
+                    .ignoresSafeArea()
                 }
             }
         }
     }
+
+    private var isRotated: Bool { vm.activePartner.seatRotationDegrees != 0 }
 
     private var askingContent: some View {
         VStack(spacing: 0) {

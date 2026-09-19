@@ -178,15 +178,23 @@ final class SessionViewModel: ObservableObject {
         case .welcome:
             // Spec section 3: onboarding is "mandatory, first launch only." Returning
             // couples already have names on file, so repeat sessions skip straight past
-            // the explanatory pages to the dice roll — they still revisit the Couple's
-            // Agreement at the end of every session, after the Bridge finale.
-            setFlow(originalProfile.hasCompletedFirstSession ? .dice : .howItWorksWhatIsBridge)
+            // the explanatory pages, house map and names to the apology ritual itself —
+            // that part happens fresh every session, not just at onboarding. They still
+            // revisit the Couple's Agreement at the end of every session, after the
+            // Bridge finale.
+            setFlow(originalProfile.hasCompletedFirstSession ? .ritual : .howItWorksWhatIsBridge)
         case .howItWorksWhatIsBridge:
-            setFlow(.howItWorksApology)
-        case .howItWorksApology:
             setFlow(.disclaimer)
         case .disclaimer:
-            setFlow(.houseMap)
+            setFlow(.howItWorksApology)
+        case .howItWorksApology:
+            setFlow(.ritual)
+        case .ritual:
+            setFlow(.oath)
+        case .oath:
+            // A returning couple already has the house map and names on file — the oath
+            // is the last thing they repeat every session before going straight to dice.
+            setFlow(originalProfile.hasCompletedFirstSession ? .dice : .houseMap)
         case .houseMap:
             setFlow(.names)
         case .names:
@@ -196,12 +204,13 @@ final class SessionViewModel: ObservableObject {
         case .dice:
             setFlow(.intensityState)
         case .intensityState:
-            setFlow(needsCalmDown ? .calmDown : .oath)
+            if needsCalmDown {
+                setFlow(.calmDown)
+            } else {
+                setFlow(.room(.hall))
+                startRoom(.hall)
+            }
         case .calmDown:
-            setFlow(.oath)
-        case .oath:
-            setFlow(.ritual)
-        case .ritual:
             setFlow(.room(.hall))
             startRoom(.hall)
         case .room(let kind):

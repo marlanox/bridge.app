@@ -78,9 +78,9 @@ export function houseMapScreen(ctx, textExpanded) {
   const card = `<div style="padding:18px;background:rgba(255,255,255,0.55);backdrop-filter:blur(16px);border-radius:18px;margin:0 24px;">
       <div class="f-serif-title on-photo" style="font-size:24px;color:#111;">${escHtml(L("housemap.title"))}</div>
       <p class="f-body" style="color:rgba(0,0,0,0.85);margin-top:10px;">${escHtml(L("housemap.body"))}</p>
-      <button data-action="collapseHouseMapText" style="background:none;border:none;padding:0;margin-top:6px;color:var(--gold);font-weight:700;font-size:15px;">${escHtml(L("housemap.got_it"))} ▾</button>
+      <button class="pressable" data-action="collapseHouseMapText" style="width:100%;text-align:center;background:rgba(183,148,76,0.2);border:none;border-radius:12px;padding:10px;margin-top:10px;color:var(--gold);font-weight:700;font-size:15px;">✓ ${escHtml(L("room.read_it"))}</button>
     </div>`;
-  const pill = `<button class="pressable" data-action="expandHouseMapText" style="align-self:center;background:rgba(255,255,255,0.55);backdrop-filter:blur(14px);border:none;border-radius:20px;padding:10px 16px;font-weight:700;">▴ ${escHtml(L("housemap.title"))}</button>`;
+  const pill = `<button class="pressable" data-action="expandHouseMapText" style="align-self:center;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:blur(14px);border:none;border-radius:20px;padding:10px 16px;font-weight:700;"><span class="chevron">▾</span>${escHtml(L("room.expand"))}</button>`;
   const btnKey = ctx === "onboarding" ? "housemap.button_first" : "housemap.button_reopen";
   return photoScreen("house-map", `
       <div class="spacer"></div>
@@ -254,6 +254,7 @@ export function oathScreen() {
   return `<div class="screen" style="align-items:center;text-align:center;">
       <div class="spacer"></div>
       <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("oath.title"))}</h1>
+      <p class="secondary">${escHtml(L("oath.instruction"))}</p>
       <p class="f-body" style="font-style:italic;font-size:19px;">${escHtml(L("oath.text"))}</p>
       <div class="spacer"></div>
       ${primaryButton({ key: "oath.ready", action: "completeOathAndAdvance" })}
@@ -303,7 +304,7 @@ export function roomScreen(store, ui, kind) {
           <div class="spacer"></div>
           ${flagRow()}
           <div style="padding:0 16px 16px;text-align:right;">
-            <button class="pressable" data-action="markRoomDoneActive" ${store.placedCardsThisTurn.length === 0 ? "disabled" : ""} style="background:${store.placedCardsThisTurn.length === 0 ? "rgba(0,0,0,0.15)" : (active === "partnerA" ? "var(--purple)" : "var(--green)")};color:${store.placedCardsThisTurn.length === 0 ? "rgba(0,0,0,0.4)" : "#fff"};border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
+            <button class="pressable" data-action="markRoomDoneActive" ${store.placedCardsThisTurn.length === 0 ? "disabled" : ""} style="background:${store.placedCardsThisTurn.length === 0 ? "rgba(120,120,120,0.55)" : (active === "partnerA" ? "var(--purple)" : "var(--green)")};color:#fff;border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
           </div>
         </div>
       </div>

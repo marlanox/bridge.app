@@ -1,5 +1,13 @@
 import SwiftUI
 
+/// The global Back/Settings bar (`SessionFlowView.globalNavBar`) floats above every
+/// screen at the top, roughly this tall including its own top inset. Whichever edge of a
+/// room's rotating content ends up physically at the top needs at least this much extra
+/// clearance beyond the raw safe-area inset, or a corner control (the room's Done/flag
+/// row, moved there by a 180° rotation) can land underneath the nav bar and lose its taps
+/// to it. See RoomView.turnContent and BasementView's equivalent padding.
+let roomChromeTopExtra: CGFloat = 46
+
 /// Implements the physical turn-based interaction model: the two partners sit facing
 /// each other with the phone between them, so the room's interior and controls rotate
 /// 180° to face whoever is currently answering. The small "so-and-so is listening"

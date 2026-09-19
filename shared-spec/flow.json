@@ -1,17 +1,17 @@
 {
-  "_comment": "Canonical ordered step list for one walk through the house. Mirrors Bridge/ViewModels/AppFlowStep.swift + SessionViewModel.advance(). Returning couples (hasCompletedFirstSession) skip steps 0-10 (welcome..ritual, inclusive) and jump straight to dice.",
+  "_comment": "Canonical ordered step list for one walk through the house. Mirrors Bridge/ViewModels/AppFlowStep.swift + SessionViewModel.advance(). The apology ritual (explanation -> ritual -> oath) happens early, before the house map/names, and repeats every session (not just onboarding) -- see the two conditional entries below.",
   "steps": [
     "welcome",
     "howItWorksWhatIsBridge",
-    "howItWorksApology",
     "disclaimer",
+    "howItWorksApology",
+    "ritual",
+    "oath",
     "houseMap",
     "names",
     "dice",
     "intensityState",
     "calmDown",
-    "oath",
-    "ritual",
     "room:hall",
     "room:livingRoom",
     "room:study",
@@ -24,7 +24,8 @@
     "closing"
   ],
   "conditional": {
-    "calmDown": "only shown if needsCalmDown (highest intensity >= 7); otherwise oath is next after intensityState",
-    "returningCoupleSkipTo": "dice"
+    "calmDown": "only shown if needsCalmDown (highest intensity >= 7); otherwise room:hall is next after intensityState",
+    "returningCoupleSkipFromWelcomeTo": "ritual (skips the onboarding pages, disclaimer, and apology explanation -- the ritual + oath still happen fresh every session)",
+    "returningCoupleSkipFromOathTo": "dice (skips house map + names, which a returning couple already has on file)"
   }
 }

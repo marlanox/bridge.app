@@ -10,15 +10,15 @@
 // MARK: - App / Welcome
 
 "app.name" = "Bridge";
-"app.tagline" = "We are not enemies. We are two people trying to get back to each other.";
+"app.tagline" = "We aren't enemies to each other. We're just two people who want to find their way back to one another.";
 "welcome.begin" = "Begin";
 
 // MARK: - Onboarding — How Bridge Works
 
 "onboarding.what_is_bridge.title" = "What is Bridge";
-"onboarding.what_is_bridge.body" = "This is for the moment of conflict, not “someday.” Even when it's hard, even when you don't want to talk, even if you're furious with your partner right now, this can help you learn things about each other you never knew, even after years together.";
+"onboarding.what_is_bridge.body" = "This is a game for the moment of a fight — not for “someday.” Exactly when it's hard, exactly when you least want to talk, exactly when you're angry at your partner and don't want to look at them — this will help you learn things about each other you never knew, even after 20 years together. Find the courage, and let's completely renew the quality of your relationship. Let's go.";
 "onboarding.apology.title" = "Why the apology ritual matters";
-"onboarding.apology.body" = "“I'm sorry you were hurt” is not admission of guilt — it's acknowledgment of the other's pain. That small act works.";
+"onboarding.apology.body" = "Before we begin, we'll go through a few simple rituals. The first, the hardest, is the apology ritual. However hard it feels, however much your instincts resist it, believe us — nothing matters more than this ritual. Apologizing doesn't mean admitting you were wrong. It simply means acknowledging the other person's pain, even if it feels unfair to you. It's simply an act of mercy — showing that you're sorry they suffered. And this small act of mercy does a great deal to strengthen a relationship.";
 "onboarding.next" = "Next";
 "onboarding.got_it" = "Got it";
 
@@ -69,11 +69,10 @@
 
 // MARK: - House Map
 
-"housemap.title" = "This is your house tonight.";
-"housemap.body" = "The task is simple: walk through every room of the house, one at a time, in the order shown. Each room asks one honest question — and only that kind of question, nothing else. When you've been through every room, you'll arrive together at the bridge, where you meet in the middle and reach out a hand to each other. If it gets overwhelming, you can close the app at any point — your progress is saved, and you can come back later, even this evening, to finish building the bridge.";
+"housemap.title" = "Tonight, this house belongs to you.";
+"housemap.body" = "The task is simple: walk through every room of the house, in order. Each room asks one honest question. Once you've walked through every room, you'll arrive at the bridge — with just three small, pleasant steps left to meet in the middle.\n\nIf it gets hard along the way, you can close the app at any time — your progress is saved, and you can come back later to finish the walk toward each other. But we recommend not leaving mid-session: it will be hard, and that's normal, especially the first time. Later, once your brain builds the neural pathways for this and you understand each other better, it will become an easy, pleasant practice that keeps your relationship strong.";
 "housemap.button_first" = "I understand — let's begin";
 "housemap.button_reopen" = "Got it";
-"housemap.got_it" = "Got it — show me the house";
 
 // MARK: - Names Entry
 
@@ -89,7 +88,7 @@
 "couples_agreement.suggestions_header" = "Suggestions — tap to add";
 "couples_agreement.your_rules_header" = "Your agreement";
 "couples_agreement.tap_to_remove" = "Tap to remove";
-"couples_agreement.add_rule" = "Add a rule";
+"couples_agreement.add_rule" = "Add";
 "couples_agreement.skip_for_now" = "Skip for now";
 "couples_agreement.save" = "Save agreement";
 "couples_agreement.placeholder" = "e.g. We don't threaten to break up — or add a consequence: “...otherwise, $20 to the other's account”";
@@ -118,6 +117,7 @@
 // MARK: - Oath + Ritual
 
 "oath.title" = "The Oath";
+"oath.instruction" = "Read together, out loud — both of you, at once or one after another, whichever feels natural.";
 "oath.text" = "I promise to be honest. I promise to listen until the end. I won't use what I hear against you. Today we're not looking for who's guilty. Today we choose to understand each other.";
 "oath.ready" = "We're ready";
 "ritual.title" = "Hold hands";

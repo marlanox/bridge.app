@@ -2,13 +2,11 @@ import Foundation
 
 /// The full walk through the house (spec section 4), as concretely ordered on screen.
 ///
-/// Reconciliation note: section 4's flow string places "INTENSITY & STATE" *after* the
-/// ritual, but section 5 makes the calm-down step (before the oath) conditional on
-/// intensity being high. Those two requirements can't both be literally true — calm-down
-/// needs an intensity reading before the oath even happens. This build takes the intensity
-/// + state screen right after the dice roll (before calm-down/oath/ritual), which preserves
-/// section 5's dependency and still keeps the screen in the same neighborhood of the flow
-/// section 4 describes.
+/// The apology ritual (explanation → the ritual itself → the oath) now happens early,
+/// right after the wellness disclaimer and before the house map/names — it's something
+/// the couple does before the walk, not a reward partway through it. Calm-down still sits
+/// where intensity requires it: right after the intensity reading, immediately before the
+/// couple actually enters the first room.
 enum AppFlowStep: Equatable {
     case welcome
     case howItWorksWhatIsBridge
@@ -36,15 +34,15 @@ enum AppFlowStep: Equatable {
         switch self {
         case .welcome: return 0
         case .howItWorksWhatIsBridge: return 1
-        case .howItWorksApology: return 2
-        case .disclaimer: return 3
-        case .houseMap: return 4
-        case .names: return 5
-        case .dice: return 6
-        case .intensityState: return 7
-        case .calmDown: return 8
-        case .oath: return 9
-        case .ritual: return 10
+        case .disclaimer: return 2
+        case .howItWorksApology: return 3
+        case .ritual: return 4
+        case .oath: return 5
+        case .houseMap: return 6
+        case .names: return 7
+        case .dice: return 8
+        case .intensityState: return 9
+        case .calmDown: return 10
         case .room(let kind): return 11 + kind.rawValue
         case .basement: return 27
         case .bridgeFinale: return 28

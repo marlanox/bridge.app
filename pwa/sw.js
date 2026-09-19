@@ -1,8 +1,12 @@
-// Cache-first service worker — Bridge should open instantly from the Home Screen even
-// with a poor or no connection once it's been opened at least once. Bump CACHE_NAME
-// whenever a deployed file changes so clients pick up the new version instead of a
-// stale cached copy.
-const CACHE_NAME = "bridge-pwa-v1";
+// Network-first service worker — this build changes multiple times per hour while it's
+// being tested, so a device must always see the latest deploy on the next load whenever
+// it has a connection at all; the cache exists purely as an offline fallback, never as
+// the default source. (An earlier cache-first version of this file, plus a CACHE_NAME
+// that was never bumped across deploys, is why fixes kept not showing up on a real
+// device even after being pushed — every load kept re-serving the same stale cache
+// entry.) Bump CACHE_NAME on every deploy anyway, so an update is never silently missed
+// even for a client that's briefly offline.
+const CACHE_NAME = "bridge-pwa-v3";
 
 const CORE_FILES = [
   "./",
@@ -40,19 +44,16 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const network = fetch(event.request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      // Cache-first for anything we already have (instant, works offline); otherwise
-      // fall through to the network.
-      return cached || network;
-    })
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      })
+      // Only touch the cache when the network is actually unreachable (offline, or no
+      // connection at all) — never to save a round trip while a fresher copy exists.
+      .catch(() => caches.match(event.request))
   );
 });
