@@ -6,6 +6,8 @@ import SwiftUI
 struct BasementView: View {
     @ObservedObject var vm: SessionViewModel
 
+    @State private var instructionsExpanded = true
+
     private let fearsDeck = DeckData.fears
 
     var body: some View {
@@ -120,39 +122,64 @@ struct BasementView: View {
     /// should still read as a place, not just a form.
     private var header: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(L("room.basement.name"))
-                .font(.bridgeSerifTitle(24, weight: .bold))
+            HStack {
+                Text(L("room.basement.name"))
+                    .font(.bridgeSerifTitle(24, weight: .bold))
+                Spacer()
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded.toggle() }
+                } label: {
+                    Image(systemName: instructionsExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                .accessibilityIdentifier("uitest.room.header.toggle")
+            }
             Text(L("room.basement.question"))
                 .font(.bridgeSerifHeadline(16))
                 .foregroundStyle(.secondary)
-            Text(L("basement.why_it_helps"))
-                .font(.bridgeCaption.italic())
-                .foregroundStyle(Color.bridgeGold)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(L("room.basement.forbidden"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.white)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fixedSize(horizontal: false, vertical: true)
-                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+            if instructionsExpanded {
+                Text(L("basement.why_it_helps"))
+                    .font(.bridgeCaption.weight(.semibold).italic())
+                    .foregroundStyle(Color.bridgeGold)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 6)
+                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+
+                Text(L("room.basement.forbidden"))
+                    .font(.bridgeCaption)
+                    .foregroundStyle(.white)
+                    .lineSpacing(3)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            }
         }
         .padding(12)
         .background(.ultraThinMaterial)
     }
 
     /// Only relevant while picking a fear to ask — the answerer sees the fear itself and
-    /// `basement.answer_instruction` instead, in `answeringContent`.
+    /// `basement.answer_instruction` instead, in `answeringContent`. Folds under the same
+    /// header toggle since it's the second slab of text crowding out the room's interior.
+    @ViewBuilder
     private var askingInstructions: some View {
-        Text(L("basement.instruction"))
-            .font(.bridgeCaption)
-            .foregroundStyle(.primary.opacity(0.9))
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.ultraThinMaterial)
+        if instructionsExpanded {
+            Text(L("basement.instruction"))
+                .font(.bridgeCaption)
+                .foregroundStyle(.primary.opacity(0.9))
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.ultraThinMaterial)
+        }
     }
 
     private func fearText(for id: String) -> String {

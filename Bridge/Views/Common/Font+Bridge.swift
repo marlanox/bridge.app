@@ -21,17 +21,17 @@ extension Font {
     /// The main instructional or question text on a screen — one consistent size instead of
     /// each screen picking its own `.body`/`.subheadline`/`.title3`.
     static var bridgeBody: Font {
-        .system(size: 16, weight: .regular)
+        .system(size: 17, weight: .regular)
     }
 
     /// Secondary/supporting text — instructions, examples, room rules.
     static var bridgeCaption: Font {
-        .system(size: 13, weight: .medium)
+        .system(size: 15, weight: .medium)
     }
 
     /// The smallest text in the app — a badge, a counter, a timestamp.
     static var bridgeLabel: Font {
-        .system(size: 11, weight: .semibold)
+        .system(size: 12, weight: .semibold)
     }
 
     /// Straight (never italic), bold, large, readable — for every button in the app. A plain

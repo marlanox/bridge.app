@@ -172,8 +172,9 @@ final class SessionViewModel: ObservableObject {
         switch flow {
         case .welcome:
             // Spec section 3: onboarding is "mandatory, first launch only." Returning
-            // couples already have names and a couple's agreement on file, so repeat
-            // sessions skip straight past the explanatory pages to the dice roll.
+            // couples already have names on file, so repeat sessions skip straight past
+            // the explanatory pages to the dice roll — they still revisit the Couple's
+            // Agreement at the end of every session, after the Bridge finale.
             flow = originalProfile.hasCompletedFirstSession ? .dice : .howItWorksWhatIsBridge
         case .howItWorksWhatIsBridge:
             flow = .howItWorksApology
@@ -186,9 +187,9 @@ final class SessionViewModel: ObservableObject {
         case .names:
             flow = .comprehensionAgreement
         case .comprehensionAgreement:
-            flow = .couplesAgreementSetup
-        case .couplesAgreementSetup:
             flow = .dice
+        case .couplesAgreementSetup:
+            flow = .voiceSnapshot
         case .dice:
             flow = .intensityState
         case .intensityState:
@@ -214,7 +215,7 @@ final class SessionViewModel: ObservableObject {
             flow = .bridgeFinale
         case .bridgeFinale:
             TokenManager.awardBridgeFinale(session: &session)
-            flow = .voiceSnapshot
+            flow = .couplesAgreementSetup
         case .voiceSnapshot:
             flow = .closing
         case .closing:
@@ -445,6 +446,7 @@ final class SessionViewModel: ObservableObject {
         case "kitchen": jumpToRoom(.kitchen, withReveal: withReveal)
         case "basement": jumpToBasement()
         case "bridgeFinale": jumpToBridgeFinale()
+        case "couplesAgreementSetup": jumpToCouplesAgreementSetup()
         case "voiceSnapshot": jumpToVoiceSnapshot()
         case "closing": jumpToClosing()
         default: break
@@ -472,6 +474,11 @@ final class SessionViewModel: ObservableObject {
     private func jumpToBridgeFinale() {
         seedForUITestScreenshot()
         flow = .bridgeFinale
+    }
+
+    private func jumpToCouplesAgreementSetup() {
+        seedForUITestScreenshot()
+        flow = .couplesAgreementSetup
     }
 
     private func jumpToVoiceSnapshot() {

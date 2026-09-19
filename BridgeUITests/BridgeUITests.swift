@@ -100,10 +100,6 @@ final class BridgeUITests: XCTestCase {
         attach(app, "A10-comprehension-both-confirmed")
         app.buttons["uitest.agree.continue"].tap()
 
-        XCTAssertTrue(app.buttons["uitest.agreement.skip"].waitForExistence(timeout: 10))
-        attach(app, "A11-couples-agreement")
-        app.buttons["uitest.agreement.skip"].tap()
-
         XCTAssertTrue(app.buttons["uitest.dice.roll"].waitForExistence(timeout: 10))
         attach(app, "A12-dice-before-roll")
         app.buttons["uitest.dice.roll"].tap()
@@ -233,6 +229,19 @@ final class BridgeUITests: XCTestCase {
 
         XCTAssertTrue(app.staticTexts["The Bridge"].waitForExistence(timeout: 10))
         attach(app, "C2-bridge-finale")
+    }
+
+    // Couple's Agreement now happens after the Bridge finale, once the couple has actually
+    // done the conflict-repair work, rather than as a pre-session checklist.
+    func testC2b_CouplesAgreement() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uiTesting"]
+        app.launchEnvironment = ["UITEST_JUMP_FLOW": "couplesAgreementSetup"]
+        app.launch()
+        dismissLanguagePickerIfPresent(app)
+
+        XCTAssertTrue(app.buttons["uitest.agreement.skip"].waitForExistence(timeout: 10))
+        attach(app, "C2b-couples-agreement")
     }
 
     func testC3_VoiceSnapshot() throws {

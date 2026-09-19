@@ -73,6 +73,7 @@
 "housemap.body" = "The task is simple: walk through every room of the house, one at a time, in the order shown. Each room asks one honest question — and only that kind of question, nothing else. When you've been through every room, you'll arrive together at the bridge, where you meet in the middle and reach out a hand to each other. If it gets overwhelming, you can close the app at any point — your progress is saved, and you can come back later, even this evening, to finish building the bridge.";
 "housemap.button_first" = "I understand — let's begin";
 "housemap.button_reopen" = "Got it";
+"housemap.got_it" = "Got it — show me the house";
 
 // MARK: - Names Entry
 
@@ -91,7 +92,7 @@
 // MARK: - Couple's Agreement Setup
 
 "couples_agreement.title" = "Your Couple's Agreement";
-"couples_agreement.subtitle" = "A few things you both agree never to do — during this session or after it. Nothing below is required: tap any suggestion that fits to add it, or write your own. You can skip this and fill it in later.";
+"couples_agreement.subtitle" = "You've just done the hard part. Now put a few things in writing — what you both agree never to do again, going forward. Nothing below is required: tap any suggestion that fits to add it, or write your own. You can skip this and fill it in later.";
 "couples_agreement.suggestions_header" = "Suggestions — tap to add";
 "couples_agreement.your_rules_header" = "Your agreement";
 "couples_agreement.tap_to_remove" = "Tap to remove";

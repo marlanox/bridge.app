@@ -8,6 +8,8 @@ struct RoomView: View {
     @ObservedObject var vm: SessionViewModel
     let config: RoomConfig
 
+    @State private var instructionsExpanded = true
+
     private var isSequential: Bool { config.modes.contains(.speaks) }
     private var decks: [Deck] { config.deckIDs.map { DeckData.deck($0) } }
 
@@ -173,6 +175,14 @@ struct RoomView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded.toggle() }
+                } label: {
+                    Image(systemName: instructionsExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                .accessibilityIdentifier("uitest.room.header.toggle")
             }
             Text(L(config.nameKey))
                 .font(.bridgeSerifTitle(24, weight: .bold))
@@ -191,29 +201,37 @@ struct RoomView: View {
             .padding(.vertical, 5)
             .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-            Text(L(config.instructionKey))
-                .font(.bridgeCaption)
-                .foregroundStyle(.primary.opacity(0.9))
-                .fixedSize(horizontal: false, vertical: true)
+            if instructionsExpanded {
+                Text(L(config.instructionKey))
+                    .font(.bridgeCaption)
+                    .foregroundStyle(.primary.opacity(0.9))
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
 
-            Text(L(config.whyItHelpsKey))
-                .font(.bridgeCaption.italic())
-                .foregroundStyle(Color.bridgeGold)
-                .fixedSize(horizontal: false, vertical: true)
+                Text(L(config.whyItHelpsKey))
+                    .font(.bridgeCaption.weight(.semibold).italic())
+                    .foregroundStyle(Color.bridgeGold)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 6)
+                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-            if let forbiddenKey = config.forbiddenKey {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L("room.forbidden_prefix"))
-                        .font(.bridgeCaption.weight(.bold))
-                    Text(L(forbiddenKey))
-                        .font(.bridgeCaption)
-                        .fixedSize(horizontal: false, vertical: true)
+                if let forbiddenKey = config.forbiddenKey {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(L("room.forbidden_prefix"))
+                            .font(.bridgeCaption.weight(.bold))
+                        Text(L(forbiddenKey))
+                            .font(.bridgeCaption)
+                            .lineSpacing(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
-                .foregroundStyle(.white)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
         }
         .padding(12)

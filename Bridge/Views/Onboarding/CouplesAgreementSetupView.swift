@@ -1,7 +1,9 @@
 import SwiftUI
 
-/// Spec section 3 item 7 / section 9: forbidden actions the couple agrees on up front.
-/// Can be skipped and filled in later — nothing here blocks starting a session.
+/// Spec section 9: forbidden actions the couple commits to. Shown at the end of the
+/// session, after the Bridge finale — once the couple has actually felt why the rules
+/// matter, not as an abstract checklist before they've been through any of the rooms.
+/// Can be skipped and filled in later — nothing here blocks finishing a session.
 struct CouplesAgreementSetupView: View {
     @ObservedObject var vm: SessionViewModel
     let onContinue: () -> Void

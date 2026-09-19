@@ -25,8 +25,7 @@ struct RitualView: View {
                     } label: {
                         HStack {
                             Text(L(key))
-                                .font(.title3.weight(.medium))
-                                .italic()
+                                .font(.bridgeSerifHeadline(18))
                                 .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true)
                             Spacer()

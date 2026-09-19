@@ -42,17 +42,20 @@ enum AppFlowStep: Equatable {
         case .houseMap: return 4
         case .names: return 5
         case .comprehensionAgreement: return 6
-        case .couplesAgreementSetup: return 7
-        case .dice: return 8
-        case .intensityState: return 9
-        case .calmDown: return 10
-        case .oath: return 11
-        case .ritual: return 12
-        case .room(let kind): return 13 + kind.rawValue
-        case .basement: return 30
-        case .bridgeFinale: return 31
-        case .voiceSnapshot: return 32
-        case .closing: return 33
+        case .dice: return 7
+        case .intensityState: return 8
+        case .calmDown: return 9
+        case .oath: return 10
+        case .ritual: return 11
+        case .room(let kind): return 12 + kind.rawValue
+        case .basement: return 28
+        case .bridgeFinale: return 29
+        // Comes after the actual conflict-repair work, not before it — the couple agrees
+        // on ground rules (and any consequence) once they've felt why the rules matter,
+        // not as an abstract checklist at the very start of the session.
+        case .couplesAgreementSetup: return 30
+        case .voiceSnapshot: return 31
+        case .closing: return 32
         }
     }
 }
