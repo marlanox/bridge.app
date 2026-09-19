@@ -130,7 +130,7 @@ struct RoomView: View {
         } label: {
             Text(L("room.done"))
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(done ? .secondary : .white)
+                .foregroundStyle(done ? AnyShapeStyle(.secondary) : AnyShapeStyle(Color.white))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
         }
