@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 /// Relationship profile switcher (spec section 2 / section 11 item 12). Each profile
 /// keeps its own separate currency and session history.
@@ -12,26 +13,15 @@ struct ProfileSwitcherView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(appState.profiles, id: \.id) { profile in
-                        Button {
-                            appState.selectProfile(profile.id)
-                            dismiss()
-                        } label: {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(profileTitle(profile))
-                                        .font(.subheadline.weight(.medium))
-                                        .foregroundStyle(.primary)
-                                    Text(String(format: L("profiles.summary"), profile.currency, profile.sessionHistory.count))
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Spacer()
-                                if profile.id == appState.activeProfileID {
-                                    Image(systemName: "checkmark").foregroundStyle(.accentColor)
-                                }
+                    ForEach(appState.profiles) { (profile: RelationshipProfile) in
+                        ProfileRow(
+                            profile: profile,
+                            isActive: profile.id == appState.activeProfileID,
+                            onSelect: {
+                                appState.selectProfile(profile.id)
+                                dismiss()
                             }
-                        }
+                        )
                     }
                 }
                 Section {
@@ -60,11 +50,42 @@ struct ProfileSwitcherView: View {
             }
         }
     }
+}
 
-    private func profileTitle(_ profile: RelationshipProfile) -> String {
+/// One row in the profile switcher — pulled out of `ForEach`'s trailing closure so each
+/// row's body is checked as its own independent unit.
+private struct ProfileRow: View {
+    let profile: RelationshipProfile
+    let isActive: Bool
+    let onSelect: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.primary)
+                    Text(summary)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                if isActive {
+                    Image(systemName: "checkmark").foregroundStyle(Color.accentColor)
+                }
+            }
+        }
+    }
+
+    private var title: String {
         if !profile.partnerAName.isEmpty && !profile.partnerBName.isEmpty {
             return "\(profile.partnerAName) & \(profile.partnerBName)"
         }
         return profile.displayName.isEmpty ? L("profiles.new_relationship_fallback") : profile.displayName
+    }
+
+    private var summary: String {
+        String(format: L("profiles.summary"), profile.currency, profile.sessionHistory.count)
     }
 }
