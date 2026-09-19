@@ -4,8 +4,10 @@ struct RitualView: View {
     @ObservedObject var vm: SessionViewModel
     let onContinue: () -> Void
 
-    @State private var chosenLine = 0
+    @State private var chosenLine: Int? = nil
     @State private var isHolding = false
+
+    private var lineKeys: [String] { ["ritual.line_1", "ritual.line_2"] }
 
     var body: some View {
         VStack(spacing: 24) {
@@ -16,17 +18,38 @@ struct RitualView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
-            Picker("", selection: $chosenLine) {
-                Text(L("ritual.line_1")).tag(0)
-                Text(L("ritual.line_2")).tag(1)
+            VStack(spacing: 12) {
+                ForEach(Array(lineKeys.enumerated()), id: \.offset) { index, key in
+                    Button {
+                        chosenLine = index
+                    } label: {
+                        HStack {
+                            Text(L(key))
+                                .font(.title3.weight(.medium))
+                                .italic()
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                            if chosenLine == index {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundStyle(Color.bridgeGold)
+                            }
+                        }
+                        .padding(16)
+                        .frame(maxWidth: .infinity)
+                        .background(chosenLine == index ? Color.bridgeGold.opacity(0.15) : Color.primary.opacity(0.05))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .strokeBorder(chosenLine == index ? Color.bridgeGold : .clear, lineWidth: 1.5)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.primary)
+                    .accessibilityIdentifier("uitest.ritual.line.\(index)")
+                }
             }
-            .pickerStyle(.segmented)
             .padding(.horizontal, 20)
-
-            Text(L(chosenLine == 0 ? "ritual.line_1" : "ritual.line_2"))
-                .font(.title2.weight(.medium))
-                .italic()
-                .padding(.top, 8)
 
             Spacer()
 
@@ -45,6 +68,8 @@ struct RitualView: View {
             .background(isHolding ? Color.bridgeGold : Color.bridgeInk)
             .foregroundStyle(.white)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .opacity(chosenLine == nil ? 0.4 : 1)
+            .disabled(chosenLine == nil)
             .accessibilityIdentifier("uitest.ritual.continue")
         }
         .padding(28)

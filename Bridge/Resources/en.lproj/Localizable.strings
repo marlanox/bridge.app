@@ -19,12 +19,6 @@
 "onboarding.what_is_bridge.body" = "This is for the moment of conflict, not “someday.” Even when it's hard, even when you don't want to talk, even if you're furious with your partner right now, this can help you learn things about each other you never knew, even after years together.";
 "onboarding.apology.title" = "Why the apology ritual matters";
 "onboarding.apology.body" = "“I'm sorry you were hurt” is not admission of guilt — it's acknowledgment of the other's pain. That small act works.";
-"onboarding.modes.title" = "How the modes work";
-"onboarding.modes.speaks" = "One partner speaks";
-"onboarding.modes.listens_only" = "The other only listens";
-"onboarding.modes.discussion" = "Discussion is allowed";
-"onboarding.modes.silence" = "Silence";
-"onboarding.modes.body" = "Not interrupting matters — it's how the person speaking knows they'll be heard all the way through.";
 "onboarding.next" = "Next";
 "onboarding.got_it" = "Got it";
 
@@ -100,6 +94,7 @@
 "couples_agreement.subtitle" = "A few things you both agree never to do — during this session or after it. Nothing below is required: tap any suggestion that fits to add it, or write your own. You can skip this and fill it in later.";
 "couples_agreement.suggestions_header" = "Suggestions — tap to add";
 "couples_agreement.your_rules_header" = "Your agreement";
+"couples_agreement.tap_to_remove" = "Tap to remove";
 "couples_agreement.add_rule" = "Add a rule";
 "couples_agreement.skip_for_now" = "Skip for now";
 "couples_agreement.save" = "Save agreement";
@@ -142,6 +137,7 @@
 "intensity.title" = "Right now";
 "intensity.slider_label" = "How intense does this feel, 0 to 10?";
 "intensity.state_label" = "Which feels closest? Pick as many as apply.";
+"intensity.state_placeholder" = "Tap to choose one or more feelings";
 "intensity.custom_placeholder" = "Or write it your own way";
 "intensity.overwhelmed_flag" = "Overwhelmed";
 "intensity.continue" = "Continue";

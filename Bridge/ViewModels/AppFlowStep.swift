@@ -13,7 +13,6 @@ enum AppFlowStep: Equatable {
     case welcome
     case howItWorksWhatIsBridge
     case howItWorksApology
-    case howItWorksModes
     /// Wellness disclaimer (App Store checklist B.1) — shown once at first-launch
     /// onboarding, and separately reachable anytime from Settings.
     case disclaimer
@@ -39,18 +38,17 @@ enum AppFlowStep: Equatable {
         case .welcome: return 0
         case .howItWorksWhatIsBridge: return 1
         case .howItWorksApology: return 2
-        case .howItWorksModes: return 3
-        case .disclaimer: return 4
-        case .houseMap: return 5
-        case .names: return 6
-        case .comprehensionAgreement: return 7
-        case .couplesAgreementSetup: return 8
-        case .dice: return 9
-        case .intensityState: return 10
-        case .calmDown: return 11
-        case .oath: return 12
-        case .ritual: return 13
-        case .room(let kind): return 14 + kind.rawValue
+        case .disclaimer: return 3
+        case .houseMap: return 4
+        case .names: return 5
+        case .comprehensionAgreement: return 6
+        case .couplesAgreementSetup: return 7
+        case .dice: return 8
+        case .intensityState: return 9
+        case .calmDown: return 10
+        case .oath: return 11
+        case .ritual: return 12
+        case .room(let kind): return 13 + kind.rawValue
         case .basement: return 30
         case .bridgeFinale: return 31
         case .voiceSnapshot: return 32
@@ -63,7 +61,7 @@ enum AppFlowStep: Equatable {
 /// resumed after the app is closed or backgrounded — see `SessionSnapshot`.
 extension AppFlowStep: Codable {
     private enum Tag: String, Codable {
-        case welcome, howItWorksWhatIsBridge, howItWorksApology, howItWorksModes, disclaimer
+        case welcome, howItWorksWhatIsBridge, howItWorksApology, disclaimer
         case houseMap, names, comprehensionAgreement, couplesAgreementSetup, dice
         case intensityState, calmDown, oath, ritual, room, basement, bridgeFinale
         case voiceSnapshot, closing
@@ -80,7 +78,6 @@ extension AppFlowStep: Codable {
         case .welcome: self = .welcome
         case .howItWorksWhatIsBridge: self = .howItWorksWhatIsBridge
         case .howItWorksApology: self = .howItWorksApology
-        case .howItWorksModes: self = .howItWorksModes
         case .disclaimer: self = .disclaimer
         case .houseMap: self = .houseMap
         case .names: self = .names
@@ -105,7 +102,6 @@ extension AppFlowStep: Codable {
         case .welcome: try container.encode(Tag.welcome, forKey: .tag)
         case .howItWorksWhatIsBridge: try container.encode(Tag.howItWorksWhatIsBridge, forKey: .tag)
         case .howItWorksApology: try container.encode(Tag.howItWorksApology, forKey: .tag)
-        case .howItWorksModes: try container.encode(Tag.howItWorksModes, forKey: .tag)
         case .disclaimer: try container.encode(Tag.disclaimer, forKey: .tag)
         case .houseMap: try container.encode(Tag.houseMap, forKey: .tag)
         case .names: try container.encode(Tag.names, forKey: .tag)

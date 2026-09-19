@@ -7,8 +7,8 @@ enum HouseMapContext: Equatable {
 
 /// The house map overview: shown once as the last onboarding step (after "How Bridge
 /// works," before Names entry) and reachable anytime from Settings as "View the path."
-/// Falls back to a plain numbered list of the seven stops if `house-map` isn't in the
-/// asset catalog, rather than blocking the screen.
+/// Always shows the numbered 1-7 path to the bridge — the background photo is
+/// atmosphere, not the map itself, so the list never depends on which photo is set.
 struct HouseMapView: View {
     let context: HouseMapContext
     var onContinue: (() -> Void)? = nil
@@ -58,9 +58,7 @@ struct HouseMapView: View {
                 .font(.body)
                 .foregroundStyle(.white.opacity(0.92))
 
-            if !RoomBackgroundImage.exists("house-map") {
-                numberedList
-            }
+            numberedList
         }
         .padding(22)
         .background(.ultraThinMaterial)
@@ -69,11 +67,18 @@ struct HouseMapView: View {
     }
 
     private var numberedList: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 10) {
             ForEach(Array(stopKeys.enumerated()), id: \.offset) { index, key in
-                Text("\(index + 1). \(L(key))")
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.white)
+                HStack(spacing: 10) {
+                    Text("\(index + 1)")
+                        .font(.bridgeBody.weight(.bold))
+                        .foregroundStyle(Color.bridgeInk)
+                        .frame(width: 24, height: 24)
+                        .background(Color.bridgeGold, in: Circle())
+                    Text(L(key))
+                        .font(.bridgeBody.weight(.medium))
+                        .foregroundStyle(.white)
+                }
             }
         }
         .padding(.top, 8)

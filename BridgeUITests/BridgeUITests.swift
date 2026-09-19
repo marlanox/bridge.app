@@ -35,6 +35,13 @@ final class BridgeUITests: XCTestCase {
         XCUIApplication().buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'uitest.card.'")).firstMatch
     }
 
+    /// Cards now live behind a dropdown sheet (one button per deck) rather than sitting
+    /// directly on the room screen — see `CardGridView`. Tap this to open it before
+    /// `anyCard` can be found.
+    private var anyDeckButton: XCUIElement {
+        XCUIApplication().buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'uitest.deck.'")).firstMatch
+    }
+
     /// `waitForExistence` alone isn't enough right after a sheet dismiss (e.g. `swipeDown()`)
     /// — the element can exist in the hierarchy a beat before its dismiss animation finishes
     /// and it actually becomes tappable, which reads as "Not hittable" from `tap()`.
@@ -69,10 +76,6 @@ final class BridgeUITests: XCTestCase {
         XCTAssertTrue(app.buttons["uitest.onboarding.next"].waitForExistence(timeout: 10))
         attach(app, "A04-onboarding-apology")
         app.buttons["uitest.onboarding.next"].tap()
-
-        XCTAssertTrue(app.buttons["uitest.onboarding.modes_continue"].waitForExistence(timeout: 10))
-        attach(app, "A05-onboarding-modes")
-        app.buttons["uitest.onboarding.modes_continue"].tap()
 
         XCTAssertTrue(app.buttons["uitest.disclaimer.continue"].waitForExistence(timeout: 10))
         attach(app, "A06-disclaimer")
@@ -110,8 +113,17 @@ final class BridgeUITests: XCTestCase {
 
         XCTAssertTrue(app.sliders["uitest.intensity.slider.partnerA"].waitForExistence(timeout: 10))
         app.sliders["uitest.intensity.slider.partnerA"].adjust(toNormalizedSliderPosition: 1.0)
+
+        app.buttons["uitest.state.picker.partnerA"].tap()
+        XCTAssertTrue(app.buttons["uitest.state.partnerA.hurt"].waitForExistence(timeout: 10))
         app.buttons["uitest.state.partnerA.hurt"].tap()
+        app.buttons["uitest.state.picker.done"].tap()
+
+        app.buttons["uitest.state.picker.partnerB"].tap()
+        XCTAssertTrue(app.buttons["uitest.state.partnerB.confused"].waitForExistence(timeout: 10))
         app.buttons["uitest.state.partnerB.confused"].tap()
+        app.buttons["uitest.state.picker.done"].tap()
+
         attach(app, "A14-intensity-and-state")
         app.buttons["uitest.intensity.continue"].tap()
 
@@ -127,13 +139,16 @@ final class BridgeUITests: XCTestCase {
         attach(app, "A17-oath")
         app.buttons["uitest.oath.ready"].tap()
 
-        XCTAssertTrue(app.buttons["uitest.ritual.continue"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["uitest.ritual.line.0"].waitForExistence(timeout: 10))
+        app.buttons["uitest.ritual.line.0"].tap()
         attach(app, "A18-ritual")
         app.buttons["uitest.ritual.continue"].tap()
 
         // Hall room — first partner's turn.
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "A19-hall-room-partner-one-turn")
+        anyDeckButton.tap()
+        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
         anyCard.tap()
         app.buttons["uitest.room.done"].tap()
 
@@ -144,8 +159,10 @@ final class BridgeUITests: XCTestCase {
         app.buttons["uitest.reveal.readit"].tap()
 
         // Only now does the room actually flip to face the second partner.
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "A21-hall-room-after-rotation-partner-two-turn")
+        anyDeckButton.tap()
+        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
         anyCard.tap()
         app.buttons["uitest.room.done"].tap()
 
@@ -155,7 +172,7 @@ final class BridgeUITests: XCTestCase {
         app.buttons["uitest.reveal.readit"].tap()
 
         // Both partners have now answered — the walk advances to Living Room.
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "A23-advanced-to-living-room")
     }
 
@@ -174,7 +191,7 @@ final class BridgeUITests: XCTestCase {
         attach(app, "\(prefix)-reveal-before-rotation")
         app.buttons["uitest.reveal.readit"].tap()
 
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "\(prefix)-after-rotation")
     }
 
@@ -190,7 +207,7 @@ final class BridgeUITests: XCTestCase {
         app.launch()
         dismissLanguagePickerIfPresent(app)
 
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "B4-kitchen-discussion-mode")
     }
 
@@ -203,7 +220,7 @@ final class BridgeUITests: XCTestCase {
         app.launch()
         dismissLanguagePickerIfPresent(app)
 
-        XCTAssertTrue(anyCard.waitForExistence(timeout: 10))
+        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
         attach(app, "C1-basement-asking")
     }
 

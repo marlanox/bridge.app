@@ -1,96 +1,112 @@
 import SwiftUI
 
-/// A partner's full deck for the room, shown all at once as a categorized grid —
-/// never a swipeable one-at-a-time stack (spec section 2). Every deck ends with a
-/// "Write your own" tile that opens a free-text field (spec section 8).
+/// A partner's full deck for the room, shown as a real dropdown menu — one button per
+/// deck that opens a scrollable list sheet — rather than a wall of buttons on the
+/// photo. Every list groups cards under their category and ends with "Write your own"
+/// (spec section 8).
 struct CardGridView: View {
     let decks: [Deck]
-    let color: PartnerColor
     var onSelect: (Deck, Card) -> Void
     var onCustom: (Deck, String) -> Void
 
-    @State private var writingForDeckID: String?
+    @State private var openDeckID: String?
     @State private var customText: String = ""
 
-    private let columns = [GridItem(.adaptive(minimum: 140), spacing: 10)]
-
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 22) {
-                ForEach(decks) { deck in
-                    VStack(alignment: .leading, spacing: 14) {
-                        if decks.count > 1 {
-                            Text(L(deck.nameKey))
-                                .font(.bridgeSerifHeadline(17))
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
-                                .background(.ultraThinMaterial, in: Capsule())
-                                .background(Color.black.opacity(0.25), in: Capsule())
-                        }
-                        ForEach(Array(deck.sections.enumerated()), id: \.offset) { _, section in
-                            VStack(alignment: .leading, spacing: 8) {
-                                if let category = section.category {
-                                    Text(L("category.\(category)"))
-                                        .font(.bridgeLabel)
-                                        .foregroundStyle(.white)
-                                        .textCase(.uppercase)
-                                        .padding(.horizontal, 9)
-                                        .padding(.vertical, 4)
-                                        .background(.ultraThinMaterial, in: Capsule())
-                                        .background(Color.black.opacity(0.25), in: Capsule())
-                                }
-                                LazyVGrid(columns: columns, spacing: 10) {
-                                    ForEach(section.cards) { card in
-                                        CardView(card: card, color: color) {
-                                            onSelect(deck, card)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        LazyVGrid(columns: columns, spacing: 10) {
-                            CardView(card: .writeYourOwn(), color: color) {
-                                customText = ""
-                                writingForDeckID = deck.id
-                            }
-                        }
-                    }
-                }
+        VStack(spacing: 10) {
+            ForEach(decks) { deck in
+                dropdownButton(for: deck)
             }
-            .padding(16)
         }
-        .sheet(isPresented: writeYourOwnBinding) {
-            writeYourOwnSheet
+        .padding(16)
+        .sheet(item: openDeckBinding) { deck in
+            cardListSheet(deck)
         }
     }
 
-    private var writeYourOwnBinding: Binding<Bool> {
-        Binding(get: { writingForDeckID != nil }, set: { if !$0 { writingForDeckID = nil } })
+    private var openDeckBinding: Binding<Deck?> {
+        Binding(
+            get: { decks.first(where: { $0.id == openDeckID }) },
+            set: { openDeckID = $0?.id }
+        )
     }
 
     @ViewBuilder
-    private var writeYourOwnSheet: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 16) {
-                Text(L("room.write_your_own_placeholder"))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                TextField(L("room.write_your_own_placeholder"), text: $customText, axis: .vertical)
-                    .lineLimit(3...6)
-                    .textFieldStyle(.roundedBorder)
+    private func dropdownButton(for deck: Deck) -> some View {
+        Button {
+            customText = ""
+            openDeckID = deck.id
+        } label: {
+            HStack {
+                Text(L(deck.nameKey))
+                    .font(.bridgeBody.weight(.semibold))
                 Spacer()
-                PrimaryButton(titleKey: "room.done", isEnabled: !customText.trimmingCharacters(in: .whitespaces).isEmpty) {
-                    if let deck = decks.first(where: { $0.id == writingForDeckID }) {
-                        onCustom(deck, customText.trimmingCharacters(in: .whitespaces))
+                Image(systemName: "chevron.down")
+                    .font(.caption.weight(.bold))
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
+            .background(Color.black.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(Color.bridgeGold.opacity(0.6), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("uitest.deck.\(deck.id)")
+    }
+
+    @ViewBuilder
+    private func cardListSheet(_ deck: Deck) -> some View {
+        NavigationStack {
+            List {
+                ForEach(Array(deck.sections.enumerated()), id: \.offset) { _, section in
+                    Section {
+                        ForEach(section.cards) { card in
+                            Button {
+                                onSelect(deck, card)
+                                openDeckID = nil
+                            } label: {
+                                Text(L(card.textKey))
+                                    .font(.bridgeBody)
+                                    .foregroundStyle(.primary)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .accessibilityIdentifier("uitest.card.\(card.id)")
+                        }
+                    } header: {
+                        if let category = section.category {
+                            Text(L("category.\(category)"))
+                        }
                     }
-                    writingForDeckID = nil
+                }
+                Section {
+                    TextField(L("room.write_your_own_placeholder"), text: $customText, axis: .vertical)
+                        .lineLimit(2...5)
+                    Button(L("room.done")) {
+                        let trimmed = customText.trimmingCharacters(in: .whitespaces)
+                        guard !trimmed.isEmpty else { return }
+                        onCustom(deck, trimmed)
+                        customText = ""
+                        openDeckID = nil
+                    }
+                    .disabled(customText.trimmingCharacters(in: .whitespaces).isEmpty)
+                } header: {
+                    Text(L("card.write_your_own"))
                 }
             }
-            .padding()
-            .navigationTitle(Text(L("card.write_your_own")))
+            .navigationTitle(Text(L(deck.nameKey)))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(L("room.done")) { openDeckID = nil }
+                }
+            }
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
     }
 }

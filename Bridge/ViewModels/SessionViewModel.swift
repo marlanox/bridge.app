@@ -178,8 +178,6 @@ final class SessionViewModel: ObservableObject {
         case .howItWorksWhatIsBridge:
             flow = .howItWorksApology
         case .howItWorksApology:
-            flow = .howItWorksModes
-        case .howItWorksModes:
             flow = .disclaimer
         case .disclaimer:
             flow = .houseMap

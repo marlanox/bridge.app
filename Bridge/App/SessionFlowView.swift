@@ -34,7 +34,7 @@ struct SessionFlowView: View {
                 titleKey: "onboarding.what_is_bridge.title",
                 bodyKey: "onboarding.what_is_bridge.body",
                 buttonKey: "onboarding.next",
-                pageIndex: 0, pageCount: 3
+                pageIndex: 0, pageCount: 2
             ) { vm.advance() }
 
         case .howItWorksApology:
@@ -42,11 +42,8 @@ struct SessionFlowView: View {
                 titleKey: "onboarding.apology.title",
                 bodyKey: "onboarding.apology.body",
                 buttonKey: "onboarding.next",
-                pageIndex: 1, pageCount: 3
+                pageIndex: 1, pageCount: 2
             ) { vm.advance() }
-
-        case .howItWorksModes:
-            OnboardingModesPage { vm.advance() }
 
         case .disclaimer:
             DisclaimerView { vm.advance() }

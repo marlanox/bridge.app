@@ -25,22 +25,29 @@ struct CouplesAgreementSetupView: View {
                             .font(.bridgeCaption.weight(.bold))
                             .foregroundStyle(.secondary)
                         ForEach(Array(vm.couplesAgreement.enumerated()), id: \.offset) { index, rule in
-                            HStack {
-                                Text(rule).font(.subheadline)
-                                Spacer()
-                                Button {
-                                    vm.removeAgreementRule(at: IndexSet(integer: index))
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                            Button {
+                                vm.removeAgreementRule(at: IndexSet(integer: index))
+                            } label: {
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundStyle(Color.bridgeGold)
+                                    Text(rule).font(.bridgeBody).foregroundStyle(.primary)
+                                    Spacer()
+                                    Text(L("couples_agreement.tap_to_remove"))
+                                        .font(.bridgeLabel)
+                                        .foregroundStyle(.secondary)
                                 }
                             }
+                            .buttonStyle(.plain)
                             .padding(12)
-                            .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
+                            .background(Color.bridgeGold.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                         }
                     }
 
                     // Every suggestion not already added stays available — picking one never
                     // hides the rest, so a couple can add as many (or as few) as they like.
+                    // Nothing here is active until tapped: an empty circle means "not part
+                    // of your agreement yet," matching the checkmark once it's added above.
                     let remainingExamples = exampleKeys.filter { !vm.couplesAgreement.contains(L($0)) }
                     if !remainingExamples.isEmpty {
                         Text(L("couples_agreement.suggestions_header"))
@@ -52,13 +59,15 @@ struct CouplesAgreementSetupView: View {
                                 vm.addAgreementRule(L(key))
                             } label: {
                                 HStack {
-                                    Image(systemName: "plus.circle")
-                                    Text(L(key)).font(.bridgeCaption)
+                                    Image(systemName: "circle")
+                                    Text(L(key)).font(.bridgeBody)
                                     Spacer()
                                 }
                             }
                             .buttonStyle(.plain)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
+                            .padding(12)
+                            .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                         }
                     }
                 }

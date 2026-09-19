@@ -20,6 +20,7 @@ struct IntensityStateView: View {
     @State private var selectedB: Set<EmotionalState> = []
     @State private var customA: String = ""
     @State private var customB: String = ""
+    @State private var openPickerRole: PartnerRole?
 
     private var isReadyToContinue: Bool {
         filled(selectedA, customA) && filled(selectedB, customB)
@@ -105,24 +106,34 @@ struct IntensityStateView: View {
             Text(L("intensity.state_label"))
                 .font(.bridgeCaption)
                 .foregroundStyle(.secondary)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: 8)], spacing: 8) {
-                ForEach(EmotionalState.allCases) { option in
-                    let isOn = selected.wrappedValue.contains(option)
-                    Button {
-                        if isOn { selected.wrappedValue.remove(option) } else { selected.wrappedValue.insert(option) }
-                    } label: {
-                        Text(L(option.textKey))
-                            .font(.bridgeCaption)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .frame(maxWidth: .infinity)
-                            .background(isOn ? color.color.opacity(0.3) : Color.primary.opacity(0.05))
-                            .clipShape(Capsule())
-                            .overlay(Capsule().strokeBorder(isOn ? color.color : .clear, lineWidth: 1.2))
+
+            Button {
+                openPickerRole = role
+            } label: {
+                HStack {
+                    if selected.wrappedValue.isEmpty {
+                        Text(L("intensity.state_placeholder"))
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text(selected.wrappedValue.map { L($0.textKey) }.sorted().joined(separator: ", "))
+                            .foregroundStyle(.primary)
+                            .lineLimit(2)
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("uitest.state.\(role.rawValue).\(option.rawValue)")
+                    Spacer()
+                    Image(systemName: "chevron.down").font(.caption.weight(.bold))
                 }
+                .font(.bridgeBody)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 12)
+                .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("uitest.state.picker.\(role.rawValue)")
+            .sheet(isPresented: Binding(
+                get: { openPickerRole == role },
+                set: { if !$0 { openPickerRole = nil } }
+            )) {
+                emotionPickerSheet(role: role, color: color, selected: selected)
             }
 
             TextField(L("intensity.custom_placeholder"), text: customText)
@@ -131,5 +142,40 @@ struct IntensityStateView: View {
         }
         .padding(16)
         .background(color.color.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    /// A scrollable, multi-select list — a couple can pick as many feelings as apply,
+    /// there is no cap — rather than a wall of toggle buttons on the page itself.
+    @ViewBuilder
+    private func emotionPickerSheet(role: PartnerRole, color: PartnerColor, selected: Binding<Set<EmotionalState>>) -> some View {
+        NavigationStack {
+            List(EmotionalState.allCases) { option in
+                Button {
+                    if selected.wrappedValue.contains(option) {
+                        selected.wrappedValue.remove(option)
+                    } else {
+                        selected.wrappedValue.insert(option)
+                    }
+                } label: {
+                    HStack {
+                        Text(L(option.textKey)).foregroundStyle(.primary)
+                        Spacer()
+                        if selected.wrappedValue.contains(option) {
+                            Image(systemName: "checkmark").foregroundStyle(color.color)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("uitest.state.\(role.rawValue).\(option.rawValue)")
+            }
+            .navigationTitle(Text(L("intensity.state_label")))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(L("room.done")) { openPickerRole = nil }
+                        .accessibilityIdentifier("uitest.state.picker.done")
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }

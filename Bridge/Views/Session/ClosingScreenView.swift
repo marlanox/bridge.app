@@ -16,8 +16,11 @@ struct ClosingScreenView: View {
 
     var body: some View {
         ZStack {
-            RoomBackgroundImage(imageName: "ending")
-            Color.black.opacity(0.25).ignoresSafeArea()
+            // Reuses the Bridge finale's night photo rather than a generic living-room
+            // shot — arriving here means the couple already crossed the bridge, so the
+            // same image reads as "you made it," not as an unrelated stock interior.
+            RoomBackgroundImage(imageName: "bridge")
+            Color.black.opacity(0.4).ignoresSafeArea()
 
             VStack(spacing: 24) {
                 Spacer()
@@ -36,7 +39,10 @@ struct ClosingScreenView: View {
     }
 
     private var markCard: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
+            Image(systemName: "rosette")
+                .font(.system(size: 34))
+                .foregroundStyle(Color.bridgeGold)
             Text(L("closing.title"))
                 .font(.bridgeSerifTitle(30))
             Text(dateString)
@@ -52,6 +58,10 @@ struct ClosingScreenView: View {
         }
         .padding(32)
         .background(Color.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(Color.bridgeGold, lineWidth: 1.5)
+        )
         .shadow(color: .black.opacity(0.08), radius: 12, y: 6)
     }
 

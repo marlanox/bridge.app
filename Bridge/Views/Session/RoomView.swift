@@ -63,11 +63,9 @@ struct RoomView: View {
 
             CardGridView(
                 decks: decks,
-                color: vm.session.color(for: role),
                 onSelect: { deck, card in vm.playCard(card, deckID: deck.id) },
                 onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) }
             )
-            .frame(maxHeight: 340)
 
             doneRow(role: role)
         }
@@ -92,11 +90,9 @@ struct RoomView: View {
 
             CardGridView(
                 decks: decks,
-                color: vm.session.color(for: vm.activePartner),
                 onSelect: { deck, card in vm.playCard(card, deckID: deck.id) },
                 onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) }
             )
-            .frame(maxHeight: 300)
 
             HStack(spacing: 12) {
                 discussionDoneButton(role: .partnerA, color: .purple)
@@ -170,15 +166,18 @@ struct RoomView: View {
 
             Label {
                 Text(L(modeCaptionKey))
+                    .font(.bridgeBody.weight(.bold))
             } icon: {
                 Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
             }
-            .font(.bridgeCaption)
             .foregroundStyle(Color.bridgeGold)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Text(L(config.instructionKey))
-                .font(.bridgeCaption)
-                .foregroundStyle(.primary.opacity(0.85))
+                .font(.bridgeBody)
+                .foregroundStyle(.primary.opacity(0.9))
                 .fixedSize(horizontal: false, vertical: true)
 
             if let forbiddenKey = config.forbiddenKey {
@@ -193,7 +192,7 @@ struct RoomView: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(red: 0.55, green: 0.14, blue: 0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
         }
         .padding(16)

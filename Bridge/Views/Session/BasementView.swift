@@ -51,7 +51,6 @@ struct BasementView: View {
 
             CardGridView(
                 decks: [fearsDeck],
-                color: vm.session.color(for: vm.activePartner),
                 onSelect: { _, card in
                     guard vm.canCurrentAskerAsk, !card.isWriteYourOwn else { return }
                     vm.askBasementQuestion(fearCardID: card.id)
@@ -135,7 +134,7 @@ struct BasementView: View {
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-                .background(Color(red: 0.55, green: 0.14, blue: 0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
         .padding(16)
         .background(.ultraThinMaterial)

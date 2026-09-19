@@ -18,12 +18,6 @@
 "onboarding.what_is_bridge.body" = "Это для момента конфликта, а не «когда-нибудь потом». Даже когда тяжело, даже когда не хочется разговаривать, даже если вы сейчас злитесь на партнёра — это поможет узнать друг о друге то, чего вы не знали, даже спустя годы вместе.";
 "onboarding.apology.title" = "Почему важен ритуал извинения";
 "onboarding.apology.body" = "«Мне жаль, что тебе было больно» — это не признание вины, а признание боли другого человека. Этот маленький жест работает.";
-"onboarding.modes.title" = "Как работают режимы";
-"onboarding.modes.speaks" = "Один партнёр говорит";
-"onboarding.modes.listens_only" = "Другой только слушает";
-"onboarding.modes.discussion" = "Обсуждение разрешено";
-"onboarding.modes.silence" = "Тишина";
-"onboarding.modes.body" = "Важно не перебивать — так говорящий знает, что его выслушают до конца.";
 "onboarding.next" = "Далее";
 "onboarding.got_it" = "Понятно";
 
@@ -99,6 +93,7 @@
 "couples_agreement.subtitle" = "Несколько вещей, которые вы оба обещаете никогда не делать — ни во время этой сессии, ни после неё. Ничего из списка не обязательно: нажмите на любой пункт, который вам подходит, чтобы добавить его, или напишите своё. Можно пропустить и заполнить позже.";
 "couples_agreement.suggestions_header" = "Варианты — нажмите, чтобы добавить";
 "couples_agreement.your_rules_header" = "Ваш договор";
+"couples_agreement.tap_to_remove" = "Нажмите, чтобы убрать";
 "couples_agreement.add_rule" = "Добавить правило";
 "couples_agreement.skip_for_now" = "Пропустить пока";
 "couples_agreement.save" = "Сохранить договор";
@@ -141,6 +136,7 @@
 "intensity.title" = "Прямо сейчас";
 "intensity.slider_label" = "Насколько сильно это ощущается, от 0 до 10?";
 "intensity.state_label" = "Что ближе всего? Можно выбрать несколько.";
+"intensity.state_placeholder" = "Нажмите, чтобы выбрать одно или несколько чувств";
 "intensity.custom_placeholder" = "Или напишите своими словами";
 "intensity.overwhelmed_flag" = "Перегруз";
 "intensity.continue" = "Продолжить";
