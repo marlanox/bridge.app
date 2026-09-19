@@ -12,7 +12,7 @@ struct ProfileSwitcherView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(appState.profiles) { profile in
+                    ForEach(appState.profiles, id: \.id) { profile in
                         Button {
                             appState.selectProfile(profile.id)
                             dismiss()
