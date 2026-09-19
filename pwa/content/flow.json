@@ -1,0 +1,31 @@
+{
+  "_comment": "Canonical ordered step list for one walk through the house. Mirrors Bridge/ViewModels/AppFlowStep.swift + SessionViewModel.advance(). Returning couples (hasCompletedFirstSession) skip steps 0-9 (welcome..ritual) and jump straight to dice.",
+  "steps": [
+    "welcome",
+    "howItWorksWhatIsBridge",
+    "howItWorksApology",
+    "disclaimer",
+    "houseMap",
+    "names",
+    "comprehensionAgreement",
+    "dice",
+    "intensityState",
+    "calmDown",
+    "oath",
+    "ritual",
+    "room:hall",
+    "room:livingRoom",
+    "room:study",
+    "room:kidsRoom",
+    "room:kitchen",
+    "basement",
+    "bridgeFinale",
+    "couplesAgreementSetup",
+    "voiceSnapshot",
+    "closing"
+  ],
+  "conditional": {
+    "calmDown": "only shown if needsCalmDown (highest intensity >= 7); otherwise oath is next after intensityState",
+    "returningCoupleSkipTo": "dice"
+  }
+}

@@ -1,0 +1,494 @@
+/* ============================================================
+   Design tokens — mirrors Bridge/Views/Common/Color+Bridge.swift
+   and Font+Bridge.swift exactly (same RGB values, same type scale).
+   ============================================================ */
+:root {
+  --ivory: #fbf9f5;
+  --ink: #17171a;
+  --gold: #b7944c;
+  --gold-soft: rgba(183, 148, 76, 0.18);
+  --purple: var(--ink);   /* PartnerColor.purple -> bridgeInk on iOS */
+  --green: var(--gold);   /* PartnerColor.green  -> bridgeGold on iOS */
+
+  --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  height: 100%;
+  background: var(--ink);
+  overscroll-behavior: none; /* no rubber-band revealing black page edges */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  /* Prevent the page itself from ever scrolling; individual screens scroll their own content. */
+  position: fixed;
+  inset: 0;
+  overscroll-behavior-y: contain;
+}
+
+#app { height: 100%; width: 100%; position: relative; }
+
+img { -webkit-user-drag: none; user-select: none; }
+button, input, textarea { font-family: inherit; }
+
+/* Disable iOS's default blue tap flash + long-press callout/selection on interactive chrome */
+button, .pressable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Text content (cards, instructions) should still be selectable for a real user. */
+p, .selectable { -webkit-user-select: text; user-select: text; }
+
+/* ============================================================
+   Typography scale — matches Font+Bridge.swift 1:1
+   ============================================================ */
+.f-serif-title      { font-family: var(--font-serif); font-weight: 700; }
+.f-serif-headline   { font-family: var(--font-serif); font-weight: 600; font-size: 20px; }
+.f-body             { font-family: var(--font-body); font-size: 17px; font-weight: 400; }
+.f-caption          { font-family: var(--font-body); font-size: 15px; font-weight: 500; }
+.f-label            { font-family: var(--font-body); font-size: 12px; font-weight: 600; }
+.f-button {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.4px;
+}
+
+/* ============================================================
+   Screen shell
+   ============================================================ */
+.screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--ivory);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: calc(var(--safe-t) + 20px);
+  padding-bottom: calc(var(--safe-b) + 20px);
+  padding-left: calc(var(--safe-l) + 24px);
+  padding-right: calc(var(--safe-r) + 24px);
+  animation: fadein 0.28s ease;
+}
+.screen.no-scroll { overflow: hidden; }
+.screen.flush { padding: 0; }
+
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+.spacer { flex: 1 1 auto; }
+.stack { display: flex; flex-direction: column; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; } .gap-24 { gap: 24px; } .gap-28 { gap: 28px; }
+.center-text { text-align: center; }
+.secondary { color: rgba(23,23,26,0.6); }
+.on-photo { color: #fff; }
+.on-photo.secondary { color: rgba(255,255,255,0.85); }
+
+/* ============================================================
+   Buttons — PrimaryButton / SecondaryButton
+   ============================================================ */
+.btn-primary {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%;
+  padding: 15px 0;
+  background: var(--ivory);
+  color: var(--ink);
+  border-radius: 14px;
+  border: 1.3px solid var(--ink);
+  box-shadow: inset 0 0 0 3px transparent;
+  position: relative;
+  cursor: pointer;
+}
+.btn-primary::after {
+  content: ""; position: absolute; inset: 3px; border-radius: 11px;
+  border: 1px solid rgba(183,148,76,0.85); pointer-events: none;
+}
+.btn-primary:disabled { opacity: 0.4; }
+.btn-primary.compact { width: auto; padding: 11px 28px; }
+.btn-primary.on-dark { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
+.btn-primary.on-dark::after { border-color: rgba(183,148,76,0.6); }
+
+.btn-secondary {
+  display: block; width: 100%; text-align: center;
+  padding: 10px 0; background: none; border: none;
+  color: rgba(23,23,26,0.62);
+  border-bottom: 1px solid rgba(183,148,76,0.5);
+  cursor: pointer;
+}
+.btn-secondary.on-photo { color: rgba(255,255,255,0.85); }
+
+.pressable { transition: transform 0.12s ease, opacity 0.12s ease; }
+.pressable:active { transform: scale(0.96); opacity: 0.75; }
+
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.55); backdrop-filter: blur(12px);
+  border: none; cursor: pointer; font-size: 18px;
+}
+.icon-btn.on-dark { background: rgba(255,255,255,0.2); color: #fff; }
+
+/* ============================================================
+   House / room photo stage
+   ============================================================ */
+.photo-screen {
+  position: absolute; inset: 0; overflow: hidden; z-index: 0;
+  background-size: cover; background-position: center;
+}
+.photo-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.photo-gradient-bottom {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(0,0,0,0.55) 100%);
+}
+/* Sits above the photo layer (explicit stacking, not just DOM order) and fills the
+   same box, so foreground content is never accidentally covered by its own background. */
+.photo-content {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column;
+  padding-top: var(--safe-t); padding-bottom: var(--safe-b);
+  padding-left: var(--safe-l); padding-right: var(--safe-r);
+  /* A room's header can expand to a lot of text (instructions + why-it-helps +
+     forbidden box) — on a short phone that can exceed the viewport. Scroll rather
+     than silently clip content or push the Done button off-screen where a real
+     user could get stuck unable to finish the room. */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* The rotating "seat" stage — everything belonging to whoever is currently answering
+   (photo + header + cards + buttons) rotates together as ONE unit. A reveal card is a
+   SIBLING, never a child, so it can face the reader while this stays put. */
+.seat-stage {
+  position: absolute; inset: 0;
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.seat-stage.flipped { transform: rotate(180deg); }
+
+.fixed-badge {
+  position: absolute; top: calc(var(--safe-t) + 14px); right: calc(var(--safe-r) + 14px);
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  z-index: 5;
+}
+.fixed-badge.flipped { transform: rotate(180deg); transform-origin: center; }
+
+.waiting-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 20px;
+  background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
+  font-size: 12px; font-weight: 600;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot.a { background: var(--purple); } .dot.b { background: var(--green); }
+
+/* ============================================================
+   Room header (RoomView.header / BasementView.header)
+   ============================================================ */
+.room-header {
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(16px);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.room-header .top-row { display: flex; align-items: center; gap: 8px; }
+.room-header .top-row .spacer { flex: 1; }
+.room-header .mode-icon { opacity: 0.6; font-size: 14px; }
+.room-header .toggle-btn {
+  background: none; border: none; font-size: 20px; color: rgba(23,23,26,0.55); cursor: pointer; line-height: 1;
+  padding: 2px;
+}
+.room-title { font-family: var(--font-serif); font-weight: 700; font-size: 24px; margin: 0; }
+.room-question { font-family: var(--font-serif); font-weight: 600; font-size: 16px; color: rgba(23,23,26,0.6); margin: 0; }
+.mode-caption {
+  display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+  padding: 5px 9px; border-radius: 8px;
+  background: var(--ink); color: var(--gold);
+  font-size: 15px; font-weight: 700;
+}
+.instruction-text { font-size: 15px; font-weight: 500; line-height: 1.35; color: rgba(23,23,26,0.9); }
+.why-it-helps {
+  font-size: 15px; font-weight: 600; font-style: italic; line-height: 1.35;
+  color: var(--gold); background: var(--ink);
+  padding: 6px 9px; border-radius: 8px;
+}
+.forbidden-box {
+  color: #fff; background: var(--ink); border-radius: 10px;
+  padding: 6px 10px; font-size: 15px; line-height: 1.35;
+}
+.forbidden-box strong { display: block; font-weight: 700; margin-bottom: 2px; }
+.collapsible.collapsed { display: none; }
+
+/* ============================================================
+   Timer banner
+   ============================================================ */
+.timer-banner {
+  margin: 8px 16px 0; padding: 10px 16px; border-radius: 16px;
+  background: rgba(255,255,255,0.55); backdrop-filter: blur(14px);
+  text-align: center;
+}
+.timer-clock { font-variant-numeric: tabular-nums; font-size: 15px; color: rgba(23,23,26,0.6); }
+.timer-up-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
+.timer-up-row .btn-done {
+  padding: 8px 16px; border-radius: 20px; background: var(--ink); color: #fff;
+  border: none; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+
+/* ============================================================
+   Placed cards (table)
+   ============================================================ */
+.placed-cards { display: flex; flex-direction: column; gap: 6px; padding: 0 16px; align-items: flex-start; }
+.placed-card {
+  padding: 6px 10px; border-radius: 20px; font-size: 13px; font-weight: 500;
+  background: rgba(255,255,255,0.55); backdrop-filter: blur(10px);
+}
+
+/* ============================================================
+   Deck dropdown (CardGridView)
+   ============================================================ */
+.deck-list { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px; }
+.deck-button {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-radius: 14px;
+  background: var(--ink); color: var(--gold);
+  border: 1px solid rgba(183,148,76,0.6);
+  font-size: 16px; font-weight: 600; cursor: pointer;
+}
+
+.sheet-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20;
+  display: flex; align-items: flex-end;
+  animation: fadein 0.2s ease;
+}
+.sheet {
+  width: 100%; max-height: 88vh; background: var(--ivory);
+  border-radius: 20px 20px 0 0; display: flex; flex-direction: column;
+  padding-bottom: var(--safe-b);
+  animation: sheet-up 0.28s cubic-bezier(.32,.72,0,1);
+}
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sheet-handle { width: 36px; height: 5px; border-radius: 3px; background: rgba(0,0,0,0.15); margin: 8px auto; }
+.sheet-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 16px 10px; border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-weight: 700; font-size: 17px;
+}
+.sheet-header button { background: none; border: none; font-size: 16px; color: var(--gold); font-weight: 600; cursor: pointer; }
+.sheet-body { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 8px 16px 24px; }
+.sheet-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: rgba(0,0,0,0.45); margin: 14px 0 6px; }
+.sheet-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 4px; border-bottom: 1px solid rgba(0,0,0,0.06);
+  font-size: 16px; cursor: pointer; background: none; border-left: none; border-right: none; border-top: none;
+  width: 100%; text-align: left; color: var(--ink);
+}
+.sheet-row .check { color: var(--gold); font-weight: 700; }
+.write-own-row { display: flex; gap: 8px; margin-top: 14px; }
+.write-own-row input {
+  flex: 1; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.15); font-size: 16px;
+}
+.write-own-row button {
+  padding: 0 16px; border-radius: 10px; border: none; background: var(--ink); color: #fff; font-weight: 600;
+}
+
+/* ============================================================
+   Reveal card overlay
+   ============================================================ */
+.reveal-overlay {
+  position: fixed; inset: 0; z-index: 30;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 28px;
+}
+.reveal-card-rotator { transition: transform 0.5s cubic-bezier(.4,0,.2,1); }
+.reveal-card {
+  max-width: 340px; padding: 24px; border-radius: 26px;
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.3);
+  text-align: center; display: flex; flex-direction: column; gap: 18px;
+}
+.reveal-from { display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-serif); font-weight: 600; font-size: 19px; }
+.reveal-cards { display: flex; flex-direction: column; gap: 10px; }
+.reveal-cards div { padding: 10px 14px; border-radius: 12px; font-weight: 500; font-size: 15px; }
+
+/* ============================================================
+   Forms (names, text fields)
+   ============================================================ */
+.text-field {
+  padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.2);
+  font-size: 16px; width: 100%; background: #fff;
+}
+.field-row { display: flex; align-items: center; gap: 10px; }
+
+.confirm-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 14px; border-radius: 14px; cursor: pointer; border: none; width: 100%; text-align: left;
+  font-size: 15px; font-weight: 500;
+}
+.confirm-row.a { background: rgba(23,23,26,0.08); }
+.confirm-row.a.confirmed { background: rgba(23,23,26,0.25); }
+.confirm-row.b { background: rgba(183,148,76,0.08); }
+.confirm-row.b.confirmed { background: rgba(183,148,76,0.25); }
+
+.rule-row {
+  display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 12px;
+  cursor: pointer; border: none; width: 100%; text-align: left; font-size: 16px;
+}
+.rule-row.active { background: rgba(183,148,76,0.12); }
+.rule-row.suggestion { background: rgba(0,0,0,0.05); color: var(--ink); }
+.rule-row .tail { margin-left: auto; font-size: 12px; color: rgba(0,0,0,0.45); }
+
+/* ============================================================
+   Progress dots (onboarding pages, bridge finale steps)
+   ============================================================ */
+.dots { display: flex; gap: 6px; }
+.dots .dot-seg { height: 6px; border-radius: 3px; background: rgba(23,23,26,0.2); transition: all 0.2s; }
+.dots .dot-seg.active { width: 22px; background: var(--ink); }
+.dots .dot-seg:not(.active) { width: 8px; }
+.dots.gold .dot-seg { background: rgba(255,255,255,0.25); }
+.dots.gold .dot-seg.active { background: var(--gold); }
+
+/* ============================================================
+   Language picker / Welcome
+   ============================================================ */
+.lang-btn, .full-photo-btn {
+  display: block; width: 100%; padding: 16px 0; text-align: center;
+  background: rgba(255,255,255,0.16); backdrop-filter: blur(14px);
+  color: #fff; border: 1px solid rgba(255,255,255,0.5); border-radius: 16px; cursor: pointer;
+}
+
+/* ============================================================
+   Intensity slider
+   ============================================================ */
+input[type=range] {
+  -webkit-appearance: none; width: 100%; height: 30px; background: transparent;
+}
+input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: rgba(0,0,0,0.15); }
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--slider-color, var(--ink)); margin-top: -11px; border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.overwhelmed-flag {
+  display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 20px;
+  color: #fff; font-size: 12px; font-weight: 600;
+}
+.partner-section { padding: 16px; border-radius: 16px; }
+
+/* ============================================================
+   Dice
+   ============================================================ */
+.die-face {
+  font-size: 96px; transition: transform 0.6s ease; user-select: none;
+}
+
+/* ============================================================
+   Calm-down breathing circle
+   ============================================================ */
+.breathing-circle {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(140,168,178,0.35); align-self: center;
+  transition: transform 4s ease-in-out;
+}
+.breathing-circle.breathing { animation: breathe 4s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { transform: scale(0.6); } 50% { transform: scale(1); } }
+
+/* ============================================================
+   Bridge finale
+   ============================================================ */
+.bridge-header { text-align: center; padding-top: 16px; color: #fff; }
+.bridge-tabs { display: flex; background: rgba(255,255,255,0.2); border-radius: 10px; padding: 3px; margin: 8px 16px 0; }
+.bridge-tabs button {
+  flex: 1; padding: 8px 0; border: none; border-radius: 8px; background: none; color: #fff;
+  font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.bridge-tabs button.active { background: #fff; color: var(--ink); }
+.step-progress { display: flex; align-items: center; gap: 8px; color: #fff; }
+.deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 8px; }
+.deck-grid button {
+  padding: 9px; border-radius: 11px; border: none; text-align: left; font-size: 13px; font-weight: 500;
+  min-height: 46px; cursor: pointer; backdrop-filter: blur(10px);
+}
+.mandatory-section {
+  margin: 10px 16px 0; padding: 12px; border-radius: 14px;
+  background: rgba(255,255,255,0.55); backdrop-filter: blur(14px); text-align: center;
+}
+.mandatory-check-row { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+.mandatory-check-row button {
+  display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 20px; border: none;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.together-section { padding: 16px; text-align: center; color: #fff; }
+
+/* ============================================================
+   Basement fear response buttons
+   ============================================================ */
+.response-btn {
+  display: block; width: 100%; padding: 14px; border-radius: 14px; border: none;
+  background: rgba(255,255,255,0.55); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; cursor: pointer;
+}
+
+/* ============================================================
+   Closing card
+   ============================================================ */
+.closing-card {
+  background: #fff; border-radius: 20px; padding: 32px;
+  border: 1.5px solid var(--gold); text-align: center;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; gap: 14px; align-items: center;
+}
+.rosette { font-size: 34px; color: var(--gold); }
+
+/* ============================================================
+   Settings sheet (full-screen list)
+   ============================================================ */
+.settings-list { list-style: none; margin: 0; padding: 0; }
+.settings-section-title {
+  font-size: 13px; text-transform: uppercase; color: rgba(0,0,0,0.45);
+  margin: 20px 0 6px; padding: 0 4px; font-weight: 600;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 14px 12px; background: #fff; border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 16px; color: #2266dd; text-align: left; cursor: pointer;
+}
+.settings-row.destructive { color: #cc3333; }
+.settings-row .val { color: rgba(0,0,0,0.4); font-size: 15px; }
+.settings-group { border-radius: 12px; overflow: hidden; }
+
+.top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px calc(var(--safe-r) + 12px) 10px calc(var(--safe-l) + 12px);
+  padding-top: calc(var(--safe-t) + 10px);
+  background: var(--ivory);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-weight: 700; font-size: 17px;
+}
+.top-bar button { background: none; border: none; color: #2266dd; font-size: 16px; cursor: pointer; }
+
+/* ============================================================
+   Misc
+   ============================================================ */
+a { color: inherit; }
+.badge-name { font-size: 15px; font-weight: 500; }
+.hidden { display: none !important; }
+
+/* Respect the keyboard: when a text field is focused, iOS Safari resizes the visual
+   viewport rather than the layout viewport, so fixed-position elements can otherwise
+   end up hidden behind the keyboard. Screens with a text field lay out with a normal
+   flow (not absolute-centered) and scroll, which keeps the focused field visible via
+   the browser's built-in scroll-into-view instead of fighting the keyboard manually. */
+.form-screen { justify-content: flex-start; }
