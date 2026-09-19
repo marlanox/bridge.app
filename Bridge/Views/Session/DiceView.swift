@@ -19,7 +19,7 @@ struct DiceView: View {
             Image(systemName: "die.face.5.fill")
                 .font(.system(size: 96))
                 .rotationEffect(.degrees(rotation))
-                .foregroundStyle(Color(red: 0.36, green: 0.31, blue: 0.27))
+                .foregroundStyle(Color.bridgeInk)
 
             if let winner {
                 Text(String(format: L("dice.result"), vm.session.name(for: winner)))
@@ -45,6 +45,6 @@ struct DiceView: View {
             }
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 }

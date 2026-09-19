@@ -140,32 +140,60 @@ struct RoomView: View {
 
     // MARK: - Shared header
 
+    /// One unambiguous line naming who may speak — the mode icons alone (mic + ear both
+    /// showing on a "one speaks, one listens" room) read as a contradiction on their own.
+    private var modeCaptionKey: String {
+        config.modes.contains(.discussion) ? "room.mode_caption.discussion" : "room.mode_caption.sequential"
+    }
+
     @ViewBuilder
     private func header(activeRole: PartnerRole?) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 if let activeRole {
                     Text(vm.session.name(for: activeRole))
-                        .font(.subheadline.weight(.semibold))
+                        .font(.bridgeCaption)
                         .foregroundStyle(vm.session.color(for: activeRole).color)
                 }
                 Spacer()
                 ForEach(config.modes, id: \.self) { mode in
                     Image(systemName: mode.iconSystemName)
                         .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
             Text(L(config.nameKey))
-                .font(.bridgeSerifTitle(32, weight: .bold))
+                .font(.bridgeSerifTitle(30, weight: .bold))
             Text(L(config.questionKey))
-                .font(.title3)
+                .font(.bridgeSerifHeadline(19))
                 .foregroundStyle(.secondary)
+
+            Label {
+                Text(L(modeCaptionKey))
+            } icon: {
+                Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
+            }
+            .font(.bridgeCaption)
+            .foregroundStyle(Color.bridgeGold)
+
+            Text(L(config.instructionKey))
+                .font(.bridgeCaption)
+                .foregroundStyle(.primary.opacity(0.85))
+                .fixedSize(horizontal: false, vertical: true)
+
             if let forbiddenKey = config.forbiddenKey {
-                HStack(alignment: .top, spacing: 4) {
-                    Text(L("room.forbidden_prefix")).font(.caption.weight(.bold))
-                    Text(L(forbiddenKey)).font(.caption)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L("room.forbidden_prefix"))
+                        .font(.bridgeCaption.weight(.bold))
+                    Text(L(forbiddenKey))
+                        .font(.bridgeCaption)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-                .foregroundStyle(.red.opacity(0.85))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(red: 0.55, green: 0.14, blue: 0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
         }
         .padding(16)

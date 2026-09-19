@@ -44,7 +44,7 @@ struct RevealCardOverlay: View {
                 }
             }
 
-            PrimaryButton(titleKey: "handoff.read_it", color: fromColor.color, testID: "uitest.reveal.readit", action: onRead)
+            PrimaryButton(titleKey: "handoff.read_it", color: fromColor.color, fullWidth: false, testID: "uitest.reveal.readit", action: onRead)
         }
         .padding(24)
         .frame(maxWidth: 340)

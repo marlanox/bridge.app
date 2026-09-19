@@ -24,7 +24,7 @@ struct PaywallView: View {
             Spacer()
             Image(systemName: "lock.open.fill")
                 .font(.system(size: 48))
-                .foregroundStyle(Color(red: 0.36, green: 0.31, blue: 0.27))
+                .foregroundStyle(Color.bridgeInk)
             Text(L("paywall.title"))
                 .font(.bridgeSerifTitle(26))
             Text(L("paywall.body"))
@@ -72,7 +72,7 @@ struct PaywallView: View {
             .foregroundStyle(.secondary)
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
         .task { await store.loadProducts() }
         .sheet(isPresented: $showingTerms) { TermsOfUseView() }
         .sheet(isPresented: $showingPrivacy) { PrivacyPolicyView() }

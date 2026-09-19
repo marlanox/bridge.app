@@ -20,14 +20,16 @@ enum PartnerRole: String, Codable, CaseIterable, Hashable {
     }
 }
 
+/// Case names are stable identifiers only (persisted in saved profile JSON) — the actual
+/// on-screen colors are the app's black/gold luxury palette, not literally purple/green.
 enum PartnerColor: String, Codable, Hashable {
     case purple
     case green
 
     var color: Color {
         switch self {
-        case .purple: return Color(red: 0.55, green: 0.47, blue: 0.86)
-        case .green: return Color(red: 0.42, green: 0.62, blue: 0.45)
+        case .purple: return .bridgeInk
+        case .green: return .bridgeGold
         }
     }
 }

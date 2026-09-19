@@ -1,6 +1,25 @@
 import Foundation
 import Combine
 
+/// Everything needed to resume a walk exactly where a couple left it — saved to disk
+/// whenever meaningful state changes so backgrounding, force-quitting, or just closing the
+/// app for the evening never loses progress. Deliberately excludes transient in-flight UI
+/// state (`pendingReveal`, an in-progress Basement question, the exact seconds left on the
+/// room timer) — those are safe to drop on resume; the room's own timer restarts fresh and,
+/// worst case, a partner taps "Done" one more time.
+struct SessionSnapshot: Codable {
+    var flow: AppFlowStep
+    var session: GameSession
+    var comprehensionConfirmed: [PartnerRole: Bool]
+    var couplesAgreement: [String]
+    var roomDoneFlags: [PartnerRole: Bool]
+    var activePartner: PartnerRole
+    var placedCardsThisTurn: [CardPlay]
+    var basementQuestionsAsked: [PartnerRole: Int]
+    var basementCurrentAsker: PartnerRole
+    var voiceNoteSkipped: [PartnerRole: Bool]
+}
+
 /// Drives one full walk through the house: flow position, whose turn is active,
 /// the room timer, cards played, the Basement Q&A protocol, and the Bridge finale.
 final class SessionViewModel: ObservableObject {
@@ -39,6 +58,38 @@ final class SessionViewModel: ObservableObject {
     private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     let originalProfile: RelationshipProfile
+
+    /// A snapshot of everything worth resuming, taken as-is right now (see `SessionSnapshot`).
+    func makeSnapshot() -> SessionSnapshot {
+        SessionSnapshot(
+            flow: flow,
+            session: session,
+            comprehensionConfirmed: comprehensionConfirmed,
+            couplesAgreement: couplesAgreement,
+            roomDoneFlags: roomDoneFlags,
+            activePartner: activePartner,
+            placedCardsThisTurn: placedCardsThisTurn,
+            basementQuestionsAsked: basementQuestionsAsked,
+            basementCurrentAsker: basementCurrentAsker,
+            voiceNoteSkipped: voiceNoteSkipped
+        )
+    }
+
+    /// Restores a previously-saved walk. Only ever called right after `init`, before any UI
+    /// has observed this view model, so directly overwriting the fresh defaults is safe.
+    func restore(from snapshot: SessionSnapshot) {
+        flow = snapshot.flow
+        session = snapshot.session
+        comprehensionConfirmed = snapshot.comprehensionConfirmed
+        couplesAgreement = snapshot.couplesAgreement
+        roomDoneFlags = snapshot.roomDoneFlags
+        activePartner = snapshot.activePartner
+        placedCardsThisTurn = snapshot.placedCardsThisTurn
+        basementQuestionsAsked = snapshot.basementQuestionsAsked
+        basementCurrentAsker = snapshot.basementCurrentAsker
+        voiceNoteSkipped = snapshot.voiceNoteSkipped
+        roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
+    }
 
     init(profile: RelationshipProfile) {
         self.originalProfile = profile
@@ -87,8 +138,20 @@ final class SessionViewModel: ObservableObject {
         if role == .partnerA { session.intensityA = value } else { session.intensityB = value }
     }
 
-    func setState(_ state: EmotionalState, for role: PartnerRole) {
-        if role == .partnerA { session.stateA = state } else { session.stateB = state }
+    /// A partner can hold more than one of the seven feelings at once — toggling one on/off
+    /// leaves the rest of their selection untouched.
+    func toggleState(_ state: EmotionalState, for role: PartnerRole) {
+        if role == .partnerA {
+            if session.stateA.states.contains(state) { session.stateA.states.remove(state) }
+            else { session.stateA.states.insert(state) }
+        } else {
+            if session.stateB.states.contains(state) { session.stateB.states.remove(state) }
+            else { session.stateB.states.insert(state) }
+        }
+    }
+
+    func setCustomStateText(_ text: String, for role: PartnerRole) {
+        if role == .partnerA { session.stateA.customText = text } else { session.stateB.customText = text }
     }
 
     /// A high intensity from either partner triggers the calm-down suggestion by default
@@ -370,8 +433,8 @@ final class SessionViewModel: ObservableObject {
         session.firstToSpeak = .partnerA
         setIntensity(4, for: .partnerA)
         setIntensity(3, for: .partnerB)
-        setState(.hurt, for: .partnerA)
-        setState(.confused, for: .partnerB)
+        toggleState(.hurt, for: .partnerA)
+        toggleState(.confused, for: .partnerB)
     }
 
     /// Dispatches a short string key (from `UITEST_JUMP_FLOW`) to the matching jump. Unknown

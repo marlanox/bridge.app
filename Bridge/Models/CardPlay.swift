@@ -28,7 +28,6 @@ struct BridgeFinalSelection: Codable, Equatable {
 enum BasementResponse: String, Codable, Hashable {
     case yes
     case no
-    case partially
     case understand
 }
 

@@ -21,15 +21,24 @@ struct CardGridView: View {
                     VStack(alignment: .leading, spacing: 14) {
                         if decks.count > 1 {
                             Text(L(deck.nameKey))
-                                .font(.headline)
+                                .font(.bridgeSerifHeadline(17))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(.ultraThinMaterial, in: Capsule())
+                                .background(Color.black.opacity(0.25), in: Capsule())
                         }
                         ForEach(Array(deck.sections.enumerated()), id: \.offset) { _, section in
                             VStack(alignment: .leading, spacing: 8) {
                                 if let category = section.category {
                                     Text(L("category.\(category)"))
-                                        .font(.caption.weight(.semibold))
-                                        .foregroundStyle(.secondary)
+                                        .font(.bridgeLabel)
+                                        .foregroundStyle(.white)
                                         .textCase(.uppercase)
+                                        .padding(.horizontal, 9)
+                                        .padding(.vertical, 4)
+                                        .background(.ultraThinMaterial, in: Capsule())
+                                        .background(Color.black.opacity(0.25), in: Capsule())
                                 }
                                 LazyVGrid(columns: columns, spacing: 10) {
                                     ForEach(section.cards) { card in

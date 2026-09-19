@@ -45,6 +45,29 @@ final class PersistenceManager {
 
     private init() {}
 
+    private func sessionSnapshotURL(profileID: UUID) -> URL {
+        documentsURL.appendingPathComponent("session_in_progress_\(profileID.uuidString).json")
+    }
+
+    /// Saves an in-progress walk so it survives the app being backgrounded, force-quit, or
+    /// simply closed for the evening — couples can come back later and pick up exactly where
+    /// they left off, mid-room, instead of losing everything the moment they leave the app.
+    func saveSessionSnapshot(_ snapshot: SessionSnapshot, profileID: UUID) {
+        guard let data = try? encoder.encode(snapshot) else { return }
+        try? data.write(to: sessionSnapshotURL(profileID: profileID), options: .atomic)
+    }
+
+    func loadSessionSnapshot(profileID: UUID) -> SessionSnapshot? {
+        guard let data = try? Data(contentsOf: sessionSnapshotURL(profileID: profileID)) else { return nil }
+        return try? decoder.decode(SessionSnapshot.self, from: data)
+    }
+
+    /// Called once a walk finishes normally or is intentionally abandoned (switching
+    /// profiles) — there is nothing to resume in either case.
+    func clearSessionSnapshot(profileID: UUID) {
+        try? FileManager.default.removeItem(at: sessionSnapshotURL(profileID: profileID))
+    }
+
     /// Whether this device already has local profile data, checked once before anything
     /// else touches disk this launch — callers use this to decide whether an iCloud restore
     /// is even worth attempting, since `saveProfiles` creates this file immediately (even for

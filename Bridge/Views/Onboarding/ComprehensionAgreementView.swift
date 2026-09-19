@@ -22,7 +22,7 @@ struct ComprehensionAgreementView: View {
             PrimaryButton(titleKey: "names.continue", isEnabled: vm.bothConfirmedComprehension, testID: "uitest.agree.continue", action: onContinue)
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 
     @ViewBuilder

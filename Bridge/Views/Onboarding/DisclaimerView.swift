@@ -20,7 +20,7 @@ struct DisclaimerView: View {
             PrimaryButton(titleKey: "disclaimer.continue", testID: "uitest.disclaimer.continue", action: onContinue)
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
         .sheet(isPresented: $showingCrisisResources) {
             CrisisResourcesView()
         }

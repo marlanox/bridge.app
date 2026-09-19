@@ -9,8 +9,8 @@ struct GameSession: Codable, Identifiable {
 
     var intensityA: Int = 0 // 0-10
     var intensityB: Int = 0 // 0-10
-    var stateA: EmotionalState?
-    var stateB: EmotionalState?
+    var stateA = EmotionalStateSelection()
+    var stateB = EmotionalStateSelection()
 
     var firstToSpeak: PartnerRole?
     var currentRoom: RoomKind = .hall

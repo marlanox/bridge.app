@@ -42,12 +42,12 @@ struct RitualView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
             }
-            .background(isHolding ? Color(red: 0.55, green: 0.47, blue: 0.86) : Color(red: 0.36, green: 0.31, blue: 0.27))
+            .background(isHolding ? Color.bridgeGold : Color.bridgeInk)
             .foregroundStyle(.white)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .accessibilityIdentifier("uitest.ritual.continue")
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 }

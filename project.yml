@@ -39,7 +39,9 @@ targets:
     info:
       path: Bridge/Info.plist
       properties:
-        UILaunchScreen: {}
+        UILaunchScreen:
+          UIImageName: LaunchIcon
+          UIColorName: LaunchBackground
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSMicrophoneUsageDescription: "Bridge uses your microphone to record short optional voice keepsakes at the end of a session."

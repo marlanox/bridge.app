@@ -22,7 +22,7 @@ struct TimerBanner: View {
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
                     }
-                    .background(Color(red: 0.36, green: 0.31, blue: 0.27))
+                    .background(Color.bridgeInk)
                     .foregroundStyle(.white)
                     .clipShape(Capsule())
                 }

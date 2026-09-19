@@ -30,8 +30,14 @@ struct BasementView: View {
     private var askingContent: some View {
         VStack(spacing: 0) {
             header
+            Text(L("basement.instruction"))
+                .font(.bridgeCaption)
+                .foregroundStyle(.primary.opacity(0.85))
+                .multilineTextAlignment(.leading)
+                .padding(.horizontal, 16)
+                .padding(.top, 10)
             Text(L("basement.pick_a_fear_card"))
-                .font(.subheadline)
+                .font(.bridgeCaption)
                 .foregroundStyle(.secondary)
                 .padding(.top, 8)
             TimerBanner(
@@ -79,12 +85,12 @@ struct BasementView: View {
             header
             Spacer()
             Text(vm.pendingBasementCustomText ?? fearText(for: fearCardID))
-                .font(.title2.weight(.medium))
+                .font(.bridgeSerifHeadline())
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
 
-            Text(L("basement.instruction"))
-                .font(.caption)
+            Text(L("basement.answer_instruction"))
+                .font(.bridgeCaption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 30)
@@ -92,7 +98,6 @@ struct BasementView: View {
             VStack(spacing: 10) {
                 responseButton(.yes, color: vm.session.color(for: answerer))
                 responseButton(.no, color: vm.session.color(for: answerer))
-                responseButton(.partially, color: vm.session.color(for: answerer))
                 responseButton(.understand, color: vm.session.color(for: answerer))
             }
             .padding(.horizontal, 20)
@@ -117,17 +122,20 @@ struct BasementView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(L("room.basement.name"))
-                .font(.bridgeSerifTitle(32, weight: .bold))
+                .font(.bridgeSerifTitle(30, weight: .bold))
             Text(L("room.basement.question"))
-                .font(.title3)
+                .font(.bridgeSerifHeadline(19))
                 .foregroundStyle(.secondary)
             Text(L("room.basement.forbidden"))
-                .font(.caption)
-                .foregroundStyle(.red.opacity(0.85))
-            Text(String(format: L("basement.questions_remaining"), max(15 - (vm.basementQuestionsAsked[vm.basementCurrentAsker] ?? 0), 0)))
-                .font(.caption.weight(.semibold))
+                .font(.bridgeCaption)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .background(Color(red: 0.55, green: 0.14, blue: 0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
         .padding(16)
         .background(.ultraThinMaterial)

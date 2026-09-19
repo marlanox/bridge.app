@@ -28,7 +28,7 @@ struct OnboardingTextPage: View {
             PrimaryButton(titleKey: buttonKey, testID: "uitest.onboarding.next", action: onNext)
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 }
 
@@ -78,6 +78,6 @@ struct OnboardingModesPage: View {
             PrimaryButton(titleKey: "onboarding.got_it", testID: "uitest.onboarding.modes_continue", action: onNext)
         }
         .padding(28)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 }

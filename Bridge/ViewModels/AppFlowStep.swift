@@ -58,3 +58,71 @@ enum AppFlowStep: Equatable {
         }
     }
 }
+
+/// Manual `Codable` so an in-progress session (which room, mid-walk) can be persisted and
+/// resumed after the app is closed or backgrounded — see `SessionSnapshot`.
+extension AppFlowStep: Codable {
+    private enum Tag: String, Codable {
+        case welcome, howItWorksWhatIsBridge, howItWorksApology, howItWorksModes, disclaimer
+        case houseMap, names, comprehensionAgreement, couplesAgreementSetup, dice
+        case intensityState, calmDown, oath, ritual, room, basement, bridgeFinale
+        case voiceSnapshot, closing
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case tag, room
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let tag = try container.decode(Tag.self, forKey: .tag)
+        switch tag {
+        case .welcome: self = .welcome
+        case .howItWorksWhatIsBridge: self = .howItWorksWhatIsBridge
+        case .howItWorksApology: self = .howItWorksApology
+        case .howItWorksModes: self = .howItWorksModes
+        case .disclaimer: self = .disclaimer
+        case .houseMap: self = .houseMap
+        case .names: self = .names
+        case .comprehensionAgreement: self = .comprehensionAgreement
+        case .couplesAgreementSetup: self = .couplesAgreementSetup
+        case .dice: self = .dice
+        case .intensityState: self = .intensityState
+        case .calmDown: self = .calmDown
+        case .oath: self = .oath
+        case .ritual: self = .ritual
+        case .room: self = .room(try container.decode(RoomKind.self, forKey: .room))
+        case .basement: self = .basement
+        case .bridgeFinale: self = .bridgeFinale
+        case .voiceSnapshot: self = .voiceSnapshot
+        case .closing: self = .closing
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .welcome: try container.encode(Tag.welcome, forKey: .tag)
+        case .howItWorksWhatIsBridge: try container.encode(Tag.howItWorksWhatIsBridge, forKey: .tag)
+        case .howItWorksApology: try container.encode(Tag.howItWorksApology, forKey: .tag)
+        case .howItWorksModes: try container.encode(Tag.howItWorksModes, forKey: .tag)
+        case .disclaimer: try container.encode(Tag.disclaimer, forKey: .tag)
+        case .houseMap: try container.encode(Tag.houseMap, forKey: .tag)
+        case .names: try container.encode(Tag.names, forKey: .tag)
+        case .comprehensionAgreement: try container.encode(Tag.comprehensionAgreement, forKey: .tag)
+        case .couplesAgreementSetup: try container.encode(Tag.couplesAgreementSetup, forKey: .tag)
+        case .dice: try container.encode(Tag.dice, forKey: .tag)
+        case .intensityState: try container.encode(Tag.intensityState, forKey: .tag)
+        case .calmDown: try container.encode(Tag.calmDown, forKey: .tag)
+        case .oath: try container.encode(Tag.oath, forKey: .tag)
+        case .ritual: try container.encode(Tag.ritual, forKey: .tag)
+        case .room(let kind):
+            try container.encode(Tag.room, forKey: .tag)
+            try container.encode(kind, forKey: .room)
+        case .basement: try container.encode(Tag.basement, forKey: .tag)
+        case .bridgeFinale: try container.encode(Tag.bridgeFinale, forKey: .tag)
+        case .voiceSnapshot: try container.encode(Tag.voiceSnapshot, forKey: .tag)
+        case .closing: try container.encode(Tag.closing, forKey: .tag)
+        }
+    }
+}

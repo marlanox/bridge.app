@@ -76,7 +76,7 @@
 // MARK: - House Map
 
 "housemap.title" = "This is your house tonight.";
-"housemap.body" = "You'll walk through every room together, one at a time, in the order shown. Each room asks one honest question. When you've been through them all, you'll step outside into the garden, and finally onto the bridge — where you meet each other in the middle. That's the whole shape of the game: walk the path, then meet on the bridge.";
+"housemap.body" = "The task is simple: walk through every room of the house, one at a time, in the order shown. Each room asks one honest question — and only that kind of question, nothing else. When you've been through every room, you'll arrive together at the bridge, where you meet in the middle and reach out a hand to each other. If it gets overwhelming, you can close the app at any point — your progress is saved, and you can come back later, even this evening, to finish building the bridge.";
 "housemap.button_first" = "I understand — let's begin";
 "housemap.button_reopen" = "Got it";
 
@@ -97,11 +97,13 @@
 // MARK: - Couple's Agreement Setup
 
 "couples_agreement.title" = "Your Couple's Agreement";
-"couples_agreement.subtitle" = "A few things you both agree never to do — during this session or after it. You can skip this and fill it in later.";
+"couples_agreement.subtitle" = "A few things you both agree never to do — during this session or after it. Nothing below is required: tap any suggestion that fits to add it, or write your own. You can skip this and fill it in later.";
+"couples_agreement.suggestions_header" = "Suggestions — tap to add";
+"couples_agreement.your_rules_header" = "Your agreement";
 "couples_agreement.add_rule" = "Add a rule";
 "couples_agreement.skip_for_now" = "Skip for now";
 "couples_agreement.save" = "Save agreement";
-"couples_agreement.placeholder" = "e.g. We don't threaten to break up";
+"couples_agreement.placeholder" = "e.g. We don't threaten to break up — or add a consequence: “...otherwise, $20 to the other's account”";
 "couples_agreement.example.01" = "We never say “I don't love you”";
 "couples_agreement.example.02" = "We don't threaten to break up";
 "couples_agreement.example.03" = "We don't block each other";
@@ -139,13 +141,17 @@
 
 "intensity.title" = "Right now";
 "intensity.slider_label" = "How intense does this feel, 0 to 10?";
-"intensity.state_label" = "Which feels closest?";
+"intensity.state_label" = "Which feels closest? Pick as many as apply.";
+"intensity.custom_placeholder" = "Or write it your own way";
+"intensity.overwhelmed_flag" = "Overwhelmed";
 "intensity.continue" = "Continue";
-"state.hurt" = "I feel hurt";
-"state.guilty" = "I feel guilty";
-"state.both" = "Both";
-"state.confused" = "I'm confused";
-"state.dont_know" = "I don't know";
+"state.hurt" = "Hurt";
+"state.angry" = "Angry";
+"state.scared" = "Scared";
+"state.guilty" = "Guilty";
+"state.ashamed" = "Ashamed";
+"state.sad" = "Sad";
+"state.confused" = "Confused";
 
 // MARK: - Room Modes
 
@@ -158,16 +164,21 @@
 
 "room.hall.name" = "Hall";
 "room.hall.question" = "What happened?";
-"room.hall.forbidden" = "No arguing, no making excuses, no correcting the other's account.";
+"room.hall.instruction" = "Take turns as a neutral witness. Describe only the facts you saw or heard — no blame, no interpretation. Example: “You raised your voice and left the room” — not “You always do this because you don't care.” Choose the event cards that match what you experienced.";
+"room.hall.forbidden" = "• No arguing\n• No making excuses\n• No correcting the other's account";
 "room.living_room.name" = "Living Room";
-"room.living_room.question" = "What did I feel?";
+"room.living_room.question" = "What did you feel during this conflict?";
+"room.living_room.instruction" = "This is subjective — say what YOU felt, emotionally and in your body. It may surprise your partner, and that's the point: hearing it out loud helps them see you're not being cruel, you're hurting. Example: “My chest went tight — I felt scared and alone.”";
 "room.study.name" = "Study";
 "room.study.question" = "What did it mean to me?";
+"room.study.instruction" = "Say what the situation seemed to MEAN to you — even if it sounds exaggerated in hindsight. This shows how a mind can spiral into a story that isn't fully true, and helps your partner understand your reaction instead of just judging it. Example: “It felt like you don't love me anymore.”";
 "room.kids_room.name" = "Kids' Room";
 "room.kids_room.question" = "What did this touch from my past?";
-"room.kids_room.forbidden" = "No arguing with the other's feelings.";
+"room.kids_room.instruction" = "This is self-reflection: which old wound got touched? A fear of being abandoned, of not being enough, of being controlled. Example: “This touches my fear of being left.” Your partner can't argue with it — it isn't about them, it's about what got triggered in you.";
+"room.kids_room.forbidden" = "• No arguing with the other's feelings";
 "room.kitchen.name" = "Kitchen";
 "room.kitchen.question" = "What would help us avoid this?";
+"room.kitchen.instruction" = "Now talk together, freely — what would actually help avoid this next time? Real, doable ideas only.";
 "room.next" = "Next room";
 "room.write_your_own" = "Write your own";
 "room.write_your_own_placeholder" = "Type what fits, in your own words";
@@ -175,6 +186,8 @@
 "room.a_bit_more_time" = "A bit more time";
 "room.time_up_banner" = "Time's up — finish your thought";
 "room.forbidden_prefix" = "Not now:";
+"room.mode_caption.sequential" = "One partner speaks — the other only listens, no comments yet.";
+"room.mode_caption.discussion" = "Dialogue allowed — talk it through together.";
 "handoff.shared_title" = "%@ shared:";
 "handoff.read_it" = "I've read it";
 
@@ -182,16 +195,15 @@
 
 "room.basement.name" = "Basement";
 "room.basement.question" = "Fears";
-"room.basement.forbidden" = "No arguing with the other's fear, no long defensive explanations before answering.";
-"basement.instruction" = "Ask up to 15 questions, each based on one fear card. Your partner answers with one of four responses, then may briefly explain.";
+"room.basement.forbidden" = "• No arguing with the other's fear\n• No long defensive explanations before answering";
+"basement.instruction" = "Say your fear out loud, in your own words — for example: “I was afraid you don't love me anymore.” A card can help you find the words, but you don't need one. Your partner answers with just one of three words: Yes, No, or I understand why it seemed that way. Ask as many fears as you need — around 15 is usually enough for one visit. No arguing with someone's fear.";
 "basement.ask" = "Ask";
-"basement.pick_a_fear_card" = "Pick a fear card to ask about";
+"basement.pick_a_fear_card" = "Pick a fear card, or say your own";
 "basement.response.yes" = "Yes";
 "basement.response.no" = "No";
-"basement.response.partially" = "Partially";
-"basement.response.understand" = "I understand why it felt that way";
+"basement.response.understand" = "I understand why it seemed that way";
+"basement.answer_instruction" = "Answer with just one of the three words above — nothing more is required.";
 "basement.explain_briefly" = "Explain briefly (optional)";
-"basement.questions_remaining" = "%d of 15 questions left";
 
 // MARK: - Garden / Bridge Finale
 

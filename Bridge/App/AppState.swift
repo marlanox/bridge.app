@@ -16,6 +16,11 @@ final class AppState: ObservableObject {
     @Published var session: SessionViewModel
 
     private let persistence = PersistenceManager.shared
+    /// Watches the active session for any change and saves a resumable snapshot shortly
+    /// after — see `restartSessionObservation()`. Replaced (not appended to) every time
+    /// `session` itself is replaced, so it always tracks the couple actually walking right
+    /// now, never a previous one.
+    private var sessionCancellable: AnyCancellable?
 
     init() {
         // Screenshot-walkthrough UI tests get a fully in-memory, deterministic profile —
@@ -49,8 +54,13 @@ final class AppState: ObservableObject {
         let activeID = persistence.activeProfileID ?? loaded[0].id
         let resolvedActiveID = loaded.contains(where: { $0.id == activeID }) ? activeID : loaded[0].id
         self.activeProfileID = resolvedActiveID
-        self.session = SessionViewModel(profile: loaded.first { $0.id == resolvedActiveID } ?? loaded[0])
+        let activeProfileAtLaunch = loaded.first { $0.id == resolvedActiveID } ?? loaded[0]
+        self.session = SessionViewModel(profile: activeProfileAtLaunch)
         persistence.saveProfiles(self.profiles)
+        if let snapshot = persistence.loadSessionSnapshot(profileID: activeProfileAtLaunch.id) {
+            self.session.restore(from: snapshot)
+        }
+        restartSessionObservation()
 
         // Real StoreKit entitlement is the source of truth for the unlock, so re-check it
         // at launch (covers reinstalls / new devices) and whenever the App Store reports
@@ -73,8 +83,38 @@ final class AppState: ObservableObject {
         profiles = restored
         let activeID = persistence.activeProfileID ?? restored[0].id
         activeProfileID = restored.contains(where: { $0.id == activeID }) ? activeID : restored[0].id
-        session = SessionViewModel(profile: restored.first { $0.id == activeProfileID } ?? restored[0])
+        let profile = restored.first { $0.id == activeProfileID } ?? restored[0]
+        session = makeSessionViewModel(for: profile)
+        restartSessionObservation()
         persistence.saveProfiles(profiles)
+    }
+
+    /// A fresh `SessionViewModel` for `profile`, resumed from its saved in-progress walk if
+    /// one exists — see `SessionSnapshot`.
+    private func makeSessionViewModel(for profile: RelationshipProfile) -> SessionViewModel {
+        let vm = SessionViewModel(profile: profile)
+        if let snapshot = persistence.loadSessionSnapshot(profileID: profile.id) {
+            vm.restore(from: snapshot)
+        }
+        return vm
+    }
+
+    /// Re-subscribes to the current `session` so any change it publishes gets snapshotted
+    /// to disk shortly after — call this every time `session` itself is replaced. Skipped
+    /// entirely during UI testing, which never touches real persistence.
+    private func restartSessionObservation() {
+        guard !UITestSupport.isUITesting, let profileID = activeProfileID else {
+            sessionCancellable = nil
+            return
+        }
+        sessionCancellable = session.objectWillChange.sink { [weak self] in
+            guard let self else { return }
+            // objectWillChange fires *before* the new value lands, so hop one tick to
+            // snapshot the state the change is actually producing, not the stale one.
+            DispatchQueue.main.async {
+                self.persistence.saveSessionSnapshot(self.session.makeSnapshot(), profileID: profileID)
+            }
+        }
     }
 
     private func syncEntitlementFromStore() {
@@ -110,7 +150,8 @@ final class AppState: ObservableObject {
         activeProfileID = id
         persistence.activeProfileID = id
         if let profile = activeProfile {
-            session = SessionViewModel(profile: profile)
+            session = makeSessionViewModel(for: profile)
+            restartSessionObservation()
         }
     }
 
@@ -133,12 +174,16 @@ final class AppState: ObservableObject {
             )
         )
         activeProfile = profile
+        // Finished normally — there is nothing left to resume for this profile.
+        persistence.clearSessionSnapshot(profileID: profile.id)
         session = SessionViewModel(profile: profile)
+        restartSessionObservation()
     }
 
     func abandonActiveSession() {
         guard let profile = activeProfile else { return }
-        session = SessionViewModel(profile: profile)
+        session = makeSessionViewModel(for: profile)
+        restartSessionObservation()
     }
 
     /// A brand-new session may only begin if the profile hasn't used its one free
@@ -163,6 +208,7 @@ final class AppState: ObservableObject {
             }
         }
 
+        persistence.clearSessionSnapshot(profileID: profile.id)
         profiles.removeAll { $0.id == profile.id }
         if profiles.isEmpty {
             profiles = [RelationshipProfile()]

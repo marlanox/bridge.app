@@ -20,31 +20,40 @@ struct CouplesAgreementSetupView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach(Array(vm.couplesAgreement.enumerated()), id: \.offset) { index, rule in
-                        HStack {
-                            Text(rule).font(.subheadline)
-                            Spacer()
-                            Button {
-                                vm.removeAgreementRule(at: IndexSet(integer: index))
-                            } label: {
-                                Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                    if !vm.couplesAgreement.isEmpty {
+                        Text(L("couples_agreement.your_rules_header"))
+                            .font(.bridgeCaption.weight(.bold))
+                            .foregroundStyle(.secondary)
+                        ForEach(Array(vm.couplesAgreement.enumerated()), id: \.offset) { index, rule in
+                            HStack {
+                                Text(rule).font(.subheadline)
+                                Spacer()
+                                Button {
+                                    vm.removeAgreementRule(at: IndexSet(integer: index))
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                                }
                             }
+                            .padding(12)
+                            .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                         }
-                        .padding(12)
-                        .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                     }
 
-                    if vm.couplesAgreement.isEmpty {
-                        Text(L("couples_agreement.subtitle"))
-                            .font(.caption)
+                    // Every suggestion not already added stays available — picking one never
+                    // hides the rest, so a couple can add as many (or as few) as they like.
+                    let remainingExamples = exampleKeys.filter { !vm.couplesAgreement.contains(L($0)) }
+                    if !remainingExamples.isEmpty {
+                        Text(L("couples_agreement.suggestions_header"))
+                            .font(.bridgeCaption.weight(.bold))
                             .foregroundStyle(.secondary)
-                        ForEach(exampleKeys, id: \.self) { key in
+                            .padding(.top, vm.couplesAgreement.isEmpty ? 0 : 8)
+                        ForEach(remainingExamples, id: \.self) { key in
                             Button {
                                 vm.addAgreementRule(L(key))
                             } label: {
                                 HStack {
                                     Image(systemName: "plus.circle")
-                                    Text(L(key)).font(.caption)
+                                    Text(L(key)).font(.bridgeCaption)
                                     Spacer()
                                 }
                             }
@@ -71,6 +80,6 @@ struct CouplesAgreementSetupView: View {
             }
         }
         .padding(24)
-        .background(Color(red: 0.98, green: 0.96, blue: 0.93))
+        .background(Color.bridgeIvory)
     }
 }

@@ -44,6 +44,10 @@ struct RoomConfig {
     let kind: RoomKind
     let nameKey: String
     let questionKey: String
+    /// A short, concrete "how to do this, with an example" line — every room gets one,
+    /// since the point of the walk is a specific kind of sentence (a fact, a feeling, a
+    /// story, a memory), and couples otherwise blur them together.
+    let instructionKey: String
     let timeMinutes: Int?
     let modes: [RoomMode]
     let forbiddenKey: String?
@@ -55,6 +59,7 @@ struct RoomConfig {
             kind: .hall,
             nameKey: "room.hall.name",
             questionKey: "room.hall.question",
+            instructionKey: "room.hall.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.hall.forbidden",
@@ -65,6 +70,7 @@ struct RoomConfig {
             kind: .livingRoom,
             nameKey: "room.living_room.name",
             questionKey: "room.living_room.question",
+            instructionKey: "room.living_room.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: nil,
@@ -75,6 +81,7 @@ struct RoomConfig {
             kind: .study,
             nameKey: "room.study.name",
             questionKey: "room.study.question",
+            instructionKey: "room.study.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: nil,
@@ -85,6 +92,7 @@ struct RoomConfig {
             kind: .kidsRoom,
             nameKey: "room.kids_room.name",
             questionKey: "room.kids_room.question",
+            instructionKey: "room.kids_room.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.kids_room.forbidden",
@@ -95,6 +103,7 @@ struct RoomConfig {
             kind: .kitchen,
             nameKey: "room.kitchen.name",
             questionKey: "room.kitchen.question",
+            instructionKey: "room.kitchen.instruction",
             timeMinutes: 7,
             modes: [.discussion],
             forbiddenKey: nil,
