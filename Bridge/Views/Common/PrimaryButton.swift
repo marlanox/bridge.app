@@ -50,6 +50,7 @@ struct PrimaryButton: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         .disabled(!isEnabled || isLoading)
+        .pressable()
         .accessibilityIdentifier(testID ?? "")
     }
 }
@@ -74,6 +75,7 @@ struct SecondaryButton: View {
                     Rectangle().fill(Color.bridgeGold.opacity(0.5)).frame(height: 1)
                 }
         }
+        .pressable()
         .accessibilityIdentifier(testID ?? "")
     }
 }

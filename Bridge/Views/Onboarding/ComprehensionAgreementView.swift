@@ -46,7 +46,7 @@ struct ComprehensionAgreementView: View {
             .padding(14)
             .background(color.color.opacity(confirmed ? 0.25 : 0.08), in: RoundedRectangle(cornerRadius: 14))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
         .disabled(confirmed)
         .accessibilityIdentifier("uitest.agree.\(role.rawValue)")
     }

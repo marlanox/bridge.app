@@ -128,7 +128,7 @@ struct RoomView: View {
                 }
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .background(.ultraThinMaterial, in: Capsule())
@@ -144,6 +144,7 @@ struct RoomView: View {
         }
         .background(done ? Color.white.opacity(0.3) : color.color, in: Capsule())
         .disabled(done)
+        .buttonStyle(PressableButtonStyle())
         .accessibilityIdentifier("uitest.room.done.\(role.rawValue)")
     }
 
@@ -220,6 +221,7 @@ struct RoomView: View {
                     .padding(10)
                     .background(.ultraThinMaterial, in: Circle())
             }
+            .buttonStyle(PressableButtonStyle())
             Spacer()
             Button { vm.markRoomDone(role) } label: {
                 Text(L("room.done"))
@@ -229,6 +231,7 @@ struct RoomView: View {
             }
             .background(vm.session.color(for: role).color, in: Capsule())
             .foregroundStyle(.white)
+            .buttonStyle(PressableButtonStyle())
             .accessibilityIdentifier("uitest.room.done")
         }
         .padding(16)

@@ -38,7 +38,7 @@ struct CouplesAgreementSetupView: View {
                                         .foregroundStyle(.secondary)
                                 }
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(PressableButtonStyle())
                             .padding(12)
                             .background(Color.bridgeGold.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                         }
@@ -64,7 +64,7 @@ struct CouplesAgreementSetupView: View {
                                     Spacer()
                                 }
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(PressableButtonStyle())
                             .foregroundStyle(.primary)
                             .padding(12)
                             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))

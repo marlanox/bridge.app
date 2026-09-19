@@ -44,7 +44,7 @@ struct RitualView: View {
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableButtonStyle())
                     .foregroundStyle(.primary)
                     .accessibilityIdentifier("uitest.ritual.line.\(index)")
                 }

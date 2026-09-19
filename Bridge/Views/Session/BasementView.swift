@@ -66,6 +66,7 @@ struct BasementView: View {
                 }
                 .background(vm.session.color(for: vm.activePartner).color, in: Capsule())
                 .foregroundStyle(.white)
+                .buttonStyle(PressableButtonStyle())
             }
             .padding(16)
         }
@@ -112,6 +113,7 @@ struct BasementView: View {
         .background(.ultraThinMaterial)
         .background(color.color.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .buttonStyle(PressableButtonStyle())
     }
 
     private var header: some View {

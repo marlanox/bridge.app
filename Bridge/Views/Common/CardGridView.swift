@@ -56,7 +56,7 @@ struct CardGridView: View {
                     .stroke(Color.bridgeGold.opacity(0.6), lineWidth: 1)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
         .accessibilityIdentifier("uitest.deck.\(deck.id)")
     }
 

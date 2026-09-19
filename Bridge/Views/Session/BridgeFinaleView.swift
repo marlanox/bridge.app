@@ -156,7 +156,7 @@ struct BridgeFinaleView: View {
                     .background(.ultraThinMaterial)
                     .background(vm.session.color(for: activeTab).color.opacity(isSelected ? 0.45 : 0.18))
                     .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableButtonStyle())
                 }
             }
         }
@@ -195,7 +195,7 @@ struct BridgeFinaleView: View {
             .padding(.vertical, 8)
         }
         .background(color.color.opacity(done ? 0.35 : 0.15), in: Capsule())
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
         .disabled(done)
     }
 

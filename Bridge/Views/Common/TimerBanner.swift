@@ -25,6 +25,7 @@ struct TimerBanner: View {
                     .background(Color.bridgeInk)
                     .foregroundStyle(.white)
                     .clipShape(Capsule())
+                    .buttonStyle(PressableButtonStyle())
                 }
             } else {
                 Text(timeString)

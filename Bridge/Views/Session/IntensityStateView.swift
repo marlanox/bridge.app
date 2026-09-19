@@ -127,7 +127,7 @@ struct IntensityStateView: View {
                 .padding(.vertical, 12)
                 .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
             }
-            .buttonStyle(.plain)
+            .buttonStyle(PressableButtonStyle())
             .accessibilityIdentifier("uitest.state.picker.\(role.rawValue)")
             .sheet(isPresented: Binding(
                 get: { openPickerRole == role },

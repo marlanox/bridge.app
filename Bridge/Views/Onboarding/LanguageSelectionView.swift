@@ -55,6 +55,7 @@ struct LanguageSelectionView: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(Color.white.opacity(0.5), lineWidth: 1)
         )
+        .buttonStyle(PressableButtonStyle())
         .accessibilityIdentifier("uitest.lang.\(language.rawValue)")
     }
 }
