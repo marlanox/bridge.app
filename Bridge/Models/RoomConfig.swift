@@ -48,6 +48,9 @@ struct RoomConfig {
     /// since the point of the walk is a specific kind of sentence (a fact, a feeling, a
     /// story, a memory), and couples otherwise blur them together.
     let instructionKey: String
+    /// One short, compassionate sentence naming what this room's exercise is actually
+    /// for — not another rule, but the reason the couple should trust the process.
+    let whyItHelpsKey: String
     let timeMinutes: Int?
     let modes: [RoomMode]
     let forbiddenKey: String?
@@ -60,6 +63,7 @@ struct RoomConfig {
             nameKey: "room.hall.name",
             questionKey: "room.hall.question",
             instructionKey: "room.hall.instruction",
+            whyItHelpsKey: "room.hall.why_it_helps",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.hall.forbidden",
@@ -71,6 +75,7 @@ struct RoomConfig {
             nameKey: "room.living_room.name",
             questionKey: "room.living_room.question",
             instructionKey: "room.living_room.instruction",
+            whyItHelpsKey: "room.living_room.why_it_helps",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.living_room.forbidden",
@@ -82,6 +87,7 @@ struct RoomConfig {
             nameKey: "room.study.name",
             questionKey: "room.study.question",
             instructionKey: "room.study.instruction",
+            whyItHelpsKey: "room.study.why_it_helps",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.study.forbidden",
@@ -93,6 +99,7 @@ struct RoomConfig {
             nameKey: "room.kids_room.name",
             questionKey: "room.kids_room.question",
             instructionKey: "room.kids_room.instruction",
+            whyItHelpsKey: "room.kids_room.why_it_helps",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
             forbiddenKey: "room.kids_room.forbidden",
@@ -104,6 +111,7 @@ struct RoomConfig {
             nameKey: "room.kitchen.name",
             questionKey: "room.kitchen.question",
             instructionKey: "room.kitchen.instruction",
+            whyItHelpsKey: "room.kitchen.why_it_helps",
             timeMinutes: 7,
             modes: [.discussion],
             forbiddenKey: nil,

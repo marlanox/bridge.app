@@ -107,6 +107,9 @@ struct CardGridView: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        // A single fixed detent — two detents make SwiftUI treat a drag at the top of the
+        // List as "resize the sheet" instead of "scroll the list", which reads as the
+        // sheet randomly collapsing while scrolling through cards.
+        .presentationDetents([.large])
     }
 }

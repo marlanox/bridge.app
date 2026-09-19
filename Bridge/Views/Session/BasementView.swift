@@ -116,42 +116,43 @@ struct BasementView: View {
         .buttonStyle(PressableButtonStyle())
     }
 
+    /// Kept compact — every line here costs a slice of the room's own interior, which
+    /// should still read as a place, not just a form.
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(L("room.basement.name"))
-                .font(.bridgeSerifTitle(30, weight: .bold))
+                .font(.bridgeSerifTitle(24, weight: .bold))
             Text(L("room.basement.question"))
-                .font(.bridgeSerifHeadline(19))
+                .font(.bridgeSerifHeadline(16))
                 .foregroundStyle(.secondary)
+            Text(L("basement.why_it_helps"))
+                .font(.bridgeCaption.italic())
+                .foregroundStyle(Color.bridgeGold)
+                .fixedSize(horizontal: false, vertical: true)
             Text(L("room.basement.forbidden"))
                 .font(.bridgeCaption)
                 .foregroundStyle(.white)
                 .padding(.horizontal, 10)
-                .padding(.vertical, 8)
+                .padding(.vertical, 6)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
-        .padding(16)
+        .padding(12)
         .background(.ultraThinMaterial)
     }
 
     /// Only relevant while picking a fear to ask — the answerer sees the fear itself and
     /// `basement.answer_instruction` instead, in `answeringContent`.
     private var askingInstructions: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(L("basement.instruction"))
-                .font(.bridgeBody)
-                .foregroundStyle(.primary.opacity(0.9))
-                .fixedSize(horizontal: false, vertical: true)
-            Text(L("basement.pick_a_fear_card"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.secondary)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial)
+        Text(L("basement.instruction"))
+            .font(.bridgeCaption)
+            .foregroundStyle(.primary.opacity(0.9))
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.ultraThinMaterial)
     }
 
     private func fearText(for id: String) -> String {

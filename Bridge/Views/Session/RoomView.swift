@@ -156,9 +156,11 @@ struct RoomView: View {
         config.modes.contains(.discussion) ? "room.mode_caption.discussion" : "room.mode_caption.sequential"
     }
 
+    // Kept compact — every line here costs a slice of the room's own interior, which
+    // should still read as a place, not just a form.
     @ViewBuilder
     private func header(activeRole: PartnerRole?) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             HStack {
                 if let activeRole {
                     Text(vm.session.name(for: activeRole))
@@ -173,25 +175,30 @@ struct RoomView: View {
                 }
             }
             Text(L(config.nameKey))
-                .font(.bridgeSerifTitle(30, weight: .bold))
+                .font(.bridgeSerifTitle(24, weight: .bold))
             Text(L(config.questionKey))
-                .font(.bridgeSerifHeadline(19))
+                .font(.bridgeSerifHeadline(16))
                 .foregroundStyle(.secondary)
 
             Label {
                 Text(L(modeCaptionKey))
-                    .font(.bridgeBody.weight(.bold))
+                    .font(.bridgeCaption.weight(.bold))
             } icon: {
                 Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
             }
             .foregroundStyle(Color.bridgeGold)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 5)
             .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Text(L(config.instructionKey))
-                .font(.bridgeBody)
+                .font(.bridgeCaption)
                 .foregroundStyle(.primary.opacity(0.9))
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(L(config.whyItHelpsKey))
+                .font(.bridgeCaption.italic())
+                .foregroundStyle(Color.bridgeGold)
                 .fixedSize(horizontal: false, vertical: true)
 
             if let forbiddenKey = config.forbiddenKey {
@@ -204,12 +211,12 @@ struct RoomView: View {
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 10)
-                .padding(.vertical, 8)
+                .padding(.vertical, 6)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
         }
-        .padding(16)
+        .padding(12)
         .background(.ultraThinMaterial)
     }
 

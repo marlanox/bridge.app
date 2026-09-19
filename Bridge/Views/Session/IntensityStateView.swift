@@ -176,6 +176,9 @@ struct IntensityStateView: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        // A single fixed detent — two detents ([.medium, .large]) make SwiftUI treat a
+        // drag at the top of the List as "resize the sheet" instead of "scroll the list",
+        // which reads as the sheet randomly collapsing while scrolling through options.
+        .presentationDetents([.large])
     }
 }

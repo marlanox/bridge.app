@@ -9,7 +9,7 @@ struct VoiceSnapshotView: View {
 
     var body: some View {
         ZStack {
-            RoomBackgroundImage(imageName: "ending")
+            RoomBackgroundImage(imageName: "end")
             Color.black.opacity(0.3).ignoresSafeArea()
 
             VStack(spacing: 20) {
