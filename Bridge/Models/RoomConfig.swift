@@ -73,7 +73,7 @@ struct RoomConfig {
             instructionKey: "room.living_room.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
-            forbiddenKey: nil,
+            forbiddenKey: "room.living_room.forbidden",
             deckIDs: ["emotions", "body_sensations"],
             backgroundImageName: "living-room"
         ),
@@ -84,7 +84,7 @@ struct RoomConfig {
             instructionKey: "room.study.instruction",
             timeMinutes: 7,
             modes: [.speaks, .listensOnly],
-            forbiddenKey: nil,
+            forbiddenKey: "room.study.forbidden",
             deckIDs: ["interpretations"],
             backgroundImageName: "study"
         ),

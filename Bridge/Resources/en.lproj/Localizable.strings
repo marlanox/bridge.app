@@ -165,9 +165,11 @@
 "room.living_room.name" = "Living Room";
 "room.living_room.question" = "What did you feel during this conflict?";
 "room.living_room.instruction" = "This is subjective — say what YOU felt, emotionally and in your body. It may surprise your partner, and that's the point: hearing it out loud helps them see you're not being cruel, you're hurting. Example: “My chest went tight — I felt scared and alone.”";
+"room.living_room.forbidden" = "• No arguing with the other's feelings\n• No saying “you shouldn't feel that way”";
 "room.study.name" = "Study";
 "room.study.question" = "What did it mean to me?";
 "room.study.instruction" = "Say what the situation seemed to MEAN to you — even if it sounds exaggerated in hindsight. This shows how a mind can spiral into a story that isn't fully true, and helps your partner understand your reaction instead of just judging it. Example: “It felt like you don't love me anymore.”";
+"room.study.forbidden" = "• No arguing with the other's interpretation\n• No saying “that's not what I meant”";
 "room.kids_room.name" = "Kids' Room";
 "room.kids_room.question" = "What did this touch from my past?";
 "room.kids_room.instruction" = "This is self-reflection: which old wound got touched? A fear of being abandoned, of not being enough, of being controlled. Example: “This touches my fear of being left.” Your partner can't argue with it — it isn't about them, it's about what got triggered in you.";
