@@ -29,8 +29,9 @@ final class AppState: ObservableObject {
         }
         self.profiles = loaded
         let activeID = persistence.activeProfileID ?? loaded[0].id
-        self.activeProfileID = loaded.contains(where: { $0.id == activeID }) ? activeID : loaded[0].id
-        self.session = SessionViewModel(profile: loaded.first { $0.id == self.activeProfileID } ?? loaded[0])
+        let resolvedActiveID = loaded.contains(where: { $0.id == activeID }) ? activeID : loaded[0].id
+        self.activeProfileID = resolvedActiveID
+        self.session = SessionViewModel(profile: loaded.first { $0.id == resolvedActiveID } ?? loaded[0])
         persistence.saveProfiles(self.profiles)
 
         // Real StoreKit entitlement is the source of truth for the unlock, so re-check it
