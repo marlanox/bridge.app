@@ -19,6 +19,19 @@ open Bridge.xcodeproj
 Then build and run on an iOS 17+ simulator or device (⌘R). No third-party Swift packages
 are required.
 
+## Automated screenshot walkthrough
+
+`BridgeUITests` drives the real, compiled app in the iOS Simulator through every screen and
+the two-partner turn-flip mechanic (both reveal cards, both 180° rotations), attaching a
+screenshot at each step — no hand-drawn mockups. `.github/workflows/screenshots.yml` runs it
+on push on a real booted simulator and uploads the screenshots (and the full `.xcresult`) as
+downloadable build artifacts from the Actions run. A `-uiTesting` launch argument
+(`Bridge/Testing/UITestSupport.swift`) lets tests jump straight to any room/screen with a
+seeded session instead of re-walking onboarding every time; it's a runtime-only check a real
+launch never triggers, so production behavior is unaffected. Run locally with `⌘U` in Xcode,
+or `Scripts/bootstrap.sh && xcodebuild test -project Bridge.xcodeproj -scheme Bridge
+-destination 'platform=iOS Simulator,name=<any installed iPhone>'`.
+
 ## Building in CI / any cloud build service
 
 `project.yml` is the **only** project configuration in this repo — `Bridge.xcodeproj` is
