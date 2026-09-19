@@ -103,11 +103,10 @@ limitations of this session" below).
 All ten backgrounds are in `Bridge/Assets.xcassets/` — `house-exterior.png`,
 `house-map.png`, `hall.png`, `living-room.png`, `study.png`, `kids-room.png`,
 `kitchen.png`, `basement.png`, `bridge.png`, `ending.png` — generated from the
-photorealistic reference photos provided. The app icon (`app-icon.png`) is instead a
-programmatically rendered vector mark (warm sunset gradient, an arch bridge silhouette
-with its water reflection) — edge-to-edge, no AI image generation was available in this
-session to produce a photorealistic one, so this is a deliberately bold, simple "logo"
-style icon instead. `RoomBackgroundImage` still falls back to a plain warm beige
+photorealistic reference photos provided. The app icon (`app-icon.png`, 1024×1024, opaque
+RGB) is a user-supplied photorealistic render — a glass-and-gold bridge mark over water —
+dropped in as-is at `Bridge/Assets.xcassets/AppIcon.appiconset/app-icon.png` (single-size
+App Icon; Xcode/App Store Connect derive every other size from it). `RoomBackgroundImage` still falls back to a plain warm beige
 background (and the House Map to a plain numbered list) if any asset is ever removed, so
 the app never blocks on art.
 
