@@ -21,6 +21,13 @@
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-l: env(safe-area-inset-left, 0px);
   --safe-r: env(safe-area-inset-right, 0px);
+
+  /* The global Back/Settings bar sits at --safe-t + 6px and is roughly this tall —
+     whichever edge of a room's rotating content ends up physically at the top needs at
+     least this much clearance, not just the notch's own --safe-t, or a corner control
+     (the room's Done/flag row, moved there by a 180deg rotation) can land underneath it
+     and steal its taps. See .seat-rotator.flipped .seat-content below. */
+  --chrome-t: calc(var(--safe-t) + 46px);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -61,6 +68,15 @@ button, .pressable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* A disabled button needs to read as "not ready yet", not as a rendering glitch — full
+   opacity with a flat neutral fill and a visibly dimmer label, never a washed-out/
+   half-transparent look that's easy to mistake for something broken. */
+button:disabled {
+  opacity: 1 !important;
+  filter: grayscale(0.5);
+  cursor: not-allowed;
 }
 
 /* Text content (cards, instructions) should still be selectable for a real user. */
@@ -209,6 +225,17 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   pointer-events: auto;
+}
+/* A 180deg rotation swaps which physical edge is "top" — content laid out with the
+   normal (top=notch, bottom=home-indicator) padding would then have its logical bottom
+   row (Done, the flag — both anchored to a screen edge) land physically at the top,
+   right where the global Back/Settings bar lives, stealing its taps. The logical bottom
+   edge (now physically on top) needs --chrome-t, not just --safe-t, to actually clear
+   that bar; the logical top edge (now physically on bottom) only ever needs to clear the
+   home indicator. */
+.seat-rotator.flipped .seat-content {
+  padding-top: var(--safe-b); padding-bottom: var(--chrome-t);
+  padding-left: var(--safe-r); padding-right: var(--safe-l);
 }
 
 .fixed-badge {
@@ -420,10 +447,17 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 /* ============================================================
    Language picker / Welcome
    ============================================================ */
-.lang-btn, .full-photo-btn {
+.full-photo-btn {
   display: block; width: 100%; padding: 16px 0; text-align: center;
   background: rgba(255,255,255,0.16); backdrop-filter: blur(14px);
   color: #fff; border: 1px solid rgba(255,255,255,0.5); border-radius: 16px; cursor: pointer;
+}
+/* Beige with a black border/text, not the translucent glass look every other on-photo
+   button uses — an explicit, deliberate exception for the two language buttons. */
+.lang-btn {
+  display: block; width: 100%; padding: 16px 0; text-align: center;
+  background: #ede4d3; color: #17171a;
+  border: 1.5px solid #17171a; border-radius: 16px; cursor: pointer; font-weight: 600;
 }
 
 /* ============================================================

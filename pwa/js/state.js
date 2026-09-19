@@ -325,23 +325,38 @@ export class Store {
       const f = this.flow;
       switch (f.step) {
         case "welcome":
+          // Returning couples already have the house map/names on file, so repeat
+          // sessions skip straight past the explanatory pages, house map and names to
+          // the apology ritual itself — that part happens fresh every session, not just
+          // at onboarding.
           this.flow = this.activeProfile().hasCompletedFirstSession
-            ? { step: "dice" }
+            ? { step: "ritual" }
             : { step: "howItWorksWhatIsBridge" };
           break;
-        case "howItWorksWhatIsBridge": this.flow = { step: "howItWorksApology" }; break;
-        case "howItWorksApology": this.flow = { step: "disclaimer" }; break;
-        case "disclaimer": this.flow = { step: "houseMap" }; break;
+        case "howItWorksWhatIsBridge": this.flow = { step: "disclaimer" }; break;
+        case "disclaimer": this.flow = { step: "howItWorksApology" }; break;
+        case "howItWorksApology": this.flow = { step: "ritual" }; break;
+        case "ritual": this.flow = { step: "oath" }; break;
+        case "oath":
+          // A returning couple already has the house map and names on file — the oath
+          // is the last thing they repeat every session before going straight to dice.
+          this.flow = this.activeProfile().hasCompletedFirstSession
+            ? { step: "dice" }
+            : { step: "houseMap" };
+          break;
         case "houseMap": this.flow = { step: "names" }; break;
         case "names": this.flow = { step: "dice" }; break;
         case "couplesAgreementSetup": this.flow = { step: "voiceSnapshot" }; break;
         case "dice": this.flow = { step: "intensityState" }; break;
         case "intensityState":
-          this.flow = this.needsCalmDown() ? { step: "calmDown" } : { step: "oath" };
+          if (this.needsCalmDown()) {
+            this.flow = { step: "calmDown" };
+          } else {
+            this.flow = { step: "room", kind: "hall" };
+            this._startRoom("hall");
+          }
           break;
-        case "calmDown": this.flow = { step: "oath" }; break;
-        case "oath": this.flow = { step: "ritual" }; break;
-        case "ritual":
+        case "calmDown":
           this.flow = { step: "room", kind: "hall" };
           this._startRoom("hall");
           break;
