@@ -71,5 +71,6 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.bridge.app.ios.uitests
+        GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: Bridge
