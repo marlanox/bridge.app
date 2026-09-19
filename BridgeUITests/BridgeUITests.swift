@@ -93,13 +93,6 @@ final class BridgeUITests: XCTestCase {
         attach(app, "A08-names")
         app.buttons["uitest.names.continue"].tap()
 
-        XCTAssertTrue(app.buttons["uitest.agree.partnerA"].waitForExistence(timeout: 10))
-        attach(app, "A09-comprehension-before")
-        app.buttons["uitest.agree.partnerA"].tap()
-        app.buttons["uitest.agree.partnerB"].tap()
-        attach(app, "A10-comprehension-both-confirmed")
-        app.buttons["uitest.agree.continue"].tap()
-
         XCTAssertTrue(app.buttons["uitest.dice.roll"].waitForExistence(timeout: 10))
         attach(app, "A12-dice-before-roll")
         app.buttons["uitest.dice.roll"].tap()

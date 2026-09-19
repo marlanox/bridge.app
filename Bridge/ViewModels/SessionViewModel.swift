@@ -9,8 +9,10 @@ import Combine
 /// worst case, a partner taps "Done" one more time.
 struct SessionSnapshot: Codable {
     var flow: AppFlowStep
+    /// The steps visited before the current one, most-recent-last — lets a resumed walk
+    /// still offer "Back" instead of stranding a couple who reopens the app mid-session.
+    var history: [AppFlowStep]
     var session: GameSession
-    var comprehensionConfirmed: [PartnerRole: Bool]
     var couplesAgreement: [String]
     var roomDoneFlags: [PartnerRole: Bool]
     var activePartner: PartnerRole
@@ -23,12 +25,15 @@ struct SessionSnapshot: Codable {
 /// Drives one full walk through the house: flow position, whose turn is active,
 /// the room timer, cards played, the Basement Q&A protocol, and the Bridge finale.
 final class SessionViewModel: ObservableObject {
-    @Published var flow: AppFlowStep = .welcome
+    @Published private(set) var flow: AppFlowStep = .welcome
+    /// Steps visited before the current one, most-recent-last. Populated automatically by
+    /// `setFlow(_:)` (used by every forward move `advance()` makes) and consumed by
+    /// `goBack()`. UI-test jump helpers bypass this on purpose — see their doc comment.
+    @Published private(set) var history: [AppFlowStep] = []
     @Published var session: GameSession
     @Published var activePartner: PartnerRole = .partnerA
 
-    // Onboarding gates
-    @Published var comprehensionConfirmed: [PartnerRole: Bool] = [.partnerA: false, .partnerB: false]
+    // Onboarding
     @Published var couplesAgreement: [String]
 
     // Room runtime state
@@ -63,8 +68,8 @@ final class SessionViewModel: ObservableObject {
     func makeSnapshot() -> SessionSnapshot {
         SessionSnapshot(
             flow: flow,
+            history: history,
             session: session,
-            comprehensionConfirmed: comprehensionConfirmed,
             couplesAgreement: couplesAgreement,
             roomDoneFlags: roomDoneFlags,
             activePartner: activePartner,
@@ -79,8 +84,8 @@ final class SessionViewModel: ObservableObject {
     /// has observed this view model, so directly overwriting the fresh defaults is safe.
     func restore(from snapshot: SessionSnapshot) {
         flow = snapshot.flow
+        history = snapshot.history
         session = snapshot.session
-        comprehensionConfirmed = snapshot.comprehensionConfirmed
         couplesAgreement = snapshot.couplesAgreement
         roomDoneFlags = snapshot.roomDoneFlags
         activePartner = snapshot.activePartner
@@ -105,14 +110,6 @@ final class SessionViewModel: ObservableObject {
     func setNames(partnerA: String, partnerB: String) {
         session.partnerA.name = partnerA
         session.partnerB.name = partnerB
-    }
-
-    func confirmComprehension(_ role: PartnerRole) {
-        comprehensionConfirmed[role] = true
-    }
-
-    var bothConfirmedComprehension: Bool {
-        comprehensionConfirmed[.partnerA] == true && comprehensionConfirmed[.partnerB] == true
     }
 
     func addAgreementRule(_ text: String) {
@@ -168,6 +165,14 @@ final class SessionViewModel: ObservableObject {
 
     // MARK: - Flow advancement
 
+    /// Every forward move goes through here so `history` always reflects exactly the
+    /// steps a couple actually walked through, in order — the single source `goBack()`
+    /// unwinds from.
+    private func setFlow(_ newValue: AppFlowStep) {
+        history.append(flow)
+        flow = newValue
+    }
+
     func advance() {
         switch flow {
         case .welcome:
@@ -175,50 +180,88 @@ final class SessionViewModel: ObservableObject {
             // couples already have names on file, so repeat sessions skip straight past
             // the explanatory pages to the dice roll — they still revisit the Couple's
             // Agreement at the end of every session, after the Bridge finale.
-            flow = originalProfile.hasCompletedFirstSession ? .dice : .howItWorksWhatIsBridge
+            setFlow(originalProfile.hasCompletedFirstSession ? .dice : .howItWorksWhatIsBridge)
         case .howItWorksWhatIsBridge:
-            flow = .howItWorksApology
+            setFlow(.howItWorksApology)
         case .howItWorksApology:
-            flow = .disclaimer
+            setFlow(.disclaimer)
         case .disclaimer:
-            flow = .houseMap
+            setFlow(.houseMap)
         case .houseMap:
-            flow = .names
+            setFlow(.names)
         case .names:
-            flow = .comprehensionAgreement
-        case .comprehensionAgreement:
-            flow = .dice
+            setFlow(.dice)
         case .couplesAgreementSetup:
-            flow = .voiceSnapshot
+            setFlow(.voiceSnapshot)
         case .dice:
-            flow = .intensityState
+            setFlow(.intensityState)
         case .intensityState:
-            flow = needsCalmDown ? .calmDown : .oath
+            setFlow(needsCalmDown ? .calmDown : .oath)
         case .calmDown:
-            flow = .oath
+            setFlow(.oath)
         case .oath:
-            flow = .ritual
+            setFlow(.ritual)
         case .ritual:
-            flow = .room(.hall)
+            setFlow(.room(.hall))
             startRoom(.hall)
         case .room(let kind):
             if kind == .kitchen {
-                flow = .basement
+                setFlow(.basement)
                 startBasement()
             } else if let next = kind.next {
-                flow = .room(next)
+                setFlow(.room(next))
                 startRoom(next)
             }
         case .basement:
             // No separate Needs Room or Garden — straight to the Bridge finale, where
             // Needs & Connection, Step Toward and Gift cards are all chosen together.
-            flow = .bridgeFinale
+            setFlow(.bridgeFinale)
         case .bridgeFinale:
             TokenManager.awardBridgeFinale(session: &session)
-            flow = .couplesAgreementSetup
+            setFlow(.couplesAgreementSetup)
         case .voiceSnapshot:
-            flow = .closing
+            setFlow(.closing)
         case .closing:
+            break
+        }
+    }
+
+    var canGoBack: Bool { !history.isEmpty }
+
+    /// Steps back to whatever screen preceded the current one. Answers already recorded
+    /// for earlier steps (names, intensity, cards played in an earlier room, etc.) are
+    /// untouched — only the step being re-entered has its own in-flight runtime state
+    /// (room timer, reveal card, basement turn) reset, the same way arriving at it
+    /// forward always does.
+    func goBack() {
+        guard let previous = history.popLast() else { return }
+        flow = previous
+        reenterCurrentStep()
+    }
+
+    /// The "Start Over" escape hatch, reachable from Settings on every screen: throws
+    /// away the walk in progress and returns to Welcome. Tokens and history from any
+    /// previously *completed* session are untouched — this only abandons the current one.
+    func restartWalk() {
+        history = []
+        flow = .welcome
+    }
+
+    /// The "redo this page" escape hatch: clears whatever runtime state belongs only to
+    /// the current step and re-enters it fresh, without moving forward or backward in the
+    /// walk. `history` is untouched, so "Back" afterward still lands on whatever came
+    /// before this step.
+    func redoCurrentPage() {
+        reenterCurrentStep()
+    }
+
+    private func reenterCurrentStep() {
+        switch flow {
+        case .room(let kind):
+            startRoom(kind)
+        case .basement:
+            startBasement()
+        default:
             break
         }
     }
@@ -426,8 +469,6 @@ final class SessionViewModel: ObservableObject {
 
     private func seedForUITestScreenshot() {
         setNames(partnerA: "Alex", partnerB: "Jordan")
-        confirmComprehension(.partnerA)
-        confirmComprehension(.partnerB)
         couplesAgreement = ["No name-calling", "No leaving mid-conversation"]
         session.firstToSpeak = .partnerA
         setIntensity(4, for: .partnerA)

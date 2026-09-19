@@ -10,12 +10,14 @@ struct SessionFlowView: View {
     @State private var showingSettings = false
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .top) {
             content
 
-            if vm.flow == .welcome {
-                settingsButton
-            }
+            // Global Back / Settings, on every screen, no exceptions — a stuck screen
+            // should never be a dead end, so this never depends on the current screen
+            // having its own way out. Settings itself is the "redo this page" /
+            // "start over" escape hatch for anything Back can't fix.
+            globalNavBar
         }
         .onReceive(vm.tickerPublisher) { _ in vm.tick() }
         .sheet(isPresented: $showingPaywall) { PaywallView() }
@@ -53,9 +55,6 @@ struct SessionFlowView: View {
 
         case .names:
             NamesEntryView(vm: vm) { vm.advance() }
-
-        case .comprehensionAgreement:
-            ComprehensionAgreementView(vm: vm) { vm.advance() }
 
         case .couplesAgreementSetup:
             CouplesAgreementSetupView(vm: vm) { vm.advance() }
@@ -105,17 +104,41 @@ struct SessionFlowView: View {
         }
     }
 
-    private var settingsButton: some View {
-        Button {
-            showingSettings = true
-        } label: {
-            Image(systemName: "gearshape.fill")
-                .font(.title2)
-                .foregroundStyle(.white)
-                .padding(10)
-                .background(.ultraThinMaterial, in: Circle())
+    private var globalNavBar: some View {
+        HStack {
+            if vm.canGoBack {
+                Button {
+                    vm.goBack()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text(L("nav.back"))
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.bridgeInk)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(.ultraThinMaterial, in: Capsule())
+                }
+                .accessibilityIdentifier("uitest.nav.back")
+            }
+
+            Spacer()
+
+            // Deliberately no circle/background behind the gear — a plain glyph with
+            // just enough shadow to read on both a light screen and a room photo,
+            // per explicit request.
+            Button {
+                showingSettings = true
+            } label: {
+                Image(systemName: "gearshape.fill")
+                    .font(.title2)
+                    .foregroundStyle(Color.bridgeInk)
+                    .shadow(color: .white.opacity(0.9), radius: 3)
+            }
+            .accessibilityIdentifier("uitest.settings.gear")
         }
-        .padding(16)
-        .accessibilityIdentifier("uitest.settings.gear")
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
     }
 }

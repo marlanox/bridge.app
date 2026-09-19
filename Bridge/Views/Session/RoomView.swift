@@ -169,49 +169,62 @@ struct RoomView: View {
     }
 
     // Kept compact — every line here costs a slice of the room's own interior, which
-    // should still read as a place, not just a form.
+    // should still read as a place, not just a form. Collapsed state is a single slim
+    // "Expand" bar (nothing else) and expanded state ends in an explicit "I've read it"
+    // button — no chevron toggle — so the control is always in the same place with an
+    // unambiguous label, per explicit request.
     @ViewBuilder
     private func header(activeRole: PartnerRole?) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack {
-                if let activeRole {
-                    Text(vm.session.name(for: activeRole))
-                        .font(.bridgeCaption)
-                        .foregroundStyle(vm.session.color(for: activeRole).color)
+        if !instructionsExpanded {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = true }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.down")
+                    Text(L("room.expand"))
                 }
-                Spacer()
-                ForEach(config.modes, id: \.self) { mode in
-                    Image(systemName: mode.iconSystemName)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded.toggle() }
-                } label: {
-                    Image(systemName: instructionsExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                }
-                .accessibilityIdentifier("uitest.room.header.toggle")
+                .font(.subheadline.weight(.semibold))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
             }
-            Text(L(config.nameKey))
-                .font(.bridgeSerifTitle(24, weight: .bold))
-            Text(L(config.questionKey))
-                .font(.bridgeSerifHeadline(16))
-                .foregroundStyle(.secondary)
+            .buttonStyle(PressableButtonStyle())
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
+            .accessibilityIdentifier("uitest.room.header.toggle")
+        } else {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    if let activeRole {
+                        Text(vm.session.name(for: activeRole))
+                            .font(.bridgeCaption)
+                            .foregroundStyle(vm.session.color(for: activeRole).color)
+                    }
+                    Spacer()
+                    ForEach(config.modes, id: \.self) { mode in
+                        Image(systemName: mode.iconSystemName)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text(L(config.nameKey))
+                    .font(.bridgeSerifTitle(24, weight: .bold))
+                Text(L(config.questionKey))
+                    .font(.bridgeSerifHeadline(16))
+                    .foregroundStyle(.secondary)
 
-            Label {
-                Text(L(modeCaptionKey))
-                    .font(.bridgeCaption.weight(.bold))
-            } icon: {
-                Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
-            }
-            .foregroundStyle(Color.bridgeGold)
-            .padding(.horizontal, 9)
-            .padding(.vertical, 5)
-            .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                Label {
+                    Text(L(modeCaptionKey))
+                        .font(.bridgeCaption.weight(.bold))
+                } icon: {
+                    Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
+                }
+                .foregroundStyle(Color.bridgeGold)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 5)
+                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-            if instructionsExpanded {
                 Text(L(config.instructionKey))
                     .font(.bridgeCaption)
                     .foregroundStyle(.primary.opacity(0.9))
@@ -242,19 +255,42 @@ struct RoomView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = false }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark")
+                        Text(L("room.read_it"))
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                }
+                .buttonStyle(PressableButtonStyle())
+                .background(Color.bridgeGold.opacity(0.2), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .accessibilityIdentifier("uitest.room.header.toggle")
             }
+            .padding(12)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
         }
-        .padding(12)
-        .background(.ultraThinMaterial)
     }
 
     @ViewBuilder
     private func doneRow(role: PartnerRole) -> some View {
         HStack {
             Button { vm.flagAgreementBroken() } label: {
-                Image(systemName: "flag")
-                    .padding(10)
-                    .background(.ultraThinMaterial, in: Circle())
+                HStack(spacing: 6) {
+                    Image(systemName: "flag.fill")
+                    Text(L("room.flag_broken"))
+                        .font(.caption.weight(.semibold))
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(.ultraThinMaterial, in: Capsule())
             }
             .buttonStyle(PressableButtonStyle())
             Spacer()
@@ -264,9 +300,10 @@ struct RoomView: View {
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
             }
-            .background(vm.session.color(for: role).color, in: Capsule())
+            .background(vm.placedCardsThisTurn.isEmpty ? AnyShapeStyle(.secondary.opacity(0.3)) : AnyShapeStyle(vm.session.color(for: role).color), in: Capsule())
             .foregroundStyle(.white)
             .buttonStyle(PressableButtonStyle())
+            .disabled(vm.placedCardsThisTurn.isEmpty)
             .accessibilityIdentifier("uitest.room.done")
         }
         .padding(16)

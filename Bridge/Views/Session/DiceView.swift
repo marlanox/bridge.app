@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct DiceView: View {
     @ObservedObject var vm: SessionViewModel
@@ -7,6 +8,13 @@ struct DiceView: View {
     @State private var rolled = false
     @State private var rotation: Double = 0
     @State private var winner: PartnerRole?
+    @State private var currentFace = 1
+    @State private var faceTimer: Timer?
+
+    private static let faceSymbols = [
+        "die.face.1.fill", "die.face.2.fill", "die.face.3.fill",
+        "die.face.4.fill", "die.face.5.fill", "die.face.6.fill",
+    ]
 
     var body: some View {
         VStack(spacing: 28) {
@@ -16,7 +24,7 @@ struct DiceView: View {
             Text(L("dice.subtitle"))
                 .foregroundStyle(.secondary)
 
-            Image(systemName: "die.face.5.fill")
+            Image(systemName: Self.faceSymbols[currentFace - 1])
                 .font(.system(size: 96))
                 .rotationEffect(.degrees(rotation))
                 .foregroundStyle(Color.bridgeInk)
@@ -36,8 +44,18 @@ struct DiceView: View {
                     withAnimation(.easeOut(duration: 0.6)) {
                         rotation += 720
                     }
+                    // Actually cycle through different faces while it "rolls" — a single
+                    // static face just spinning in place reads as broken/unresponsive,
+                    // not as a die being rolled.
+                    faceTimer?.invalidate()
+                    faceTimer = Timer.scheduledTimer(withTimeInterval: 0.06, repeats: true) { _ in
+                        currentFace = Int.random(in: 1...6)
+                    }
                     let result = vm.rollDice()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                        faceTimer?.invalidate()
+                        faceTimer = nil
+                        currentFace = Int.random(in: 1...6)
                         winner = result
                         rolled = true
                     }
@@ -46,5 +64,6 @@ struct DiceView: View {
         }
         .padding(28)
         .background(Color.bridgeIvory)
+        .onDisappear { faceTimer?.invalidate() }
     }
 }

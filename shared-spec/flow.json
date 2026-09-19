@@ -1,5 +1,5 @@
 {
-  "_comment": "Canonical ordered step list for one walk through the house. Mirrors Bridge/ViewModels/AppFlowStep.swift + SessionViewModel.advance(). Returning couples (hasCompletedFirstSession) skip steps 0-9 (welcome..ritual) and jump straight to dice.",
+  "_comment": "Canonical ordered step list for one walk through the house. Mirrors Bridge/ViewModels/AppFlowStep.swift + SessionViewModel.advance(). Returning couples (hasCompletedFirstSession) skip steps 0-10 (welcome..ritual, inclusive) and jump straight to dice.",
   "steps": [
     "welcome",
     "howItWorksWhatIsBridge",
@@ -7,7 +7,6 @@
     "disclaimer",
     "houseMap",
     "names",
-    "comprehensionAgreement",
     "dice",
     "intensityState",
     "calmDown",

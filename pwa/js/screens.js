@@ -39,9 +39,8 @@ export function languageScreen() {
 }
 
 // =========================================================== Welcome
-export function welcomeScreen(showSettingsGear) {
+export function welcomeScreen() {
   return photoScreen("house-exterior", `
-      ${showSettingsGear ? `<button class="icon-btn on-dark pressable" style="position:absolute;top:calc(var(--safe-t) + 16px);left:calc(var(--safe-l) + 16px);" data-action="openSettings">⚙</button>` : ""}
       <div class="spacer"></div>
       <div class="f-serif-title on-photo" style="font-size:42px;">${escHtml(L("app.name"))}</div>
       <p class="on-photo secondary" style="max-width:320px;margin:8px auto 0;">${escHtml(L("app.tagline"))}</p>
@@ -109,25 +108,6 @@ export function namesScreen(store) {
     </div>`;
 }
 
-// =========================================================== Comprehension agreement
-export function comprehensionScreen(store) {
-  const row = (role, colorClass) => {
-    const confirmed = store.comprehensionConfirmed[role];
-    return `<button class="confirm-row ${colorClass}${confirmed ? " confirmed" : ""} pressable" ${confirmed ? "disabled" : ""} data-action="confirmComprehension" data-arg="${role}">
-        <span><span class="dot ${colorClass}"></span> ${escHtml(store.name(role))}</span>
-        <span>${confirmed ? "✓" : escHtml(L("agree.button"))}</span>
-      </button>`;
-  };
-  return `<div class="screen">
-      <div class="spacer" style="flex:0 0 20px;"></div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("agree.title"))}</h1>
-      <p class="f-body secondary">${escHtml(L("agree.summary"))}</p>
-      <div class="spacer"></div>
-      <div class="stack gap-12">${row("partnerA", "a")}${row("partnerB", "b")}</div>
-      <div style="margin-top:20px;">${primaryButton({ key: "names.continue", action: "advance", enabled: store.bothConfirmedComprehension() })}</div>
-    </div>`;
-}
-
 // =========================================================== Couple's Agreement
 export function couplesAgreementScreen(store, ui) {
   const exampleKeys = Array.from({ length: 7 }, (_, i) => `couples_agreement.example.${String(i + 1).padStart(2, "0")}`);
@@ -168,13 +148,15 @@ export function couplesAgreementScreen(store, ui) {
 }
 
 // =========================================================== Dice
+const DIE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
 export function diceScreen(ui) {
   const rotation = ui.diceRolled ? 720 : 0;
   return `<div class="screen" style="align-items:center;text-align:center;">
       <div class="spacer"></div>
       <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("dice.title"))}</h1>
       <p class="secondary">${escHtml(L("dice.subtitle"))}</p>
-      <div class="die-face" style="transform:rotate(${rotation}deg);margin:20px 0;">🎲</div>
+      <div class="die-face" style="transform:rotate(${rotation}deg);margin:20px 0;font-size:64px;">${DIE_FACES[(ui.diceFace || 1) - 1]}</div>
       ${ui.diceWinner ? `<p style="font-weight:700;color:${ui.diceWinner === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", ui.diceWinnerName))}</p>` : ""}
       <div class="spacer"></div>
       ${ui.diceRolled ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
@@ -235,11 +217,20 @@ function statePickerSheet(store, ui, role) {
         <span>${escHtml(L(`state.${s}`))}</span>${checked ? '<span class="check">✓</span>' : ""}
       </button>`;
   }).join("");
+  // partnerB's whole section on the intensity screen is rotated 180deg (they're sitting
+  // across the table, reading upside down otherwise) — a sheet opened from that section
+  // has to rotate the same way, or it pops up right-side-up for the WRONG partner. The
+  // rotation goes on an inner wrapper, not `.sheet` itself, since `.sheet` already
+  // animates its own `transform` for the slide-up and a second transform there would
+  // just replace it instead of combining.
+  const rotation = role === "partnerB" ? 180 : 0;
   return `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeStatePicker">
       <div class="sheet">
-        <div class="sheet-handle"></div>
-        <div class="sheet-header"><span>${escHtml(L("intensity.state_label"))}</span><button data-action="closeStatePicker">${L("room.done")}</button></div>
-        <div class="sheet-body">${rows}</div>
+        <div style="transform:rotate(${rotation}deg)">
+          <div class="sheet-handle"></div>
+          <div class="sheet-header"><span>${escHtml(L("intensity.state_label"))}</span><button data-action="closeStatePicker">${L("room.done")}</button></div>
+          <div class="sheet-body">${rows}</div>
+        </div>
       </div>
     </div>`;
 }
@@ -285,7 +276,7 @@ export function ritualScreen(ui) {
       <p class="secondary">${escHtml(L("ritual.instruction"))}</p>
       <div class="stack gap-12" style="width:100%;margin-top:20px;">${options}</div>
       <div class="spacer"></div>
-      ${primaryButton({ key: "ritual.continue", action: "completeRitualAndAdvance", enabled: ui.chosenLine !== null })}
+      ${primaryButton({ key: "ritual.continue", action: "completeRitualAndAdvance", enabled: true })}
     </div>`;
 }
 
@@ -301,19 +292,22 @@ export function roomScreen(store, ui, kind) {
 
   let body;
   if (isSequential) {
-    body = `<div class="seat-stage${rotation ? " flipped" : ""}">
-        ${header}
-        <div class="spacer" style="flex:0 0 8px;"></div>
-        ${placedCards(store)}
-        <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
-        ${deckDropdownList(cfg.deckIds)}
-        <div class="spacer"></div>
-        <div style="display:flex;justify-content:space-between;padding:16px;">
-          <button class="icon-btn pressable" data-action="flagAgreementBroken">⚑</button>
-          <button class="pressable" data-action="markRoomDoneActive" style="background:${active === "partnerA" ? "var(--purple)" : "var(--green)"};color:#fff;border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
+    body = `<div class="seat-rotator${rotation ? " flipped" : ""}">
+        <div class="photo-screen" style="background-image:url('assets/rooms/${cfg.backgroundImage}.jpg')"></div>
+        <div class="seat-content">
+          ${header}
+          <div class="spacer" style="flex:0 0 8px;"></div>
+          ${placedCards(store)}
+          <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
+          ${deckDropdownList(cfg.deckIds)}
+          <div class="spacer"></div>
+          ${flagRow()}
+          <div style="padding:0 16px 16px;text-align:right;">
+            <button class="pressable" data-action="markRoomDoneActive" ${store.placedCardsThisTurn.length === 0 ? "disabled" : ""} style="background:${store.placedCardsThisTurn.length === 0 ? "rgba(0,0,0,0.15)" : (active === "partnerA" ? "var(--purple)" : "var(--green)")};color:${store.placedCardsThisTurn.length === 0 ? "rgba(0,0,0,0.4)" : "#fff"};border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
+          </div>
         </div>
       </div>
-      ${waitingBadge(store, store.other(active))}`;
+      ${waitingBadge(store, store.other(active), active)}`;
   } else {
     const doneRow = (role, colorClass) => {
       const done = store.roomDoneFlags[role];
@@ -333,7 +327,26 @@ export function roomScreen(store, ui, kind) {
   }
 
   const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft) : "";
-  return photoScreen(cfg.backgroundImage, body, { dim: false }) + revealOverlay(store) + sheet;
+  // `.screen` already establishes a positioning context via its own `position: absolute;
+  // inset: 0` (filling #app) — overriding that to `position: relative` here (as this used
+  // to do) drops the "inset: 0" sizing entirely, so with every child of this div itself
+  // absolutely positioned (.seat-rotator/.seat-content, both inset:0) nothing is left to
+  // give `.screen` an intrinsic height. It collapses to 0 and its absolutely-positioned
+  // children collapse right along with it — down to just their own safe-area padding —
+  // which reads as "the room is broken": almost everything renders scrolled out of the
+  // sliver that's left, and taps miss whatever accidentally still overlaps it.
+  const screen = isSequential
+    ? `<div class="screen flush no-scroll">${body}</div>`
+    : photoScreen(cfg.backgroundImage, body, { dim: false });
+  return screen + revealOverlay(store) + sheet;
+}
+
+function flagRow() {
+  return `<div style="padding:0 16px;">
+      <button class="pressable" data-action="flagAgreementBroken" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:blur(10px);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600;">
+        🚩 <span>${escHtml(L("room.flag_broken"))}</span>
+      </button>
+    </div>`;
 }
 
 // =========================================================== Basement
@@ -344,7 +357,6 @@ export function basementScreen(store, ui) {
 
   let content;
   if (store.pendingBasementFearCardID) {
-    const answerer = store.activePartner;
     const fearText = store.pendingBasementCustomText ?? fearTextFor(store.pendingBasementFearCardID);
     const responses = RESPONSE_KEYS
       .map((r) => `<button class="response-btn pressable" style="background:rgba(0,0,0,0.06)" data-action="submitBasementResponse" data-arg="${r}">${escHtml(L(`basement.response.${r}`))}</button>`)
@@ -357,9 +369,6 @@ export function basementScreen(store, ui) {
       </div>`;
   } else {
     content = `${header}
-      <div class="collapsible${ui.headerExpanded ? "" : " collapsed"}" style="padding:8px 16px;background:rgba(255,255,255,0.55);">
-        <div class="instruction-text">${escHtml(L("basement.instruction"))}</div>
-      </div>
       <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
       ${deckDropdownList(["fears"])}
       <div class="spacer"></div>
@@ -372,8 +381,15 @@ export function basementScreen(store, ui) {
   const sheet = ui.openDeckId
     ? deckSheet("fears", (card) => store.canCurrentAskerAsk(), ui.customCardDraft)
     : "";
-  const stage = `<div class="seat-stage${rotation ? " flipped" : ""}" style="background:rgba(0,0,0,0.3)">${content}</div>`;
-  return photoScreen("basement", stage, { dim: false }) + sheet;
+  const body = `<div class="seat-rotator${rotation ? " flipped" : ""}">
+      <div class="photo-screen" style="background-image:url('assets/rooms/basement.jpg')"><div class="photo-dim" style="background:rgba(0,0,0,0.5)"></div></div>
+      <div class="seat-content">${content}</div>
+    </div>`;
+  // See the matching comment in roomScreen() — `.screen` already fills #app via its own
+  // `position: absolute; inset: 0`; overriding that to `position: relative` here drops
+  // the sizing and collapses this div (and the absolutely-positioned seat-rotator/
+  // seat-content inside it) down to nothing.
+  return `<div class="screen flush no-scroll">${body}</div>` + sheet;
 }
 
 /** Done only ever finishes the room once BOTH partners have tapped it during their
@@ -517,6 +533,11 @@ export function settingsScreen(store, ui) {
       <div class="top-bar"><span style="width:60px;"></span><span>${escHtml(L("settings.title"))}</span>
         <button data-action="closeSettings">${escHtml(L("settings.done"))}</button></div>
       <div style="padding:0 16px;overflow-y:auto;">
+        <div class="settings-section-title">${escHtml(L("settings.section_progress") || "Progress")}</div>
+        <div class="settings-group">
+          <button class="settings-row" data-action="confirmRedoPage">${escHtml(L("nav.redo_page"))}</button>
+          <button class="settings-row destructive" data-action="confirmStartOver">${escHtml(L("nav.start_over"))}</button>
+        </div>
         <div class="settings-section-title">${escHtml(L("settings.section_relationship"))}</div>
         <div class="settings-group">
           <button class="settings-row" data-action="openProfiles">${escHtml(L("settings.relationships_row"))}</button>
@@ -600,6 +621,12 @@ export function globalOverlays(store, ui) {
   }
   if (ui.globalSheet === "deleteConfirm") {
     html += confirmDialog(L("settings.delete_confirm_title"), L("settings.delete_confirm_message"), L("settings.delete_confirm_button"), "deleteData", L("settings.cancel"), "closeGlobalSheet");
+  }
+  if (ui.globalSheet === "startOverConfirm") {
+    html += confirmDialog(L("nav.start_over"), L("nav.start_over_walk_message"), L("nav.start_over"), "startOver", L("settings.cancel"), "closeGlobalSheet");
+  }
+  if (ui.globalSheet === "redoPageConfirm") {
+    html += confirmDialog(L("nav.start_over_confirm_title"), L("nav.start_over_confirm_message"), L("nav.redo_page"), "redoPage", L("settings.cancel"), "closeGlobalSheet");
   }
   return html;
 }

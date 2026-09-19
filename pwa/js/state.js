@@ -69,6 +69,7 @@ function applyTokens(profile, green, red) {
 export class Store {
   constructor() {
     this.listeners = new Set();
+    this._history = [];
     this.profiles = this._loadProfiles();
     if (this.profiles.length === 0) this.profiles = [freshProfile()];
     const savedActiveId = localStorage.getItem(ACTIVE_PROFILE_KEY);
@@ -83,6 +84,51 @@ export class Store {
   }
 
   // ---------------------------------------------------------------- plumbing
+
+  /** Every screen transition (advance/jump) is recorded here so `back()` can always
+   * retrace it — including all the way to the very first screen — and this is
+   * persisted with the rest of the snapshot, so closing the app mid-walk and
+   * reopening it never strands anyone on a step with no way back. */
+  get flow() { return this._flow; }
+  set flow(next) {
+    if (this._flow !== undefined && !this._suppressHistory) {
+      this._history.push(this._flow);
+    }
+    this._flow = next;
+  }
+
+  canGoBack() { return this._history.length > 0; }
+
+  back() {
+    if (!this.canGoBack()) return;
+    this.set(() => {
+      this._suppressHistory = true;
+      this.flow = this._history.pop();
+      this._suppressHistory = false;
+    });
+  }
+
+  /** The escape hatch when a page is a genuine dead end: wipes the whole in-progress
+   * walk (not the couple's saved names/agreement) and returns to Welcome. Reachable
+   * from Settings on every screen. */
+  restartWalk() {
+    const profile = this.activeProfile();
+    this.set(() => {
+      this._initSessionState(profile);
+      this._history = [];
+    });
+  }
+
+  /** "Redo this page" — for a room/basement this actually re-rolls the room's
+   * progress (mirrors starting it fresh); every other screen keeps its accumulated
+   * session data (names, dice result, etc.) and only its own local UI selections are
+   * cleared, which `app.js` handles by re-running `resetUiForStep`. */
+  redoCurrentPage() {
+    const f = this.flow;
+    if (f.step === "room") { this.set(() => this._startRoom(f.kind)); return true; }
+    if (f.step === "basement") { this.set(() => this._startBasement()); return true; }
+    return false;
+  }
 
   subscribe(fn) {
     this.listeners.add(fn);
@@ -127,7 +173,6 @@ export class Store {
     const snap = {
       flow: this.flow,
       session: this.session,
-      comprehensionConfirmed: this.comprehensionConfirmed,
       couplesAgreement: this.couplesAgreement,
       roomDoneFlags: this.roomDoneFlags,
       activePartner: this.activePartner,
@@ -135,6 +180,7 @@ export class Store {
       basementQuestionsAsked: this.basementQuestionsAsked,
       basementCurrentAsker: this.basementCurrentAsker,
       voiceNoteSkipped: this.voiceNoteSkipped,
+      history: this._history,
     };
     localStorage.setItem(snapshotKey(this.activeProfileId), JSON.stringify(snap));
   }
@@ -144,10 +190,15 @@ export class Store {
   }
 
   _initSessionState(profile) {
+    // Suppressed: this can run when an old session's flow is still set (ending a
+    // walk, switching profiles) — that stale step must never leak into the new
+    // session's back-history.
+    this._suppressHistory = true;
     this.flow = { step: "welcome" };
+    this._suppressHistory = false;
+    this._history = [];
     this.session = freshGameSession(profile);
     this.activePartner = "partnerA";
-    this.comprehensionConfirmed = { partnerA: false, partnerB: false };
     this.couplesAgreement = [...profile.couplesAgreement];
     this.roomTimeRemainingSeconds = 0;
     this.roomDoneFlags = { partnerA: false, partnerB: false };
@@ -163,9 +214,11 @@ export class Store {
   }
 
   _restore(snap) {
+    this._suppressHistory = true;
     this.flow = snap.flow;
+    this._suppressHistory = false;
+    this._history = snap.history ?? [];
     this.session = snap.session;
-    this.comprehensionConfirmed = snap.comprehensionConfirmed;
     this.couplesAgreement = snap.couplesAgreement;
     this.roomDoneFlags = snap.roomDoneFlags;
     this.activePartner = snap.activePartner;
@@ -200,14 +253,6 @@ export class Store {
       this.session.partnerA.name = a;
       this.session.partnerB.name = b;
     });
-  }
-
-  confirmComprehension(role) {
-    this.set(() => (this.comprehensionConfirmed[role] = true));
-  }
-
-  bothConfirmedComprehension() {
-    return this.comprehensionConfirmed.partnerA && this.comprehensionConfirmed.partnerB;
   }
 
   addAgreementRule(text) {
@@ -288,8 +333,7 @@ export class Store {
         case "howItWorksApology": this.flow = { step: "disclaimer" }; break;
         case "disclaimer": this.flow = { step: "houseMap" }; break;
         case "houseMap": this.flow = { step: "names" }; break;
-        case "names": this.flow = { step: "comprehensionAgreement" }; break;
-        case "comprehensionAgreement": this.flow = { step: "dice" }; break;
+        case "names": this.flow = { step: "dice" }; break;
         case "couplesAgreementSetup": this.flow = { step: "voiceSnapshot" }; break;
         case "dice": this.flow = { step: "intensityState" }; break;
         case "intensityState":
@@ -616,7 +660,6 @@ export class Store {
   _seedForPreview() {
     if (!this.session.partnerA.name) this.session.partnerA.name = "Alex";
     if (!this.session.partnerB.name) this.session.partnerB.name = "Jordan";
-    this.comprehensionConfirmed = { partnerA: true, partnerB: true };
     if (!this.session.firstToSpeak) this.session.firstToSpeak = "partnerA";
   }
 }

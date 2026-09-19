@@ -133,7 +133,12 @@ struct IntensityStateView: View {
                 get: { openPickerRole == role },
                 set: { if !$0 { openPickerRole = nil } }
             )) {
+                // A system sheet always presents right-side-up in real screen coordinates,
+                // never aware of this app's own "partner seat" rotation convention — so for
+                // partnerB, whose whole section on this page is rotated 180°, the sheet has
+                // to be rotated the same way here or it pops up upside-down for them.
                 emotionPickerSheet(role: role, color: color, selected: selected)
+                    .rotationEffect(.degrees(role == .partnerB ? 180 : 0))
             }
 
             TextField(L("intensity.custom_placeholder"), text: customText)

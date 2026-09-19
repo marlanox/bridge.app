@@ -2,8 +2,11 @@ import SwiftUI
 
 /// Implements the physical turn-based interaction model: the two partners sit facing
 /// each other with the phone between them, so the room's interior and controls rotate
-/// 180° to face whoever is currently answering. The waiting partner sees a small,
-/// correctly-oriented status badge in their own corner.
+/// 180° to face whoever is currently answering. The small "so-and-so is listening"
+/// status badge names the *waiting* partner but is oriented to be readable by whoever
+/// is actually holding/facing the phone right now — the active partner — not by the
+/// waiting partner it names; it's a reassurance for the one currently sharing, not a
+/// note to the one currently listening.
 ///
 /// Critically, this rotation only ever happens when it becomes someone's turn to
 /// *answer* — never while they're only reading. `RoomView` holds the reveal-card overlay
@@ -25,8 +28,11 @@ struct ActivePartnerContainer<Content: View>: View {
                 name: partnerName(activePartner.other),
                 color: partnerColor(activePartner.other)
             )
-            .rotationEffect(.degrees(activePartner.other.seatRotationDegrees))
+            .rotationEffect(.degrees(activePartner.seatRotationDegrees))
             .padding(14)
+            // Purely informational — never intercept a tap meant for a real control that
+            // ends up sharing this corner once the content underneath rotates 180°.
+            .allowsHitTesting(false)
         }
         .animation(.spring(response: 0.6, dampingFraction: 0.82), value: activePartner)
     }

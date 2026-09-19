@@ -82,13 +82,6 @@
 "names.partner_b_placeholder" = "Second partner's name";
 "names.continue" = "Continue";
 
-// MARK: - Comprehension + Agreement
-
-"agree.title" = "Before we begin";
-"agree.summary" = "You're about to walk through a house together, room by room. Each room asks one honest question. No one is graded, no one wins. When you're ready, each of you confirms below.";
-"agree.button" = "I understand and agree";
-"agree.waiting_for" = "Waiting for %@";
-
 // MARK: - Couple's Agreement Setup
 
 "couples_agreement.title" = "Your Couple's Agreement";
@@ -128,10 +121,10 @@
 "oath.text" = "I promise to be honest. I promise to listen until the end. I won't use what I hear against you. Today we're not looking for who's guilty. Today we choose to understand each other.";
 "oath.ready" = "We're ready";
 "ritual.title" = "Hold hands";
-"ritual.line_1" = "I'm sorry you were hurt in this.";
+"ritual.line_1" = "Forgive me that you were hurt.";
 "ritual.line_2" = "I'm sorry that hurt you.";
-"ritual.instruction" = "Say it together, however it fits you.";
-"ritual.continue" = "Hold and continue";
+"ritual.instruction" = "Read both out loud together — say whichever one fits, or both.";
+"ritual.continue" = "We held hands and said it";
 
 // MARK: - Intensity & State
 
@@ -162,22 +155,22 @@
 "room.hall.name" = "Hall";
 "room.hall.question" = "What happened?";
 "room.hall.instruction" = "Take turns as a neutral witness. Describe only the facts you saw or heard — no blame, no interpretation. Example: “You raised your voice and left the room” — not “You always do this because you don't care.” Choose the event cards that match what you experienced.";
-"room.hall.forbidden" = "• No arguing\n• No making excuses\n• No correcting the other's account";
-"room.hall.why_it_helps" = "Why this helps: hearing your partner's own account, without blame, shows you the missing half of what happened.";
+"room.hall.forbidden" = "• Arguing\n• Making excuses\n• Correcting the other's account";
+"room.hall.why_it_helps" = "Why this helps: hearing your partner's own account, without blame, shows you not the missing half of what happened, but the missing half of how your partner sees it.";
 "room.living_room.name" = "Living Room";
 "room.living_room.question" = "What did you feel during this conflict?";
 "room.living_room.instruction" = "This is subjective — say what YOU felt, emotionally and in your body. It may surprise your partner, and that's the point: hearing it out loud helps them see you're not being cruel, you're hurting. Example: “My chest went tight — I felt scared and alone.”";
-"room.living_room.forbidden" = "• No arguing with the other's feelings\n• No saying “you shouldn't feel that way”";
+"room.living_room.forbidden" = "• Arguing with the other's feelings\n• Saying “you shouldn't feel that way”";
 "room.living_room.why_it_helps" = "Why this helps: when you both feel like the villain to each other, saying the real feeling out loud — however it sounds — is what breaks that. Don't be afraid to say it as it is.";
 "room.study.name" = "Study";
 "room.study.question" = "What did it mean to me?";
 "room.study.instruction" = "Say what the situation seemed to MEAN to you — even if it sounds exaggerated in hindsight. This shows how a mind can spiral into a story that isn't fully true, and helps your partner understand your reaction instead of just judging it. Example: “It felt like you don't love me anymore.”";
-"room.study.forbidden" = "• No arguing with the other's interpretation\n• No saying “that's not what I meant”";
+"room.study.forbidden" = "• Arguing with the other's interpretation\n• Saying “that's not what I meant”";
 "room.study.why_it_helps" = "Why this helps: seeing how a thought can spiral shows your partner you're not being irrational — you're in pain.";
 "room.kids_room.name" = "Kids' Room";
 "room.kids_room.question" = "What did this touch from my past?";
 "room.kids_room.instruction" = "This is self-reflection: which old wound got touched? A fear of being abandoned, of not being enough, of being controlled. Example: “This touches my fear of being left.” Your partner can't argue with it — it isn't about them, it's about what got triggered in you.";
-"room.kids_room.forbidden" = "• No arguing with the other's feelings";
+"room.kids_room.forbidden" = "• Arguing with the other's feelings";
 "room.kids_room.why_it_helps" = "Why this helps: naming the old wound lets your partner see someone hurting, not an enemy.";
 "room.kitchen.name" = "Kitchen";
 "room.kitchen.question" = "What would help us avoid this?";
@@ -189,9 +182,12 @@
 "room.done" = "Done";
 "room.a_bit_more_time" = "A bit more time";
 "room.time_up_banner" = "Time's up — finish your thought";
-"room.forbidden_prefix" = "Not now:";
+"room.forbidden_prefix" = "Not allowed right now:";
 "room.mode_caption.sequential" = "One partner speaks — the other only listens, no comments yet.";
 "room.mode_caption.discussion" = "Dialogue allowed — talk it through together.";
+"room.read_it" = "I've read it";
+"room.expand" = "Expand";
+"room.flag_broken" = "Flag a broken rule";
 "handoff.shared_title" = "%@ shared:";
 "handoff.read_it" = "I've read it";
 
@@ -199,7 +195,7 @@
 
 "room.basement.name" = "Basement";
 "room.basement.question" = "Fears";
-"room.basement.forbidden" = "• No arguing with the other's fear\n• No long defensive explanations before answering";
+"room.basement.forbidden" = "• Arguing with the other's fear\n• Long defensive explanations before answering";
 "basement.instruction" = "Say your fear honestly, one at a time, out loud — a card can help you find the words. Your partner answers with only one of the three words below, then it's their turn. Up to 15 fears each; tap Done when you're finished.";
 "basement.why_it_helps" = "Why this helps: underneath the shouting is usually a frightened child, not a villain — naming the fear out loud lets your partner finally see that.";
 "basement.ask" = "Ask";
@@ -307,6 +303,12 @@
 "nav.turn_indicator" = "%@'s turn";
 "nav.listening" = "listening";
 "nav.skip" = "Skip";
+"nav.start_over" = "Start over";
+"nav.start_over_confirm_title" = "Start this page over?";
+"nav.start_over_confirm_message" = "This clears what's been chosen or said on this page so far — the rest of your walk stays exactly as it is.";
+"nav.start_over_walk_message" = "This clears your whole walk through the house tonight — names and your couple's agreement are kept. There's no undo.";
+"nav.redo_page" = "Start this page over";
+"settings.section_progress" = "Progress";
 
 
 // MARK: - Deck 1 — Events

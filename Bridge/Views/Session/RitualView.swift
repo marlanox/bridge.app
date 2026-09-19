@@ -67,8 +67,6 @@ struct RitualView: View {
             .background(isHolding ? Color.bridgeGold : Color.bridgeInk)
             .foregroundStyle(.white)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .opacity(chosenLine == nil ? 0.4 : 1)
-            .disabled(chosenLine == nil)
             .accessibilityIdentifier("uitest.ritual.continue")
         }
         .padding(28)

@@ -154,27 +154,38 @@ struct BasementView: View {
     }
 
     /// Kept compact — every line here costs a slice of the room's own interior, which
-    /// should still read as a place, not just a form.
+    /// should still read as a place, not just a form. Collapsed state is a single slim
+    /// "Expand" bar (nothing else) and expanded state ends in an explicit "I've read it"
+    /// button — no chevron toggle — so the control is always in the same place with an
+    /// unambiguous label, matching RoomView's header.
+    @ViewBuilder
     private var header: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack {
+        if !instructionsExpanded {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = true }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.down")
+                    Text(L("room.expand"))
+                }
+                .font(.subheadline.weight(.semibold))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+            }
+            .buttonStyle(PressableButtonStyle())
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
+            .accessibilityIdentifier("uitest.room.header.toggle")
+        } else {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(L("room.basement.name"))
                     .font(.bridgeSerifTitle(24, weight: .bold))
-                Spacer()
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded.toggle() }
-                } label: {
-                    Image(systemName: instructionsExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                }
-                .accessibilityIdentifier("uitest.room.header.toggle")
-            }
-            Text(L("room.basement.question"))
-                .font(.bridgeSerifHeadline(16))
-                .foregroundStyle(.secondary)
+                Text(L("room.basement.question"))
+                    .font(.bridgeSerifHeadline(16))
+                    .foregroundStyle(.secondary)
 
-            if instructionsExpanded {
                 Text(L("basement.why_it_helps"))
                     .font(.bridgeCaption.weight(.semibold).italic())
                     .foregroundStyle(Color.bridgeGold)
@@ -193,10 +204,28 @@ struct BasementView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
                     .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = false }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark")
+                        Text(L("room.read_it"))
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                }
+                .buttonStyle(PressableButtonStyle())
+                .background(Color.bridgeGold.opacity(0.2), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .accessibilityIdentifier("uitest.room.header.toggle")
             }
+            .padding(12)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
         }
-        .padding(12)
-        .background(.ultraThinMaterial)
     }
 
     /// Only relevant while picking a fear to ask — the answerer sees the fear itself and

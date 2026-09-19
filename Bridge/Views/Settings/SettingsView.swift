@@ -16,6 +16,8 @@ struct SettingsView: View {
     @State private var showingDeleteConfirm = false
     @State private var showingLanguagePicker = false
     @State private var showingHouseMap = false
+    @State private var showingRedoPageConfirm = false
+    @State private var showingStartOverConfirm = false
     @State private var restoreAlertMessage: String?
     @State private var isRestoring = false
 
@@ -26,6 +28,19 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
+                if appState.session.flow != .welcome {
+                    Section(L("settings.section_progress")) {
+                        Button(L("nav.redo_page")) {
+                            showingRedoPageConfirm = true
+                        }
+                        .accessibilityIdentifier("uitest.settings.redopage")
+                        Button(L("nav.start_over"), role: .destructive) {
+                            showingStartOverConfirm = true
+                        }
+                        .accessibilityIdentifier("uitest.settings.startover")
+                    }
+                }
+
                 Section(L("settings.section_relationship")) {
                     Button(L("settings.relationships_row")) {
                         showingProfiles = true
@@ -135,6 +150,32 @@ struct SettingsView: View {
             Button(L("settings.cancel"), role: .cancel) { }
         } message: {
             Text(L("settings.delete_confirm_message"))
+        }
+        .confirmationDialog(
+            Text(L("nav.start_over_confirm_title")),
+            isPresented: $showingRedoPageConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(L("nav.redo_page"), role: .destructive) {
+                appState.session.redoCurrentPage()
+                dismiss()
+            }
+            Button(L("settings.cancel"), role: .cancel) { }
+        } message: {
+            Text(L("nav.start_over_confirm_message"))
+        }
+        .confirmationDialog(
+            Text(L("nav.start_over")),
+            isPresented: $showingStartOverConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(L("nav.start_over"), role: .destructive) {
+                appState.session.restartWalk()
+                dismiss()
+            }
+            Button(L("settings.cancel"), role: .cancel) { }
+        } message: {
+            Text(L("nav.start_over_walk_message"))
         }
         .alert(restoreAlertMessage ?? "", isPresented: Binding(
             get: { restoreAlertMessage != nil },

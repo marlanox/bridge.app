@@ -20,7 +20,6 @@ enum AppFlowStep: Equatable {
     /// from Settings as "View the path."
     case houseMap
     case names
-    case comprehensionAgreement
     case couplesAgreementSetup
     case dice
     case intensityState
@@ -41,21 +40,20 @@ enum AppFlowStep: Equatable {
         case .disclaimer: return 3
         case .houseMap: return 4
         case .names: return 5
-        case .comprehensionAgreement: return 6
-        case .dice: return 7
-        case .intensityState: return 8
-        case .calmDown: return 9
-        case .oath: return 10
-        case .ritual: return 11
-        case .room(let kind): return 12 + kind.rawValue
-        case .basement: return 28
-        case .bridgeFinale: return 29
+        case .dice: return 6
+        case .intensityState: return 7
+        case .calmDown: return 8
+        case .oath: return 9
+        case .ritual: return 10
+        case .room(let kind): return 11 + kind.rawValue
+        case .basement: return 27
+        case .bridgeFinale: return 28
         // Comes after the actual conflict-repair work, not before it — the couple agrees
         // on ground rules (and any consequence) once they've felt why the rules matter,
         // not as an abstract checklist at the very start of the session.
-        case .couplesAgreementSetup: return 30
-        case .voiceSnapshot: return 31
-        case .closing: return 32
+        case .couplesAgreementSetup: return 29
+        case .voiceSnapshot: return 30
+        case .closing: return 31
         }
     }
 }
@@ -65,7 +63,7 @@ enum AppFlowStep: Equatable {
 extension AppFlowStep: Codable {
     private enum Tag: String, Codable {
         case welcome, howItWorksWhatIsBridge, howItWorksApology, disclaimer
-        case houseMap, names, comprehensionAgreement, couplesAgreementSetup, dice
+        case houseMap, names, couplesAgreementSetup, dice
         case intensityState, calmDown, oath, ritual, room, basement, bridgeFinale
         case voiceSnapshot, closing
     }
@@ -84,7 +82,6 @@ extension AppFlowStep: Codable {
         case .disclaimer: self = .disclaimer
         case .houseMap: self = .houseMap
         case .names: self = .names
-        case .comprehensionAgreement: self = .comprehensionAgreement
         case .couplesAgreementSetup: self = .couplesAgreementSetup
         case .dice: self = .dice
         case .intensityState: self = .intensityState
@@ -108,7 +105,6 @@ extension AppFlowStep: Codable {
         case .disclaimer: try container.encode(Tag.disclaimer, forKey: .tag)
         case .houseMap: try container.encode(Tag.houseMap, forKey: .tag)
         case .names: try container.encode(Tag.names, forKey: .tag)
-        case .comprehensionAgreement: try container.encode(Tag.comprehensionAgreement, forKey: .tag)
         case .couplesAgreementSetup: try container.encode(Tag.couplesAgreementSetup, forKey: .tag)
         case .dice: try container.encode(Tag.dice, forKey: .tag)
         case .intensityState: try container.encode(Tag.intensityState, forKey: .tag)
