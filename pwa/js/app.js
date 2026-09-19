@@ -9,7 +9,7 @@ let store;
  * never persisted, reset whenever the flow moves to a different step. See
  * `resetUiForStep`. */
 const ui = {
-  diceRolled: false, diceWinner: null, diceWinnerName: "",
+  diceRolled: false, diceWinner: null, diceWinnerName: "", diceFace: 1,
   intensity: { partnerA: 0, partnerB: 0 },
   stateSelected: { partnerA: [], partnerB: [] },
   stateCustom: { partnerA: "", partnerB: "" },
@@ -38,7 +38,7 @@ function flowKey(flow) {
 }
 
 function resetUiForStep(step, kind) {
-  if (step === "dice") { ui.diceRolled = false; ui.diceWinner = null; }
+  if (step === "dice") { ui.diceRolled = false; ui.diceWinner = null; ui.diceFace = 1; }
   if (step === "intensityState") {
     ui.intensity = { partnerA: store.session.intensityA, partnerB: store.session.intensityB };
     ui.stateSelected = {
@@ -87,13 +87,28 @@ function render() {
   } else {
     html = renderFlowScreen();
   }
-  appEl.innerHTML = html + S.globalOverlays(store, ui);
+  const nav = (ui.paywallOpen || ui.settingsOpen) ? "" : globalNavBar();
+  appEl.innerHTML = html + nav + S.globalOverlays(store, ui);
+}
+
+/** Back (all the way to the first screen) and Settings (which itself holds "start
+ * over" / "redo this page") are reachable from every single screen — getting stuck
+ * on one dead-end step, with no way out, is exactly the failure this exists to
+ * prevent. */
+function globalNavBar() {
+  const back = store.canGoBack()
+    ? `<button class="nav-pill pressable" data-action="goBack"><span>‹</span><span>${L("nav.back")}</span></button>`
+    : "<span></span>";
+  return `<div class="global-nav">
+      ${back}
+      <button class="nav-gear pressable" data-action="openSettings" aria-label="${L("settings.title")}">⚙</button>
+    </div>`;
 }
 
 function renderFlowScreen() {
   const f = store.flow;
   switch (f.step) {
-    case "welcome": return S.welcomeScreen(true);
+    case "welcome": return S.welcomeScreen();
     case "howItWorksWhatIsBridge":
       return S.onboardingTextPage({ titleKey: "onboarding.what_is_bridge.title", bodyKey: "onboarding.what_is_bridge.body", buttonKey: "onboarding.next", pageIndex: 0, pageCount: 2, action: "advance" });
     case "howItWorksApology":
@@ -101,7 +116,6 @@ function renderFlowScreen() {
     case "disclaimer": return S.disclaimerScreen();
     case "houseMap": return S.houseMapScreen("onboarding", ui.houseMapTextExpanded);
     case "names": return S.namesScreen(store);
-    case "comprehensionAgreement": return S.comprehensionScreen(store);
     case "couplesAgreementSetup": return S.couplesAgreementScreen(store, ui);
     case "dice": return S.diceScreen(ui);
     case "intensityState": return S.intensityScreen(store, ui);
@@ -135,6 +149,24 @@ const actions = {
 
   openSettings() { ui.settingsOpen = true; render(); },
   closeSettings() { ui.settingsOpen = false; render(); },
+  goBack() { store.back(); render(); },
+  confirmStartOver() { ui.globalSheet = "startOverConfirm"; render(); },
+  startOver() {
+    store.restartWalk();
+    ui.settingsOpen = false;
+    ui.globalSheet = null;
+    render();
+  },
+  confirmRedoPage() { ui.globalSheet = "redoPageConfirm"; render(); },
+  redoPage() {
+    if (!store.redoCurrentPage()) {
+      // No session-level data to reset for this screen — just clear its local UI state.
+      resetUiForStep(store.flow.step, store.flow.kind);
+    }
+    ui.settingsOpen = false;
+    ui.globalSheet = null;
+    render();
+  },
   closePaywall() { ui.paywallOpen = false; render(); },
   unlockTestMode() { store.unlockFullVersionTestMode(); ui.paywallOpen = false; render(); },
   beginFromWelcome() {
@@ -180,9 +212,6 @@ const actions = {
     store.advance();
   },
 
-  // Comprehension
-  confirmComprehension(el) { store.confirmComprehension(el.dataset.arg); render(); },
-
   // Couple's agreement
   addRuleFromKey(el) { store.addAgreementRule(L(el.dataset.arg)); render(); },
   removeRule(el) { store.removeAgreementRule(Number(el.dataset.arg)); render(); },
@@ -197,9 +226,17 @@ const actions = {
   rollDice() {
     const dieEl = document.querySelector(".die-face");
     if (dieEl) dieEl.style.transform = "rotate(720deg)";
+    // Actually cycle through different faces while it "rolls" — a single static face
+    // just spinning in place reads as broken/unresponsive, not as a die being rolled.
+    const faceTimer = setInterval(() => {
+      ui.diceFace = 1 + Math.floor(Math.random() * 6);
+      render();
+    }, 60);
     const result = store.rollDice();
     ui.diceWinnerName = store.name(result);
     setTimeout(() => {
+      clearInterval(faceTimer);
+      ui.diceFace = 1 + Math.floor(Math.random() * 6);
       ui.diceWinner = result;
       ui.diceRolled = true;
       render();
@@ -237,7 +274,6 @@ const actions = {
   // Ritual
   chooseRitualLine(el) { ui.chosenLine = Number(el.dataset.arg); render(); },
   completeRitualAndAdvance() {
-    if (ui.chosenLine === null) return;
     store.completeRitual();
     store.advance();
   },

@@ -105,6 +105,21 @@ export function deckSheet(deckId, selectableFilter = null, customDraft = "") {
     </div>`;
 }
 
+/** Mirrors ActivePartnerContainer.swift's WaitingIndicator — names the *waiting*
+ * partner but is oriented to be readable by whoever is actually holding/facing the
+ * phone right now (the active partner), since it's a reassurance for the one currently
+ * sharing, not a note to the one currently listening. */
+export function waitingBadge(store, waitingRole, activeRole) {
+  const rotation = store.seatRotation(activeRole);
+  return `<div class="fixed-badge" style="transform:rotate(${rotation}deg)">
+      <div class="waiting-pill">
+        <span class="dot ${waitingRole === "partnerA" ? "a" : "b"}"></span>
+        <span>${escHtml(store.name(waitingRole))}</span>
+        <span class="secondary">${L("nav.listening")}</span>
+      </div>
+    </div>`;
+}
+
 /** Mirrors RevealCardOverlay.swift — rotated to face the reader only; the room behind
  * it stays exactly as it was. */
 export function revealOverlay(store) {
@@ -125,10 +140,17 @@ export function revealOverlay(store) {
     </div>`;
 }
 
-/** The room header shared by every generic room — mirrors RoomView.header. `expanded`
- * controls whether instruction/why-it-helps/forbidden collapse away so the interior
- * photo shows through. */
+/** The room header shared by every generic room — mirrors RoomView.header. When
+ * collapsed, this renders ONLY the slim "Expand" bar (not a chevron buried in a
+ * corner) — tapping it is the one and only way back to the full text, and it stays
+ * in the same place every time. When expanded, an explicit "I've read it" button at
+ * the bottom (not an icon) is what collapses it. */
 export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true } = {}) {
+  if (!expanded) {
+    return `<button class="expand-bar pressable" data-action="toggleHeader">
+        <span class="chevron">▾</span><span>${escHtml(L("room.expand"))}</span>
+      </button>`;
+  }
   const modeIcon = cfg.modes.includes("discussion") ? "💬" : cfg.modes.includes("silentProtocol") ? "🤫" : "🎙";
   const modeCaptionKey = cfg.modes.includes("discussion") ? "room.mode_caption.discussion" : "room.mode_caption.sequential";
   const modeCaptionIcon = cfg.modes.includes("discussion") ? "💬" : "🎙";
@@ -137,26 +159,14 @@ export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = nu
         ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--purple)" : "var(--green)"}">${escHtml(activeRoleName)}</span>` : ""}
         <span class="spacer"></span>
         <span class="mode-icon">${modeIcon}</span>
-        <button class="toggle-btn" data-action="toggleHeader">${expanded ? "︿" : "﹀"}</button>
       </div>
       <p class="room-title">${escHtml(L(cfg.nameKey))}</p>
       <p class="room-question">${escHtml(L(cfg.questionKey))}</p>
       <span class="mode-caption">${modeCaptionIcon} ${escHtml(L(modeCaptionKey))}</span>
-      <div class="collapsible${expanded ? "" : " collapsed"}">
-        <div class="instruction-text">${escHtml(L(cfg.instructionKey))}</div>
-        <div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>
-        ${cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
-      </div>
+      <div class="instruction-text">${escHtml(L(cfg.instructionKey))}</div>
+      <div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>
+      ${cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
+      <button class="read-it-btn pressable" data-action="toggleHeader">✓ ${escHtml(L("room.read_it"))}</button>
     </div>`;
 }
 
-export function waitingBadge(store, waitingRole) {
-  const rotation = store.seatRotation(waitingRole);
-  return `<div class="fixed-badge" style="transform:rotate(${rotation}deg)">
-      <div class="waiting-pill">
-        <span class="dot ${waitingRole === "partnerA" ? "a" : "b"}"></span>
-        <span>${escHtml(store.name(waitingRole))}</span>
-        <span class="secondary">${L("nav.listening")}</span>
-      </div>
-    </div>`;
-}
