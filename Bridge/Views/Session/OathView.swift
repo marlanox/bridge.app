@@ -15,7 +15,7 @@ struct OathView: View {
                 .padding(.horizontal, 12)
                 .italic()
             Spacer()
-            PrimaryButton(titleKey: "oath.ready") {
+            PrimaryButton(titleKey: "oath.ready", testID: "uitest.oath.ready") {
                 vm.completeOath()
                 onContinue()
             }

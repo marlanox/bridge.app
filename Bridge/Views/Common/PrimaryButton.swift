@@ -8,6 +8,9 @@ struct PrimaryButton: View {
     var color: Color = Color(red: 0.36, green: 0.31, blue: 0.27)
     var isEnabled: Bool = true
     var isLoading: Bool = false
+    /// Set only by call sites the screenshot-walkthrough UI tests need to find reliably
+    /// (see `BridgeUITests`) — has no effect on layout, appearance, or VoiceOver.
+    var testID: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -29,12 +32,15 @@ struct PrimaryButton: View {
         .foregroundStyle(.white)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .disabled(!isEnabled || isLoading)
+        .accessibilityIdentifier(testID ?? "")
     }
 }
 
 struct SecondaryButton: View {
     let titleKey: String
     var color: Color = .secondary
+    /// See `PrimaryButton.testID`.
+    var testID: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -47,5 +53,6 @@ struct SecondaryButton: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
         }
+        .accessibilityIdentifier(testID ?? "")
     }
 }

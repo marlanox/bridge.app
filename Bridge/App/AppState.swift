@@ -18,6 +18,24 @@ final class AppState: ObservableObject {
     private let persistence = PersistenceManager.shared
 
     init() {
+        // Screenshot-walkthrough UI tests get a fully in-memory, deterministic profile —
+        // never touching real local/iCloud persistence — then optionally jump straight to
+        // whatever screen the test is capturing. See `UITestSupport`; a real user's launch
+        // never sets this argument, so this branch never runs outside CI's UI test target.
+        if UITestSupport.isUITesting {
+            var profile = RelationshipProfile()
+            if UITestSupport.forcePaywall {
+                profile.hasCompletedFirstSession = true
+            }
+            self.profiles = [profile]
+            self.activeProfileID = profile.id
+            self.session = SessionViewModel(profile: profile)
+            if let key = UITestSupport.jumpFlowKey {
+                session.applyUITestJump(flowKey: key, withReveal: UITestSupport.jumpReveal)
+            }
+            return
+        }
+
         // Captured before anything below writes to disk — `saveProfiles` a few lines down
         // creates this file immediately (even for a brand-new default profile), which would
         // otherwise make "does local data already exist" always true by the time we ask.

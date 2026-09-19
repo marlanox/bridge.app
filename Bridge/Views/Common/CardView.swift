@@ -28,5 +28,6 @@ struct CardView: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         .buttonStyle(.plain)
+        .accessibilityIdentifier("uitest.card.\(card.id)")
     }
 }

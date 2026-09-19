@@ -30,9 +30,9 @@ struct DiceView: View {
             Spacer()
 
             if rolled {
-                PrimaryButton(titleKey: "oath.ready", action: onContinue)
+                PrimaryButton(titleKey: "oath.ready", testID: "uitest.dice.continue", action: onContinue)
             } else {
-                PrimaryButton(titleKey: "dice.roll") {
+                PrimaryButton(titleKey: "dice.roll", testID: "uitest.dice.roll") {
                     withAnimation(.easeOut(duration: 0.6)) {
                         rotation += 720
                     }

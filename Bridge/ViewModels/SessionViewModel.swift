@@ -359,4 +359,67 @@ final class SessionViewModel: ObservableObject {
     func finish() {
         session.completedAt = Date()
     }
+
+    // MARK: - UI Testing hooks (screenshot walkthrough only — see `UITestSupport`)
+
+    private func seedForUITestScreenshot() {
+        setNames(partnerA: "Alex", partnerB: "Jordan")
+        confirmComprehension(.partnerA)
+        confirmComprehension(.partnerB)
+        couplesAgreement = ["No name-calling", "No leaving mid-conversation"]
+        session.firstToSpeak = .partnerA
+        setIntensity(4, for: .partnerA)
+        setIntensity(3, for: .partnerB)
+        setState(.hurt, for: .partnerA)
+        setState(.confused, for: .partnerB)
+    }
+
+    /// Dispatches a short string key (from `UITEST_JUMP_FLOW`) to the matching jump. Unknown
+    /// keys are a no-op, leaving the app at its normal starting screen.
+    func applyUITestJump(flowKey: String, withReveal: Bool) {
+        switch flowKey {
+        case "livingRoom": jumpToRoom(.livingRoom, withReveal: withReveal)
+        case "study": jumpToRoom(.study, withReveal: withReveal)
+        case "kidsRoom": jumpToRoom(.kidsRoom, withReveal: withReveal)
+        case "kitchen": jumpToRoom(.kitchen, withReveal: withReveal)
+        case "basement": jumpToBasement()
+        case "bridgeFinale": jumpToBridgeFinale()
+        case "voiceSnapshot": jumpToVoiceSnapshot()
+        case "closing": jumpToClosing()
+        default: break
+        }
+    }
+
+    private func jumpToRoom(_ kind: RoomKind, withReveal: Bool) {
+        seedForUITestScreenshot()
+        flow = .room(kind)
+        startRoom(kind)
+        guard withReveal, RoomConfig.all[kind]?.modes.contains(.speaks) == true else { return }
+        let deckID = RoomConfig.all[kind]?.deckIDs.first ?? "events"
+        if let card = DeckData.deck(deckID).cards.first {
+            playCard(card, deckID: deckID)
+        }
+        markRoomDone(activePartner)
+    }
+
+    private func jumpToBasement() {
+        seedForUITestScreenshot()
+        flow = .basement
+        startBasement()
+    }
+
+    private func jumpToBridgeFinale() {
+        seedForUITestScreenshot()
+        flow = .bridgeFinale
+    }
+
+    private func jumpToVoiceSnapshot() {
+        seedForUITestScreenshot()
+        flow = .voiceSnapshot
+    }
+
+    private func jumpToClosing() {
+        seedForUITestScreenshot()
+        flow = .closing
+    }
 }

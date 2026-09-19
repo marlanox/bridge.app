@@ -28,7 +28,7 @@ struct ClosingScreenView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
                 Spacer()
-                PrimaryButton(titleKey: "closing.save_to_gallery", isEnabled: !didSave, action: saveToGallery)
+                PrimaryButton(titleKey: "closing.save_to_gallery", isEnabled: !didSave, testID: "uitest.closing.save", action: saveToGallery)
                 SecondaryButton(titleKey: "closing.close", color: .white.opacity(0.85), action: onClose)
             }
             .padding(28)

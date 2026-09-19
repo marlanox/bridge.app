@@ -30,7 +30,7 @@ struct HouseMapView: View {
                 Spacer()
                 card
                 Spacer()
-                PrimaryButton(titleKey: buttonKey, action: finish)
+                PrimaryButton(titleKey: buttonKey, testID: "uitest.housemap.continue", action: finish)
                     .padding(.horizontal, 24)
                     .padding(.bottom, 28)
             }

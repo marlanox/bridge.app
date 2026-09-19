@@ -59,7 +59,7 @@ struct PaywallView: View {
             .font(.subheadline.weight(.medium))
             .disabled(isRestoring)
 
-            SecondaryButton(titleKey: "paywall.maybe_later") {
+            SecondaryButton(titleKey: "paywall.maybe_later", testID: "uitest.paywall.maybelater") {
                 dismiss()
             }
 

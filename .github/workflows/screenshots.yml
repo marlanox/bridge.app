@@ -1,0 +1,75 @@
+name: Screenshots
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    name: UI test screenshot walkthrough
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Bootstrap project
+        run: Scripts/bootstrap.sh
+
+      - name: Pick an available iPhone simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for runtime, devices in data['devices'].items():
+    if 'iOS' not in runtime:
+        continue
+    for d in devices:
+        if d.get('name', '').startswith('iPhone') and d.get('isAvailable', True):
+            print(d['udid'])
+            sys.exit(0)
+sys.exit(1)
+")
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          echo "Selected simulator: $UDID"
+
+      - name: Run UI tests (screenshot walkthrough)
+        id: run_tests
+        continue-on-error: true
+        run: |
+          xcodebuild test \
+            -project Bridge.xcodeproj \
+            -scheme Bridge \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -resultBundlePath TestResults.xcresult
+
+      - name: Export screenshots from the result bundle
+        if: always()
+        run: |
+          mkdir -p Screenshots
+          xcrun xcresulttool export attachments --path TestResults.xcresult --output-path Screenshots \
+            || { echo "export attachments failed or is unavailable on this Xcode version:"; xcrun xcresulttool help; }
+          echo "Exported files:"
+          find Screenshots -type f 2>/dev/null | sort
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bridge-screenshots
+          path: Screenshots
+          if-no-files-found: warn
+
+      - name: Upload full .xcresult bundle (open in Xcode for the complete report)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bridge-test-results-xcresult
+          path: TestResults.xcresult
+          if-no-files-found: warn
+
+      - name: Fail the job if any UI test failed
+        if: steps.run_tests.outcome == 'failure'
+        run: exit 1

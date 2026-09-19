@@ -18,17 +18,20 @@ struct NamesEntryView: View {
                     Circle().fill(PartnerColor.purple.color).frame(width: 10, height: 10)
                     TextField(L("names.partner_a_placeholder"), text: $nameA)
                         .textFieldStyle(.roundedBorder)
+                        .accessibilityIdentifier("uitest.names.partnerA")
                 }
                 HStack {
                     Circle().fill(PartnerColor.green.color).frame(width: 10, height: 10)
                     TextField(L("names.partner_b_placeholder"), text: $nameB)
                         .textFieldStyle(.roundedBorder)
+                        .accessibilityIdentifier("uitest.names.partnerB")
                 }
             }
             Spacer()
             PrimaryButton(
                 titleKey: "names.continue",
-                isEnabled: !nameA.trimmingCharacters(in: .whitespaces).isEmpty && !nameB.trimmingCharacters(in: .whitespaces).isEmpty
+                isEnabled: !nameA.trimmingCharacters(in: .whitespaces).isEmpty && !nameB.trimmingCharacters(in: .whitespaces).isEmpty,
+                testID: "uitest.names.continue"
             ) {
                 vm.setNames(partnerA: nameA.trimmingCharacters(in: .whitespaces), partnerB: nameB.trimmingCharacters(in: .whitespaces))
                 onContinue()

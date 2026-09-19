@@ -66,7 +66,7 @@ struct CouplesAgreementSetupView: View {
             }
 
             HStack(spacing: 12) {
-                SecondaryButton(titleKey: "couples_agreement.skip_for_now", action: onContinue)
+                SecondaryButton(titleKey: "couples_agreement.skip_for_now", testID: "uitest.agreement.skip", action: onContinue)
                 PrimaryButton(titleKey: "couples_agreement.save", action: onContinue)
             }
         }

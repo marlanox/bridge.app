@@ -37,6 +37,7 @@ struct WelcomeView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 32)
                 .padding(.bottom, 48)
+                .accessibilityIdentifier("uitest.welcome.begin")
             }
         }
     }

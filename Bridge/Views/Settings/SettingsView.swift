@@ -30,30 +30,37 @@ struct SettingsView: View {
                     Button(L("settings.relationships_row")) {
                         showingProfiles = true
                     }
+                    .accessibilityIdentifier("uitest.settings.relationships")
                     Button(L("settings.view_path_row")) {
                         showingHouseMap = true
                     }
+                    .accessibilityIdentifier("uitest.settings.viewpath")
                 }
 
                 Section(L("settings.section_support")) {
                     Button(L("settings.disclaimer_row")) {
                         showingDisclaimer = true
                     }
+                    .accessibilityIdentifier("uitest.settings.disclaimer")
                     Button(L("settings.crisis_row")) {
                         showingCrisis = true
                     }
+                    .accessibilityIdentifier("uitest.settings.crisis")
                     Button(L("settings.language_row")) {
                         showingLanguagePicker = true
                     }
+                    .accessibilityIdentifier("uitest.settings.language")
                 }
 
                 Section(L("settings.section_legal")) {
                     Button(L("settings.privacy_row")) {
                         showingPrivacy = true
                     }
+                    .accessibilityIdentifier("uitest.settings.privacy")
                     Button(L("settings.terms_row")) {
                         showingTerms = true
                     }
+                    .accessibilityIdentifier("uitest.settings.terms")
                     Button {
                         Task { await restore() }
                     } label: {
@@ -66,6 +73,7 @@ struct SettingsView: View {
                         }
                     }
                     .disabled(isRestoring)
+                    .accessibilityIdentifier("uitest.settings.restore")
                 }
 
                 Section(L("settings.section_data")) {
@@ -74,6 +82,7 @@ struct SettingsView: View {
                     } label: {
                         Text(L("settings.delete_data_row"))
                     }
+                    .accessibilityIdentifier("uitest.settings.delete")
                 }
 
                 Section {
@@ -89,6 +98,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L("settings.done")) { dismiss() }
+                        .accessibilityIdentifier("uitest.settings.done")
                 }
             }
         }
@@ -108,6 +118,7 @@ struct SettingsView: View {
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
                             Button(L("settings.done")) { showingDisclaimer = false }
+                                .accessibilityIdentifier("uitest.legal.done")
                         }
                     }
             }

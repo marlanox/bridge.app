@@ -17,7 +17,7 @@ struct DisclaimerView: View {
             }
             .font(.footnote.weight(.medium))
             Spacer()
-            PrimaryButton(titleKey: "disclaimer.continue", action: onContinue)
+            PrimaryButton(titleKey: "disclaimer.continue", testID: "uitest.disclaimer.continue", action: onContinue)
         }
         .padding(28)
         .background(Color(red: 0.98, green: 0.96, blue: 0.93))

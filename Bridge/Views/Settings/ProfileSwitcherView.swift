@@ -76,6 +76,7 @@ private struct ProfileRow: View {
                 }
             }
         }
+        .accessibilityIdentifier("uitest.profile.row")
     }
 
     private var title: String {

@@ -23,6 +23,7 @@ struct CrisisResourcesView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L("crisis.close")) { dismiss() }
+                        .accessibilityIdentifier("uitest.crisis.close")
                 }
             }
         }

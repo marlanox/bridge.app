@@ -24,7 +24,8 @@ struct IntensityStateView: View {
 
                 PrimaryButton(
                     titleKey: "intensity.continue",
-                    isEnabled: stateA != nil && stateB != nil
+                    isEnabled: stateA != nil && stateB != nil,
+                    testID: "uitest.intensity.continue"
                 ) {
                     vm.setIntensity(Int(intensityA), for: .partnerA)
                     vm.setIntensity(Int(intensityB), for: .partnerB)
@@ -52,6 +53,7 @@ struct IntensityStateView: View {
             HStack {
                 Slider(value: intensity, in: 0...10, step: 1)
                     .tint(color.color)
+                    .accessibilityIdentifier("uitest.intensity.slider.\(role.rawValue)")
                 Text("\(Int(intensity.wrappedValue))")
                     .font(.subheadline.monospacedDigit())
                     .frame(width: 24)
@@ -74,6 +76,7 @@ struct IntensityStateView: View {
                             .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("uitest.state.\(role.rawValue).\(option.rawValue)")
                 }
             }
         }

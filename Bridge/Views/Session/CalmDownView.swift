@@ -26,13 +26,13 @@ struct CalmDownView: View {
             Spacer()
 
             if breathing {
-                PrimaryButton(titleKey: "onboarding.got_it", action: onDone)
+                PrimaryButton(titleKey: "onboarding.got_it", testID: "uitest.calmdown.done", action: onDone)
             } else {
-                PrimaryButton(titleKey: "calm_down.start_breathing") {
+                PrimaryButton(titleKey: "calm_down.start_breathing", testID: "uitest.calmdown.start") {
                     breathing = true
                     scale = 1.0
                 }
-                SecondaryButton(titleKey: "calm_down.skip", action: onDone)
+                SecondaryButton(titleKey: "calm_down.skip", testID: "uitest.calmdown.skip", action: onDone)
             }
         }
         .padding(28)

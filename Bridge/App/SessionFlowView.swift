@@ -119,5 +119,6 @@ struct SessionFlowView: View {
                 .background(.ultraThinMaterial, in: Circle())
         }
         .padding(16)
+        .accessibilityIdentifier("uitest.settings.gear")
     }
 }

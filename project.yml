@@ -22,6 +22,8 @@ schemes:
       config: Debug
     test:
       config: Debug
+      targets:
+        - BridgeUITests
     profile:
       config: Release
     analyze:
@@ -61,3 +63,13 @@ targets:
           - CloudDocuments
         com.apple.developer.ubiquity-container-identifiers:
           - iCloud.com.bridge.app.ios
+  BridgeUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: BridgeUITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.bridge.app.ios.uitests
+    dependencies:
+      - target: Bridge

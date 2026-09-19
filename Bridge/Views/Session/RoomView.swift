@@ -189,6 +189,7 @@ struct RoomView: View {
             }
             .background(vm.session.color(for: role).color, in: Capsule())
             .foregroundStyle(.white)
+            .accessibilityIdentifier("uitest.room.done")
         }
         .padding(16)
     }

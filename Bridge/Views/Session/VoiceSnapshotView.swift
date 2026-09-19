@@ -28,7 +28,7 @@ struct VoiceSnapshotView: View {
                 partnerRow(role: .partnerB, color: .green, recorder: recorderB)
 
                 Spacer()
-                PrimaryButton(titleKey: "voice.save", action: onContinue)
+                PrimaryButton(titleKey: "voice.save", testID: "uitest.voice.save", action: onContinue)
                 SecondaryButton(titleKey: "voice.not_this_time", color: .white.opacity(0.85), action: onContinue)
             }
             .padding(28)

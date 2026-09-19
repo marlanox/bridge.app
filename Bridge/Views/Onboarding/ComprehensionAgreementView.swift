@@ -19,7 +19,7 @@ struct ComprehensionAgreementView: View {
             confirmRow(role: .partnerA, color: .purple)
             confirmRow(role: .partnerB, color: .green)
 
-            PrimaryButton(titleKey: "names.continue", isEnabled: vm.bothConfirmedComprehension, action: onContinue)
+            PrimaryButton(titleKey: "names.continue", isEnabled: vm.bothConfirmedComprehension, testID: "uitest.agree.continue", action: onContinue)
         }
         .padding(28)
         .background(Color(red: 0.98, green: 0.96, blue: 0.93))
@@ -48,5 +48,6 @@ struct ComprehensionAgreementView: View {
         }
         .buttonStyle(.plain)
         .disabled(confirmed)
+        .accessibilityIdentifier("uitest.agree.\(role.rawValue)")
     }
 }

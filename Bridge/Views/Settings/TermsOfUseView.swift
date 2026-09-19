@@ -17,6 +17,7 @@ struct TermsOfUseView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L("settings.done")) { dismiss() }
+                        .accessibilityIdentifier("uitest.legal.done")
                 }
             }
         }
