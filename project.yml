@@ -12,6 +12,22 @@ settings:
     SWIFT_VERSION: "5.0"
     ENABLE_PREVIEWS: YES
     TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGN_STYLE: Automatic
+schemes:
+  Bridge:
+    build:
+      targets:
+        Bridge: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
 targets:
   Bridge:
     type: application

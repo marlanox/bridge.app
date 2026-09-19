@@ -12,12 +12,45 @@ file tree on disk.
 ```bash
 brew install xcodegen
 cd bridge.app
-xcodegen generate
+./Scripts/bootstrap.sh   # or: xcodegen generate
 open Bridge.xcodeproj
 ```
 
 Then build and run on an iOS 17+ simulator or device (⌘R). No third-party Swift packages
 are required.
+
+## Building in CI / any cloud build service
+
+`project.yml` is the **only** project configuration in this repo — `Bridge.xcodeproj` is
+never committed (see `.gitignore`) and is always generated fresh from it, so there is exactly
+one source of truth to keep in sync, never two. This is deliberate and is the standard,
+portable way to keep an Xcode project mergeable and drift-free across machines and CI, not a
+placeholder for "a real project file later."
+
+Any CI that can run a shell command on a macOS runner can build Bridge, with no dependency on
+a specific cloud build provider:
+
+```bash
+Scripts/bootstrap.sh   # installs xcodegen if missing, runs `xcodegen generate`
+Scripts/ci_build.sh    # simulator build by default; ACTION=archive for a signed archive
+```
+
+`project.yml` already carries a shared scheme (`Bridge`, written to `xcshareddata` on every
+generate, so it's visible to CI without extra setup) and `CODE_SIGN_STYLE: Automatic`, so a
+fresh checkout only needs a development team selected (locally: Xcode's Signing &
+Capabilities picker; in CI: `DEVELOPMENT_TEAM=<your team ID>` passed to `Scripts/ci_build.sh`,
+or your CI provider's own signing/certificate step) before it can archive and sign — no other
+project setup is required. `xcodebuild`, Xcode Cloud, GitHub Actions, Codemagic, Bitrise, etc.
+all work the same way: generate, then build/archive against the `Bridge` scheme.
+
+If you'd rather have an actual `Bridge.xcodeproj` checked into the repo (e.g. some tools
+expect one to already exist), running `Scripts/bootstrap.sh` once and committing the result
+is safe to do at any time — `project.yml` stays canonical, and re-running `xcodegen generate`
+afterward is idempotent, so a checked-in project and this generate-on-demand workflow can
+coexist without conflict. This wasn't done for you in this session: generating and committing
+it needs to happen from a machine that can actually open the result in Xcode to confirm it's
+valid, and this session has no Swift/Xcode toolchain available to do that (see "Known
+limitations of this session" below).
 
 ## What's implemented
 
@@ -148,3 +181,14 @@ calls simply no-op every time, same as running on a device signed out of iCloud.
 - Hosting the privacy policy and terms of use at a real URL, and the rest of the App Store
   Connect metadata (age rating, App Privacy answers, support/marketing URLs) — see
   `Docs/APP_STORE_CHECKLIST.md` for the exact, ready-to-use answers.
+
+## Known limitations of this session
+
+This app was built and reviewed entirely in a Linux environment with no Swift toolchain,
+Xcode, or simulator — every change was verified by careful manual reading, not by compiling
+or running it. That's why `Bridge.xcodeproj` is generated rather than committed (see
+"Building in CI" above): generating and validating one needs a machine that can actually open
+the result in Xcode, which this session never had. The first real build should happen soon
+after this lands, and any compiler error it surfaces (there's a real chance of at least one
+small one, e.g. a missed import) should be treated as expected first-build cleanup, not a sign
+something deeper is wrong.
