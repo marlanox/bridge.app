@@ -19,10 +19,13 @@ final class SessionViewModel: ObservableObject {
     @Published var timeUpBannerShown: Bool = false
     @Published var placedCardsThisTurn: [CardPlay] = []
 
-    /// Set when one partner finishes their turn in a sequential room and the other
-    /// hasn't gone yet — shows a brief, upright "here's what they shared" screen before
-    /// control actually passes, instead of flipping the phone. Cleared by `confirmHandoff()`.
-    @Published var pendingHandoff: (from: PartnerRole, to: PartnerRole, cards: [CardPlay])?
+    /// Set the instant a partner finishes answering in a sequential room. The room itself
+    /// keeps facing `from` — it does NOT rotate yet — while a reveal card, rotated to
+    /// face `to`, shows exactly what `from` shared. Only once `to` taps "I've read it"
+    /// (`confirmReveal()`) does the room actually flip (or, if both partners have now
+    /// answered, the room ends and the walk advances). This fires after *every* answer,
+    /// first and second alike — see `confirmReveal()` for how it tells the two apart.
+    @Published var pendingReveal: (from: PartnerRole, to: PartnerRole, cards: [CardPlay])?
 
     // Basement runtime state
     @Published var basementQuestionsAsked: [PartnerRole: Int] = [.partnerA: 0, .partnerB: 0]
@@ -176,7 +179,7 @@ final class SessionViewModel: ObservableObject {
         let config = RoomConfig.all[kind]
         roomDoneFlags = [.partnerA: false, .partnerB: false]
         placedCardsThisTurn = []
-        pendingHandoff = nil
+        pendingReveal = nil
         timerFired = false
         timeUpBannerShown = false
 
@@ -202,19 +205,14 @@ final class SessionViewModel: ObservableObject {
         FeedbackSounds.cardPlaced()
     }
 
-    /// Called when `role` taps "Done" in the current room.
+    /// Called when `role` taps "Done" in the current room. In a sequential room this
+    /// never flips the room directly — it always raises the reveal card first (for both
+    /// the first and the second answer alike); `confirmReveal()` decides what happens next.
     func markRoomDone(_ role: PartnerRole) {
         if isSequentialSpeakingRoom {
             guard role == activePartner else { return }
             roomDoneFlags[role] = true
-            if roomDoneFlags[role.other] == true {
-                TokenManager.awardRoomCompleted(session: &session)
-                advance()
-            } else {
-                // Don't flip yet — let the incoming partner read what was shared first,
-                // upright, and advance to their own turn only once they tap Continue.
-                pendingHandoff = (from: role, to: role.other, cards: placedCardsThisTurn)
-            }
+            pendingReveal = (from: role, to: role.other, cards: placedCardsThisTurn)
         } else {
             roomDoneFlags[role] = true
             if roomDoneFlags[.partnerA] == true && roomDoneFlags[.partnerB] == true {
@@ -224,15 +222,23 @@ final class SessionViewModel: ObservableObject {
         }
     }
 
-    /// The incoming partner taps this after reading what the previous partner shared.
-    func confirmHandoff() {
-        guard let handoff = pendingHandoff else { return }
-        activePartner = handoff.to
-        placedCardsThisTurn = []
-        roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
-        timerFired = false
-        timeUpBannerShown = false
-        pendingHandoff = nil
+    /// The reader taps "I've read it" after reading the reveal card. If the other
+    /// partner (the one who just shared) had *already* answered before this exchange —
+    /// i.e. both partners' done-flags are now set — the room is finished and the walk
+    /// advances. Otherwise it's now the reader's turn: the room flips to face them.
+    func confirmReveal() {
+        guard let reveal = pendingReveal else { return }
+        pendingReveal = nil
+        if roomDoneFlags[reveal.from] == true && roomDoneFlags[reveal.to] == true {
+            TokenManager.awardRoomCompleted(session: &session)
+            advance()
+        } else {
+            activePartner = reveal.to
+            placedCardsThisTurn = []
+            roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
+            timerFired = false
+            timeUpBannerShown = false
+        }
     }
 
     func addMoreTime() {

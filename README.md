@@ -36,11 +36,14 @@ are required.
   (`Bridge/ViewModels/LocalizationManager.swift`) replace the standard
   `LocalizedStringKey`/`NSLocalizedString` app-wide so the in-app choice — not the device
   locale — decides which `.lproj` bundle strings load from.
-- Turn-based full-screen UI: only the active partner's screen is large. Nothing ever
-  renders upside down — when a turn passes in a sequential room, the incoming partner sees
-  a brief upright "handoff" screen (what the previous partner shared, then a Continue
-  button) instead of the phone flipping 180°
-  (`Bridge/Views/Common/ActivePartnerContainer.swift`, `Bridge/Views/Session/HandoffView.swift`).
+- Turn-based, physically-flipping UI: the room's interior and controls rotate 180° to
+  face whoever is currently answering, since the two partners sit facing each other with
+  the phone between them. Critically, the room only ever flips when it becomes someone's
+  turn to *answer* — never while they're only reading. When a partner finishes, a reveal
+  card appears on top of the (still unrotated) room, rotated to face the reader, showing
+  exactly what was shared; only once they tap "I've read it" does the room actually flip
+  (`Bridge/Views/Common/ActivePartnerContainer.swift`,
+  `Bridge/Views/Session/RevealCardOverlay.swift`, `SessionViewModel.confirmReveal()`).
 - A small premium type system — serif headings, bold upright tracked-caps buttons, never
   italic — applied consistently app-wide (`Bridge/Views/Common/Font+Bridge.swift`).
 - Green/red token economy, folded into the profile at session end
@@ -60,13 +63,14 @@ are required.
 
 All ten backgrounds are in `Bridge/Assets.xcassets/` — `house-exterior.png`,
 `house-map.png`, `hall.png`, `living-room.png`, `study.png`, `kids-room.png`,
-`kitchen.png`, `basement.png`, `bridge.png`, `ending.png` — plus `app-icon.png`, all
-generated from the photorealistic reference photos provided. See
-`Docs/BRIDGE_asset_prompts.md` for one open item: the provided app icon is a circular
-medallion on a white square, so the Home Screen icon will show a visible white margin
-around it rather than running edge-to-edge — cosmetic only, easy to swap later if wanted.
-`RoomBackgroundImage` still falls back to a plain warm beige background (and the House Map
-to a plain numbered list) if any asset is ever removed, so the app never blocks on art.
+`kitchen.png`, `basement.png`, `bridge.png`, `ending.png` — generated from the
+photorealistic reference photos provided. The app icon (`app-icon.png`) is instead a
+programmatically rendered vector mark (warm sunset gradient, an arch bridge silhouette
+with its water reflection) — edge-to-edge, no AI image generation was available in this
+session to produce a photorealistic one, so this is a deliberately bold, simple "logo"
+style icon instead. `RoomBackgroundImage` still falls back to a plain warm beige
+background (and the House Map to a plain numbered list) if any asset is ever removed, so
+the app never blocks on art.
 
 ## Judgment calls worth knowing about
 
@@ -90,16 +94,25 @@ called out with a code comment at the point of the decision:
   collapsed to one each (44 unique cards, matching the spec's own "~45 cards" estimate)
   rather than showing two identical tiles.
 
+## Purchases (StoreKit 2)
+
+`Bridge/ViewModels/StoreManager.swift` is a real purchase flow — `Product`/`Transaction`,
+verified transactions, a transaction-update listener, Restore Purchases, and an
+entitlement check at every launch (so a reinstall restores automatically). It points at a
+placeholder product identifier, `StoreProductID.fullVersion` = `"com.bridge.app.fullversion"`,
+since no App Store Connect account/ID was available in this session. To go live: create a
+Non-Consumable In-App Purchase in App Store Connect with that same identifier (or update
+the constant to match), at the $14.99 tier — nothing else needs to change. Until then,
+`Bridge/Bridge.storekit` (a local StoreKit Testing configuration) makes the entire
+purchase/restore flow work in Xcode's simulator today — select it once via Product ▸
+Scheme ▸ Edit Scheme ▸ Run ▸ Options ▸ StoreKit Configuration.
+
 ## Not built yet
 
-- Real StoreKit purchase flow for the $14.99 unlock (`PaywallView.unlock()` currently just
-  flips a local flag — the call site is isolated so wiring in StoreKit later doesn't touch
-  the rest of the app). Restore Purchases is wired but, honestly, has nothing real to
-  restore from yet.
 - Themed card packs (After infidelity, Long distance, etc.) — intentionally out of scope
   for v1 per the spec.
-- Automated tests and a TestFlight build (needs the remaining art assets and a real device
-  first, per the spec's own build order).
+- Automated tests and a TestFlight build (needs a real device / Apple Developer account,
+  per the spec's own build order).
 - Hosting the privacy policy and terms of use at a real URL, and the rest of the App Store
   Connect metadata (age rating, App Privacy answers, support/marketing URLs) — see
   `Docs/APP_STORE_CHECKLIST.md` for the exact, ready-to-use answers.

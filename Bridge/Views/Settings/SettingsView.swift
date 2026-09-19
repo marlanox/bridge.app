@@ -17,6 +17,7 @@ struct SettingsView: View {
     @State private var showingLanguagePicker = false
     @State private var showingHouseMap = false
     @State private var restoreAlertMessage: String?
+    @State private var isRestoring = false
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
@@ -53,9 +54,18 @@ struct SettingsView: View {
                     Button(L("settings.terms_row")) {
                         showingTerms = true
                     }
-                    Button(L("settings.restore_purchases_row")) {
-                        restore()
+                    Button {
+                        Task { await restore() }
+                    } label: {
+                        HStack {
+                            Text(L("settings.restore_purchases_row"))
+                            if isRestoring {
+                                Spacer()
+                                ProgressView()
+                            }
+                        }
                     }
+                    .disabled(isRestoring)
                 }
 
                 Section(L("settings.section_data")) {
@@ -123,10 +133,15 @@ struct SettingsView: View {
         }
     }
 
-    /// No StoreKit integration yet (see README) — this reflects the one signal the app
-    /// actually has (the local unlock flag) rather than pretending to contact a store.
-    private func restore() {
-        if appState.activeProfile?.hasUnlockedFullVersion == true {
+    private func restore() async {
+        isRestoring = true
+        let entitled = await StoreManager.shared.restorePurchases()
+        isRestoring = false
+        if entitled {
+            if var profile = appState.activeProfile {
+                profile.hasUnlockedFullVersion = true
+                appState.activeProfile = profile
+            }
             restoreAlertMessage = L("paywall.restore_success")
         } else {
             restoreAlertMessage = L("paywall.restore_none_found")

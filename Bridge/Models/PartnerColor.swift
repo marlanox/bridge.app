@@ -8,6 +8,16 @@ enum PartnerRole: String, Codable, CaseIterable, Hashable {
     var other: PartnerRole {
         self == .partnerA ? .partnerB : .partnerA
     }
+
+    /// The fixed physical seat rotation for this partner: partners sit facing each
+    /// other across the phone, so partnerA's seat is always "upright" (0°) and
+    /// partnerB's is always the opposite side (180°) — regardless of whose turn it is.
+    /// Room content rotates to whichever seat is currently answering; anything that must
+    /// stay readable for a *specific* seat (the waiting badge, a reveal card) uses this
+    /// directly instead.
+    var seatRotationDegrees: Double {
+        self == .partnerB ? 180 : 0
+    }
 }
 
 enum PartnerColor: String, Codable, Hashable {

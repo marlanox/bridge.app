@@ -176,8 +176,7 @@
 "room.time_up_banner" = "Time's up — finish your thought";
 "room.forbidden_prefix" = "Not now:";
 "handoff.shared_title" = "%@ shared:";
-"handoff.prompt" = "When you're ready, %@.";
-"handoff.continue" = "Continue";
+"handoff.read_it" = "I've read it";
 
 // MARK: - Basement (Fears)
 
@@ -243,6 +242,8 @@
 "paywall.title" = "Unlock the full version";
 "paywall.body" = "Your first full session was free. Unlocking gives you every room, every deck, for this relationship, for good.";
 "paywall.unlock_button" = "Unlock the full version — $14.99";
+"paywall.unlock_button_priced" = "Unlock the full version — %@";
+"paywall.product_unavailable" = "The full version isn't available to purchase right now. Check your connection and try again.";
 "paywall.maybe_later" = "Maybe later";
 "paywall.packs_coming_soon" = "More card packs (After infidelity, Long distance, and others) are coming later.";
 "paywall.restore" = "Restore Purchases";

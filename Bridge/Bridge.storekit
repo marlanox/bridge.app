@@ -1,0 +1,36 @@
+{
+  "identifier" : "3E5C1A2B-6F4D-4A8E-9B2C-1D7E8F9A0B1C",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "6A1B2C3D-4E5F-4071-8A9B-0C1D2E3F4A5B",
+      "localizations" : [
+        {
+          "description" : "Unlocks every room and every card deck for this relationship, for good.",
+          "displayName" : "Full Version",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.bridge.app.fullversion",
+      "referenceName" : "Full Version",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_editorMode" : "Off",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

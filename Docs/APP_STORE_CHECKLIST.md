@@ -16,7 +16,14 @@ Connect metadata, hosting, or a real device/account that only the developer can 
 - ✅ In-app data deletion: Settings → Delete this relationship's data removes the profile,
   tokens, session history, couple's agreement, and every voice note it recorded
   (`AppState.deleteActiveProfileData()`).
-- ✅ Restore Purchases button on the paywall (`PaywallView`), plus Terms/Privacy links.
+- ✅ Real StoreKit 2 purchase flow for the $14.99 unlock — `Product`/`Transaction`,
+  verified transactions, a transaction-update listener, and Restore Purchases that
+  actually re-syncs with the App Store (`Bridge/ViewModels/StoreManager.swift`). Entitlement
+  is also re-checked at every launch, so a reinstall or new device restores automatically.
+  `Bridge/Bridge.storekit` is a local StoreKit Testing config so the whole purchase flow
+  works in the simulator today, before any App Store Connect setup exists.
+- ✅ Restore Purchases button on the paywall (`PaywallView`) and in Settings, plus
+  Terms/Privacy links.
 - ✅ No subscription dark patterns — no countdown timers, no "last chance" language
   anywhere in the paywall copy.
 - ✅ System sounds + haptics only (no custom audio files): timer's 1-minute warning, card
@@ -46,10 +53,15 @@ Connect metadata, hosting, or a real device/account that only the developer can 
    clinical, cure, heal*; prefer *guided conversation, structured dialogue, communication
    tool, relationship exercise, reconnect, repair*. Don't overpromise ("will save your
    relationship," "guaranteed").
-5. **Real StoreKit integration.** `PaywallView.unlock()` currently flips a local flag with
-   no purchase behind it — that's fine for development/testing, but the $14.99 unlock needs
-   a real `Product`/`Transaction` flow via StoreKit 2 before submission, wired at that same
-   call site.
+5. **Create the real product in App Store Connect.** The StoreKit code is done, but it
+   points at a placeholder identifier, `com.bridge.app.fullversion`
+   (`Bridge/ViewModels/StoreManager.swift`, `StoreProductID.fullVersion`). Once there's an
+   App Store Connect account: create a Non-Consumable In-App Purchase there with that same
+   identifier (or change the constant to match whatever ID gets created), set the $14.99
+   price tier, and add its localized display name/description. Nothing else in the app
+   needs to change. Until then, `Bridge/Bridge.storekit` lets the full purchase/restore
+   flow be tested in Xcode's simulator with a fake product of the same ID — select it once
+   via Product ▸ Scheme ▸ Edit Scheme ▸ Run ▸ Options ▸ StoreKit Configuration.
 6. **Support URL and Marketing URL** fields in App Store Connect — even a one-page site
    satisfies this.
 7. **Screenshots.** All art assets are now in place (`Docs/BRIDGE_asset_prompts.md`) —

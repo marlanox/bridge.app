@@ -1,11 +1,15 @@
 import SwiftUI
 
-/// Implements the turn-based interaction model (spec section 2): only the active
-/// partner's screen is large; the waiting partner sees a small, upright status badge
-/// in the corner. Content always renders right-side up for whoever is reading it —
-/// there is no 180° phone-flip. When a turn passes between partners, `RoomView` shows
-/// a brief upright "handoff" screen (see `HandoffView`) instead of rotating anything,
-/// so no one ever has to read anything upside down.
+/// Implements the physical turn-based interaction model: the two partners sit facing
+/// each other with the phone between them, so the room's interior and controls rotate
+/// 180° to face whoever is currently answering. The waiting partner sees a small,
+/// correctly-oriented status badge in their own corner.
+///
+/// Critically, this rotation only ever happens when it becomes someone's turn to
+/// *answer* — never while they're only reading. `RoomView` holds the reveal-card overlay
+/// (`RevealCardOverlay`) that appears on top of this, still-unrotated, content when a
+/// partner has just answered; only after the reader dismisses that card does
+/// `activePartner` change and this view rotates.
 struct ActivePartnerContainer<Content: View>: View {
     let activePartner: PartnerRole
     let partnerName: (PartnerRole) -> String
@@ -15,15 +19,16 @@ struct ActivePartnerContainer<Content: View>: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             content
+                .rotationEffect(.degrees(activePartner.seatRotationDegrees))
 
             WaitingIndicator(
                 name: partnerName(activePartner.other),
                 color: partnerColor(activePartner.other)
             )
+            .rotationEffect(.degrees(activePartner.other.seatRotationDegrees))
             .padding(14)
         }
-        .transition(.opacity)
-        .animation(.easeInOut(duration: 0.35), value: activePartner)
+        .animation(.spring(response: 0.6, dampingFraction: 0.82), value: activePartner)
     }
 }
 

@@ -16,15 +16,9 @@ struct RoomView: View {
             RoomBackgroundImage(imageName: config.backgroundImageName)
             Color.black.opacity(0.18).ignoresSafeArea()
 
-            if isSequential, let handoff = vm.pendingHandoff {
-                HandoffView(
-                    fromName: vm.session.name(for: handoff.from),
-                    fromColor: vm.session.color(for: handoff.from),
-                    toName: vm.session.name(for: handoff.to),
-                    cards: handoff.cards,
-                    onContinue: { vm.confirmHandoff() }
-                )
-            } else if isSequential {
+            // The room interior always renders for the current `activePartner` and never
+            // rotates while someone is only reading — see RevealCardOverlay's doc comment.
+            if isSequential {
                 ActivePartnerContainer(
                     activePartner: vm.activePartner,
                     partnerName: { vm.session.name(for: $0) },
@@ -35,7 +29,18 @@ struct RoomView: View {
             } else {
                 discussionContent
             }
+
+            if let reveal = vm.pendingReveal {
+                RevealCardOverlay(
+                    fromName: vm.session.name(for: reveal.from),
+                    fromColor: vm.session.color(for: reveal.from),
+                    toRole: reveal.to,
+                    cards: reveal.cards,
+                    onRead: { vm.confirmReveal() }
+                )
+            }
         }
+        .animation(.spring(response: 0.45, dampingFraction: 0.8), value: vm.pendingReveal == nil)
     }
 
     // MARK: - Sequential (one speaks, one listens)

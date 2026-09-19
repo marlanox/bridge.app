@@ -5,6 +5,11 @@ import Combine
 /// `session` (it starts parked at `.welcome`) so the app has one continuous view
 /// hierarchy — finishing or abandoning a walk through the house simply hands back a
 /// fresh session at Welcome for the same active profile.
+///
+/// Marked `@MainActor` (matching `StoreManager`) since it's only ever touched from
+/// SwiftUI via `@StateObject`/`@EnvironmentObject`, which already guarantees main-thread
+/// use — this just makes that explicit for the compiler's actor-isolation checking.
+@MainActor
 final class AppState: ObservableObject {
     @Published var profiles: [RelationshipProfile]
     @Published var activeProfileID: UUID?
@@ -22,6 +27,21 @@ final class AppState: ObservableObject {
         self.activeProfileID = loaded.contains(where: { $0.id == activeID }) ? activeID : loaded[0].id
         self.session = SessionViewModel(profile: loaded.first { $0.id == self.activeProfileID } ?? loaded[0])
         persistence.saveProfiles(self.profiles)
+
+        // Real StoreKit entitlement is the source of truth for the unlock, so re-check it
+        // at launch (covers reinstalls / new devices) and whenever the App Store reports
+        // a change (a purchase completed elsewhere, a pending purchase clearing, etc.).
+        StoreManager.shared.onEntitlementChanged = { [weak self] in self?.syncEntitlementFromStore() }
+        syncEntitlementFromStore()
+    }
+
+    private func syncEntitlementFromStore() {
+        Task {
+            let entitled = await StoreManager.shared.isEntitledToFullVersion()
+            guard entitled, var profile = activeProfile, !profile.hasUnlockedFullVersion else { return }
+            profile.hasUnlockedFullVersion = true
+            activeProfile = profile
+        }
     }
 
     var activeProfile: RelationshipProfile? {

@@ -20,11 +20,13 @@ for the art.
 > on a full-bleed `house-map.png` background, falling back to a plain numbered list if the
 > asset is missing.
 >
-> **Amendment (turn-passing, see section 2):** the original "screen flips 180°" mechanic
-> was replaced. Nothing in the app ever renders upside down. Instead, when a partner
-> finishes their turn in a sequential room, the incoming partner sees a brief upright
-> "handoff" screen — what the previous partner shared, then a Continue button — before
-> their own turn begins. See `HandoffView.swift`.
+> **Amendment (turn-passing, see section 2):** the original "screen flips 180°" mechanic is
+> kept, but its timing is more precise. The room's interior only ever flips when it becomes
+> someone's turn to *answer* — never while they're only reading. When a partner finishes,
+> the room stays facing them; a reveal card appears on top of it, rotated to face the other
+> partner, showing exactly what was shared, with its own correctly-oriented "I've read it"
+> button. Only once that's tapped does the room actually flip. See `RevealCardOverlay.swift`
+> and `SessionViewModel.confirmReveal()`.
 >
 > **Amendment (language):** the app ships with a language picker (English/Russian) at
 > first launch, independent of the device's system language, changeable anytime from
@@ -49,11 +51,14 @@ Core principle: we are not against each other. We are together against what happ
   at onboarding, used everywhere in the UI (never "Partner A/B" — that's internal dev
   shorthand only)
 - **Interaction model — turn-based full screen, not mirrored halves (amended):** only one
-  partner's turn is large and active at a time, filling the whole screen. The waiting
-  partner sees a small, upright status indicator in their corner (e.g. "listening"). Nothing
-  in the app ever renders upside down: when a turn passes in a sequential room, the incoming
-  partner first sees a brief upright "handoff" screen — what the previous partner shared,
-  read right-side up — then taps Continue themselves once ready.
+  partner's turn is large and active at a time, filling the whole screen, physically
+  rotated 180° to face them (the two partners sit facing each other across the phone). The
+  waiting partner sees a small, correctly-oriented status indicator in their own corner
+  (e.g. "listening"). The room only ever rotates when it becomes someone's turn to
+  *answer* — never while they're only reading: when a partner finishes, the room keeps
+  facing them and a reveal card appears on top, rotated to face the other partner, showing
+  exactly what was shared, with an "I've read it" button oriented to the reader. Only once
+  that's tapped does the room itself flip.
 - **Color coding:** Partner colors — purple and green (assigned per partner, shown
   consistently on their turn screens, card slots, intensity sliders)
 - **Cards — always visible, no swipe-through:** a partner's full deck for the current room
