@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Basement — Fears (spec section 6, room 6): a strict question/answer protocol rather
 /// than the usual card grid. The asker picks a fear card; the screen flips to the
@@ -6,9 +7,17 @@ import SwiftUI
 struct BasementView: View {
     @ObservedObject var vm: SessionViewModel
 
-    @State private var instructionsExpanded = true
+    // Collapsed by default on short screens (SE-class phones) so the fully-expanded
+    // instruction/why-it-helps/forbidden text doesn't push the Done button below the
+    // fold before a first-time user realizes they can collapse it themselves.
+    @State private var instructionsExpanded: Bool
 
     private let fearsDeck = DeckData.fears
+
+    init(vm: SessionViewModel) {
+        self.vm = vm
+        _instructionsExpanded = State(initialValue: UIScreen.main.bounds.height >= 700)
+    }
 
     var body: some View {
         // The photo rotates together with the header/cards/buttons as one unit — see
@@ -59,6 +68,20 @@ struct BasementView: View {
                 }
             )
 
+            // Done only ever finishes the room once BOTH partners have tapped it during
+            // their own asking turn — turns only change hands after a full ask+answer
+            // round, so without this note, a partner can tap Done, watch nothing
+            // happen, and not understand why. Naming whose turn is pending instead of
+            // just disabling the button keeps `room.done` an ordinary always-tappable
+            // action rather than a new disabled/enabled state to explain.
+            if let hint = turnHint {
+                Text(hint)
+                    .font(.bridgeCaption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
             HStack {
                 Button { vm.markBasementDone(vm.activePartner) } label: {
                     Text(L("room.done"))
@@ -72,6 +95,18 @@ struct BasementView: View {
             }
             .padding(16)
         }
+    }
+
+    private var turnHint: String? {
+        let me = vm.activePartner
+        let other = me.other
+        if vm.roomDoneFlags[me] == true {
+            return LF("basement.you_marked_done", vm.session.name(for: other))
+        }
+        if vm.roomDoneFlags[other] == true {
+            return LF("basement.partner_ready_to_finish", vm.session.name(for: other))
+        }
+        return nil
     }
 
     @ViewBuilder

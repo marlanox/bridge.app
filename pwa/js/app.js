@@ -50,7 +50,14 @@ function resetUiForStep(step, kind) {
   }
   if (step === "calmDown") ui.breathing = false;
   if (step === "ritual") ui.chosenLine = null;
-  if (step === "room" || step === "basement") { ui.headerExpanded = true; ui.openDeckId = null; ui.customCardDraft = ""; }
+  if (step === "room" || step === "basement") {
+    // Collapsed by default on short screens (SE-class phones) so the fully-expanded
+    // instruction/why-it-helps/forbidden text doesn't push the Done button below the
+    // fold before a first-time user realizes they can collapse it themselves.
+    ui.headerExpanded = window.innerHeight >= 700;
+    ui.openDeckId = null;
+    ui.customCardDraft = "";
+  }
   if (step === "couplesAgreementSetup") ui.newRuleDraft = "";
   if (step === "bridgeFinale") ui.bridgeActiveTab = "partnerA";
   if (step === "voiceSnapshot") { ui.recordingRole = null; }

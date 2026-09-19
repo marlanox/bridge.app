@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// The reusable room screen (spec section 6 / section 11 item 8) — one component,
 /// reused for Hall, Living Room, Study, Kids' Room, Kitchen and Needs Room, parameterized
@@ -8,7 +9,16 @@ struct RoomView: View {
     @ObservedObject var vm: SessionViewModel
     let config: RoomConfig
 
-    @State private var instructionsExpanded = true
+    // Collapsed by default on short screens (SE-class phones) so the fully-expanded
+    // instruction/why-it-helps/forbidden text doesn't push the Done button below the
+    // fold before a first-time user realizes they can collapse it themselves.
+    @State private var instructionsExpanded: Bool
+
+    init(vm: SessionViewModel, config: RoomConfig) {
+        self.vm = vm
+        self.config = config
+        _instructionsExpanded = State(initialValue: UIScreen.main.bounds.height >= 700)
+    }
 
     private var isSequential: Bool { config.modes.contains(.speaks) }
     private var decks: [Deck] { config.deckIDs.map { DeckData.deck($0) } }

@@ -208,6 +208,8 @@
 "basement.response.understand" = "I understand why it seemed that way";
 "basement.answer_instruction" = "Answer with just one of the three words above — nothing more is required.";
 "basement.explain_briefly" = "Explain briefly (optional)";
+"basement.you_marked_done" = "You've marked yourself done — waiting for %@ to finish their own turn.";
+"basement.partner_ready_to_finish" = "%@ is ready to finish — ask a couple more, or tap Done to finish together.";
 
 // MARK: - Garden / Bridge Finale
 

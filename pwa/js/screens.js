@@ -363,6 +363,7 @@ export function basementScreen(store, ui) {
       <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
       ${deckDropdownList(["fears"])}
       <div class="spacer"></div>
+      <div style="padding:0 24px;text-align:center;">${basementTurnHint(store)}</div>
       <div style="padding:16px;text-align:center;">
         <button class="pressable" data-action="markBasementDone" style="background:${store.activePartner === "partnerA" ? "var(--purple)" : "var(--green)"};color:#fff;border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
       </div>`;
@@ -373,6 +374,22 @@ export function basementScreen(store, ui) {
     : "";
   const stage = `<div class="seat-stage${rotation ? " flipped" : ""}" style="background:rgba(0,0,0,0.3)">${content}</div>`;
   return photoScreen("basement", stage, { dim: false }) + sheet;
+}
+
+/** Done only ever finishes the room once BOTH partners have tapped it during their
+ * own asking turn — turns only change hands after a full ask+answer round, so
+ * without this note, a partner can tap Done, watch nothing happen, and not
+ * understand why. Mirrors the same hint in BasementView.swift on iOS. */
+function basementTurnHint(store) {
+  const me = store.activePartner;
+  const other = store.other(me);
+  if (store.roomDoneFlags[me]) {
+    return `<p class="f-caption secondary">${escHtml(LF("basement.you_marked_done", store.name(other)))}</p>`;
+  }
+  if (store.roomDoneFlags[other]) {
+    return `<p class="f-caption secondary">${escHtml(LF("basement.partner_ready_to_finish", store.name(other)))}</p>`;
+  }
+  return "";
 }
 
 function fearTextFor(id) {
