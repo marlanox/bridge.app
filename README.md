@@ -49,7 +49,13 @@ are required.
 - Green/red token economy, folded into the profile at session end
   (`Bridge/ViewModels/TokenManager.swift`).
 - Multiple relationship profiles, each with its own tokens/currency/history, persisted as
-  JSON in the Documents directory (`Bridge/Persistence/PersistenceManager.swift`).
+  JSON in the Documents directory (`Bridge/Persistence/PersistenceManager.swift`). Every save
+  (and every voice note) is also mirrored best-effort into the app's iCloud ubiquity
+  container in the background, and a fresh install/new phone with no local data yet is
+  offered a restore from that mirror at launch — so losing or replacing the phone doesn't
+  lose session progress. Local storage stays authoritative and synchronous exactly as
+  before; iCloud is purely additive and no-ops cleanly when unavailable (see "iCloud sync"
+  below).
 - Paywall gate after the first free session; profile switcher.
 - Voice snapshot record/playback (AVFoundation) and "save to gallery" for the closing card
   (rendered to an image and written to Photos).
@@ -106,6 +112,32 @@ the constant to match), at the $14.99 tier — nothing else needs to change. Unt
 `Bridge/Bridge.storekit` (a local StoreKit Testing configuration) makes the entire
 purchase/restore flow work in Xcode's simulator today — select it once via Product ▸
 Scheme ▸ Edit Scheme ▸ Run ▸ Options ▸ StoreKit Configuration.
+
+## iCloud sync
+
+`Bridge/Persistence/PersistenceManager.swift` mirrors the profiles JSON and every voice note
+into the app's iCloud ubiquity container on a background queue after each local save, and
+restores from that mirror on a fresh install/new phone that has no local data yet
+(`fetchFromiCloud`, wired up in `AppState.init()` and gated on `hasLocalProfilesFile` checked
+before that launch's first save). It never touches a device that already has local data, and
+it degrades to exactly today's local-only behavior if
+iCloud isn't available (no iCloud account, iCloud Drive off, or the capability not
+provisioned) — nothing about the app depends on it working.
+
+The container identifier is declared in `project.yml` (`iCloud.com.bridge.app.ios`) and
+XcodeGen generates `Bridge/Bridge.entitlements` from it. Two manual steps remain, both only
+possible from an Apple Developer account, so they couldn't be done in this session:
+
+1. In Xcode, select the Bridge target → Signing & Capabilities → **+ Capability** → **iCloud**
+   → check **iCloud Documents**. Xcode will provision the container automatically the first
+   time you do this with a real Apple Developer team selected.
+2. If/when you change `PRODUCT_BUNDLE_IDENTIFIER` away from the placeholder
+   `com.bridge.app.ios` (see "Not built yet" below), update the `iCloud.com.bridge.app.ios`
+   identifiers in `project.yml`'s `entitlements` block to match, then re-run
+   `xcodegen generate`.
+
+Until both are done, the app still builds and runs exactly as before — the mirror/restore
+calls simply no-op every time, same as running on a device signed out of iCloud.
 
 ## Not built yet
 

@@ -46,6 +46,7 @@ struct VoiceSnapshotView: View {
                 if recorder.isRecording {
                     recorder.stopRecording()
                     vm.markVoiceNoteRecorded(role)
+                    PersistenceManager.shared.mirrorVoiceNoteToiCloud(sessionID: vm.session.id, role: role)
                 } else {
                     recorder.startRecording(to: url)
                 }

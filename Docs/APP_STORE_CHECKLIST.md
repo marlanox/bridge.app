@@ -30,6 +30,11 @@ Connect metadata, hosting, or a real device/account that only the developer can 
   placement, room transitions. Oath and ritual moments are deliberately silent
   (`Bridge/ViewModels/FeedbackSounds.swift`).
 - ✅ Works fully offline — everything is local storage, no network calls anywhere in the app.
+- ✅ Progress and voice notes survive a lost/replaced phone: local JSON storage is mirrored
+  best-effort into the app's iCloud ubiquity container, restored automatically on a fresh
+  install with no local data yet (`Bridge/Persistence/PersistenceManager.swift`). Needs the
+  iCloud capability enabled once in Xcode's Signing & Capabilities — see "iCloud sync" in
+  `README.md`; the app works fine locally-only until then.
 - ✅ Every screen in the main flow ends somewhere; no dead-end taps; missing art assets
   fall back to a plain background instead of a broken image.
 

@@ -18,6 +18,11 @@ final class AppState: ObservableObject {
     private let persistence = PersistenceManager.shared
 
     init() {
+        // Captured before anything below writes to disk — `saveProfiles` a few lines down
+        // creates this file immediately (even for a brand-new default profile), which would
+        // otherwise make "does local data already exist" always true by the time we ask.
+        let hadNoLocalDataAtLaunch = !persistence.hasLocalProfilesFile
+
         var loaded = persistence.loadProfiles()
         if loaded.isEmpty {
             loaded = [RelationshipProfile()]
@@ -33,6 +38,24 @@ final class AppState: ObservableObject {
         // a change (a purchase completed elsewhere, a pending purchase clearing, etc.).
         StoreManager.shared.onEntitlementChanged = { [weak self] in self?.syncEntitlementFromStore() }
         syncEntitlementFromStore()
+
+        // A fresh install/new phone has no local profile data yet — offer a restore from
+        // this device's iCloud mirror (if any) before the app finishes launching. Never
+        // attempted on a device that already had local data at launch.
+        if hadNoLocalDataAtLaunch {
+            persistence.fetchFromiCloud { [weak self] restored in
+                self?.applyRestoredProfiles(restored)
+            }
+        }
+    }
+
+    private func applyRestoredProfiles(_ restored: [RelationshipProfile]?) {
+        guard let restored, !restored.isEmpty else { return }
+        profiles = restored
+        let activeID = persistence.activeProfileID ?? restored[0].id
+        activeProfileID = restored.contains(where: { $0.id == activeID }) ? activeID : restored[0].id
+        session = SessionViewModel(profile: restored.first { $0.id == activeProfileID } ?? restored[0])
+        persistence.saveProfiles(profiles)
     }
 
     private func syncEntitlementFromStore() {

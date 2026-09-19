@@ -36,3 +36,12 @@ targets:
         CURRENT_PROJECT_VERSION: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         DEVELOPMENT_ASSET_PATHS: ""
+    entitlements:
+      path: Bridge/Bridge.entitlements
+      properties:
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.bridge.app.ios
+        com.apple.developer.icloud-services:
+          - CloudDocuments
+        com.apple.developer.ubiquity-container-identifiers:
+          - iCloud.com.bridge.app.ios
