@@ -33,5 +33,5 @@ else
     -project Bridge.xcodeproj \
     -scheme "$SCHEME" \
     -configuration "$CONFIGURATION" \
-    -destination "platform=iOS Simulator,name=iPhone 15"
+    -destination "generic/platform=iOS Simulator"
 fi
