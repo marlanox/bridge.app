@@ -35,6 +35,15 @@ final class BridgeUITests: XCTestCase {
         XCUIApplication().buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'uitest.card.'")).firstMatch
     }
 
+    /// `waitForExistence` alone isn't enough right after a sheet dismiss (e.g. `swipeDown()`)
+    /// — the element can exist in the hierarchy a beat before its dismiss animation finishes
+    /// and it actually becomes tappable, which reads as "Not hittable" from `tap()`.
+    private func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval = 10) -> Bool {
+        let predicate = NSPredicate(format: "exists == true AND hittable == true")
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
+        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
+    }
+
     // MARK: - A. Full interactive walkthrough: onboarding through Hall room's complete
     // two-partner turn cycle (both reveals, both rotations) — this is the one test that
     // demonstrates every onboarding screen and the flip mechanic through genuine taps
@@ -250,7 +259,7 @@ final class BridgeUITests: XCTestCase {
         attach(app, "D02-profile-switcher")
         app.swipeDown()
 
-        XCTAssertTrue(app.buttons["uitest.settings.viewpath"].waitForExistence(timeout: 10))
+        XCTAssertTrue(waitUntilHittable(app.buttons["uitest.settings.viewpath"]))
         app.buttons["uitest.settings.viewpath"].tap()
         XCTAssertTrue(app.buttons["uitest.housemap.continue"].waitForExistence(timeout: 10))
         attach(app, "D03-house-map-from-settings")
