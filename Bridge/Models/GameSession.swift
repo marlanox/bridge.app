@@ -42,7 +42,7 @@ struct GameSession: Codable, Identifiable {
     var highestIntensity: Int { max(intensityA, intensityB) }
 }
 
-struct SessionSummary: Codable, Identifiable {
+struct SessionSummary: Codable, Identifiable, Equatable {
     var id: UUID = UUID()
     var date: Date
     var greenEarned: Int
