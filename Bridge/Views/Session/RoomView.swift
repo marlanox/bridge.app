@@ -96,11 +96,15 @@ struct RoomView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            CardGridView(
-                decks: decks,
-                onSelect: { deck, card in vm.playCard(card, deckID: deck.id) },
-                onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) }
-            )
+            if !decks.isEmpty {
+                CardGridView(
+                    decks: decks,
+                    onSelect: { deck, card in vm.playCard(card, deckID: deck.id) },
+                    onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) }
+                )
+            } else {
+                Spacer(minLength: 24)
+            }
 
             HStack(spacing: 12) {
                 discussionDoneButton(role: .partnerA, color: .purple)
@@ -140,6 +144,7 @@ struct RoomView: View {
         }
         .background(done ? Color.white.opacity(0.3) : color.color, in: Capsule())
         .disabled(done)
+        .accessibilityIdentifier("uitest.room.done.\(role.rawValue)")
     }
 
     // MARK: - Shared header

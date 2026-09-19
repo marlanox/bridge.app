@@ -214,7 +214,9 @@
 "bridge.mandatory_card_prompt" = "Complete this aloud, together:";
 "bridge.together_line" = "I choose to be on your side of this, not against you.";
 "bridge.same_side_button" = "We're on the same side";
-"bridge.choose_all_prompt" = "Choose a card from each: a step toward, a need, a gift.";
+"bridge.choose_all_prompt" = "One at a time: first a step toward, then a need, then a gift. Each of you must choose all three before you can cross.";
+"bridge.step_progress" = "Step %d of %d";
+"bridge.partner_cards_done" = "%@ has chosen all three. Switch tabs if the other partner still needs to.";
 
 // MARK: - Voice Snapshot
 

@@ -207,7 +207,7 @@ final class BridgeUITests: XCTestCase {
         app.launch()
         dismissLanguagePickerIfPresent(app)
 
-        XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["uitest.room.done.partnerA"].waitForExistence(timeout: 10))
         attach(app, "B4-kitchen-discussion-mode")
     }
 

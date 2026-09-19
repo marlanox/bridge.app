@@ -107,7 +107,7 @@ struct RoomConfig {
             timeMinutes: 7,
             modes: [.discussion],
             forbiddenKey: nil,
-            deckIDs: ["step_toward"],
+            deckIDs: [],
             backgroundImageName: "kitchen"
         ),
     ]

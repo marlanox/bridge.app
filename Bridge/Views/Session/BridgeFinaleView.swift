@@ -4,9 +4,11 @@ import SwiftUI
 /// separate Needs Room). Each partner picks a Step Toward card, a Need card and a
 /// gift, then completes the one fixed mandatory card aloud.
 ///
-/// All three decks are shown at once, stacked, with an explicit prompt at the top —
-/// the game actively tells each partner what to do here rather than leaving an empty
-/// screen they have to guess at.
+/// The three decks show one at a time, in order — never all three stacked at once —
+/// so it's unambiguous that all three are required. Advancing to the next deck is
+/// automatic the moment the active partner picks a card for the current one, derived
+/// straight from which fields are still empty rather than tracked as separate state,
+/// so switching tabs back and forth always resumes each partner at their own next step.
 struct BridgeFinaleView: View {
     @ObservedObject var vm: SessionViewModel
     let onContinue: () -> Void
@@ -29,13 +31,16 @@ struct BridgeFinaleView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        deckSection(kind: .stepToward, deck: DeckData.stepToward, promptKey: "bridge.choose_step_toward")
-                        deckSection(kind: .need, deck: DeckData.needsConnection, promptKey: "bridge.choose_need")
-                        deckSection(kind: .gift, deck: DeckData.gifts, promptKey: "bridge.choose_gift")
+                Group {
+                    if let kind = currentKind(for: activeTab) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            stepProgress(kind)
+                            deckSection(kind: kind, deck: deck(for: kind), promptKey: promptKey(for: kind))
+                        }
+                        .padding(16)
+                    } else {
+                        allChosenNotice
                     }
-                    .padding(16)
                 }
                 .frame(maxHeight: 380)
 
@@ -56,6 +61,72 @@ struct BridgeFinaleView: View {
         case .need: return selection?.needCardID
         case .gift: return selection?.giftCardID
         }
+    }
+
+    /// The next deck this partner still needs to choose from, in fixed order — `nil`
+    /// once all three are picked.
+    private func currentKind(for role: PartnerRole) -> SessionViewModel.BridgeCardKind? {
+        if selectedCardID(kind: .stepToward, role: role) == nil { return .stepToward }
+        if selectedCardID(kind: .need, role: role) == nil { return .need }
+        if selectedCardID(kind: .gift, role: role) == nil { return .gift }
+        return nil
+    }
+
+    private func stepIndex(_ kind: SessionViewModel.BridgeCardKind) -> Int {
+        switch kind {
+        case .stepToward: return 1
+        case .need: return 2
+        case .gift: return 3
+        }
+    }
+
+    private func deck(for kind: SessionViewModel.BridgeCardKind) -> Deck {
+        switch kind {
+        case .stepToward: return DeckData.stepToward
+        case .need: return DeckData.needsConnection
+        case .gift: return DeckData.gifts
+        }
+    }
+
+    private func promptKey(for kind: SessionViewModel.BridgeCardKind) -> String {
+        switch kind {
+        case .stepToward: return "bridge.choose_step_toward"
+        case .need: return "bridge.choose_need"
+        case .gift: return "bridge.choose_gift"
+        }
+    }
+
+    @ViewBuilder
+    private func stepProgress(_ kind: SessionViewModel.BridgeCardKind) -> some View {
+        let index = stepIndex(kind)
+        HStack(spacing: 8) {
+            HStack(spacing: 6) {
+                ForEach(1...3, id: \.self) { i in
+                    Capsule()
+                        .fill(i <= index ? Color.bridgeGold : Color.white.opacity(0.25))
+                        .frame(width: i == index ? 22 : 8, height: 6)
+                }
+            }
+            Spacer()
+            Text(LF("bridge.step_progress", index, 3))
+                .font(.bridgeLabel)
+                .foregroundStyle(.white.opacity(0.85))
+        }
+        .accessibilityIdentifier("uitest.bridge.step.\(index)")
+    }
+
+    private var allChosenNotice: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 30))
+                .foregroundStyle(Color.bridgeGold)
+            Text(LF("bridge.partner_cards_done", vm.session.name(for: activeTab)))
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder
