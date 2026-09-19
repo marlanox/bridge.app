@@ -1,0 +1,1127 @@
+{
+  "events": {
+    "id": "events",
+    "nameKey": "deck.events.name",
+    "cards": [
+      {
+        "id": "events_x_01",
+        "textKey": "card.events.01",
+        "category": null
+      },
+      {
+        "id": "events_x_02",
+        "textKey": "card.events.02",
+        "category": null
+      },
+      {
+        "id": "events_x_03",
+        "textKey": "card.events.03",
+        "category": null
+      },
+      {
+        "id": "events_x_04",
+        "textKey": "card.events.04",
+        "category": null
+      },
+      {
+        "id": "events_x_05",
+        "textKey": "card.events.05",
+        "category": null
+      },
+      {
+        "id": "events_x_06",
+        "textKey": "card.events.06",
+        "category": null
+      },
+      {
+        "id": "events_x_07",
+        "textKey": "card.events.07",
+        "category": null
+      },
+      {
+        "id": "events_x_08",
+        "textKey": "card.events.08",
+        "category": null
+      },
+      {
+        "id": "events_x_09",
+        "textKey": "card.events.09",
+        "category": null
+      },
+      {
+        "id": "events_x_10",
+        "textKey": "card.events.10",
+        "category": null
+      },
+      {
+        "id": "events_x_11",
+        "textKey": "card.events.11",
+        "category": null
+      },
+      {
+        "id": "events_x_12",
+        "textKey": "card.events.12",
+        "category": null
+      },
+      {
+        "id": "events_x_13",
+        "textKey": "card.events.13",
+        "category": null
+      },
+      {
+        "id": "events_x_14",
+        "textKey": "card.events.14",
+        "category": null
+      },
+      {
+        "id": "events_x_15",
+        "textKey": "card.events.15",
+        "category": null
+      },
+      {
+        "id": "events_x_16",
+        "textKey": "card.events.16",
+        "category": null
+      },
+      {
+        "id": "events_x_17",
+        "textKey": "card.events.17",
+        "category": null
+      },
+      {
+        "id": "events_x_18",
+        "textKey": "card.events.18",
+        "category": null
+      }
+    ]
+  },
+  "emotions": {
+    "id": "emotions",
+    "nameKey": "deck.emotions.name",
+    "cards": [
+      {
+        "id": "emotions_pain_01",
+        "textKey": "card.emotions.pain.01",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_02",
+        "textKey": "card.emotions.pain.02",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_03",
+        "textKey": "card.emotions.pain.03",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_04",
+        "textKey": "card.emotions.pain.04",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_05",
+        "textKey": "card.emotions.pain.05",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_06",
+        "textKey": "card.emotions.pain.06",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_07",
+        "textKey": "card.emotions.pain.07",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_08",
+        "textKey": "card.emotions.pain.08",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_09",
+        "textKey": "card.emotions.pain.09",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_pain_10",
+        "textKey": "card.emotions.pain.10",
+        "category": "pain"
+      },
+      {
+        "id": "emotions_fear_01",
+        "textKey": "card.emotions.fear.01",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_fear_02",
+        "textKey": "card.emotions.fear.02",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_fear_03",
+        "textKey": "card.emotions.fear.03",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_fear_04",
+        "textKey": "card.emotions.fear.04",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_fear_05",
+        "textKey": "card.emotions.fear.05",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_fear_06",
+        "textKey": "card.emotions.fear.06",
+        "category": "fear"
+      },
+      {
+        "id": "emotions_shame_01",
+        "textKey": "card.emotions.shame.01",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_02",
+        "textKey": "card.emotions.shame.02",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_03",
+        "textKey": "card.emotions.shame.03",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_04",
+        "textKey": "card.emotions.shame.04",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_05",
+        "textKey": "card.emotions.shame.05",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_06",
+        "textKey": "card.emotions.shame.06",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_shame_07",
+        "textKey": "card.emotions.shame.07",
+        "category": "shame"
+      },
+      {
+        "id": "emotions_guilt_01",
+        "textKey": "card.emotions.guilt.01",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_02",
+        "textKey": "card.emotions.guilt.02",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_03",
+        "textKey": "card.emotions.guilt.03",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_04",
+        "textKey": "card.emotions.guilt.04",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_05",
+        "textKey": "card.emotions.guilt.05",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_06",
+        "textKey": "card.emotions.guilt.06",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_guilt_07",
+        "textKey": "card.emotions.guilt.07",
+        "category": "guilt"
+      },
+      {
+        "id": "emotions_anger_01",
+        "textKey": "card.emotions.anger.01",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_02",
+        "textKey": "card.emotions.anger.02",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_03",
+        "textKey": "card.emotions.anger.03",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_04",
+        "textKey": "card.emotions.anger.04",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_05",
+        "textKey": "card.emotions.anger.05",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_06",
+        "textKey": "card.emotions.anger.06",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_07",
+        "textKey": "card.emotions.anger.07",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anger_08",
+        "textKey": "card.emotions.anger.08",
+        "category": "anger"
+      },
+      {
+        "id": "emotions_anxiety_01",
+        "textKey": "card.emotions.anxiety.01",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_02",
+        "textKey": "card.emotions.anxiety.02",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_03",
+        "textKey": "card.emotions.anxiety.03",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_04",
+        "textKey": "card.emotions.anxiety.04",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_05",
+        "textKey": "card.emotions.anxiety.05",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_06",
+        "textKey": "card.emotions.anxiety.06",
+        "category": "anxiety"
+      },
+      {
+        "id": "emotions_anxiety_07",
+        "textKey": "card.emotions.anxiety.07",
+        "category": "anxiety"
+      }
+    ]
+  },
+  "interpretations": {
+    "id": "interpretations",
+    "nameKey": "deck.interpretations.name",
+    "cards": [
+      {
+        "id": "interpretations_x_01",
+        "textKey": "card.interpretations.01",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_02",
+        "textKey": "card.interpretations.02",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_03",
+        "textKey": "card.interpretations.03",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_04",
+        "textKey": "card.interpretations.04",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_05",
+        "textKey": "card.interpretations.05",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_06",
+        "textKey": "card.interpretations.06",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_07",
+        "textKey": "card.interpretations.07",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_08",
+        "textKey": "card.interpretations.08",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_09",
+        "textKey": "card.interpretations.09",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_10",
+        "textKey": "card.interpretations.10",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_11",
+        "textKey": "card.interpretations.11",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_12",
+        "textKey": "card.interpretations.12",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_13",
+        "textKey": "card.interpretations.13",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_14",
+        "textKey": "card.interpretations.14",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_15",
+        "textKey": "card.interpretations.15",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_16",
+        "textKey": "card.interpretations.16",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_17",
+        "textKey": "card.interpretations.17",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_18",
+        "textKey": "card.interpretations.18",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_19",
+        "textKey": "card.interpretations.19",
+        "category": null
+      },
+      {
+        "id": "interpretations_x_20",
+        "textKey": "card.interpretations.20",
+        "category": null
+      }
+    ]
+  },
+  "body_sensations": {
+    "id": "body_sensations",
+    "nameKey": "deck.body_sensations.name",
+    "cards": [
+      {
+        "id": "body_sensations_x_01",
+        "textKey": "card.body_sensations.01",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_02",
+        "textKey": "card.body_sensations.02",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_03",
+        "textKey": "card.body_sensations.03",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_04",
+        "textKey": "card.body_sensations.04",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_05",
+        "textKey": "card.body_sensations.05",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_06",
+        "textKey": "card.body_sensations.06",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_07",
+        "textKey": "card.body_sensations.07",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_08",
+        "textKey": "card.body_sensations.08",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_09",
+        "textKey": "card.body_sensations.09",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_10",
+        "textKey": "card.body_sensations.10",
+        "category": null
+      },
+      {
+        "id": "body_sensations_x_11",
+        "textKey": "card.body_sensations.11",
+        "category": null
+      }
+    ]
+  },
+  "childhood": {
+    "id": "childhood",
+    "nameKey": "deck.childhood.name",
+    "cards": [
+      {
+        "id": "childhood_x_01",
+        "textKey": "card.childhood.01",
+        "category": null
+      },
+      {
+        "id": "childhood_x_02",
+        "textKey": "card.childhood.02",
+        "category": null
+      },
+      {
+        "id": "childhood_x_03",
+        "textKey": "card.childhood.03",
+        "category": null
+      },
+      {
+        "id": "childhood_x_04",
+        "textKey": "card.childhood.04",
+        "category": null
+      },
+      {
+        "id": "childhood_x_05",
+        "textKey": "card.childhood.05",
+        "category": null
+      },
+      {
+        "id": "childhood_x_06",
+        "textKey": "card.childhood.06",
+        "category": null
+      },
+      {
+        "id": "childhood_x_07",
+        "textKey": "card.childhood.07",
+        "category": null
+      },
+      {
+        "id": "childhood_x_08",
+        "textKey": "card.childhood.08",
+        "category": null
+      },
+      {
+        "id": "childhood_x_09",
+        "textKey": "card.childhood.09",
+        "category": null
+      },
+      {
+        "id": "childhood_x_10",
+        "textKey": "card.childhood.10",
+        "category": null
+      },
+      {
+        "id": "childhood_x_11",
+        "textKey": "card.childhood.11",
+        "category": null
+      },
+      {
+        "id": "childhood_x_12",
+        "textKey": "card.childhood.12",
+        "category": null
+      },
+      {
+        "id": "childhood_x_13",
+        "textKey": "card.childhood.13",
+        "category": null
+      },
+      {
+        "id": "childhood_x_14",
+        "textKey": "card.childhood.14",
+        "category": null
+      }
+    ]
+  },
+  "fears": {
+    "id": "fears",
+    "nameKey": "deck.fears.name",
+    "cards": [
+      {
+        "id": "fears_x_01",
+        "textKey": "card.fears.01",
+        "category": null
+      },
+      {
+        "id": "fears_x_02",
+        "textKey": "card.fears.02",
+        "category": null
+      },
+      {
+        "id": "fears_x_03",
+        "textKey": "card.fears.03",
+        "category": null
+      },
+      {
+        "id": "fears_x_04",
+        "textKey": "card.fears.04",
+        "category": null
+      },
+      {
+        "id": "fears_x_05",
+        "textKey": "card.fears.05",
+        "category": null
+      },
+      {
+        "id": "fears_x_06",
+        "textKey": "card.fears.06",
+        "category": null
+      },
+      {
+        "id": "fears_x_07",
+        "textKey": "card.fears.07",
+        "category": null
+      },
+      {
+        "id": "fears_x_08",
+        "textKey": "card.fears.08",
+        "category": null
+      },
+      {
+        "id": "fears_x_09",
+        "textKey": "card.fears.09",
+        "category": null
+      },
+      {
+        "id": "fears_x_10",
+        "textKey": "card.fears.10",
+        "category": null
+      },
+      {
+        "id": "fears_x_11",
+        "textKey": "card.fears.11",
+        "category": null
+      },
+      {
+        "id": "fears_x_12",
+        "textKey": "card.fears.12",
+        "category": null
+      },
+      {
+        "id": "fears_x_13",
+        "textKey": "card.fears.13",
+        "category": null
+      },
+      {
+        "id": "fears_x_14",
+        "textKey": "card.fears.14",
+        "category": null
+      },
+      {
+        "id": "fears_x_15",
+        "textKey": "card.fears.15",
+        "category": null
+      },
+      {
+        "id": "fears_x_16",
+        "textKey": "card.fears.16",
+        "category": null
+      },
+      {
+        "id": "fears_x_17",
+        "textKey": "card.fears.17",
+        "category": null
+      },
+      {
+        "id": "fears_x_18",
+        "textKey": "card.fears.18",
+        "category": null
+      },
+      {
+        "id": "fears_x_19",
+        "textKey": "card.fears.19",
+        "category": null
+      },
+      {
+        "id": "fears_x_20",
+        "textKey": "card.fears.20",
+        "category": null
+      },
+      {
+        "id": "fears_x_21",
+        "textKey": "card.fears.21",
+        "category": null
+      },
+      {
+        "id": "fears_x_22",
+        "textKey": "card.fears.22",
+        "category": null
+      },
+      {
+        "id": "fears_x_23",
+        "textKey": "card.fears.23",
+        "category": null
+      },
+      {
+        "id": "fears_x_24",
+        "textKey": "card.fears.24",
+        "category": null
+      },
+      {
+        "id": "fears_x_25",
+        "textKey": "card.fears.25",
+        "category": null
+      },
+      {
+        "id": "fears_x_26",
+        "textKey": "card.fears.26",
+        "category": null
+      },
+      {
+        "id": "fears_x_27",
+        "textKey": "card.fears.27",
+        "category": null
+      },
+      {
+        "id": "fears_x_28",
+        "textKey": "card.fears.28",
+        "category": null
+      },
+      {
+        "id": "fears_x_29",
+        "textKey": "card.fears.29",
+        "category": null
+      },
+      {
+        "id": "fears_x_30",
+        "textKey": "card.fears.30",
+        "category": null
+      },
+      {
+        "id": "fears_x_31",
+        "textKey": "card.fears.31",
+        "category": null
+      },
+      {
+        "id": "fears_x_32",
+        "textKey": "card.fears.32",
+        "category": null
+      },
+      {
+        "id": "fears_x_33",
+        "textKey": "card.fears.33",
+        "category": null
+      },
+      {
+        "id": "fears_x_34",
+        "textKey": "card.fears.34",
+        "category": null
+      },
+      {
+        "id": "fears_x_35",
+        "textKey": "card.fears.35",
+        "category": null
+      },
+      {
+        "id": "fears_x_36",
+        "textKey": "card.fears.36",
+        "category": null
+      },
+      {
+        "id": "fears_x_37",
+        "textKey": "card.fears.37",
+        "category": null
+      },
+      {
+        "id": "fears_x_38",
+        "textKey": "card.fears.38",
+        "category": null
+      },
+      {
+        "id": "fears_x_39",
+        "textKey": "card.fears.39",
+        "category": null
+      },
+      {
+        "id": "fears_x_40",
+        "textKey": "card.fears.40",
+        "category": null
+      },
+      {
+        "id": "fears_x_41",
+        "textKey": "card.fears.41",
+        "category": null
+      },
+      {
+        "id": "fears_x_42",
+        "textKey": "card.fears.42",
+        "category": null
+      },
+      {
+        "id": "fears_x_43",
+        "textKey": "card.fears.43",
+        "category": null
+      },
+      {
+        "id": "fears_x_44",
+        "textKey": "card.fears.44",
+        "category": null
+      }
+    ]
+  },
+  "needs_connection": {
+    "id": "needs_connection",
+    "nameKey": "deck.needs_connection.name",
+    "cards": [
+      {
+        "id": "needs_connection_presence_01",
+        "textKey": "card.needs_connection.presence.01",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_02",
+        "textKey": "card.needs_connection.presence.02",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_03",
+        "textKey": "card.needs_connection.presence.03",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_04",
+        "textKey": "card.needs_connection.presence.04",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_05",
+        "textKey": "card.needs_connection.presence.05",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_06",
+        "textKey": "card.needs_connection.presence.06",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_07",
+        "textKey": "card.needs_connection.presence.07",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_08",
+        "textKey": "card.needs_connection.presence.08",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_09",
+        "textKey": "card.needs_connection.presence.09",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_10",
+        "textKey": "card.needs_connection.presence.10",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_11",
+        "textKey": "card.needs_connection.presence.11",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_12",
+        "textKey": "card.needs_connection.presence.12",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_13",
+        "textKey": "card.needs_connection.presence.13",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_14",
+        "textKey": "card.needs_connection.presence.14",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_presence_15",
+        "textKey": "card.needs_connection.presence.15",
+        "category": "presence"
+      },
+      {
+        "id": "needs_connection_words_01",
+        "textKey": "card.needs_connection.words.01",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_02",
+        "textKey": "card.needs_connection.words.02",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_03",
+        "textKey": "card.needs_connection.words.03",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_04",
+        "textKey": "card.needs_connection.words.04",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_05",
+        "textKey": "card.needs_connection.words.05",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_06",
+        "textKey": "card.needs_connection.words.06",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_07",
+        "textKey": "card.needs_connection.words.07",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_08",
+        "textKey": "card.needs_connection.words.08",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_09",
+        "textKey": "card.needs_connection.words.09",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_10",
+        "textKey": "card.needs_connection.words.10",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_11",
+        "textKey": "card.needs_connection.words.11",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_12",
+        "textKey": "card.needs_connection.words.12",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_13",
+        "textKey": "card.needs_connection.words.13",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_14",
+        "textKey": "card.needs_connection.words.14",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_15",
+        "textKey": "card.needs_connection.words.15",
+        "category": "words"
+      },
+      {
+        "id": "needs_connection_words_16",
+        "textKey": "card.needs_connection.words.16",
+        "category": "words"
+      }
+    ]
+  },
+  "step_toward": {
+    "id": "step_toward",
+    "nameKey": "deck.step_toward.name",
+    "cards": [
+      {
+        "id": "step_toward_x_01",
+        "textKey": "card.step_toward.01",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_02",
+        "textKey": "card.step_toward.02",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_03",
+        "textKey": "card.step_toward.03",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_04",
+        "textKey": "card.step_toward.04",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_05",
+        "textKey": "card.step_toward.05",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_06",
+        "textKey": "card.step_toward.06",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_07",
+        "textKey": "card.step_toward.07",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_08",
+        "textKey": "card.step_toward.08",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_09",
+        "textKey": "card.step_toward.09",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_10",
+        "textKey": "card.step_toward.10",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_11",
+        "textKey": "card.step_toward.11",
+        "category": null
+      },
+      {
+        "id": "step_toward_x_12",
+        "textKey": "card.step_toward.12",
+        "category": null
+      }
+    ],
+    "mandatoryCardID": "step_toward_x_12"
+  },
+  "gifts": {
+    "id": "gifts",
+    "nameKey": "deck.gifts.name",
+    "cards": [
+      {
+        "id": "gifts_material_01",
+        "textKey": "card.gifts.material.01",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_02",
+        "textKey": "card.gifts.material.02",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_03",
+        "textKey": "card.gifts.material.03",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_04",
+        "textKey": "card.gifts.material.04",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_05",
+        "textKey": "card.gifts.material.05",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_06",
+        "textKey": "card.gifts.material.06",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_07",
+        "textKey": "card.gifts.material.07",
+        "category": "material"
+      },
+      {
+        "id": "gifts_material_08",
+        "textKey": "card.gifts.material.08",
+        "category": "material"
+      },
+      {
+        "id": "gifts_nonmaterial_01",
+        "textKey": "card.gifts.nonmaterial.01",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_02",
+        "textKey": "card.gifts.nonmaterial.02",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_03",
+        "textKey": "card.gifts.nonmaterial.03",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_04",
+        "textKey": "card.gifts.nonmaterial.04",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_05",
+        "textKey": "card.gifts.nonmaterial.05",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_06",
+        "textKey": "card.gifts.nonmaterial.06",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_07",
+        "textKey": "card.gifts.nonmaterial.07",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_08",
+        "textKey": "card.gifts.nonmaterial.08",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_09",
+        "textKey": "card.gifts.nonmaterial.09",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_10",
+        "textKey": "card.gifts.nonmaterial.10",
+        "category": "nonmaterial"
+      },
+      {
+        "id": "gifts_nonmaterial_11",
+        "textKey": "card.gifts.nonmaterial.11",
+        "category": "nonmaterial"
+      }
+    ]
+  }
+}

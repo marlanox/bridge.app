@@ -1,0 +1,45 @@
+{
+  "hall": {
+    "kind": "hall", "order": 1, "backgroundImage": "hall",
+    "nameKey": "room.hall.name", "questionKey": "room.hall.question",
+    "instructionKey": "room.hall.instruction", "whyItHelpsKey": "room.hall.why_it_helps",
+    "forbiddenKey": "room.hall.forbidden",
+    "timeMinutes": 7, "modes": ["speaks", "listensOnly"], "deckIds": ["events"]
+  },
+  "livingRoom": {
+    "kind": "livingRoom", "order": 2, "backgroundImage": "living-room",
+    "nameKey": "room.living_room.name", "questionKey": "room.living_room.question",
+    "instructionKey": "room.living_room.instruction", "whyItHelpsKey": "room.living_room.why_it_helps",
+    "forbiddenKey": "room.living_room.forbidden",
+    "timeMinutes": 7, "modes": ["speaks", "listensOnly"], "deckIds": ["emotions", "body_sensations"]
+  },
+  "study": {
+    "kind": "study", "order": 3, "backgroundImage": "study",
+    "nameKey": "room.study.name", "questionKey": "room.study.question",
+    "instructionKey": "room.study.instruction", "whyItHelpsKey": "room.study.why_it_helps",
+    "forbiddenKey": "room.study.forbidden",
+    "timeMinutes": 7, "modes": ["speaks", "listensOnly"], "deckIds": ["interpretations"]
+  },
+  "kidsRoom": {
+    "kind": "kidsRoom", "order": 4, "backgroundImage": "kids-room",
+    "nameKey": "room.kids_room.name", "questionKey": "room.kids_room.question",
+    "instructionKey": "room.kids_room.instruction", "whyItHelpsKey": "room.kids_room.why_it_helps",
+    "forbiddenKey": "room.kids_room.forbidden",
+    "timeMinutes": 7, "modes": ["speaks", "listensOnly"], "deckIds": ["childhood"]
+  },
+  "kitchen": {
+    "kind": "kitchen", "order": 5, "backgroundImage": "kitchen",
+    "nameKey": "room.kitchen.name", "questionKey": "room.kitchen.question",
+    "instructionKey": "room.kitchen.instruction", "whyItHelpsKey": "room.kitchen.why_it_helps",
+    "forbiddenKey": null,
+    "timeMinutes": 7, "modes": ["discussion"], "deckIds": []
+  },
+  "basement": {
+    "kind": "basement", "order": 6, "backgroundImage": "basement",
+    "nameKey": "room.basement.name", "questionKey": "room.basement.question",
+    "instructionKey": "basement.instruction", "whyItHelpsKey": "basement.why_it_helps",
+    "forbiddenKey": "room.basement.forbidden",
+    "timeMinutes": 10, "modes": ["silentProtocol"], "deckIds": ["fears"],
+    "maxQuestionsPerPartner": 15
+  }
+}

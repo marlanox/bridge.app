@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bridge</title>
+<meta name="description" content="A guided conflict-repair walk for couples.">
+
+<!-- Correct viewport for iPhone: fills the screen under the notch/Dynamic Island and
+     the home indicator, and viewport-fit=cover is required for env(safe-area-inset-*)
+     to resolve to anything other than 0. maximum-scale=1/user-scalable=no stops the
+     accidental double-tap/pinch zoom that would otherwise make this feel like a website. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+
+<!-- Standalone/home-screen behavior -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bridge">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#fbf9f5">
+
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+<link rel="icon" href="icons/icon-32.png" sizes="32x32">
+<link rel="icon" href="icons/icon-16.png" sizes="16x16">
+
+<!-- iOS-standalone splash screens: Safari has no generic splash mechanism, only exact
+     per-device media-query matches, so this covers the common current iPhone sizes.
+     Missing a device here just means a blank flash instead of a splash image, never a
+     broken launch. -->
+<link rel="apple-touch-startup-image" href="icons/icon-512.png"
+      media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png"
+      media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app" role="application" aria-label="Bridge"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
