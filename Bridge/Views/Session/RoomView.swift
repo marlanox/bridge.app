@@ -13,21 +13,29 @@ struct RoomView: View {
 
     var body: some View {
         ZStack {
-            RoomBackgroundImage(imageName: config.backgroundImageName)
-            Color.black.opacity(0.18).ignoresSafeArea()
-
             // The room interior always renders for the current `activePartner` and never
             // rotates while someone is only reading — see RevealCardOverlay's doc comment.
+            // The photo rotates together with the header/cards/buttons as one unit — a
+            // couple sitting across from each other must see a single consistent room,
+            // not a right-side-up photo under upside-down text.
             if isSequential {
                 ActivePartnerContainer(
                     activePartner: vm.activePartner,
                     partnerName: { vm.session.name(for: $0) },
                     partnerColor: { vm.session.color(for: $0) }
                 ) {
-                    turnContent(for: vm.activePartner)
+                    ZStack {
+                        RoomBackgroundImage(imageName: config.backgroundImageName)
+                        Color.black.opacity(0.18).ignoresSafeArea()
+                        turnContent(for: vm.activePartner)
+                    }
                 }
             } else {
-                discussionContent
+                ZStack {
+                    RoomBackgroundImage(imageName: config.backgroundImageName)
+                    Color.black.opacity(0.18).ignoresSafeArea()
+                    discussionContent
+                }
             }
 
             if let reveal = vm.pendingReveal {

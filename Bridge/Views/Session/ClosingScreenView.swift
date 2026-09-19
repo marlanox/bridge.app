@@ -16,10 +16,7 @@ struct ClosingScreenView: View {
 
     var body: some View {
         ZStack {
-            // Reuses the Bridge finale's night photo rather than a generic living-room
-            // shot — arriving here means the couple already crossed the bridge, so the
-            // same image reads as "you made it," not as an unrelated stock interior.
-            RoomBackgroundImage(imageName: "bridge")
+            RoomBackgroundImage(imageName: "ending")
             Color.black.opacity(0.4).ignoresSafeArea()
 
             VStack(spacing: 24) {

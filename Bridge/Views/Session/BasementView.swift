@@ -9,15 +9,18 @@ struct BasementView: View {
     private let fearsDeck = DeckData.fears
 
     var body: some View {
-        ZStack {
-            RoomBackgroundImage(imageName: "basement")
-            Color.black.opacity(0.3).ignoresSafeArea()
+        // The photo rotates together with the header/cards/buttons as one unit — see
+        // RoomView's equivalent fix: a couple sitting across from each other must see a
+        // single consistent room, not a right-side-up photo under upside-down text.
+        ActivePartnerContainer(
+            activePartner: vm.activePartner,
+            partnerName: { vm.session.name(for: $0) },
+            partnerColor: { vm.session.color(for: $0) }
+        ) {
+            ZStack {
+                RoomBackgroundImage(imageName: "basement")
+                Color.black.opacity(0.3).ignoresSafeArea()
 
-            ActivePartnerContainer(
-                activePartner: vm.activePartner,
-                partnerName: { vm.session.name(for: $0) },
-                partnerColor: { vm.session.color(for: $0) }
-            ) {
                 if let pending = vm.pendingBasementFearCardID {
                     answeringContent(fearCardID: pending)
                 } else {
@@ -30,16 +33,7 @@ struct BasementView: View {
     private var askingContent: some View {
         VStack(spacing: 0) {
             header
-            Text(L("basement.instruction"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.primary.opacity(0.85))
-                .multilineTextAlignment(.leading)
-                .padding(.horizontal, 16)
-                .padding(.top, 10)
-            Text(L("basement.pick_a_fear_card"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.secondary)
-                .padding(.top, 8)
+            askingInstructions
             TimerBanner(
                 secondsRemaining: vm.roomTimeRemainingSeconds,
                 timeUpBannerShown: vm.timeUpBannerShown,
@@ -137,6 +131,24 @@ struct BasementView: View {
                 .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
         .padding(16)
+        .background(.ultraThinMaterial)
+    }
+
+    /// Only relevant while picking a fear to ask — the answerer sees the fear itself and
+    /// `basement.answer_instruction` instead, in `answeringContent`.
+    private var askingInstructions: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(L("basement.instruction"))
+                .font(.bridgeBody)
+                .foregroundStyle(.primary.opacity(0.9))
+                .fixedSize(horizontal: false, vertical: true)
+            Text(L("basement.pick_a_fear_card"))
+                .font(.bridgeCaption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(.ultraThinMaterial)
     }
 
