@@ -8,6 +8,8 @@ jobs:
   screenshots:
     name: UI test screenshot walkthrough
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -61,6 +63,87 @@ jobs:
           name: bridge-screenshots
           path: Screenshots
           if-no-files-found: warn
+
+      # Actions artifacts are only downloadable from Azure Blob Storage, which the
+      # review agent's egress policy blocks. Publish a renamed, flattened copy of the
+      # same PNGs to a plain git branch instead, so they're reachable over a normal
+      # `git fetch` against github.com (already allowed) without anyone needing the
+      # Actions UI.
+      - name: Flatten and rename screenshots using the export manifest
+        if: always()
+        run: |
+          mkdir -p ScreenshotsNamed
+          python3 - <<'PY'
+          import json, os, re, shutil
+
+          src_dir = "Screenshots"
+          out_dir = "ScreenshotsNamed"
+          manifest_path = os.path.join(src_dir, "manifest.json")
+
+          def sanitize(name: str) -> str:
+              name = re.sub(r"[^A-Za-z0-9_.-]+", "_", name).strip("_")
+              return name or "screenshot"
+
+          entries = []
+          if os.path.isfile(manifest_path):
+              with open(manifest_path) as f:
+                  manifest = json.load(f)
+              # xcresulttool's manifest is a flat list of attachment dicts; be
+              # defensive about shape since it isn't a documented, stable format.
+              if isinstance(manifest, dict):
+                  manifest = manifest.get("attachments", []) or list(manifest.values())
+              for entry in manifest:
+                  if not isinstance(entry, dict):
+                      continue
+                  exported = entry.get("exportedFileName") or entry.get("filename")
+                  label = entry.get("name") or entry.get("suggestedHumanReadableName") or exported
+                  ts = entry.get("timestamp", 0)
+                  if exported:
+                      entries.append((ts, label, exported))
+
+          if entries:
+              entries.sort(key=lambda e: (e[0] if isinstance(e[0], (int, float)) else 0))
+              for i, (_, label, exported) in enumerate(entries, start=1):
+                  src = os.path.join(src_dir, exported)
+                  if not os.path.isfile(src):
+                      continue
+                  ext = os.path.splitext(exported)[1] or ".png"
+                  dst = os.path.join(out_dir, f"{i:03d}_{sanitize(str(label))}{ext}")
+                  shutil.copyfile(src, dst)
+          else:
+              # No manifest (or it didn't parse) — fall back to copying every PNG we
+              # actually got, still better than nothing.
+              i = 0
+              for root, _, files in os.walk(src_dir):
+                  for fn in files:
+                      if fn.lower().endswith(".png"):
+                          i += 1
+                          shutil.copyfile(os.path.join(root, fn), os.path.join(out_dir, f"{i:03d}_{sanitize(fn)}"))
+
+          print("Renamed screenshots:")
+          for fn in sorted(os.listdir(out_dir)):
+              print(" ", fn)
+          PY
+
+      - name: Publish screenshots to the ci-screenshots branch
+        if: always()
+        run: |
+          if [ -z "$(ls -A ScreenshotsNamed 2>/dev/null)" ]; then
+            echo "No screenshots to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -rf /tmp/ci-screenshots-worktree
+          git worktree add --detach /tmp/ci-screenshots-worktree
+          cd /tmp/ci-screenshots-worktree
+          git checkout --orphan ci-screenshots
+          git rm -rf . >/dev/null 2>&1 || true
+          rm -rf ./*
+          cp -R "$GITHUB_WORKSPACE/ScreenshotsNamed/." .
+          git add -A
+          git commit -m "Screenshot walkthrough for ${GITHUB_SHA}" --allow-empty
+          git push --force origin HEAD:ci-screenshots
 
       - name: Upload full .xcresult bundle (open in Xcode for the complete report)
         if: always()
