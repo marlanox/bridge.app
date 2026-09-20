@@ -1,7 +1,20 @@
 import { loadContent, L, LF, getLanguage, setLanguage, deck, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
-import { playTap, playWelcomeChime } from "./sounds.js";
+import { playTap, playWelcomeChime, startAmbient, stopAmbient } from "./sounds.js";
+
+// Mirrors AppFlowStep.isBeforeRooms on iOS — everything before a couple actually starts
+// walking through the house gets the soft ambient pad; it falls silent from the first
+// room onward.
+const BEFORE_ROOMS_STEPS = new Set([
+  "welcome", "howItWorksWhatIsBridge", "howItWorksApology", "disclaimer",
+  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown",
+]);
+
+function syncAmbientMusic(step) {
+  if (BEFORE_ROOMS_STEPS.has(step)) startAmbient();
+  else stopAmbient();
+}
 
 const appEl = document.getElementById("app");
 let store;
@@ -78,6 +91,7 @@ function render() {
   if (key !== lastFlowKey) {
     resetUiForStep(store.flow.step, store.flow.kind);
     lastFlowKey = key;
+    syncAmbientMusic(store.flow.step);
   }
 
   let html;
