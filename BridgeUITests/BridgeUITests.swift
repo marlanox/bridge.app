@@ -73,13 +73,24 @@ final class BridgeUITests: XCTestCase {
         attach(app, "A03-onboarding-what-is-bridge")
         app.buttons["uitest.onboarding.next"].tap()
 
+        // Disclaimer now comes before the apology-ritual explanation, not after it — the
+        // ritual/oath happen right away, ahead of the house map and names.
+        XCTAssertTrue(app.buttons["uitest.disclaimer.continue"].waitForExistence(timeout: 10))
+        attach(app, "A06-disclaimer")
+        app.buttons["uitest.disclaimer.continue"].tap()
+
         XCTAssertTrue(app.buttons["uitest.onboarding.next"].waitForExistence(timeout: 10))
         attach(app, "A04-onboarding-apology")
         app.buttons["uitest.onboarding.next"].tap()
 
-        XCTAssertTrue(app.buttons["uitest.disclaimer.continue"].waitForExistence(timeout: 10))
-        attach(app, "A06-disclaimer")
-        app.buttons["uitest.disclaimer.continue"].tap()
+        XCTAssertTrue(app.buttons["uitest.ritual.line.0"].waitForExistence(timeout: 10))
+        app.buttons["uitest.ritual.line.0"].tap()
+        attach(app, "A18-ritual")
+        app.buttons["uitest.ritual.continue"].tap()
+
+        XCTAssertTrue(app.buttons["uitest.oath.ready"].waitForExistence(timeout: 10))
+        attach(app, "A17-oath")
+        app.buttons["uitest.oath.ready"].tap()
 
         XCTAssertTrue(app.buttons["uitest.housemap.continue"].waitForExistence(timeout: 10))
         attach(app, "A07-house-map")
@@ -123,15 +134,6 @@ final class BridgeUITests: XCTestCase {
         XCTAssertTrue(app.buttons["uitest.calmdown.done"].waitForExistence(timeout: 10))
         attach(app, "A16-calm-down-breathing")
         app.buttons["uitest.calmdown.done"].tap()
-
-        XCTAssertTrue(app.buttons["uitest.oath.ready"].waitForExistence(timeout: 10))
-        attach(app, "A17-oath")
-        app.buttons["uitest.oath.ready"].tap()
-
-        XCTAssertTrue(app.buttons["uitest.ritual.line.0"].waitForExistence(timeout: 10))
-        app.buttons["uitest.ritual.line.0"].tap()
-        attach(app, "A18-ritual")
-        app.buttons["uitest.ritual.continue"].tap()
 
         // Hall room — first partner's turn.
         XCTAssertTrue(anyDeckButton.waitForExistence(timeout: 10))
