@@ -23,6 +23,19 @@ struct SessionFlowView: View {
         .sheet(isPresented: $showingPaywall) { PaywallView() }
         .sheet(isPresented: $showingSettings) { SettingsView() }
         .animation(.easeInOut(duration: 0.3), value: vm.flow)
+        .onAppear { updateAmbientMusic(for: vm.flow) }
+        .onChange(of: vm.flow) { _, newFlow in updateAmbientMusic(for: newFlow) }
+        .onDisappear { AmbientMusic.stop() }
+    }
+
+    /// Soft ambient pad through every screen before a couple starts walking through the
+    /// house — silent from the first room onward. See `AppFlowStep.isBeforeRooms`.
+    private func updateAmbientMusic(for flow: AppFlowStep) {
+        if flow.isBeforeRooms {
+            AmbientMusic.start()
+        } else {
+            AmbientMusic.stop()
+        }
     }
 
     @ViewBuilder

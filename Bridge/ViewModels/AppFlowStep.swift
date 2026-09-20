@@ -30,6 +30,19 @@ enum AppFlowStep: Equatable {
     case voiceSnapshot
     case closing
 
+    /// Everything before a couple actually starts walking through the house — the soft
+    /// ambient pad (`AmbientMusic`) plays through these and falls silent the instant a
+    /// room, the basement, or the Bridge finale begins.
+    var isBeforeRooms: Bool {
+        switch self {
+        case .welcome, .howItWorksWhatIsBridge, .howItWorksApology, .disclaimer,
+             .ritual, .oath, .houseMap, .names, .dice, .intensityState, .calmDown:
+            return true
+        case .couplesAgreementSetup, .room, .basement, .bridgeFinale, .voiceSnapshot, .closing:
+            return false
+        }
+    }
+
     var stepOrder: Int {
         switch self {
         case .welcome: return 0

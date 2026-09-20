@@ -35,7 +35,10 @@ struct LanguageSelectionView: View {
                 Spacer()
             }
         }
-        .onAppear { ChimeSynth.playWelcomeChime() }
+        .onAppear {
+            ChimeSynth.playWelcomeChime()
+            AmbientMusic.start()
+        }
     }
 
     @ViewBuilder
