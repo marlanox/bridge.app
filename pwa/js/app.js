@@ -1,6 +1,7 @@
 import { loadContent, L, LF, getLanguage, setLanguage, deck, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
+import { playTap, playWelcomeChime } from "./sounds.js";
 
 const appEl = document.getElementById("app");
 let store;
@@ -144,7 +145,15 @@ const actions = {
     if (fn) fn(el, ev);
   },
 
-  setLanguage(el) { setLanguage(el.dataset.arg); render(); },
+  setLanguage(el) {
+    // Fires inside this click handler (already a user gesture, and playTap() above has
+    // already unlocked the AudioContext) so it's guaranteed to actually play, unlike an
+    // autoplay attempt on the bare language screen render — browsers block audio before
+    // any interaction at all.
+    playWelcomeChime();
+    setLanguage(el.dataset.arg);
+    render();
+  },
   setLanguageInSettings(el) { setLanguage(el.dataset.arg); ui.globalSheet = null; render(); },
 
   openSettings() { ui.settingsOpen = true; render(); },
@@ -412,7 +421,10 @@ appEl.addEventListener("click", (e) => {
   const el = e.target.closest("[data-action]");
   if (!el) return;
   const fn = actions[el.dataset.action];
-  if (fn) fn(el, e);
+  if (fn) {
+    playTap();
+    fn(el, e);
+  }
 });
 
 appEl.addEventListener("input", (e) => {
