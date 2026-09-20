@@ -35,6 +35,7 @@ struct LanguageSelectionView: View {
                 Spacer()
             }
         }
+        .onAppear { ChimeSynth.playWelcomeChime() }
     }
 
     @ViewBuilder
@@ -49,11 +50,11 @@ struct LanguageSelectionView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
         }
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .foregroundStyle(.white)
+        .background(Color(red: 0.93, green: 0.89, blue: 0.83), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .foregroundStyle(Color.bridgeInk)
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(Color.white.opacity(0.5), lineWidth: 1)
+                .stroke(Color.bridgeInk, lineWidth: 1.5)
         )
         .buttonStyle(PressableButtonStyle())
         .accessibilityIdentifier("uitest.lang.\(language.rawValue)")
