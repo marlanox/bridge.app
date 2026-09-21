@@ -106,7 +106,15 @@ final class BridgeUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["uitest.dice.roll"].waitForExistence(timeout: 10))
         attach(app, "A12-dice-before-roll")
-        app.buttons["uitest.dice.roll"].tap()
+        // Both partners roll their own die in turn before a winner is decided; a tie
+        // rerolls both automatically, so keep tapping "Roll" until "Continue" shows up.
+        for _ in 0..<8 {
+            if app.buttons["uitest.dice.continue"].exists { break }
+            if app.buttons["uitest.dice.roll"].waitForExistence(timeout: 5) {
+                app.buttons["uitest.dice.roll"].tap()
+                sleep(1)
+            }
+        }
         XCTAssertTrue(app.buttons["uitest.dice.continue"].waitForExistence(timeout: 10))
         attach(app, "A13-dice-after-roll")
         app.buttons["uitest.dice.continue"].tap()

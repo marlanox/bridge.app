@@ -30,16 +30,20 @@ enum AppFlowStep: Equatable {
     case voiceSnapshot
     case closing
 
-    /// Everything before a couple actually starts walking through the house — the soft
-    /// ambient pad (`AmbientMusic`) plays through these and falls silent the instant a
-    /// room, the basement, or the Bridge finale begins.
-    var isBeforeRooms: Bool {
+    /// A single phone screen defaults to reading as "whoever's holding it" — every
+    /// screen that does NOT physically rotate 180° for a private turn needs this
+    /// reminder, or couples miss that it's meant to be read together. Only a sequential
+    /// "one speaks, one listens" room rotates; every other screen, room or not,
+    /// qualifies (Basement renders its own copy of the caption directly, since it needs
+    /// to sit inside its own scroll layout rather than float above it).
+    var needsReadTogetherCaption: Bool {
         switch self {
-        case .welcome, .howItWorksWhatIsBridge, .howItWorksApology, .disclaimer,
-             .ritual, .oath, .houseMap, .names, .dice, .intensityState, .calmDown:
-            return true
-        case .couplesAgreementSetup, .room, .basement, .bridgeFinale, .voiceSnapshot, .closing:
+        case .room(let kind):
+            return RoomConfig.all[kind]?.modes.contains(.speaks) != true
+        case .basement:
             return false
+        default:
+            return true
         }
     }
 

@@ -63,6 +63,9 @@ struct RoomView: View {
             }
         }
         .animation(.spring(response: 0.45, dampingFraction: 0.8), value: vm.pendingReveal == nil)
+        // A new person taking their turn must see the full instructions, not whatever
+        // collapsed state the previous partner happened to leave it in.
+        .onChange(of: vm.activePartner) { _, _ in instructionsExpanded = true }
     }
 
     // MARK: - Sequential (one speaks, one listens)
@@ -92,7 +95,8 @@ struct RoomView: View {
             CardGridView(
                 decks: decks,
                 onSelect: { deck, card in vm.playCard(card, deckID: deck.id) },
-                onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) }
+                onCustom: { deck, text in vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text) },
+                activePartnerRotation: role.seatRotationDegrees
             )
 
             doneRow(role: role)
@@ -196,13 +200,18 @@ struct RoomView: View {
                     Image(systemName: "chevron.down")
                     Text(L("room.expand"))
                 }
-                .font(.subheadline.weight(.semibold))
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.bridgeInk)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
             }
             .buttonStyle(PressableButtonStyle())
-            .background(.ultraThinMaterial)
+            .background(Color.bridgeGold)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.bridgeInk.opacity(0.3), lineWidth: 1)
+            )
             .padding(.horizontal, 10)
             .padding(.top, 10)
             .accessibilityIdentifier("uitest.room.header.toggle")
@@ -233,10 +242,10 @@ struct RoomView: View {
                 } icon: {
                     Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
                 }
-                .foregroundStyle(Color.bridgeGold)
+                .foregroundStyle(Color.bridgeInk)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 5)
-                .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
                 Text(L(config.instructionKey))
                     .font(.bridgeCaption)
@@ -246,12 +255,12 @@ struct RoomView: View {
 
                 Text(L(config.whyItHelpsKey))
                     .font(.bridgeCaption.weight(.semibold).italic())
-                    .foregroundStyle(Color.bridgeGold)
+                    .foregroundStyle(Color.bridgeInk)
                     .lineSpacing(3)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 9)
                     .padding(.vertical, 6)
-                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
                 if let forbiddenKey = config.forbiddenKey {
                     VStack(alignment: .leading, spacing: 2) {
@@ -262,11 +271,11 @@ struct RoomView: View {
                             .lineSpacing(3)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.bridgeInk)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
 
                 Button {
@@ -276,17 +285,22 @@ struct RoomView: View {
                         Image(systemName: "checkmark")
                         Text(L("room.read_it"))
                     }
-                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.bridgeInk)
+                    .font(.subheadline.weight(.bold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                 }
                 .buttonStyle(PressableButtonStyle())
-                .background(Color.bridgeGold.opacity(0.2), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .accessibilityIdentifier("uitest.room.header.toggle")
             }
             .padding(12)
-            .background(.ultraThinMaterial)
+            .background(Color.bridgeIvory)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+            )
             .padding(.horizontal, 10)
             .padding(.top, 10)
         }

@@ -77,7 +77,12 @@ export function deckDropdownList(deckIds) {
   return `<div class="deck-list">${buttons}</div>`;
 }
 
-export function deckSheet(deckId, selectableFilter = null, customDraft = "") {
+/** `rotation` mirrors the room's current seat rotation — this sheet is presented as a
+ * plain absolutely-positioned overlay (not a native modal), so unlike a browser-native
+ * sheet it DOES need to be told the rotation explicitly, or it always faces the same
+ * fixed physical orientation instead of whoever is actually answering right now (the
+ * same fix as RevealCardOverlay/`reveal-card-rotator` for the reveal card). */
+export function deckSheet(deckId, selectableFilter = null, customDraft = "", rotation = 0) {
   const d = deck(deckId);
   const sections = deckSections(d);
   let body = "";
@@ -96,7 +101,7 @@ export function deckSheet(deckId, selectableFilter = null, customDraft = "") {
       <input id="writeOwnInput" class="text-field" placeholder="${escAttr(L("card.write_your_own"))}" value="${escAttr(customDraft)}">
       <button data-action="submitCustomCard" data-arg="${deckId}">${L("couples_agreement.add_rule")}</button>
     </div>`;
-  return `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeSheet">
+  return `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeSheet" style="transform:rotate(${rotation}deg)">
       <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-header"><span>${escHtml(L(d.nameKey))}</span><button data-action="closeSheet">${L("room.done")}</button></div>
@@ -127,7 +132,7 @@ export function revealOverlay(store) {
   if (!reveal) return "";
   const rotation = store.seatRotation(reveal.to);
   const cardsHtml = reveal.cards
-    .map((play) => `<div style="background:rgba(23,23,26,0.1)">${escHtml(cardDisplayText(play))}</div>`)
+    .map((play) => `<div>${escHtml(cardDisplayText(play))}</div>`)
     .join("");
   return `<div class="reveal-overlay">
       <div class="reveal-card-rotator" style="transform:rotate(${rotation}deg)">
@@ -145,7 +150,7 @@ export function revealOverlay(store) {
  * corner) — tapping it is the one and only way back to the full text, and it stays
  * in the same place every time. When expanded, an explicit "I've read it" button at
  * the bottom (not an icon) is what collapses it. */
-export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true } = {}) {
+export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true, instructionKeyOverride = null, hideExtras = false } = {}) {
   if (!expanded) {
     return `<button class="expand-bar pressable" data-action="toggleHeader">
         <span class="chevron">▾</span><span>${escHtml(L("room.expand"))}</span>
@@ -163,9 +168,9 @@ export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = nu
       <p class="room-title">${escHtml(L(cfg.nameKey))}</p>
       <p class="room-question">${escHtml(L(cfg.questionKey))}</p>
       <span class="mode-caption">${modeCaptionIcon} ${escHtml(L(modeCaptionKey))}</span>
-      <div class="instruction-text">${escHtml(L(cfg.instructionKey))}</div>
-      <div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>
-      ${cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
+      <div class="instruction-text">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</div>
+      ${hideExtras ? "" : `<div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>`}
+      ${!hideExtras && cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
       <button class="read-it-btn pressable" data-action="toggleHeader">✓ ${escHtml(L("room.read_it"))}</button>
     </div>`;
 }

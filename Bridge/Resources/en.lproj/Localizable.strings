@@ -104,8 +104,12 @@
 
 "dice.title" = "Who speaks first?";
 "dice.subtitle" = "Roll to decide.";
+"dice.subtitle_for" = "%@, roll the die.";
 "dice.roll" = "Roll";
 "dice.result" = "%@ speaks first";
+"dice.value" = "%@ rolled %d";
+"dice.tie" = "It's a tie! Roll again.";
+"nav.read_together" = "Screen to read together";
 
 // MARK: - Calm-down Step
 
@@ -196,8 +200,9 @@
 "room.basement.name" = "Basement";
 "room.basement.question" = "Fears";
 "room.basement.forbidden" = "• Arguing with the other's fear\n• Long defensive explanations before answering";
-"basement.instruction" = "Say your fear honestly, one at a time, out loud — a card can help you find the words. Your partner answers with only one of the three words below, then it's their turn. Up to 15 fears each; tap Done when you're finished.";
+"basement.instruction" = "Choose fears from the list, one at a time, and say each one out loud to your partner — pick as many as feel true. There's nothing to answer here, just to name. Tap Done once you've both shared what you wanted to.";
 "basement.why_it_helps" = "Why this helps: underneath the shouting is usually a frightened child, not a villain — naming the fear out loud lets your partner finally see that.";
+"basement.questions_instruction" = "Now you can ask each other up to 15 yes-or-no questions about what you just shared — say them out loud, there's nothing to tap here. Tap Done once you're both ready to move on.";
 "basement.ask" = "Ask";
 "basement.response.yes" = "Yes";
 "basement.response.no" = "No";
@@ -210,13 +215,12 @@
 // MARK: - Garden / Bridge Finale
 
 "bridge.title" = "The Bridge";
-"bridge.question" = "What's one step toward each other?";
-"bridge.instruction" = "Each of you chooses at least one Step Toward card, one Needs & Connection card, and one gift.";
+"bridge.question" = "This is the final level of the game.";
+"bridge.instruction" = "To meet on the bridge, each of you takes three steps toward the other: 1. choose something important to your partner that you're willing to do; 2. voice one need of your own; 3. choose a gift.";
 "bridge.choose_step_toward" = "Choose a step toward";
 "bridge.choose_need" = "Choose a need";
 "bridge.choose_gift" = "Choose a gift";
 "bridge.mandatory_card_prompt" = "Complete this aloud, together:";
-"bridge.together_line" = "I choose to be on your side of this, not against you.";
 "bridge.same_side_button" = "We're on the same side";
 "bridge.choose_all_prompt" = "One at a time: first a step toward, then a need, then a gift. Each of you must choose all three before you can cross.";
 "bridge.step_progress" = "Step %d of %d";

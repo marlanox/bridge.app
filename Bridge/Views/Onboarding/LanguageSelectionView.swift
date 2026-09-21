@@ -37,7 +37,6 @@ struct LanguageSelectionView: View {
         }
         .onAppear {
             ChimeSynth.playWelcomeChime()
-            AmbientMusic.start()
         }
     }
 

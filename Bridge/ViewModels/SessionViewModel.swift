@@ -17,8 +17,7 @@ struct SessionSnapshot: Codable {
     var roomDoneFlags: [PartnerRole: Bool]
     var activePartner: PartnerRole
     var placedCardsThisTurn: [CardPlay]
-    var basementQuestionsAsked: [PartnerRole: Int]
-    var basementCurrentAsker: PartnerRole
+    var basementStage: SessionViewModel.BasementStage
     var voiceNoteSkipped: [PartnerRole: Bool]
 }
 
@@ -51,11 +50,12 @@ final class SessionViewModel: ObservableObject {
     /// first and second alike — see `confirmReveal()` for how it tells the two apart.
     @Published var pendingReveal: (from: PartnerRole, to: PartnerRole, cards: [CardPlay])?
 
-    // Basement runtime state
-    @Published var basementQuestionsAsked: [PartnerRole: Int] = [.partnerA: 0, .partnerB: 0]
-    @Published var basementCurrentAsker: PartnerRole = .partnerA
-    @Published var pendingBasementFearCardID: String?
-    @Published var pendingBasementCustomText: String?
+    // Basement runtime state — two stages, never looping: everyone voices whichever
+    // fears they choose from the list (discussion-mode, same as any non-sequential
+    // room), then a free, untimed-per-question window for up to 15 verbal yes/no
+    // questions with nothing for the UI to track per question.
+    enum BasementStage: String, Codable { case fears, questions }
+    @Published var basementStage: BasementStage = .fears
 
     // Voice snapshot
     @Published var voiceNoteSkipped: [PartnerRole: Bool] = [.partnerA: false, .partnerB: false]
@@ -74,8 +74,7 @@ final class SessionViewModel: ObservableObject {
             roomDoneFlags: roomDoneFlags,
             activePartner: activePartner,
             placedCardsThisTurn: placedCardsThisTurn,
-            basementQuestionsAsked: basementQuestionsAsked,
-            basementCurrentAsker: basementCurrentAsker,
+            basementStage: basementStage,
             voiceNoteSkipped: voiceNoteSkipped
         )
     }
@@ -90,8 +89,7 @@ final class SessionViewModel: ObservableObject {
         roomDoneFlags = snapshot.roomDoneFlags
         activePartner = snapshot.activePartner
         placedCardsThisTurn = snapshot.placedCardsThisTurn
-        basementQuestionsAsked = snapshot.basementQuestionsAsked
-        basementCurrentAsker = snapshot.basementCurrentAsker
+        basementStage = snapshot.basementStage
         voiceNoteSkipped = snapshot.voiceNoteSkipped
         roomTimeRemainingSeconds = (currentRoomConfig()?.timeMinutes ?? 7) * 60
     }
@@ -124,11 +122,40 @@ final class SessionViewModel: ObservableObject {
 
     // MARK: - Dice / intensity / calm-down / oath / ritual
 
+    enum DiceStage { case partnerA, partnerB, done }
+
+    /// Both partners roll their own die — one number picked for you by a tap isn't a
+    /// fair contest, and reads as broken/rigged ("I tapped once and immediately won").
+    /// Higher number starts every room; a tie rerolls both automatically.
+    @Published private(set) var diceStage: DiceStage = .partnerA
+    @Published private(set) var diceValueA: Int?
+    @Published private(set) var diceValueB: Int?
+    @Published private(set) var diceJustTied = false
+
     @discardableResult
-    func rollDice() -> PartnerRole {
-        let result: PartnerRole = Bool.random() ? .partnerA : .partnerB
-        session.firstToSpeak = result
-        return result
+    func rollDiceStep() -> Int {
+        let value = Int.random(in: 1...6)
+        switch diceStage {
+        case .partnerA:
+            diceJustTied = false
+            diceValueA = value
+            diceStage = .partnerB
+        case .partnerB:
+            diceValueB = value
+            if diceValueA == value {
+                diceJustTied = true
+                diceValueA = nil
+                diceValueB = nil
+                diceStage = .partnerA
+            } else {
+                diceJustTied = false
+                session.firstToSpeak = value > (diceValueA ?? 0) ? .partnerB : .partnerA
+                diceStage = .done
+            }
+        case .done:
+            break
+        }
+        return value
     }
 
     func setIntensity(_ value: Int, for role: PartnerRole) {
@@ -270,6 +297,11 @@ final class SessionViewModel: ObservableObject {
             startRoom(kind)
         case .basement:
             startBasement()
+        case .dice:
+            diceStage = .partnerA
+            diceValueA = nil
+            diceValueB = nil
+            diceJustTied = false
         default:
             break
         }
@@ -297,12 +329,11 @@ final class SessionViewModel: ObservableObject {
         timerFired = false
         timeUpBannerShown = false
 
-        if config?.modes.contains(.speaks) == true {
-            let first = session.firstToSpeak ?? .partnerA
-            activePartner = (kind.rawValue % 2 == 1) ? first : first.other
-        } else {
-            activePartner = session.firstToSpeak ?? .partnerA
-        }
+        // Whoever the dice named to go first opens every sequential room, not just the
+        // first one — alternating by room used to mean a couple would see "start with
+        // Alex, then Jordan, then Alex again" with no visible reason why, which read as
+        // broken rather than intentional.
+        activePartner = session.firstToSpeak ?? .partnerA
         roomTimeRemainingSeconds = (config?.timeMinutes ?? 7) * 60
     }
 
@@ -370,45 +401,29 @@ final class SessionViewModel: ObservableObject {
         FeedbackSounds.roomTransition()
         session.currentRoom = .basement
         roomDoneFlags = [.partnerA: false, .partnerB: false]
-        basementQuestionsAsked = [.partnerA: 0, .partnerB: 0]
-        basementCurrentAsker = session.firstToSpeak ?? .partnerA
-        activePartner = basementCurrentAsker
-        pendingBasementFearCardID = nil
+        placedCardsThisTurn = []
+        basementStage = .fears
+        activePartner = session.firstToSpeak ?? .partnerA
         timerFired = false
         timeUpBannerShown = false
         roomTimeRemainingSeconds = 10 * 60
     }
 
-    var canCurrentAskerAsk: Bool {
-        (basementQuestionsAsked[basementCurrentAsker] ?? 0) < 15 && pendingBasementFearCardID == nil
+    /// Either partner can voice any number of fears — nothing here forces alternation,
+    /// so there's no asker/answerer ping-pong left to get stuck in. Once both have
+    /// tapped Done, stage two starts; the fears chosen stay visible as a reminder.
+    func markBasementFearsDone(_ role: PartnerRole) {
+        roomDoneFlags[role] = true
+        if roomDoneFlags[.partnerA] == true && roomDoneFlags[.partnerB] == true {
+            basementStage = .questions
+            roomDoneFlags = [.partnerA: false, .partnerB: false]
+        }
     }
 
-    func askBasementQuestion(fearCardID: String, customText: String? = nil) {
-        guard canCurrentAskerAsk else { return }
-        pendingBasementFearCardID = fearCardID
-        pendingBasementCustomText = customText
-        activePartner = basementCurrentAsker.other
-    }
-
-    func submitBasementResponse(_ response: BasementResponse, explanation: String?) {
-        guard let fearCardID = pendingBasementFearCardID else { return }
-        basementQuestionsAsked[basementCurrentAsker, default: 0] += 1
-        session.basementExchanges.append(
-            BasementExchange(
-                askedBy: basementCurrentAsker,
-                fearCardID: fearCardID,
-                customFearText: pendingBasementCustomText,
-                response: response,
-                explanation: explanation
-            )
-        )
-        pendingBasementFearCardID = nil
-        pendingBasementCustomText = nil
-        basementCurrentAsker = basementCurrentAsker.other
-        activePartner = basementCurrentAsker
-    }
-
-    func markBasementDone(_ role: PartnerRole) {
+    /// Up to 15 yes/no questions asked and answered out loud — nothing for the UI to
+    /// track per question, just a shared window of time that ends when both partners
+    /// say they're done.
+    func markBasementQuestionsDone(_ role: PartnerRole) {
         roomDoneFlags[role] = true
         if roomDoneFlags[.partnerA] == true && roomDoneFlags[.partnerB] == true {
             TokenManager.awardBasementProtocolFollowed(session: &session)

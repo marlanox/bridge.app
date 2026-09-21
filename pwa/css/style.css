@@ -5,19 +5,23 @@
 :root {
   --ivory: #fbf9f5;
   --ink: #17171a;
-  --gold: #b7944c;
-  --gold-soft: rgba(183, 148, 76, 0.18);
+  --gold: #ccab66;
+  --gold-soft: rgba(204, 171, 102, 0.18);
   --purple: var(--ink);   /* PartnerColor.purple -> bridgeInk on iOS */
   --green: var(--gold);   /* PartnerColor.green  -> bridgeGold on iOS */
 
-  --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  /* No serifs anywhere, per explicit request — this reuses the body sans-serif stack.
+     The variable name and every .f-serif-* class that reads it are unchanged so the
+     dozens of existing call sites don't need touching. */
+  --font-serif: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 
   /* A real minimum, not just env()'s own default of 0 — a plain Safari tab (before
      "Add to Home Screen") reports 0 for safe-area-inset-top even on a notched phone,
      since Safari's own chrome (not ours) sits there. Without a floor, anything pinned
-     near the top renders under the status bar/notch on first run, before install. */
-  --safe-t: max(env(safe-area-inset-top, 0px), 47px);
+     near the top renders under the status bar/notch on first run, before install. 59px
+     (not 47px) covers a Dynamic Island phone's taller inset too, for the same case. */
+  --safe-t: max(env(safe-area-inset-top, 0px), 59px);
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-l: env(safe-area-inset-left, 0px);
   --safe-r: env(safe-area-inset-right, 0px);
@@ -28,15 +32,18 @@
      (the room's Done/flag row, moved there by a 180deg rotation) can land underneath it
      and steal its taps. See .seat-rotator.flipped .seat-content below. */
   --chrome-t: calc(var(--safe-t) + 46px);
+  /* Same idea as --chrome-t, but for a screen's own top padding rather than a rotated
+     room's clearance: the floating nav bar can carry a second row (the "read together"
+     caption) beneath the Back/Settings row, so ordinary screen content needs enough
+     headroom to clear both rows, or its own title text renders underneath the badge. */
+  --chrome-cap: calc(var(--safe-t) + 78px);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html, body {
   margin: 0; padding: 0;
-  height: 100dvh;
   background: var(--ivory);
-  overflow: hidden;
   overscroll-behavior: none; /* no rubber-band revealing page edges */
 }
 
@@ -47,7 +54,13 @@ body {
   overscroll-behavior-y: contain;
 }
 
-#app { height: 100dvh; width: 100%; position: relative; }
+/* `position: fixed; inset: 0` anchors #app directly to the real viewport edges instead
+   of depending on html/body's computed height — on iOS, in installed/standalone display
+   mode specifically, a `100dvh`-based height can fall short of the actual screen by
+   roughly the height of Safari's own (now-hidden) chrome, leaving a plain white gap at
+   the bottom that doesn't belong to any of our own elements. Anchoring by inset instead
+   of height sidesteps that unit entirely. */
+#app { position: fixed; inset: 0; background: var(--ivory); }
 
 img { -webkit-user-drag: none; user-select: none; }
 
@@ -106,7 +119,7 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
   background: var(--ivory);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: calc(var(--safe-t) + 20px);
+  padding-top: var(--chrome-cap);
   padding-bottom: calc(var(--safe-b) + 20px);
   padding-left: calc(var(--safe-l) + 24px);
   padding-right: calc(var(--safe-r) + 24px);
@@ -187,7 +200,7 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .photo-content {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
-  padding-top: var(--safe-t); padding-bottom: var(--safe-b);
+  padding-top: var(--chrome-cap); padding-bottom: var(--safe-b);
   padding-left: var(--safe-l); padding-right: var(--safe-r);
   /* A room's header can expand to a lot of text (instructions + why-it-helps +
      forbidden box) — on a short phone that can exceed the viewport. Scroll rather
@@ -267,8 +280,8 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
   margin: 10px 10px 0;
   padding: 12px 14px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(16px);
+  background: var(--ivory);
+  border: 1px solid rgba(204,171,102,0.5);
   display: flex; flex-direction: column; gap: 5px;
 }
 .room-header .top-row { display: flex; align-items: center; gap: 8px; }
@@ -279,17 +292,17 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .mode-caption {
   display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
   padding: 5px 9px; border-radius: 8px;
-  background: var(--ink); color: var(--gold);
+  background: var(--gold); color: var(--ink);
   font-size: 16px; font-weight: 700;
 }
 .instruction-text { font-size: 16px; font-weight: 500; line-height: 1.4; color: rgba(23,23,26,0.9); }
 .why-it-helps {
   font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4;
-  color: var(--gold); background: var(--ink);
+  color: var(--ink); background: var(--gold);
   padding: 6px 9px; border-radius: 8px;
 }
 .forbidden-box {
-  color: #fff; background: var(--ink); border-radius: 10px;
+  color: var(--ink); background: var(--gold); border-radius: 10px;
   padding: 6px 10px; font-size: 16px; line-height: 1.4;
 }
 .forbidden-box strong { display: block; font-weight: 700; margin-bottom: 2px; }
@@ -298,18 +311,19 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
    chevron alone wasn't a clear enough affordance, so the collapsed state is now a
    full-width labeled button ("Expand ▾") that stays in the same place to reopen it. */
 .read-it-btn {
-  align-self: flex-start;
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; margin-top: 2px;
-  border-radius: 20px;
-  background: var(--ink); color: var(--gold);
+  align-self: stretch;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 12px; margin-top: 2px;
+  border-radius: 12px;
+  background: var(--gold); color: var(--ink);
+  border: 1px solid rgba(23,23,26,0.2);
   font-size: 14px; font-weight: 700;
 }
 .expand-bar {
   margin: 10px 10px 0;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 10px 14px; border-radius: 14px;
-  background: rgba(255,255,255,0.6); backdrop-filter: blur(16px);
+  padding: 12px 14px; border-radius: 16px;
+  background: var(--gold); border: 1px solid rgba(23,23,26,0.3);
   font-size: 15px; font-weight: 700; color: var(--ink);
 }
 .expand-bar .chevron { font-size: 15px; }
@@ -335,18 +349,23 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .placed-cards { display: flex; flex-direction: column; gap: 6px; padding: 0 16px; align-items: flex-start; }
 .placed-card {
   padding: 6px 10px; border-radius: 20px; font-size: 13px; font-weight: 500;
-  background: rgba(255,255,255,0.55); backdrop-filter: blur(10px);
+  color: var(--ink); background: var(--ivory);
+  border: 1px solid rgba(204,171,102,0.5);
 }
 
 /* ============================================================
    Deck dropdown (CardGridView)
    ============================================================ */
 .deck-list { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px; }
+/* Closed pill: gold background, white text — the one deliberate exception to "gold
+   background gets black text" elsewhere, so the dropdown itself reads as a distinct,
+   tappable control. Once it opens, the sheet it reveals (.sheet below) is plain white
+   with black text, like everything else. */
 .deck-button {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 16px; border-radius: 14px;
-  background: var(--ink); color: var(--gold);
-  border: 1px solid rgba(183,148,76,0.6);
+  background: var(--gold); color: #fff;
+  border: 1px solid rgba(204,171,102,0.6);
   font-size: 16px; font-weight: 600; cursor: pointer;
 }
 
@@ -398,14 +417,18 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .reveal-card-rotator { transition: transform 0.5s cubic-bezier(.4,0,.2,1); }
 .reveal-card {
   max-width: 340px; padding: 24px; border-radius: 26px;
-  background: rgba(255,255,255,0.75); backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.6);
+  background: var(--ivory);
+  border: 1px solid rgba(204,171,102,0.6);
   box-shadow: 0 14px 30px rgba(0,0,0,0.3);
   text-align: center; display: flex; flex-direction: column; gap: 18px;
 }
 .reveal-from { display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-serif); font-weight: 600; font-size: 19px; }
 .reveal-cards { display: flex; flex-direction: column; gap: 10px; }
-.reveal-cards div { padding: 10px 14px; border-radius: 12px; font-weight: 500; font-size: 15px; }
+.reveal-cards div {
+  padding: 10px 14px; border-radius: 12px; font-weight: 500; font-size: 15px;
+  color: var(--ink); background: rgba(204,171,102,0.15);
+  border: 1px solid rgba(204,171,102,0.4);
+}
 
 /* ============================================================
    Forms (names, text fields)
@@ -499,29 +522,39 @@ input[type=range]::-webkit-slider-thumb {
 /* ============================================================
    Bridge finale
    ============================================================ */
-.bridge-header { text-align: center; padding-top: 16px; color: #fff; }
+.bridge-header {
+  text-align: center; margin: 44px 10px 0; padding: 12px 16px;
+  background: var(--ivory); color: var(--ink);
+  border-radius: 16px; border: 1px solid rgba(204,171,102,0.5);
+}
+.bridge-header p { color: var(--ink); }
 .bridge-tabs { display: flex; background: rgba(255,255,255,0.2); border-radius: 10px; padding: 3px; margin: 8px 16px 0; }
 .bridge-tabs button {
   flex: 1; padding: 8px 0; border: none; border-radius: 8px; background: none; color: #fff;
   font-weight: 600; font-size: 14px; cursor: pointer;
 }
 .bridge-tabs button.active { background: #fff; color: var(--ink); }
-.step-progress { display: flex; align-items: center; gap: 8px; color: #fff; }
+.step-progress { display: flex; align-items: center; gap: 8px; color: var(--ink); }
+.deck-prompt {
+  display: inline-block; color: var(--ink); font-weight: 700;
+  background: var(--ivory); padding: 5px 10px; border-radius: 8px;
+}
 .deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 8px; }
 .deck-grid button {
-  padding: 9px; border-radius: 11px; border: none; text-align: left; font-size: 13px; font-weight: 500;
-  min-height: 46px; cursor: pointer; backdrop-filter: blur(10px);
+  padding: 9px; border-radius: 11px; border: 1px solid rgba(23,23,26,0.12); text-align: left; font-size: 13px; font-weight: 500;
+  min-height: 46px; cursor: pointer; color: var(--ink); background: var(--ivory);
 }
+.deck-grid button.selected { background: var(--gold); border-color: rgba(23,23,26,0.3); }
 .mandatory-section {
   margin: 10px 16px 0; padding: 12px; border-radius: 14px;
-  background: rgba(255,255,255,0.55); backdrop-filter: blur(14px); text-align: center;
+  background: var(--ivory); border: 1px solid rgba(204,171,102,0.5); text-align: center; color: var(--ink);
 }
 .mandatory-check-row { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
 .mandatory-check-row button {
   display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 20px; border: none;
   font-size: 12px; font-weight: 600; cursor: pointer;
 }
-.together-section { padding: 16px; text-align: center; color: #fff; }
+.together-section { padding: 16px; text-align: center; }
 
 /* ============================================================
    Basement fear response buttons
@@ -574,28 +607,40 @@ input[type=range]::-webkit-slider-thumb {
    should never be a dead end, so this never depends on the current screen having
    its own way out.
    ============================================================ */
-.global-nav {
+.global-nav-wrap {
   position: fixed;
   top: calc(var(--safe-t) + 6px);
   left: calc(var(--safe-l) + 6px);
   right: calc(var(--safe-r) + 6px);
-  display: flex; align-items: center; justify-content: space-between;
   z-index: 12;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   pointer-events: none;
 }
-.global-nav > * { pointer-events: auto; }
+.global-nav {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.global-nav > *, .read-together-badge { pointer-events: auto; }
 .nav-pill {
   display: flex; align-items: center; gap: 3px;
   padding: 7px 12px 7px 9px; border-radius: 20px;
   background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
   font-size: 14px; font-weight: 600; color: var(--ink);
 }
-/* Deliberately no background/circle — a plain glyph with just enough shadow to read
-   on both a light screen and a photo, per explicit request. */
+/* Deliberately no background/circle — a plain flat glyph with just enough shadow to
+   read on both a light screen and a photo, per explicit request. An inline SVG (not a
+   Unicode "⚙" glyph) so it always renders flat/monochrome regardless of the device's
+   emoji-font fallback, which used to render it in a colorful "3D" style on some phones. */
 .nav-gear {
-  font-size: 21px; padding: 8px;
+  display: flex; padding: 8px;
   color: var(--ink);
-  text-shadow: 0 0 4px rgba(255,255,255,0.9), 0 0 1px rgba(255,255,255,0.9);
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.9));
+}
+.read-together-row { display: flex; justify-content: center; }
+.read-together-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  color: var(--ink); background: var(--gold);
+  padding: 5px 10px; border-radius: 20px;
 }
 
 /* ============================================================

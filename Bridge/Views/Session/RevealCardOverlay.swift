@@ -36,11 +36,16 @@ struct RevealCardOverlay: View {
                 ForEach(cards) { play in
                     Text(cardDisplayText(play))
                         .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Color.bridgeInk)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                         .frame(maxWidth: .infinity)
-                        .background(fromColor.color.opacity(0.16), in: RoundedRectangle(cornerRadius: 12))
+                        .background(Color.bridgeIvory, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+                        )
                 }
             }
 
@@ -48,12 +53,11 @@ struct RevealCardOverlay: View {
         }
         .padding(24)
         .frame(maxWidth: 340)
-        .background(.ultraThinMaterial)
-        .background(Color.white.opacity(0.35))
+        .background(Color.bridgeIvory)
         .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 26, style: .continuous)
-                .stroke(Color.white.opacity(0.6), lineWidth: 1)
+                .strokeBorder(Color.bridgeGold.opacity(0.6), lineWidth: 1)
         )
         .shadow(color: .black.opacity(0.3), radius: 30, y: 14)
     }

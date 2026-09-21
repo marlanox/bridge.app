@@ -1,20 +1,8 @@
-import { loadContent, L, LF, getLanguage, setLanguage, deck, allRoomKinds } from "./content.js";
+import { loadContent, L, LF, getLanguage, setLanguage, deck, room, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
-import { playTap, playWelcomeChime, startAmbient, stopAmbient } from "./sounds.js";
-
-// Mirrors AppFlowStep.isBeforeRooms on iOS — everything before a couple actually starts
-// walking through the house gets the soft ambient pad; it falls silent from the first
-// room onward.
-const BEFORE_ROOMS_STEPS = new Set([
-  "welcome", "howItWorksWhatIsBridge", "howItWorksApology", "disclaimer",
-  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown",
-]);
-
-function syncAmbientMusic(step) {
-  if (BEFORE_ROOMS_STEPS.has(step)) startAmbient();
-  else stopAmbient();
-}
+import { playTap, playWelcomeChime } from "./sounds.js";
+import { escHtml } from "./components.js";
 
 const appEl = document.getElementById("app");
 let store;
@@ -23,7 +11,7 @@ let store;
  * never persisted, reset whenever the flow moves to a different step. See
  * `resetUiForStep`. */
 const ui = {
-  diceRolled: false, diceWinner: null, diceWinnerName: "", diceFace: 1,
+  diceRolling: false, diceFace: 1,
   intensity: { partnerA: 0, partnerB: 0 },
   stateSelected: { partnerA: [], partnerB: [] },
   stateCustom: { partnerA: "", partnerB: "" },
@@ -46,13 +34,14 @@ const ui = {
 };
 
 let lastFlowKey = null;
+let lastActivePartner = null;
 
 function flowKey(flow) {
   return flow ? `${flow.step}:${flow.kind ?? ""}` : "";
 }
 
 function resetUiForStep(step, kind) {
-  if (step === "dice") { ui.diceRolled = false; ui.diceWinner = null; ui.diceFace = 1; }
+  if (step === "dice") { ui.diceRolling = false; ui.diceFace = 1; store.resetDice(); }
   if (step === "intensityState") {
     ui.intensity = { partnerA: store.session.intensityA, partnerB: store.session.intensityB };
     ui.stateSelected = {
@@ -91,7 +80,15 @@ function render() {
   if (key !== lastFlowKey) {
     resetUiForStep(store.flow.step, store.flow.kind);
     lastFlowKey = key;
-    syncAmbientMusic(store.flow.step);
+    lastActivePartner = store.activePartner;
+  } else if (
+    (store.flow.step === "room" || store.flow.step === "basement") &&
+    store.activePartner !== lastActivePartner
+  ) {
+    // A new person taking their turn must see the full instructions, not whatever
+    // collapsed state the previous partner happened to leave it in.
+    ui.headerExpanded = true;
+    lastActivePartner = store.activePartner;
   }
 
   let html;
@@ -110,14 +107,41 @@ function render() {
  * over" / "redo this page") are reachable from every single screen — getting stuck
  * on one dead-end step, with no way out, is exactly the failure this exists to
  * prevent. */
+// A plain inline SVG, not a Unicode "⚙" glyph — the character renders in a colorful
+// "emoji-style" on some devices depending on font fallback, which read as a broken/
+// "crazy 3D" icon instead of a plain flat settings glyph.
+const GEAR_SVG = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+  <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1c-.7 0-1.3.5-1.4 1.2l-.3 1.7c-.7.2-1.4.5-2 .9l-1.5-.9a1.5 1.5 0 0 0-1.9.3L3.5 5.6a1.5 1.5 0 0 0 .3 1.9l1.3 1c-.1.4-.1.8-.1 1.2v.6c0 .4 0 .8.1 1.2l-1.3 1a1.5 1.5 0 0 0-.3 1.9l1.4 1.4c.5.5 1.3.6 1.9.3l1.5-.9c.6.4 1.3.7 2 .9l.3 1.7c.1.7.7 1.2 1.4 1.2h2c.7 0 1.3-.5 1.4-1.2l.3-1.7c.7-.2 1.4-.5 2-.9l1.5.9c.6.3 1.4.2 1.9-.3l1.4-1.4c.5-.5.6-1.3.3-1.9l-1.3-1c.1-.4.1-.8.1-1.2v-.6c0-.4 0-.8-.1-1.2l1.3-1c.4-.5.5-1.3.2-1.9L20.6 5.6a1.5 1.5 0 0 0-1.9-.3l-1.5.9c-.6-.4-1.3-.7-2-.9L15 2.2A1.5 1.5 0 0 0 13.6 1h-2Z"/>
+</svg>`;
+
 function globalNavBar() {
   const back = store.canGoBack()
     ? `<button class="nav-pill pressable" data-action="goBack"><span>‹</span><span>${L("nav.back")}</span></button>`
     : "<span></span>";
-  return `<div class="global-nav">
-      ${back}
-      <button class="nav-gear pressable" data-action="openSettings" aria-label="${L("settings.title")}">⚙</button>
+  const caption = store.flow && needsReadTogetherCaption(store.flow)
+    ? `<div class="read-together-row"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>`
+    : "";
+  return `<div class="global-nav-wrap">
+      <div class="global-nav">
+        ${back}
+        <button class="nav-gear pressable" data-action="openSettings" aria-label="${L("settings.title")}">${GEAR_SVG}</button>
+      </div>
+      ${caption}
     </div>`;
+}
+
+// Mirrors AppFlowStep.needsReadTogetherCaption on iOS — only a sequential "one speaks,
+// one listens" room physically rotates 180° for a private turn; every other screen,
+// room or not, needs the reminder that it's meant to be read together. Basement draws
+// its own copy inline (it needs to sit inside its own scroll layout, not float above it).
+function needsReadTogetherCaption(flow) {
+  if (flow.step === "basement") return false;
+  if (flow.step === "room") {
+    const cfg = room(flow.kind);
+    return !cfg.modes.includes("speaks");
+  }
+  return true;
 }
 
 function renderFlowScreen() {
@@ -132,7 +156,7 @@ function renderFlowScreen() {
     case "houseMap": return S.houseMapScreen("onboarding", ui.houseMapTextExpanded);
     case "names": return S.namesScreen(store);
     case "couplesAgreementSetup": return S.couplesAgreementScreen(store, ui);
-    case "dice": return S.diceScreen(ui);
+    case "dice": return S.diceScreen(ui, store);
     case "intensityState": return S.intensityScreen(store, ui);
     case "calmDown": return S.calmDownScreen(ui);
     case "oath": return S.oathScreen();
@@ -247,6 +271,7 @@ const actions = {
 
   // Dice
   rollDice() {
+    ui.diceRolling = true;
     const dieEl = document.querySelector(".die-face");
     if (dieEl) dieEl.style.transform = "rotate(720deg)";
     // Actually cycle through different faces while it "rolls" — a single static face
@@ -255,13 +280,11 @@ const actions = {
       ui.diceFace = 1 + Math.floor(Math.random() * 6);
       render();
     }, 60);
-    const result = store.rollDice();
-    ui.diceWinnerName = store.name(result);
     setTimeout(() => {
       clearInterval(faceTimer);
-      ui.diceFace = 1 + Math.floor(Math.random() * 6);
-      ui.diceWinner = result;
-      ui.diceRolled = true;
+      const value = store.rollDiceStep();
+      ui.diceFace = value;
+      ui.diceRolling = false;
       render();
     }, 600);
   },
@@ -310,12 +333,7 @@ const actions = {
     const d = deck(deckId);
     const card = d.cards.find((c) => c.id === cardId);
     if (!card) return;
-    if (store.flow.step === "basement") {
-      if (!store.canCurrentAskerAsk()) return;
-      store.askBasementQuestion(cardId);
-    } else {
-      store.playCard(card, deckId);
-    }
+    store.playCard(card, deckId);
     ui.openDeckId = null;
     render();
   },
@@ -324,12 +342,7 @@ const actions = {
     const input = document.getElementById("writeOwnInput");
     const text = input.value.trim();
     if (!text) return;
-    if (store.flow.step === "basement") {
-      const id = `fears_custom_${Date.now().toString(16)}`;
-      store.askBasementQuestion(id, text);
-    } else {
-      store.playCard({ id: `custom_${Date.now()}` }, deckId, text);
-    }
+    store.playCard({ id: `custom_${Date.now()}` }, deckId, text);
     ui.openDeckId = null;
     ui.customCardDraft = "";
     render();
@@ -347,8 +360,8 @@ const actions = {
   },
 
   // Basement
-  submitBasementResponse(el) { store.submitBasementResponse(el.dataset.arg); render(); },
-  markBasementDone() { store.markBasementDone(store.activePartner); render(); },
+  markBasementFearsDone(el) { store.markBasementFearsDone(el.dataset.arg); render(); },
+  markBasementQuestionsDone(el) { store.markBasementQuestionsDone(el.dataset.arg); render(); },
 
   // Bridge finale
   setBridgeTab(el) { ui.bridgeActiveTab = el.dataset.arg; render(); },
@@ -486,7 +499,6 @@ setInterval(() => {
   if (!store) return;
   const f = store.flow;
   if (f.step !== "room" && f.step !== "basement") return;
-  if (store.pendingBasementFearCardID) return; // no countdown while mid fear-exchange
   const { changed } = store.tick();
   if (changed) { render(); return; }
   document.querySelectorAll(".timer-clock").forEach((elm) => {

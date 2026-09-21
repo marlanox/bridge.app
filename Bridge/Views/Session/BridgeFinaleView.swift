@@ -121,20 +121,29 @@ struct BridgeFinaleView: View {
                 .font(.system(size: 30))
                 .foregroundStyle(Color.bridgeGold)
             Text(LF("bridge.partner_cards_done", vm.session.name(for: activeTab)))
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.white)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.bridgeInk)
                 .multilineTextAlignment(.center)
         }
-        .padding(24)
+        .padding(20)
         .frame(maxWidth: .infinity)
+        .background(Color.bridgeIvory, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+        )
+        .padding(.horizontal, 16)
     }
 
     @ViewBuilder
     private func deckSection(kind: SessionViewModel.BridgeCardKind, deck: Deck, promptKey: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(L(promptKey))
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.white)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.bridgeInk)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Color.bridgeIvory, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 130), spacing: 8)], spacing: 8) {
                 ForEach(deck.cards.filter { $0.id != DeckData.mandatoryStepTowardCardID || kind != .stepToward }) { card in
@@ -150,12 +159,16 @@ struct BridgeFinaleView: View {
                                 .font(.system(size: 13, weight: .medium))
                                 .multilineTextAlignment(.leading)
                         }
+                        .foregroundStyle(Color.bridgeInk)
                         .padding(9)
                         .frame(maxWidth: .infinity, minHeight: 46, alignment: .leading)
                     }
-                    .background(.ultraThinMaterial)
-                    .background(vm.session.color(for: activeTab).color.opacity(isSelected ? 0.45 : 0.18))
+                    .background(isSelected ? Color.bridgeGold : Color.bridgeIvory)
                     .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 11, style: .continuous)
+                            .strokeBorder(Color.bridgeInk.opacity(isSelected ? 0.3 : 0.12), lineWidth: 1)
+                    )
                     .buttonStyle(PressableButtonStyle())
                 }
             }
@@ -165,10 +178,11 @@ struct BridgeFinaleView: View {
     private var mandatorySection: some View {
         VStack(spacing: 10) {
             Text(L("bridge.mandatory_card_prompt"))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Color.bridgeInk.opacity(0.7))
             Text(L(mandatoryCardTextKey))
-                .font(.subheadline.weight(.semibold))
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.bridgeInk)
                 .multilineTextAlignment(.center)
             HStack(spacing: 12) {
                 mandatoryCheckButton(role: .partnerA, color: .purple)
@@ -176,7 +190,11 @@ struct BridgeFinaleView: View {
             }
         }
         .padding(12)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .background(Color.bridgeIvory, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+        )
         .padding(.horizontal, 16)
         .padding(.top, 10)
     }
@@ -201,30 +219,35 @@ struct BridgeFinaleView: View {
 
     private var togetherSection: some View {
         VStack(spacing: 12) {
-            Text(L("bridge.together_line"))
-                .font(.title3.weight(.medium))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.white)
             PrimaryButton(titleKey: "bridge.same_side_button", isEnabled: vm.bridgeFinaleComplete, action: onContinue)
         }
         .padding(16)
     }
 
     private var header: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 6) {
             Text(L("bridge.title"))
-                .font(.bridgeSerifTitle(34, weight: .bold))
-                .foregroundStyle(.white)
+                .font(.bridgeSerifTitle(30, weight: .bold))
+                .foregroundStyle(Color.bridgeInk)
             Text(L("bridge.question"))
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.85))
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(Color.bridgeInk.opacity(0.75))
             Text(L("bridge.choose_all_prompt"))
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(.white.opacity(0.9))
+                .foregroundStyle(Color.bridgeInk)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-                .padding(.top, 2)
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(.top, 16)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity)
+        .background(Color.bridgeIvory)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .padding(.horizontal, 10)
+        .padding(.top, 44)
     }
 }

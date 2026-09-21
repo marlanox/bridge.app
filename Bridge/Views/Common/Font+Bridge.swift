@@ -1,7 +1,10 @@
 import SwiftUI
 
-/// A small, consistent type system: serif for headings (the "expensive" feel), bold
-/// upright tracked text for buttons (always legible, never italic).
+/// A small, consistent type system: bold upright tracked text for buttons (always
+/// legible, never italic). `bridgeSerifTitle`/`bridgeSerifHeadline` keep their names
+/// (used across dozens of call sites) but no longer render as an actual serif face —
+/// per explicit request, nothing in the app should have serifs; both now use the
+/// system's plain (sans-serif) design instead of `.serif`.
 ///
 /// A fixed scale on purpose — pick from these five sizes rather than a one-off `.system(size:)`,
 /// so a screen never ends up with more distinct font sizes than it needs:
@@ -11,11 +14,11 @@ import SwiftUI
 /// badge or timestamp).
 extension Font {
     static func bridgeSerifTitle(_ size: CGFloat = 28, weight: Font.Weight = .semibold) -> Font {
-        .system(size: size, weight: weight, design: .serif)
+        .system(size: size, weight: weight, design: .default)
     }
 
     static func bridgeSerifHeadline(_ size: CGFloat = 20) -> Font {
-        .system(size: size, weight: .semibold, design: .serif)
+        .system(size: size, weight: .semibold, design: .default)
     }
 
     /// The main instructional or question text on a screen — one consistent size instead of

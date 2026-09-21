@@ -11,9 +11,11 @@ struct PlacedCardsOverlay: View {
                 ForEach(plays) { play in
                     Text(displayText(for: play))
                         .font(.caption.weight(.medium))
+                        .foregroundStyle(Color.bridgeInk)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
-                        .background(.ultraThinMaterial, in: Capsule())
+                        .background(Color.bridgeIvory, in: Capsule())
+                        .overlay(Capsule().strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1))
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }

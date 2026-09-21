@@ -1,15 +1,17 @@
 import SwiftUI
 import UIKit
 
-/// Basement — Fears (spec section 6, room 6): a strict question/answer protocol rather
-/// than the usual card grid. The asker picks a fear card; the screen flips to the
-/// answerer, who responds with one of four fixed replies and may briefly explain.
+/// Basement — Fears (spec section 6, room 6), two stages, neither of which loops back
+/// into the other: (1) both partners voice whichever fears they choose from the list,
+/// each tapping their own Done when finished; (2) a free, untimed-per-question window
+/// for up to 15 verbal yes/no questions, ended the same way. The screen never physically
+/// rotates here — both partners read and use it together, side by side.
 struct BasementView: View {
     @ObservedObject var vm: SessionViewModel
 
     // Collapsed by default on short screens (SE-class phones) so the fully-expanded
-    // instruction/why-it-helps/forbidden text doesn't push the Done button below the
-    // fold before a first-time user realizes they can collapse it themselves.
+    // instruction/why-it-helps/forbidden text doesn't push the Done row below the fold
+    // before a first-time user realizes they can collapse it themselves.
     @State private var instructionsExpanded: Bool
 
     private let fearsDeck = DeckData.fears
@@ -20,153 +22,111 @@ struct BasementView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            // The photo rotates together with the header/cards/buttons as one unit — see
-            // RoomView's equivalent fix: a couple sitting across from each other must see a
-            // single consistent room, not a right-side-up photo under upside-down text.
-            ActivePartnerContainer(
-                activePartner: vm.activePartner,
-                partnerName: { vm.session.name(for: $0) },
-                partnerColor: { vm.session.color(for: $0) }
-            ) {
-                ZStack {
-                    RoomBackgroundImage(imageName: "basement")
-                    Color.black.opacity(0.3).ignoresSafeArea()
+        ZStack {
+            RoomBackgroundImage(imageName: "basement")
+            Color.black.opacity(0.18).ignoresSafeArea()
 
-                    Group {
-                        if let pending = vm.pendingBasementFearCardID {
-                            answeringContent(fearCardID: pending)
-                        } else {
-                            askingContent
+            VStack(spacing: 0) {
+                ReadTogetherCaption()
+                header
+                Spacer(minLength: 8)
+                if vm.basementStage == .fears {
+                    PlacedCardsOverlay(plays: vm.placedCardsThisTurn)
+                        .padding(.horizontal, 16)
+                    activePartnerSwitcher
+                    CardGridView(
+                        decks: [fearsDeck],
+                        onSelect: { deck, card in
+                            guard !card.isWriteYourOwn else { return }
+                            vm.playCard(card, deckID: deck.id)
+                        },
+                        onCustom: { deck, text in
+                            vm.playCard(.writeYourOwn(), deckID: deck.id, customText: text)
+                        }
+                    )
+                } else {
+                    Spacer(minLength: 12)
+                    TimerBanner(
+                        secondsRemaining: vm.roomTimeRemainingSeconds,
+                        timeUpBannerShown: vm.timeUpBannerShown,
+                        onMoreTime: { vm.addMoreTime() },
+                        onDone: {}
+                    )
+                    .padding(.horizontal, 16)
+                    Spacer(minLength: 12)
+                }
+
+                doneRow
+            }
+        }
+    }
+
+    /// Which of the two is currently "picking" a fear to voice — tapping a name switches
+    /// whose turn it is before the next card gets tagged with `playCard`'s `playedBy`.
+    private var activePartnerSwitcher: some View {
+        HStack(spacing: 8) {
+            ForEach([PartnerRole.partnerA, .partnerB], id: \.self) { role in
+                Button {
+                    vm.activePartner = role
+                } label: {
+                    HStack(spacing: 6) {
+                        Circle().fill(vm.session.color(for: role).color).frame(width: 8, height: 8)
+                        Text(vm.session.name(for: role)).font(.caption.weight(.semibold))
+                        if vm.activePartner == role {
+                            Image(systemName: "hand.point.up.left.fill").font(.caption2)
                         }
                     }
-                    // Same fix as RoomView's turnContent: a 180° rotation swaps which
-                    // physical edge is "top", so the safe area has to be applied manually,
-                    // swapped, rather than left to the system's un-rotated default — and
-                    // the edge that ends up physically on top needs extra clearance for
-                    // the global nav bar, not just the notch (see roomChromeTopExtra).
-                    .padding(.top, isRotated ? geo.safeAreaInsets.bottom : geo.safeAreaInsets.top)
-                    .padding(.bottom, isRotated ? geo.safeAreaInsets.top + roomChromeTopExtra : geo.safeAreaInsets.bottom)
-                    .padding(.leading, isRotated ? geo.safeAreaInsets.trailing : geo.safeAreaInsets.leading)
-                    .padding(.trailing, isRotated ? geo.safeAreaInsets.leading : geo.safeAreaInsets.trailing)
-                    .ignoresSafeArea()
+                    .foregroundStyle(Color.bridgeInk)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
                 }
-            }
-        }
-    }
-
-    private var isRotated: Bool { vm.activePartner.seatRotationDegrees != 0 }
-
-    private var askingContent: some View {
-        VStack(spacing: 0) {
-            header
-            askingInstructions
-            TimerBanner(
-                secondsRemaining: vm.roomTimeRemainingSeconds,
-                timeUpBannerShown: vm.timeUpBannerShown,
-                onMoreTime: { vm.addMoreTime() },
-                onDone: { vm.markBasementDone(vm.activePartner) }
-            )
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-
-            CardGridView(
-                decks: [fearsDeck],
-                onSelect: { _, card in
-                    guard vm.canCurrentAskerAsk, !card.isWriteYourOwn else { return }
-                    vm.askBasementQuestion(fearCardID: card.id)
-                },
-                onCustom: { _, text in
-                    // A custom fear gets its own one-off id; the actual words are carried
-                    // separately since they don't live in the deck's localized text table.
-                    let id = "fears_custom_\(UUID().uuidString.prefix(8))"
-                    vm.askBasementQuestion(fearCardID: id, customText: text)
-                }
-            )
-
-            // Done only ever finishes the room once BOTH partners have tapped it during
-            // their own asking turn — turns only change hands after a full ask+answer
-            // round, so without this note, a partner can tap Done, watch nothing
-            // happen, and not understand why. Naming whose turn is pending instead of
-            // just disabling the button keeps `room.done` an ordinary always-tappable
-            // action rather than a new disabled/enabled state to explain.
-            if let hint = turnHint {
-                Text(hint)
-                    .font(.bridgeCaption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-            }
-
-            HStack {
-                Button { vm.markBasementDone(vm.activePartner) } label: {
-                    Text(L("room.done"))
-                        .font(.headline)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                }
-                .background(vm.session.color(for: vm.activePartner).color, in: Capsule())
-                .foregroundStyle(.white)
+                .background(vm.activePartner == role ? Color.bridgeGold : Color.bridgeIvory, in: Capsule())
+                .overlay(Capsule().strokeBorder(Color.bridgeInk.opacity(0.2), lineWidth: 1))
                 .buttonStyle(PressableButtonStyle())
             }
-            .padding(16)
         }
+        .padding(.horizontal, 16)
+        .padding(.top, 6)
     }
 
-    private var turnHint: String? {
-        let me = vm.activePartner
-        let other = me.other
-        if vm.roomDoneFlags[me] == true {
-            return LF("basement.you_marked_done", vm.session.name(for: other))
+    private var doneRow: some View {
+        HStack(spacing: 12) {
+            doneButton(role: .partnerA, color: .purple)
+            doneButton(role: .partnerB, color: .green)
         }
-        if vm.roomDoneFlags[other] == true {
-            return LF("basement.partner_ready_to_finish", vm.session.name(for: other))
-        }
-        return nil
+        .padding(16)
     }
 
     @ViewBuilder
-    private func answeringContent(fearCardID: String) -> some View {
-        let answerer = vm.activePartner
-        VStack(spacing: 20) {
-            header
-            Spacer()
-            Text(vm.pendingBasementCustomText ?? fearText(for: fearCardID))
-                .font(.bridgeSerifHeadline())
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-
-            Text(L("basement.answer_instruction"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 30)
-
-            VStack(spacing: 10) {
-                responseButton(.yes, color: vm.session.color(for: answerer))
-                responseButton(.no, color: vm.session.color(for: answerer))
-                responseButton(.understand, color: vm.session.color(for: answerer))
-            }
-            .padding(.horizontal, 20)
-
-            Spacer()
-        }
-    }
-
-    @ViewBuilder
-    private func responseButton(_ response: BasementResponse, color: PartnerColor) -> some View {
+    private func doneButton(role: PartnerRole, color: PartnerColor) -> some View {
+        let done = vm.roomDoneFlags[role] == true
         Button {
-            vm.submitBasementResponse(response, explanation: nil)
+            if vm.basementStage == .fears {
+                vm.markBasementFearsDone(role)
+            } else {
+                vm.markBasementQuestionsDone(role)
+            }
         } label: {
-            Text(L("basement.response.\(response.rawValue)"))
-                .font(.subheadline.weight(.medium))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+            HStack {
+                Circle().fill(vm.session.color(for: role).color).frame(width: 8, height: 8)
+                Text(vm.session.name(for: role)).font(.caption.weight(.semibold))
+                Spacer()
+                Text(L("room.done"))
+                    .font(.subheadline.weight(.bold))
+            }
+            .foregroundStyle(done ? AnyShapeStyle(.secondary) : AnyShapeStyle(Color.bridgeInk))
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity)
         }
-        .background(.ultraThinMaterial)
-        .background(color.color.opacity(0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .background(done ? Color.white.opacity(0.5) : Color.bridgeGold, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(Color.bridgeInk.opacity(done ? 0.15 : 0.35), lineWidth: 1)
+        )
+        .disabled(done)
         .buttonStyle(PressableButtonStyle())
+        .accessibilityIdentifier("uitest.basement.done.\(role.rawValue)")
     }
 
     /// Kept compact — every line here costs a slice of the room's own interior, which
@@ -184,13 +144,18 @@ struct BasementView: View {
                     Image(systemName: "chevron.down")
                     Text(L("room.expand"))
                 }
-                .font(.subheadline.weight(.semibold))
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.bridgeInk)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
             }
             .buttonStyle(PressableButtonStyle())
-            .background(.ultraThinMaterial)
+            .background(Color.bridgeGold)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.bridgeInk.opacity(0.3), lineWidth: 1)
+            )
             .padding(.horizontal, 10)
             .padding(.top, 10)
             .accessibilityIdentifier("uitest.room.header.toggle")
@@ -198,28 +163,37 @@ struct BasementView: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text(L("room.basement.name"))
                     .font(.bridgeSerifTitle(24, weight: .bold))
+                    .foregroundStyle(Color.bridgeInk)
                 Text(L("room.basement.question"))
                     .font(.bridgeSerifHeadline(16))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.bridgeInk.opacity(0.7))
 
-                Text(L("basement.why_it_helps"))
-                    .font(.bridgeCaption.weight(.semibold).italic())
-                    .foregroundStyle(Color.bridgeGold)
+                Text(vm.basementStage == .fears ? L("basement.instruction") : L("basement.questions_instruction"))
+                    .font(.bridgeCaption.weight(.semibold))
+                    .foregroundStyle(Color.bridgeInk)
                     .lineSpacing(3)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 9)
-                    .padding(.vertical, 6)
-                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-                Text(L("room.basement.forbidden"))
-                    .font(.bridgeCaption)
-                    .foregroundStyle(.white)
-                    .lineSpacing(3)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .background(Color.bridgeInk, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                if vm.basementStage == .fears {
+                    Text(L("basement.why_it_helps"))
+                        .font(.bridgeCaption.weight(.semibold).italic())
+                        .foregroundStyle(Color.bridgeInk)
+                        .lineSpacing(3)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 6)
+                        .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+
+                    Text(L("room.basement.forbidden"))
+                        .font(.bridgeCaption)
+                        .foregroundStyle(Color.bridgeInk)
+                        .lineSpacing(3)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
 
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = false }
@@ -228,44 +202,24 @@ struct BasementView: View {
                         Image(systemName: "checkmark")
                         Text(L("room.read_it"))
                     }
-                    .font(.subheadline.weight(.semibold))
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(Color.bridgeInk)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                 }
                 .buttonStyle(PressableButtonStyle())
-                .background(Color.bridgeGold.opacity(0.2), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .accessibilityIdentifier("uitest.room.header.toggle")
             }
             .padding(12)
-            .background(.ultraThinMaterial)
+            .background(Color.bridgeIvory)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.bridgeGold.opacity(0.5), lineWidth: 1)
+            )
             .padding(.horizontal, 10)
             .padding(.top, 10)
         }
-    }
-
-    /// Only relevant while picking a fear to ask — the answerer sees the fear itself and
-    /// `basement.answer_instruction` instead, in `answeringContent`. Folds under the same
-    /// header toggle since it's the second slab of text crowding out the room's interior.
-    @ViewBuilder
-    private var askingInstructions: some View {
-        if instructionsExpanded {
-            Text(L("basement.instruction"))
-                .font(.bridgeCaption)
-                .foregroundStyle(.primary.opacity(0.9))
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.ultraThinMaterial)
-        }
-    }
-
-    private func fearText(for id: String) -> String {
-        if let card = fearsDeck.cards.first(where: { $0.id == id }) {
-            return L(card.textKey)
-        }
-        return ""
     }
 }

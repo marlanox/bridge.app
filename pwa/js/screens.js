@@ -5,7 +5,6 @@ import {
 } from "./components.js";
 
 const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
-const RESPONSE_KEYS = ["yes", "no", "understand"];
 
 /** Every photo-backed screen (a room, house map, welcome, etc.): the background photo
  * sits at z-index 0, `inner` renders into a full-size flex column at z-index 1 above
@@ -150,16 +149,26 @@ export function couplesAgreementScreen(store, ui) {
 // =========================================================== Dice
 const DIE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
-export function diceScreen(ui) {
-  const rotation = ui.diceRolled ? 720 : 0;
+export function diceScreen(ui, store) {
+  const rotation = ui.diceRolling ? 720 : 0;
+  const stage = store.diceStage;
+  const subtitle = store.diceJustTied
+    ? L("dice.tie")
+    : stage === "done"
+    ? L("dice.subtitle")
+    : LF("dice.subtitle_for", store.name(stage));
   return `<div class="screen" style="align-items:center;text-align:center;">
       <div class="spacer"></div>
       <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("dice.title"))}</h1>
-      <p class="secondary">${escHtml(L("dice.subtitle"))}</p>
+      <p class="secondary" style="${store.diceJustTied ? "color:#c0392b;font-weight:600;" : ""}">${escHtml(subtitle)}</p>
       <div class="die-face" style="transform:rotate(${rotation}deg);margin:20px 0;font-size:64px;">${DIE_FACES[(ui.diceFace || 1) - 1]}</div>
-      ${ui.diceWinner ? `<p style="font-weight:700;color:${ui.diceWinner === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", ui.diceWinnerName))}</p>` : ""}
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        ${stage !== "partnerA" && store.diceValueA != null ? `<p style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerA"), store.diceValueA))}</p>` : ""}
+        ${stage === "done" && store.diceValueB != null ? `<p style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerB"), store.diceValueB))}</p>` : ""}
+      </div>
+      ${stage === "done" && store.session.firstToSpeak ? `<p style="font-weight:700;color:${store.session.firstToSpeak === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", store.name(store.session.firstToSpeak)))}</p>` : ""}
       <div class="spacer"></div>
-      ${ui.diceRolled ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
+      ${stage === "done" ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
     </div>`;
 }
 
@@ -327,7 +336,7 @@ export function roomScreen(store, ui, kind) {
       <div style="display:flex;gap:12px;padding:16px;">${doneRow("partnerA", "a")}${doneRow("partnerB", "b")}</div>`;
   }
 
-  const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft) : "";
+  const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft, rotation) : "";
   // `.screen` already establishes a positioning context via its own `position: absolute;
   // inset: 0` (filling #app) — overriding that to `position: relative` here (as this used
   // to do) drops the "inset: 0" sizing entirely, so with every child of this div itself
@@ -351,70 +360,61 @@ function flagRow() {
 }
 
 // =========================================================== Basement
+// Two stages, neither of which loops back into the other: (1) both partners voice
+// whichever fears they choose from the list, each tapping their own Done when
+// finished; (2) a free, untimed-per-question window for up to 15 verbal yes/no
+// questions, ended the same way. Never rotates — both partners read and use it
+// together, side by side. Mirrors BasementView.swift's redesign.
 export function basementScreen(store, ui) {
   const cfg = room("basement");
-  const rotation = store.seatRotation(store.activePartner);
-  const header = roomHeader(cfg, { expanded: ui.headerExpanded });
+  const stage = store.basementStage;
+  const header = roomHeader(cfg, {
+    expanded: ui.headerExpanded,
+    instructionKeyOverride: stage === "fears" ? null : "basement.questions_instruction",
+    hideExtras: stage !== "fears",
+  });
+
+  const doneButton = (role) => {
+    const done = store.roomDoneFlags[role];
+    return `<button class="pressable" data-action="${stage === "fears" ? "markBasementFearsDone" : "markBasementQuestionsDone"}" data-arg="${role}" ${done ? "disabled" : ""}
+        style="flex:1;display:flex;align-items:center;gap:6px;justify-content:space-between;padding:12px 16px;border-radius:16px;border:1px solid rgba(23,23,26,${done ? "0.15" : "0.35"});font-weight:700;color:${done ? "rgba(23,23,26,0.45)" : "var(--ink)"};background:${done ? "rgba(255,255,255,0.5)" : "var(--gold)"};">
+        <span style="display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;"><span class="dot ${role === "partnerA" ? "a" : "b"}"></span>${escHtml(store.name(role))}</span>
+        <span>${escHtml(L("room.done"))}</span>
+      </button>`;
+  };
+  const doneRow = `<div style="display:flex;gap:12px;padding:16px;">${doneButton("partnerA")}${doneButton("partnerB")}</div>`;
 
   let content;
-  if (store.pendingBasementFearCardID) {
-    const fearText = store.pendingBasementCustomText ?? fearTextFor(store.pendingBasementFearCardID);
-    const responses = RESPONSE_KEYS
-      .map((r) => `<button class="response-btn pressable" style="background:rgba(0,0,0,0.06)" data-action="submitBasementResponse" data-arg="${r}">${escHtml(L(`basement.response.${r}`))}</button>`)
+  if (stage === "fears") {
+    const switcher = ["partnerA", "partnerB"]
+      .map((role) => `<button class="pressable" data-action="setActivePartner" data-arg="${role}" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:20px;border:1px solid rgba(23,23,26,0.2);font-weight:600;font-size:13px;background:${store.activePartner === role ? "var(--gold)" : "var(--ivory)"};color:var(--ink);">
+          <span class="dot ${role === "partnerA" ? "a" : "b"}"></span>${escHtml(store.name(role))}${store.activePartner === role ? " 👆" : ""}
+        </button>`)
       .join("");
-    content = `<div class="stack gap-20" style="flex:1;justify-content:center;padding:20px;">
-        ${header}
-        <p class="f-serif-headline center-text" style="font-size:22px;">${escHtml(fearText)}</p>
-        <p class="secondary center-text">${escHtml(L("basement.answer_instruction"))}</p>
-        <div class="stack gap-12">${responses}</div>
-      </div>`;
-  } else {
-    content = `${header}
-      <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
+    content = `<div class="read-together-row" style="padding-top:6px;"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>
+      ${header}
+      <div class="spacer" style="flex:0 0 8px;"></div>
+      ${placedCards(store)}
+      <div style="display:flex;gap:8px;padding:6px 16px 0;">${switcher}</div>
       ${deckDropdownList(["fears"])}
+      ${doneRow}`;
+  } else {
+    content = `<div class="read-together-row" style="padding-top:6px;"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>
+      ${header}
+      <div class="spacer" style="flex:0 0 12px;"></div>
+      <div style="padding:0 16px;">${timerBanner(store)}</div>
       <div class="spacer"></div>
-      <div style="padding:0 24px;text-align:center;">${basementTurnHint(store)}</div>
-      <div style="padding:16px;text-align:center;">
-        <button class="pressable" data-action="markBasementDone" style="background:${store.activePartner === "partnerA" ? "var(--purple)" : "var(--green)"};color:#fff;border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
-      </div>`;
+      ${doneRow}`;
   }
 
-  const sheet = ui.openDeckId
-    ? deckSheet("fears", (card) => store.canCurrentAskerAsk(), ui.customCardDraft)
-    : "";
-  const body = `<div class="seat-rotator${rotation ? " flipped" : ""}">
-      <div class="photo-screen" style="background-image:url('assets/rooms/basement.jpg')"><div class="photo-dim" style="background:rgba(0,0,0,0.5)"></div></div>
-      <div class="seat-content">${content}</div>
-    </div>`;
-  // See the matching comment in roomScreen() — `.screen` already fills #app via its own
-  // `position: absolute; inset: 0`; overriding that to `position: relative` here drops
-  // the sizing and collapses this div (and the absolutely-positioned seat-rotator/
-  // seat-content inside it) down to nothing.
-  return `<div class="screen flush no-scroll">${body}</div>` + sheet;
+  const sheet = ui.openDeckId ? deckSheet("fears", null, ui.customCardDraft, 0) : "";
+  return photoScreen("basement", content, { dim: true }) + sheet;
 }
 
 /** Done only ever finishes the room once BOTH partners have tapped it during their
  * own asking turn — turns only change hands after a full ask+answer round, so
  * without this note, a partner can tap Done, watch nothing happen, and not
  * understand why. Mirrors the same hint in BasementView.swift on iOS. */
-function basementTurnHint(store) {
-  const me = store.activePartner;
-  const other = store.other(me);
-  if (store.roomDoneFlags[me]) {
-    return `<p class="f-caption secondary">${escHtml(LF("basement.you_marked_done", store.name(other)))}</p>`;
-  }
-  if (store.roomDoneFlags[other]) {
-    return `<p class="f-caption secondary">${escHtml(LF("basement.partner_ready_to_finish", store.name(other)))}</p>`;
-  }
-  return "";
-}
-
-function fearTextFor(id) {
-  const d = deck("fears");
-  const card = d.cards.find((c) => c.id === id);
-  return card ? L(card.textKey) : "";
-}
-
 // =========================================================== Bridge Finale
 const BRIDGE_KIND_ORDER = ["stepToward", "need", "gift"];
 const BRIDGE_DECK_ID = { stepToward: "step_toward", need: "needs_connection", gift: "gifts" };
@@ -433,7 +433,7 @@ export function bridgeFinaleScreen(store, ui) {
     const grid = cards
       .map((c) => {
         const selected = store.selectedBridgeCardID(currentKind, activeTab) === c.id;
-        return `<button class="pressable" style="background:${activeTab === "partnerA" ? "rgba(23,23,26,0.2)" : "rgba(183,148,76,0.3)"};color:#fff;" data-action="selectBridgeCard" data-arg="${currentKind}" data-arg2="${c.id}">
+        return `<button class="pressable${selected ? " selected" : ""}" data-action="selectBridgeCard" data-arg="${currentKind}" data-arg2="${c.id}">
             ${selected ? "✓ " : ""}${escHtml(L(c.textKey))}
           </button>`;
       })
@@ -441,13 +441,13 @@ export function bridgeFinaleScreen(store, ui) {
     deckBlock = `<div class="stack gap-12" style="padding:16px;max-height:380px;overflow-y:auto;">
         <div class="step-progress">
           ${dots(3, index - 1, true)}
-          <span class="f-label secondary" style="color:rgba(255,255,255,0.85)">${escHtml(LF("bridge.step_progress", index, 3))}</span>
+          <span class="f-label secondary">${escHtml(LF("bridge.step_progress", index, 3))}</span>
         </div>
-        <div style="color:#fff;font-weight:600;">${escHtml(L(BRIDGE_PROMPT_KEY[currentKind]))}</div>
+        <div class="deck-prompt">${escHtml(L(BRIDGE_PROMPT_KEY[currentKind]))}</div>
         <div class="deck-grid">${grid}</div>
       </div>`;
   } else {
-    deckBlock = `<div style="padding:24px;text-align:center;color:#fff;">
+    deckBlock = `<div style="padding:20px;text-align:center;margin:0 16px;background:var(--ivory);border:1px solid rgba(204,171,102,0.5);border-radius:16px;color:var(--ink);">
         <div style="font-size:30px;">✓</div>
         <p style="font-weight:600;">${escHtml(LF("bridge.partner_cards_done", store.name(activeTab)))}</p>
       </div>`;
@@ -458,9 +458,9 @@ export function bridgeFinaleScreen(store, ui) {
 
   return photoScreen("bridge", `
       <div class="bridge-header">
-        <div class="f-serif-title" style="font-size:34px;">${escHtml(L("bridge.title"))}</div>
-        <p style="color:rgba(255,255,255,0.85)">${escHtml(L("bridge.question"))}</p>
-        <p style="color:rgba(255,255,255,0.9);font-size:13px;font-weight:600;padding:0 24px;">${escHtml(L("bridge.choose_all_prompt"))}</p>
+        <div class="f-serif-title" style="font-size:30px;">${escHtml(L("bridge.title"))}</div>
+        <p style="font-weight:500;">${escHtml(L("bridge.question"))}</p>
+        <p style="font-size:13px;font-weight:600;">${escHtml(L("bridge.choose_all_prompt"))}</p>
       </div>
       <div class="bridge-tabs">
         <button class="${activeTab === "partnerA" ? "active" : ""}" data-action="setBridgeTab" data-arg="partnerA">${escHtml(store.session.partnerA.name)}</button>
@@ -476,8 +476,7 @@ export function bridgeFinaleScreen(store, ui) {
         </div>
       </div>
       <div class="together-section">
-        <p style="font-weight:600;">${escHtml(L("bridge.together_line"))}</p>
-        ${primaryButton({ key: "bridge.same_side_button", action: "advance", enabled: store.bridgeFinaleComplete(), onDark: true })}
+        ${primaryButton({ key: "bridge.same_side_button", action: "advance", enabled: store.bridgeFinaleComplete() })}
       </div>`,
     { dim: false });
 }

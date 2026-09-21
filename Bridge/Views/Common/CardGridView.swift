@@ -8,6 +8,12 @@ struct CardGridView: View {
     let decks: [Deck]
     var onSelect: (Deck, Card) -> Void
     var onCustom: (Deck, String) -> Void
+    /// The room's current rotation (0 or 180) — a `.sheet()` is presented at the window
+    /// root and does NOT inherit a parent's `.rotationEffect`, so without this, the card
+    /// list always faces one fixed physical orientation instead of whoever is actually
+    /// answering right now (the same problem RevealCardOverlay solves for the reveal
+    /// card, applied here to the deck sheet).
+    var activePartnerRotation: Double = 0
 
     @State private var openDeckID: String?
     @State private var customText: String = ""
@@ -21,6 +27,7 @@ struct CardGridView: View {
         .padding(16)
         .sheet(item: openDeckBinding) { deck in
             cardListSheet(deck)
+                .rotationEffect(.degrees(activePartnerRotation))
         }
     }
 
