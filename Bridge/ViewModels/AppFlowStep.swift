@@ -34,13 +34,16 @@ enum AppFlowStep: Equatable {
     /// screen that does NOT physically rotate 180° for a private turn needs this
     /// reminder, or couples miss that it's meant to be read together. Only a sequential
     /// "one speaks, one listens" room rotates; every other screen, room or not,
-    /// qualifies (Basement renders its own copy of the caption directly, since it needs
-    /// to sit inside its own scroll layout rather than float above it).
+    /// qualifies EXCEPT `intensityState`, whose partner-B half is already rotated 180°
+    /// in place — that screen is two private halves, not one shared screen, so the
+    /// caption would be simply wrong there, not just redundant. Basement renders its
+    /// own copy of the caption directly, since it needs to sit inside its own scroll
+    /// layout rather than float above it.
     var needsReadTogetherCaption: Bool {
         switch self {
         case .room(let kind):
             return RoomConfig.all[kind]?.modes.contains(.speaks) != true
-        case .basement:
+        case .basement, .intensityState:
             return false
         default:
             return true

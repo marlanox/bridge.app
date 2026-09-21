@@ -217,66 +217,76 @@ struct RoomView: View {
             .accessibilityIdentifier("uitest.room.header.toggle")
         } else {
             VStack(alignment: .leading, spacing: 5) {
-                HStack {
-                    if let activeRole {
-                        Text(vm.session.name(for: activeRole))
-                            .font(.bridgeCaption)
-                            .foregroundStyle(vm.session.color(for: activeRole).color)
-                    }
-                    Spacer()
-                    ForEach(config.modes, id: \.self) { mode in
-                        Image(systemName: mode.iconSystemName)
-                            .font(.caption)
+                // Bounded and independently scrollable — on a short phone, the full
+                // instruction/why-it-helps/forbidden text can otherwise exceed the whole
+                // screen's height with no ScrollView anywhere above it, pushing the Done
+                // button (and everything else below the header) permanently off-screen
+                // with no way to reach it at all.
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 5) {
+                        HStack {
+                            if let activeRole {
+                                Text(vm.session.name(for: activeRole))
+                                    .font(.bridgeCaption)
+                                    .foregroundStyle(vm.session.color(for: activeRole).color)
+                            }
+                            Spacer()
+                            ForEach(config.modes, id: \.self) { mode in
+                                Image(systemName: mode.iconSystemName)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        Text(L(config.nameKey))
+                            .font(.bridgeSerifTitle(21, weight: .bold))
+                        Text(L(config.questionKey))
+                            .font(.bridgeSerifHeadline(14))
                             .foregroundStyle(.secondary)
-                    }
-                }
-                Text(L(config.nameKey))
-                    .font(.bridgeSerifTitle(24, weight: .bold))
-                Text(L(config.questionKey))
-                    .font(.bridgeSerifHeadline(16))
-                    .foregroundStyle(.secondary)
 
-                Label {
-                    Text(L(modeCaptionKey))
-                        .font(.bridgeCaption.weight(.bold))
-                } icon: {
-                    Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
-                }
-                .foregroundStyle(Color.bridgeInk)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 5)
-                .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        Label {
+                            Text(L(modeCaptionKey))
+                                .font(.bridgeCaption.weight(.bold))
+                        } icon: {
+                            Image(systemName: config.modes.contains(.discussion) ? "bubble.left.and.bubble.right.fill" : "mic.fill")
+                        }
+                        .foregroundStyle(Color.bridgeInk)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-                Text(L(config.instructionKey))
-                    .font(.bridgeCaption)
-                    .foregroundStyle(.primary.opacity(0.9))
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Text(L(config.whyItHelpsKey))
-                    .font(.bridgeCaption.weight(.semibold).italic())
-                    .foregroundStyle(Color.bridgeInk)
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 9)
-                    .padding(.vertical, 6)
-                    .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-
-                if let forbiddenKey = config.forbiddenKey {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(L("room.forbidden_prefix"))
-                            .font(.bridgeCaption.weight(.bold))
-                        Text(L(forbiddenKey))
+                        Text(L(config.instructionKey))
                             .font(.bridgeCaption)
-                            .lineSpacing(3)
+                            .foregroundStyle(.primary.opacity(0.9))
+                            .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
+
+                        Text(L(config.whyItHelpsKey))
+                            .font(.bridgeCaption.weight(.semibold).italic())
+                            .foregroundStyle(Color.bridgeInk)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+
+                        if let forbiddenKey = config.forbiddenKey {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(L("room.forbidden_prefix"))
+                                    .font(.bridgeCaption.weight(.bold))
+                                Text(L(forbiddenKey))
+                                    .font(.bridgeCaption)
+                                    .lineSpacing(2)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .foregroundStyle(Color.bridgeInk)
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 5)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        }
                     }
-                    .foregroundStyle(Color.bridgeInk)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
+                .frame(maxHeight: UIScreen.main.bounds.height * 0.4)
 
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = false }

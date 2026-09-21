@@ -161,39 +161,48 @@ struct BasementView: View {
             .accessibilityIdentifier("uitest.room.header.toggle")
         } else {
             VStack(alignment: .leading, spacing: 5) {
-                Text(L("room.basement.name"))
-                    .font(.bridgeSerifTitle(24, weight: .bold))
-                    .foregroundStyle(Color.bridgeInk)
-                Text(L("room.basement.question"))
-                    .font(.bridgeSerifHeadline(16))
-                    .foregroundStyle(Color.bridgeInk.opacity(0.7))
+                // Bounded and independently scrollable — see the matching comment in
+                // RoomView.header: without this, a short phone has no ScrollView anywhere
+                // above it, so long instruction text can push the Done row off-screen with
+                // no way to reach it at all.
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(L("room.basement.name"))
+                            .font(.bridgeSerifTitle(21, weight: .bold))
+                            .foregroundStyle(Color.bridgeInk)
+                        Text(L("room.basement.question"))
+                            .font(.bridgeSerifHeadline(14))
+                            .foregroundStyle(Color.bridgeInk.opacity(0.7))
 
-                Text(vm.basementStage == .fears ? L("basement.instruction") : L("basement.questions_instruction"))
-                    .font(.bridgeCaption.weight(.semibold))
-                    .foregroundStyle(Color.bridgeInk)
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
+                        Text(vm.basementStage == .fears ? L("basement.instruction") : L("basement.questions_instruction"))
+                            .font(.bridgeCaption.weight(.semibold))
+                            .foregroundStyle(Color.bridgeInk)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
 
-                if vm.basementStage == .fears {
-                    Text(L("basement.why_it_helps"))
-                        .font(.bridgeCaption.weight(.semibold).italic())
-                        .foregroundStyle(Color.bridgeInk)
-                        .lineSpacing(3)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 9)
-                        .padding(.vertical, 6)
-                        .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        if vm.basementStage == .fears {
+                            Text(L("basement.why_it_helps"))
+                                .font(.bridgeCaption.weight(.semibold).italic())
+                                .foregroundStyle(Color.bridgeInk)
+                                .lineSpacing(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 5)
+                                .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-                    Text(L("room.basement.forbidden"))
-                        .font(.bridgeCaption)
-                        .foregroundStyle(Color.bridgeInk)
-                        .lineSpacing(3)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            Text(L("room.basement.forbidden"))
+                                .font(.bridgeCaption)
+                                .foregroundStyle(Color.bridgeInk)
+                                .lineSpacing(2)
+                                .padding(.horizontal, 9)
+                                .padding(.vertical, 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .background(Color.bridgeGold.opacity(0.35), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        }
+                    }
                 }
+                .frame(maxHeight: UIScreen.main.bounds.height * 0.4)
 
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) { instructionsExpanded = false }

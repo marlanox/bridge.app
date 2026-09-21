@@ -113,19 +113,23 @@ struct IntensityStateView: View {
                 HStack {
                     if selected.wrappedValue.isEmpty {
                         Text(L("intensity.state_placeholder"))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.bridgeInk.opacity(0.7))
                     } else {
                         Text(selected.wrappedValue.map { L($0.textKey) }.sorted().joined(separator: ", "))
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(Color.bridgeInk)
                             .lineLimit(2)
                     }
                     Spacer()
-                    Image(systemName: "chevron.down").font(.caption.weight(.bold))
+                    Image(systemName: "chevron.down").font(.caption.weight(.bold)).foregroundStyle(Color.bridgeInk)
                 }
-                .font(.bridgeBody)
+                .font(.bridgeBody.weight(.semibold))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
-                .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
+                .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .strokeBorder(Color.bridgeInk.opacity(0.25), lineWidth: 1)
+                )
             }
             .buttonStyle(PressableButtonStyle())
             .accessibilityIdentifier("uitest.state.picker.\(role.rawValue)")

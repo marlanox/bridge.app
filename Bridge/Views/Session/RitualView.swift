@@ -26,25 +26,26 @@ struct RitualView: View {
                         HStack {
                             Text(L(key))
                                 .font(.bridgeSerifHeadline(18))
+                                .fontWeight(.bold)
                                 .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true)
                             Spacer()
                             if chosenLine == index {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(Color.bridgeGold)
+                                    .foregroundStyle(Color.bridgeInk)
                             }
                         }
                         .padding(16)
                         .frame(maxWidth: .infinity)
-                        .background(chosenLine == index ? Color.bridgeGold.opacity(0.15) : Color.primary.opacity(0.05))
+                        .background(chosenLine == index ? Color.bridgeGold : Color.bridgeIvory)
                         .overlay(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .strokeBorder(chosenLine == index ? Color.bridgeGold : .clear, lineWidth: 1.5)
+                                .strokeBorder(chosenLine == index ? Color.bridgeInk : Color.bridgeInk.opacity(0.15), lineWidth: 2)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     }
                     .buttonStyle(PressableButtonStyle())
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.bridgeInk)
                     .accessibilityIdentifier("uitest.ritual.line.\(index)")
                 }
             }
