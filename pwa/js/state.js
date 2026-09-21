@@ -127,6 +127,7 @@ export class Store {
     const f = this.flow;
     if (f.step === "room") { this.set(() => this._startRoom(f.kind)); return true; }
     if (f.step === "basement") { this.set(() => this._startBasement()); return true; }
+    if (f.step === "dice") { this.set(() => this.resetDice()); return true; }
     return false;
   }
 
@@ -177,8 +178,7 @@ export class Store {
       roomDoneFlags: this.roomDoneFlags,
       activePartner: this.activePartner,
       placedCardsThisTurn: this.placedCardsThisTurn,
-      basementQuestionsAsked: this.basementQuestionsAsked,
-      basementCurrentAsker: this.basementCurrentAsker,
+      basementStage: this.basementStage,
       voiceNoteSkipped: this.voiceNoteSkipped,
       history: this._history,
     };
@@ -206,11 +206,9 @@ export class Store {
     this.timeUpBannerShown = false;
     this.placedCardsThisTurn = [];
     this.pendingReveal = null;
-    this.basementQuestionsAsked = { partnerA: 0, partnerB: 0 };
-    this.basementCurrentAsker = "partnerA";
-    this.pendingBasementFearCardID = null;
-    this.pendingBasementCustomText = null;
+    this.basementStage = "fears";
     this.voiceNoteSkipped = { partnerA: false, partnerB: false };
+    this.resetDice();
   }
 
   _restore(snap) {
@@ -223,11 +221,11 @@ export class Store {
     this.roomDoneFlags = snap.roomDoneFlags;
     this.activePartner = snap.activePartner;
     this.placedCardsThisTurn = snap.placedCardsThisTurn;
-    this.basementQuestionsAsked = snap.basementQuestionsAsked;
-    this.basementCurrentAsker = snap.basementCurrentAsker;
+    this.basementStage = snap.basementStage ?? "fears";
     this.voiceNoteSkipped = snap.voiceNoteSkipped;
     const cfg = this.currentRoomConfig();
     this.roomTimeRemainingSeconds = (cfg?.timeMinutes ?? 7) * 60;
+    this.resetDice();
   }
 
   other(role) {
@@ -267,10 +265,37 @@ export class Store {
 
   // -------------------------------------------- dice / intensity / rituals
 
-  rollDice() {
-    const result = Math.random() < 0.5 ? "partnerA" : "partnerB";
-    this.set(() => (this.session.firstToSpeak = result));
-    return result;
+  // Both partners roll their own die in turn — a single tap picking a random winner
+  // read as broken/rigged ("I tapped once and immediately won"). Higher number starts
+  // every room; a tie rerolls both automatically. Mirrors SessionViewModel.rollDiceStep.
+  resetDice() {
+    this.diceStage = "partnerA";
+    this.diceValueA = null;
+    this.diceValueB = null;
+    this.diceJustTied = false;
+  }
+
+  rollDiceStep() {
+    const value = 1 + Math.floor(Math.random() * 6);
+    if (this.diceStage === "partnerA") {
+      this.diceJustTied = false;
+      this.diceValueA = value;
+      this.diceStage = "partnerB";
+    } else if (this.diceStage === "partnerB") {
+      this.diceValueB = value;
+      if (this.diceValueA === value) {
+        this.diceJustTied = true;
+        this.diceValueA = null;
+        this.diceValueB = null;
+        this.diceStage = "partnerA";
+      } else {
+        this.diceJustTied = false;
+        const winner = value > this.diceValueA ? "partnerB" : "partnerA";
+        this.set(() => (this.session.firstToSpeak = winner));
+        this.diceStage = "done";
+      }
+    }
+    return value;
   }
 
   setIntensity(value, role) {
@@ -412,12 +437,11 @@ export class Store {
     this.timeUpBannerShown = false;
     if (opts.seed) this._seedForPreview();
 
-    const first = this.session.firstToSpeak || "partnerA";
-    if (cfg.modes.includes("speaks")) {
-      this.activePartner = cfg.order % 2 === 1 ? first : this.other(first);
-    } else {
-      this.activePartner = first;
-    }
+    // Whoever the dice named to go first opens every sequential room, not just the
+    // first one — alternating by room used to mean a couple would see "start with
+    // Alex, then Jordan, then Alex again" with no visible reason why, which read as
+    // broken rather than intentional.
+    this.activePartner = this.session.firstToSpeak || "partnerA";
     this.roomTimeRemainingSeconds = (cfg.timeMinutes ?? 7) * 60;
   }
 
@@ -486,52 +510,33 @@ export class Store {
 
   // ------------------------------------------------------------- basement
 
+  // Two stages, neither of which loops back into the other: (1) both partners voice
+  // whichever fears they choose from the list, each tapping their own Done when
+  // finished; (2) a free, untimed-per-question window for up to 15 verbal yes/no
+  // questions, ended the same way. Mirrors SessionViewModel's Basement redesign.
   _startBasement(opts = {}) {
     this.session.currentRoom = "basement";
     this.roomDoneFlags = { partnerA: false, partnerB: false };
-    this.basementQuestionsAsked = { partnerA: 0, partnerB: 0 };
-    this.basementCurrentAsker = this.session.firstToSpeak || "partnerA";
-    this.activePartner = this.basementCurrentAsker;
-    this.pendingBasementFearCardID = null;
+    this.placedCardsThisTurn = [];
+    this.basementStage = "fears";
+    this.activePartner = this.session.firstToSpeak || "partnerA";
     this.timerFired = false;
     this.timeUpBannerShown = false;
     this.roomTimeRemainingSeconds = 10 * 60;
     if (opts.seed) this._seedForPreview();
   }
 
-  canCurrentAskerAsk() {
-    return (this.basementQuestionsAsked[this.basementCurrentAsker] ?? 0) < 15 && !this.pendingBasementFearCardID;
-  }
-
-  askBasementQuestion(fearCardID, customText = null) {
+  markBasementFearsDone(role) {
     this.set(() => {
-      if (!this.canCurrentAskerAsk()) return;
-      this.pendingBasementFearCardID = fearCardID;
-      this.pendingBasementCustomText = customText;
-      this.activePartner = this.other(this.basementCurrentAsker);
+      this.roomDoneFlags[role] = true;
+      if (this.roomDoneFlags.partnerA && this.roomDoneFlags.partnerB) {
+        this.basementStage = "questions";
+        this.roomDoneFlags = { partnerA: false, partnerB: false };
+      }
     });
   }
 
-  submitBasementResponse(response) {
-    this.set(() => {
-      const fearCardID = this.pendingBasementFearCardID;
-      if (!fearCardID) return;
-      this.basementQuestionsAsked[this.basementCurrentAsker] =
-        (this.basementQuestionsAsked[this.basementCurrentAsker] ?? 0) + 1;
-      this.session.basementExchanges.push({
-        askedBy: this.basementCurrentAsker,
-        fearCardID,
-        customFearText: this.pendingBasementCustomText,
-        response,
-      });
-      this.pendingBasementFearCardID = null;
-      this.pendingBasementCustomText = null;
-      this.basementCurrentAsker = this.other(this.basementCurrentAsker);
-      this.activePartner = this.basementCurrentAsker;
-    });
-  }
-
-  markBasementDone(role) {
+  markBasementQuestionsDone(role) {
     this.set(() => {
       this.roomDoneFlags[role] = true;
       if (this.roomDoneFlags.partnerA && this.roomDoneFlags.partnerB) {
