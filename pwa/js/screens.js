@@ -198,7 +198,7 @@ export function intensityScreen(store, ui) {
         </div>
         <span class="overwhelmed-flag" style="background:${vivid};${intensity >= 7 ? "" : "display:none;"}">${escHtml(L("intensity.overwhelmed_flag"))}</span>
         <div class="f-caption secondary" style="margin-top:10px;">${escHtml(L("intensity.state_label"))}</div>
-        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:rgba(0,0,0,0.05);border:none;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:var(--gold);color:var(--ink);border:1px solid rgba(23,23,26,0.25);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:600;">
           <span>${summary}</span><span>▾</span>
         </button>
         <input class="text-field" style="margin-top:10px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}">
@@ -275,9 +275,9 @@ export function ritualScreen(ui) {
   const lines = ["ritual.line_1", "ritual.line_2"];
   const options = lines
     .map((key, i) => `<button class="pressable" data-action="chooseRitualLine" data-arg="${i}"
-        style="width:100%;text-align:left;padding:16px;border-radius:14px;border:1.5px solid ${ui.chosenLine === i ? "var(--gold)" : "transparent"};background:${ui.chosenLine === i ? "rgba(183,148,76,0.15)" : "rgba(0,0,0,0.05)"};display:flex;justify-content:space-between;">
-        <span class="f-serif-headline" style="font-size:18px;font-weight:600;">${escHtml(L(key))}</span>
-        ${ui.chosenLine === i ? '<span style="color:var(--gold)">✓</span>' : ""}
+        style="width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid ${ui.chosenLine === i ? "var(--ink)" : "rgba(23,23,26,0.15)"};background:${ui.chosenLine === i ? "var(--gold)" : "var(--ivory)"};display:flex;justify-content:space-between;color:var(--ink);">
+        <span class="f-serif-headline" style="font-size:18px;font-weight:700;">${escHtml(L(key))}</span>
+        ${ui.chosenLine === i ? '<span style="color:var(--ink);font-weight:700;">✓</span>' : ""}
       </button>`)
     .join("");
   return `<div class="screen" style="align-items:center;text-align:center;">

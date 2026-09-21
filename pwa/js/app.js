@@ -135,8 +135,11 @@ function globalNavBar() {
 // one listens" room physically rotates 180° for a private turn; every other screen,
 // room or not, needs the reminder that it's meant to be read together. Basement draws
 // its own copy inline (it needs to sit inside its own scroll layout, not float above it).
+// Mirrors AppFlowStep.needsReadTogetherCaption on iOS. intensityState's partner-B half
+// is already rotated 180deg in place — that screen is two private halves, not one
+// shared screen, so the caption would be simply wrong there, not just redundant.
 function needsReadTogetherCaption(flow) {
-  if (flow.step === "basement") return false;
+  if (flow.step === "basement" || flow.step === "intensityState") return false;
   if (flow.step === "room") {
     const cfg = room(flow.kind);
     return !cfg.modes.includes("speaks");
