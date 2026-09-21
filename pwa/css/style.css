@@ -300,8 +300,7 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .instruction-text { font-size: 14px; font-weight: 500; line-height: 1.3; color: rgba(23,23,26,0.9); }
 .why-it-helps {
   font-size: 13px; font-weight: 600; font-style: italic; line-height: 1.3;
-  color: var(--ink); background: var(--gold);
-  padding: 5px 8px; border-radius: 8px;
+  color: rgba(23,23,26,0.85);
 }
 .forbidden-box {
   color: var(--ink); background: var(--gold); border-radius: 10px;

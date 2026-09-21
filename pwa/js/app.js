@@ -17,7 +17,6 @@ const ui = {
   stateCustom: { partnerA: "", partnerB: "" },
   openStatePickerRole: null,
   breathing: false,
-  chosenLine: null,
   headerExpanded: true,
   openDeckId: null,
   bridgeActiveTab: "partnerA",
@@ -52,7 +51,6 @@ function resetUiForStep(step, kind) {
     ui.openStatePickerRole = null;
   }
   if (step === "calmDown") ui.breathing = false;
-  if (step === "ritual") ui.chosenLine = null;
   if (step === "room" || step === "basement") {
     // Collapsed by default on short screens (SE-class phones) so the fully-expanded
     // instruction/why-it-helps/forbidden text doesn't push the Done button below the
@@ -321,7 +319,6 @@ const actions = {
   completeOathAndAdvance() { store.completeOath(); store.advance(); },
 
   // Ritual
-  chooseRitualLine(el) { ui.chosenLine = Number(el.dataset.arg); render(); },
   completeRitualAndAdvance() {
     store.completeRitual();
     store.advance();
