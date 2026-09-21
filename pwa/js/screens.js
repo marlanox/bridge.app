@@ -271,14 +271,16 @@ export function oathScreen() {
 }
 
 // =========================================================== Ritual (Hold Hands)
+// A plain list to read aloud, not a UI choice — nothing here is tappable; both
+// partners choose out loud, together, which phrase fits (or say both). The one and
+// only control on this screen is the continue button below.
 export function ritualScreen(ui) {
   const lines = ["ritual.line_1", "ritual.line_2"];
   const options = lines
-    .map((key, i) => `<button class="pressable" data-action="chooseRitualLine" data-arg="${i}"
-        style="width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid ${ui.chosenLine === i ? "var(--ink)" : "rgba(23,23,26,0.15)"};background:${ui.chosenLine === i ? "var(--gold)" : "var(--ivory)"};display:flex;justify-content:space-between;color:var(--ink);">
+    .map((key) => `<div
+        style="width:100%;text-align:left;padding:16px;border-radius:14px;border:1.3px solid rgba(23,23,26,0.15);background:var(--ivory);color:var(--ink);">
         <span class="f-serif-headline" style="font-size:18px;font-weight:700;">${escHtml(L(key))}</span>
-        ${ui.chosenLine === i ? '<span style="color:var(--ink);font-weight:700;">✓</span>' : ""}
-      </button>`)
+      </div>`)
     .join("");
   return `<div class="screen" style="align-items:center;text-align:center;">
       <div class="spacer"></div>

@@ -1,10 +1,12 @@
 import SwiftUI
 
+/// A plain list to read from out loud, not a UI choice — there is nothing to tap or
+/// select here (both partners choose out loud, together, which phrase fits, or say
+/// both); the one and only control on this screen is the continue button below.
 struct RitualView: View {
     @ObservedObject var vm: SessionViewModel
     let onContinue: () -> Void
 
-    @State private var chosenLine: Int? = nil
     @State private var isHolding = false
 
     private var lineKeys: [String] { ["ritual.line_1", "ritual.line_2"] }
@@ -20,33 +22,23 @@ struct RitualView: View {
 
             VStack(spacing: 12) {
                 ForEach(Array(lineKeys.enumerated()), id: \.offset) { index, key in
-                    Button {
-                        chosenLine = index
-                    } label: {
-                        HStack {
-                            Text(L(key))
-                                .font(.bridgeSerifHeadline(18))
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer()
-                            if chosenLine == index {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(Color.bridgeInk)
-                            }
-                        }
-                        .padding(16)
-                        .frame(maxWidth: .infinity)
-                        .background(chosenLine == index ? Color.bridgeGold : Color.bridgeIvory)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .strokeBorder(chosenLine == index ? Color.bridgeInk : Color.bridgeInk.opacity(0.15), lineWidth: 2)
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    HStack {
+                        Text(L(key))
+                            .font(.bridgeSerifHeadline(18))
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer()
                     }
-                    .buttonStyle(PressableButtonStyle())
                     .foregroundStyle(Color.bridgeInk)
-                    .accessibilityIdentifier("uitest.ritual.line.\(index)")
+                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.bridgeIvory)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .strokeBorder(Color.bridgeInk.opacity(0.15), lineWidth: 1.3)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
             }
             .padding(.horizontal, 20)

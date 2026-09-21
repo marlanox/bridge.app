@@ -83,8 +83,9 @@ final class BridgeUITests: XCTestCase {
         attach(app, "A04-onboarding-apology")
         app.buttons["uitest.onboarding.next"].tap()
 
-        XCTAssertTrue(app.buttons["uitest.ritual.line.0"].waitForExistence(timeout: 10))
-        app.buttons["uitest.ritual.line.0"].tap()
+        // The two ritual lines are a plain list to read aloud, not a UI choice — only
+        // the continue button below them is an actual control.
+        XCTAssertTrue(app.buttons["uitest.ritual.continue"].waitForExistence(timeout: 10))
         attach(app, "A18-ritual")
         app.buttons["uitest.ritual.continue"].tap()
 

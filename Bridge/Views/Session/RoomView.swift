@@ -262,12 +262,9 @@ struct RoomView: View {
 
                         Text(L(config.whyItHelpsKey))
                             .font(.bridgeCaption.weight(.semibold).italic())
-                            .foregroundStyle(Color.bridgeInk)
+                            .foregroundStyle(Color.bridgeInk.opacity(0.85))
                             .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 5)
-                            .background(Color.bridgeGold, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
                         if let forbiddenKey = config.forbiddenKey {
                             VStack(alignment: .leading, spacing: 2) {
