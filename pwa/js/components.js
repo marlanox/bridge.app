@@ -5,7 +5,7 @@ export function primaryButton({ key, text, action, arg, enabled = true, compact 
   return `<button class="btn-primary pressable${compact ? " compact" : ""}${onDark ? " on-dark" : ""}"
       ${enabled ? "" : "disabled"} data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}
       ${testId ? `data-testid="${testId}"` : ""}>
-      <span class="f-button">${label}</span>
+      <span class="f-button">${label}</span><span class="btn-arrow" aria-hidden="true">→</span>
     </button>`;
 }
 
@@ -153,25 +153,22 @@ export function revealOverlay(store) {
 export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true, instructionKeyOverride = null, hideExtras = false } = {}) {
   if (!expanded) {
     return `<button class="expand-bar pressable" data-action="toggleHeader">
-        <span class="chevron">▾</span><span>${escHtml(L("room.expand"))}</span>
+        <span>${escHtml(L("room.expand"))}</span>
       </button>`;
   }
-  const modeIcon = cfg.modes.includes("discussion") ? "💬" : cfg.modes.includes("silentProtocol") ? "🤫" : "🎙";
   const modeCaptionKey = cfg.modes.includes("discussion") ? "room.mode_caption.discussion" : "room.mode_caption.sequential";
-  const modeCaptionIcon = cfg.modes.includes("discussion") ? "💬" : "🎙";
   return `<div class="room-header">
       <div class="top-row">
-        ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--purple)" : "var(--green)"}">${escHtml(activeRoleName)}</span>` : ""}
+        <span class="room-label">${escHtml(L(cfg.nameKey))}</span>
         <span class="spacer"></span>
-        <span class="mode-icon">${modeIcon}</span>
+        ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--purple)" : "var(--green)"}">${escHtml(activeRoleName)}</span>` : ""}
       </div>
-      <p class="room-title">${escHtml(L(cfg.nameKey))}</p>
-      <p class="room-question">${escHtml(L(cfg.questionKey))}</p>
-      <span class="mode-caption">${modeCaptionIcon} ${escHtml(L(modeCaptionKey))}</span>
+      <p class="room-title">${escHtml(L(cfg.questionKey))}</p>
+      <span class="mode-caption">${escHtml(L(modeCaptionKey))}</span>
       <div class="instruction-text">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</div>
       ${hideExtras ? "" : `<div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>`}
       ${!hideExtras && cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
-      <button class="read-it-btn pressable" data-action="toggleHeader">✓ ${escHtml(L("room.read_it"))}</button>
+      <button class="read-it-btn pressable" data-action="toggleHeader">${escHtml(L("room.read_it"))}</button>
     </div>`;
 }
 
