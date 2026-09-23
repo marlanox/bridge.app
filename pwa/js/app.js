@@ -124,10 +124,13 @@ function render() {
  * prevent. */
 // A plain inline SVG, not a Unicode "⚙" glyph — the character renders in a colorful
 // "emoji-style" on some devices depending on font fallback, which read as a broken/
-// "crazy 3D" icon instead of a plain flat settings glyph.
-const GEAR_SVG = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-  <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"/>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1c-.7 0-1.3.5-1.4 1.2l-.3 1.7c-.7.2-1.4.5-2 .9l-1.5-.9a1.5 1.5 0 0 0-1.9.3L3.5 5.6a1.5 1.5 0 0 0 .3 1.9l1.3 1c-.1.4-.1.8-.1 1.2v.6c0 .4 0 .8.1 1.2l-1.3 1a1.5 1.5 0 0 0-.3 1.9l1.4 1.4c.5.5 1.3.6 1.9.3l1.5-.9c.6.4 1.3.7 2 .9l.3 1.7c.1.7.7 1.2 1.4 1.2h2c.7 0 1.3-.5 1.4-1.2l.3-1.7c.7-.2 1.4-.5 2-.9l1.5.9c.6.3 1.4.2 1.9-.3l1.4-1.4c.5-.5.6-1.3.3-1.9l-1.3-1c.1-.4.1-.8.1-1.2v-.6c0-.4 0-.8-.1-1.2l1.3-1c.4-.5.5-1.3.2-1.9L20.6 5.6a1.5 1.5 0 0 0-1.9-.3l-1.5.9c-.6-.4-1.3-.7-2-.9L15 2.2A1.5 1.5 0 0 0 13.6 1h-2Z"/>
+// "crazy 3D" icon instead of a plain flat settings glyph. Stroke-only (no filled
+// teeth, no drop-shadow) and evenly spaced — a flat, perfectly symmetric cog rather
+// than the previous filled-path version, which could read as slightly lopsided at
+// this size.
+const GEAR_SVG = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <circle cx="12" cy="12" r="3"/>
+  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
 </svg>`;
 
 function globalNavBar() {

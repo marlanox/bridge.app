@@ -783,14 +783,13 @@ input[type=range]::-webkit-slider-thumb {
   background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
   font-size: 14px; font-weight: 600; color: var(--ink);
 }
-/* Deliberately no background/circle — a plain flat glyph with just enough shadow to
-   read on both a light screen and a photo, per explicit request. An inline SVG (not a
-   Unicode "⚙" glyph) so it always renders flat/monochrome regardless of the device's
-   emoji-font fallback, which used to render it in a colorful "3D" style on some phones. */
+/* Deliberately no background/circle/shadow — a plain flat white glyph, per explicit
+   request ("ровный белый без теней и деталей"). An inline SVG (not a Unicode "⚙"
+   glyph) so it always renders flat/monochrome regardless of the device's emoji-font
+   fallback, which used to render it in a colorful "3D" style on some phones. */
 .nav-gear {
   display: flex; padding: 8px;
-  color: var(--ink);
-  filter: drop-shadow(0 0 3px rgba(255,255,255,0.9));
+  color: #fff;
 }
 .read-together-row { display: flex; justify-content: center; }
 /* Plain tracked text, no pill/background — a soft white glow (not a hard shadow) keeps

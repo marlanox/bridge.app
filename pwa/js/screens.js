@@ -1,6 +1,6 @@
 import { L, LF, deck, room, allRoomKinds } from "./content.js";
 import {
-  primaryButton, secondaryButton, dots, titleStar, timerBanner, placedCards,
+  primaryButton, secondaryButton, titleStar, timerBanner, placedCards,
   deckDropdownList, deckSheet, revealOverlay, roomHeader, waitingBadge, escHtml, escAttr,
 } from "./components.js";
 
@@ -82,7 +82,6 @@ export function onboardingTextPage({ titleKey, bodyKey, buttonKey, pageIndex, pa
         <p class="editorial-body">${escHtml(L(bodyKey))}</p>
       </div>
       <div class="spacer"></div>
-      <div style="align-self:center;margin-bottom:22px;">${dots(pageCount, pageIndex, true)}</div>
       ${primaryButton({ key: buttonKey, action })}
     `,
     { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
@@ -503,7 +502,6 @@ export function bridgeFinaleScreen(store, ui) {
       .join("");
     deckBlock = `<div class="stack gap-12" style="padding:16px;max-height:380px;overflow-y:auto;">
         <div class="step-progress">
-          ${dots(3, index - 1, true)}
           <span class="f-label secondary">${escHtml(LF("bridge.step_progress", index, 3))}</span>
         </div>
         <div class="deck-prompt">${escHtml(L(BRIDGE_PROMPT_KEY[currentKind]))}</div>
