@@ -166,8 +166,8 @@ export function couplesAgreementScreen(store, ui) {
       .join("");
   }
   return `<div class="screen form-screen">
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("couples_agreement.title"))}</h1>
-      <p class="f-body secondary">${escHtml(L("couples_agreement.subtitle"))}</p>
+      <h1 class="f-serif-title" style="font-size:var(--text-section-title);">${escHtml(L("couples_agreement.title"))}</h1>
+      <p class="editorial-body" style="color:rgba(23,23,26,0.7);">${escHtml(L("couples_agreement.subtitle"))}</p>
       <div class="stack gap-8" style="margin-top:14px;max-height:38vh;overflow-y:auto;">${rows}</div>
       <div class="field-row" style="margin-top:14px;">
         <input id="newRuleInput" class="text-field" placeholder="${escAttr(L("couples_agreement.placeholder"))}" value="${escAttr(ui.newRuleDraft)}">
@@ -192,27 +192,34 @@ export function diceScreen(ui, store) {
     : stage === "done"
     ? L("dice.subtitle")
     : LF("dice.subtitle_for", store.name(stage));
-  return `<div class="screen" style="align-items:center;text-align:center;">
+  return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("dice.title"))}</h1>
-      <p class="secondary" style="${store.diceJustTied ? "color:#c0392b;font-weight:600;" : ""}">${escHtml(subtitle)}</p>
-      <div class="die-face" style="transform:rotate(${rotation}deg);margin:20px 0;font-size:64px;">${DIE_FACES[(ui.diceFace || 1) - 1]}</div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        ${stage !== "partnerA" && store.diceValueA != null ? `<p style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerA"), store.diceValueA))}</p>` : ""}
-        ${stage === "done" && store.diceValueB != null ? `<p style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerB"), store.diceValueB))}</p>` : ""}
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("dice.title"))}</h1>
+        <p class="editorial-body" style="${store.diceJustTied ? "color:#c0392b;font-weight:600;" : ""}">${escHtml(subtitle)}</p>
       </div>
-      ${stage === "done" && store.session.firstToSpeak ? `<p style="font-weight:700;color:${store.session.firstToSpeak === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", store.name(store.session.firstToSpeak)))}</p>` : ""}
+      <div class="die-face" style="align-self:center;transform:rotate(${rotation}deg);margin:20px 0;font-size:64px;">${DIE_FACES[(ui.diceFace || 1) - 1]}</div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+        ${stage !== "partnerA" && store.diceValueA != null ? `<p class="editorial-body" style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerA"), store.diceValueA))}</p>` : ""}
+        ${stage === "done" && store.diceValueB != null ? `<p class="editorial-body" style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerB"), store.diceValueB))}</p>` : ""}
+      </div>
+      ${stage === "done" && store.session.firstToSpeak ? `<p class="editorial-body" style="text-align:center;font-weight:700;color:${store.session.firstToSpeak === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", store.name(store.session.firstToSpeak)))}</p>` : ""}
       <div class="spacer"></div>
       ${stage === "done" ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
-    </div>`;
+    `,
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Intensity & State
+// Interpolates the same blue (#3f72c9, calm) -> red (#d6455e, intense) gradient the
+// slider's own track uses — this used to run gold -> red instead, so the thumb, the
+// number, and the level pill all read a different color than the track it sits on.
 function intensityColor(v) {
   const t = v / 10;
-  const r = Math.round((0.55 + 0.4 * t) * 255);
-  const g = Math.round((0.45 - 0.35 * t) * 255);
-  const b = Math.round((0.2 - 0.15 * t) * 255);
+  const r = Math.round(63 + (214 - 63) * t);
+  const g = Math.round(114 + (69 - 114) * t);
+  const b = Math.round(201 + (94 - 201) * t);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -243,8 +250,8 @@ export function intensityScreen(store, ui) {
         </div>
         <span class="intensity-level-pill" style="background:${vivid};">${escHtml(L(intensityLevelKey(intensity)))}</span>
         <div class="editorial-body" style="margin:8px 0 5px;font-size:var(--text-small);">${escHtml(L("intensity.state_label"))}</div>
-        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:rgba(23,23,26,0.05);color:var(--ink);border:1px solid rgba(23,23,26,0.15);border-radius:12px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-body);font-weight:400;font-size:15px;">
-          <span>${summary}</span><span>▾</span>
+        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:${selected.length ? "var(--gold-soft)" : "rgba(255,255,255,0.4)"};color:var(--ink);border:1px solid rgba(204,171,102,0.45);border-radius:999px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-body);font-weight:500;font-size:15px;">
+          <span>${summary}</span><span>${selected.length ? "▴" : "▾"}</span>
         </button>
         <input class="text-field on-photo-field" style="margin-top:6px;padding:9px 14px;background:rgba(255,255,255,0.5);font-size:15px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}">
       </div>`;
@@ -567,7 +574,23 @@ export function voiceSnapshotScreen(store, ui) {
 }
 
 // =========================================================== Closing
-export function closingScreen(ui) {
+// The intensity/state check-in a couple fills in before their first room is never
+// shown to either partner again after that screen — recap it here, at the one moment
+// the app already looks back over the whole session, so filling it in actually pays
+// off later instead of disappearing the moment they tap Continue.
+function closingRecapRow(store, role) {
+  const state = store.session[role === "partnerA" ? "stateA" : "stateB"];
+  const level = store.session[role === "partnerA" ? "intensityA" : "intensityB"];
+  const labels = state.states.map((s) => L(`state.${s}`));
+  if (state.customText.trim()) labels.push(state.customText.trim());
+  const summary = labels.length ? labels.join(", ") : L(intensityLevelKey(level));
+  return `<div class="field-row">
+      <span class="dot ${role === "partnerA" ? "a" : "b"}"></span>
+      <span class="on-photo" style="font-size:15px;"><b>${escHtml(store.name(role))}</b> — ${escHtml(summary)}</span>
+    </div>`;
+}
+
+export function closingScreen(store, ui) {
   const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
   return photoScreen("ending", `
       <div class="spacer"></div>
@@ -579,6 +602,11 @@ export function closingScreen(ui) {
           <div style="font-size:19px;">${escHtml(L("closing.line_1"))}</div>
           <div style="font-size:19px;font-weight:600;">${escHtml(L(ui.closingLineIsCourage ? "closing.line_2b" : "closing.line_2a"))}</div>
         </div>
+      </div>
+      <div class="stack gap-8" style="margin-top:18px;text-align:left;">
+        <div class="on-photo secondary" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;">${escHtml(L("closing.recap_title"))}</div>
+        ${closingRecapRow(store, "partnerA")}
+        ${closingRecapRow(store, "partnerB")}
       </div>
       <p class="on-photo secondary" style="margin-top:20px;">${escHtml(L("closing.save_prompt"))}</p>
       <div class="spacer"></div>
@@ -724,8 +752,8 @@ export function paywallScreen(ui) {
   return `<div class="screen" style="align-items:center;text-align:center;">
       <div class="spacer"></div>
       <div style="font-size:48px;">🔓</div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("paywall.title"))}</h1>
-      <p class="f-body secondary">${escHtml(L("paywall.body"))}</p>
+      <h1 class="f-serif-title" style="font-size:var(--text-section-title);">${escHtml(L("paywall.title"))}</h1>
+      <p class="editorial-body" style="color:rgba(23,23,26,0.7);">${escHtml(L("paywall.body"))}</p>
       <p class="secondary" style="font-size:13px;">${escHtml(L("paywall.packs_coming_soon"))}</p>
       <p style="font-size:12px;color:#a15b00;font-weight:700;margin-top:8px;">TEST MODE — no real payment on the PWA; see PARITY.md</p>
       <div class="spacer"></div>

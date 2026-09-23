@@ -131,7 +131,7 @@
 
 // MARK: - Intensity & State
 
-"intensity.title" = "Прямо сейчас";
+"intensity.title" = "Насколько интенсивны твои эмоции в данный момент";
 "intensity.slider_label" = "Насколько сильно это ощущается, от 0 до 10?";
 "intensity.state_label" = "Что ближе всего? Можно выбрать несколько.";
 "intensity.state_placeholder" = "Нажмите, чтобы выбрать одно или несколько чувств";
@@ -244,6 +244,7 @@
 
 // MARK: - Closing Screen — Today's Mark
 
+"closing.recap_title" = "С чего вы начинали";
 "closing.title" = "Отметка сегодняшнего дня";
 "closing.date_shown_line" = "Сегодняшняя дата";
 "closing.line_1" = "Сегодня вы это сделали.";

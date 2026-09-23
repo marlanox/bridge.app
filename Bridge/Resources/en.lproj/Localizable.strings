@@ -132,7 +132,7 @@
 
 // MARK: - Intensity & State
 
-"intensity.title" = "Right now";
+"intensity.title" = "How intense are your emotions right now";
 "intensity.slider_label" = "How intense does this feel, 0 to 10?";
 "intensity.state_label" = "Which feels closest? Pick as many as apply.";
 "intensity.state_placeholder" = "Tap to choose one or more feelings";
@@ -245,6 +245,7 @@
 
 // MARK: - Closing Screen — Today's Mark
 
+"closing.recap_title" = "Where you started";
 "closing.title" = "Today's Mark";
 "closing.date_shown_line" = "Today's date";
 "closing.line_1" = "You showed up for this today.";
