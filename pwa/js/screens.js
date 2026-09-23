@@ -202,18 +202,18 @@ export function intensityScreen(store, ui) {
       ? selected.map((s) => L(`state.${s}`)).sort().join(", ")
       : escHtml(L("intensity.state_placeholder"));
     return `<div class="intensity-card">
-        <div class="field-row"><span class="dot ${role === "partnerA" ? "a" : "b"}"></span><span class="f-serif-headline" style="font-size:22px;">${escHtml(store.name(role))}</span></div>
-        <div class="editorial-body" style="margin:10px 0 4px;">${escHtml(L("intensity.slider_label"))}</div>
+        <div class="field-row"><span class="dot ${role === "partnerA" ? "a" : "b"}"></span><span class="f-serif-headline" style="font-size:17px;">${escHtml(store.name(role))}</span></div>
+        <div class="editorial-body" style="margin:6px 0 2px;font-size:var(--text-small);">${escHtml(L("intensity.slider_label"))}</div>
         <div class="field-row">
           <input type="range" min="0" max="10" step="1" value="${intensity}" class="intensity-slider" style="--slider-color:${vivid}" data-action="intensitySlider" data-arg="${role}">
-          <span style="font-weight:600;width:28px;color:${vivid};font-family:var(--font-body);">${intensity}</span>
+          <span style="font-weight:600;width:22px;color:${vivid};font-family:var(--font-body);font-size:14px;">${intensity}</span>
         </div>
         <span class="intensity-level-pill" style="background:${vivid};">${escHtml(L(intensityLevelKey(intensity)))}</span>
-        <div class="editorial-body" style="margin:14px 0 8px;">${escHtml(L("intensity.state_label"))}</div>
-        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:rgba(23,23,26,0.05);color:var(--ink);border:1px solid rgba(23,23,26,0.15);border-radius:12px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-body);font-weight:400;font-size:var(--text-secondary);">
+        <div class="editorial-body" style="margin:8px 0 5px;font-size:var(--text-small);">${escHtml(L("intensity.state_label"))}</div>
+        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:rgba(23,23,26,0.05);color:var(--ink);border:1px solid rgba(23,23,26,0.15);border-radius:12px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-body);font-weight:400;font-size:15px;">
           <span>${summary}</span><span>▾</span>
         </button>
-        <input class="text-field on-photo-field" style="margin-top:10px;background:rgba(255,255,255,0.5);" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}">
+        <input class="text-field on-photo-field" style="margin-top:6px;padding:9px 14px;background:rgba(255,255,255,0.5);font-size:15px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}">
       </div>`;
   };
   const filled = (role) => ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0;
@@ -227,14 +227,14 @@ export function intensityScreen(store, ui) {
         <span>${escHtml(L("intensity.title"))}</span>
         <span class="glyph">✦</span>
       </div>
-      <div class="spacer" style="flex:0 0 8px;"></div>
-      <div class="stack gap-16">
+      <div class="spacer" style="flex:0 0 4px;"></div>
+      <div class="stack gap-8">
         <div style="transform:rotate(180deg)">${section("partnerB")}</div>
         ${section("partnerA")}
       </div>
-      <div style="margin-top:16px;">${primaryButton({ key: "intensity.continue", action: "submitIntensityState", enabled: ready })}</div>
+      <div style="margin-top:10px;">${primaryButton({ key: "intensity.continue", action: "submitIntensityState", enabled: ready, compact: false })}</div>
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:44px;padding-right:20px;" }) + picker;
+    { dim: false, lightWash: true, contentStyle: "padding:calc(var(--chrome-cap) - 10px) 20px calc(var(--safe-b) + 10px) 44px;" }) + picker;
 }
 
 function statePickerSheet(store, ui, role) {
