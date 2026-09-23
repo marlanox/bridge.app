@@ -10,7 +10,7 @@
 // MARK: - App / Welcome
 
 "app.name" = "Bridge";
-"app.tagline" = "We aren't enemies to each other. We're just two people who want to find their way back to one another.";
+"app.tagline" = "We're not enemies. We're two people trying to find our way to each other.";
 "welcome.begin" = "Begin";
 
 // MARK: - Onboarding — How Bridge Works

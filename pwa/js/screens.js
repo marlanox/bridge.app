@@ -1,6 +1,6 @@
 import { L, LF, deck, room, allRoomKinds } from "./content.js";
 import {
-  primaryButton, secondaryButton, dots, timerBanner, placedCards,
+  primaryButton, secondaryButton, dots, titleStar, timerBanner, placedCards,
   deckDropdownList, deckSheet, revealOverlay, roomHeader, waitingBadge, escHtml, escAttr,
 } from "./components.js";
 
@@ -18,6 +18,26 @@ function photoScreen(imageName, inner, { dim = true, gradient = false, lightWash
         ${lightWash ? '<div class="photo-light-wash"></div>' : ""}
       </div>
       <div class="photo-content" style="${contentStyle}">${inner}</div>
+    </div>`;
+}
+
+// =========================================================== Splash
+// The very first thing shown on a cold launch — a couple of seconds on a solid-color
+// mark before the language picker, matching a native app's launch screen. Deliberately
+// NOT a photoScreen: the background is a single flat fill (no photo, no seam), and the
+// mark itself is vector line-art so it stays crisp at any resolution.
+const SPLASH_MARK_SVG = `<svg viewBox="0 0 240 130" width="150" height="81" aria-hidden="true">
+    <path d="M14 104 H88 C88 104 96 46 120 46 C144 46 152 104 152 104 H226"
+      fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M97 104 C97 104 101 74 120 74 C139 74 143 104 143 104"
+      fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M97 104 V84 M143 104 V84" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M120 8 L123.4 17.6 L133 21 L123.4 24.4 L120 34 L116.6 24.4 L107 21 L116.6 17.6 Z" fill="var(--gold)"/>
+  </svg>`;
+export function splashScreen() {
+  return `<div class="screen splash-screen">
+      <div class="splash-mark">${SPLASH_MARK_SVG}</div>
+      <div class="splash-word">BRIDGE</div>
     </div>`;
 }
 
@@ -42,58 +62,72 @@ export function languageScreen() {
 export function welcomeScreen() {
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <div class="f-serif-title on-photo" style="font-size:42px;">${escHtml(L("app.name"))}</div>
-      <p class="on-photo secondary" style="max-width:320px;margin:8px auto 0;">${escHtml(L("app.tagline"))}</p>
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-hero);">${escHtml(L("app.name"))}</h1>
+        <p class="editorial-body" style="max-width:320px;margin:0 auto;">${escHtml(L("app.tagline"))}</p>
+      </div>
       <div class="spacer"></div>
-      ${primaryButton({ key: "welcome.begin", action: "beginFromWelcome", onDark: true })}`,
-    { gradient: true, contentStyle: "text-align:center;padding:24px;" });
+      ${primaryButton({ key: "welcome.begin", action: "beginFromWelcome" })}`,
+    { dim: false, lightWash: true, contentStyle: "text-align:center;padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Onboarding text pages
 export function onboardingTextPage({ titleKey, bodyKey, buttonKey, pageIndex, pageCount, action }) {
-  return `<div class="screen">
-      ${dots(pageCount, pageIndex)}
+  return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L(titleKey))}</h1>
-      <p class="f-body secondary">${escHtml(L(bodyKey))}</p>
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L(titleKey))}</h1>
+        <p class="editorial-body">${escHtml(L(bodyKey))}</p>
+      </div>
       <div class="spacer"></div>
+      <div style="align-self:center;margin-bottom:22px;">${dots(pageCount, pageIndex, true)}</div>
       ${primaryButton({ key: buttonKey, action })}
-    </div>`;
+    `,
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Disclaimer
 export function disclaimerScreen() {
-  return `<div class="screen">
+  return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("disclaimer.title"))}</h1>
-      <p class="f-body secondary">${escHtml(L("disclaimer.body"))}</p>
-      <button data-action="openCrisis" style="background:none;border:none;text-align:left;font-weight:600;font-size:14px;padding:0;margin-top:16px;">${escHtml(L("disclaimer.need_help_now"))}</button>
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("disclaimer.title"))}</h1>
+        <p class="editorial-body">${escHtml(L("disclaimer.body"))}</p>
+        <button data-action="openCrisis" class="pressable" style="background:none;border:none;margin-top:18px;font-family:var(--font-body);font-weight:600;font-size:var(--text-secondary);color:var(--ink);text-decoration:underline;text-underline-offset:4px;">${escHtml(L("disclaimer.need_help_now"))}</button>
+      </div>
       <div class="spacer"></div>
       ${primaryButton({ key: "disclaimer.continue", action: "advance" })}
-    </div>`;
+    `,
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== House Map
-export function houseMapScreen(ctx, textExpanded) {
-  const card = `<div style="padding:18px;background:rgba(255,255,255,0.55);backdrop-filter:blur(16px);border-radius:18px;margin:0 24px;">
-      <div class="f-serif-title on-photo" style="font-size:24px;color:#111;">${escHtml(L("housemap.title"))}</div>
-      <p class="f-body" style="color:rgba(0,0,0,0.85);margin-top:10px;">${escHtml(L("housemap.body"))}</p>
-      <button class="pressable" data-action="collapseHouseMapText" style="width:100%;text-align:center;background:rgba(183,148,76,0.2);border:none;border-radius:12px;padding:10px;margin-top:10px;color:var(--gold);font-weight:700;font-size:15px;">✓ ${escHtml(L("room.read_it"))}</button>
-    </div>`;
-  const pill = `<button class="pressable" data-action="expandHouseMapText" style="align-self:center;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:blur(14px);border:none;border-radius:20px;padding:10px 16px;font-weight:700;"><span class="chevron">▾</span>${escHtml(L("room.expand"))}</button>`;
+// Plain text directly on the house photo, like every other read-together screen —
+// no card, no expand/collapse toggle. The old "house-map" background (a photo with a
+// room list baked directly into its own pixels) visually collided with this text, so
+// this now uses the same "house-exterior" photo every other onboarding screen does.
+export function houseMapScreen(ctx) {
   const btnKey = ctx === "onboarding" ? "housemap.button_first" : "housemap.button_reopen";
-  return photoScreen("house-map", `
+  return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      ${textExpanded ? card : pill}
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("housemap.title"))}</h1>
+        <p class="editorial-body">${escHtml(L("housemap.body"))}</p>
+      </div>
       <div class="spacer"></div>
-      <div style="padding:0 24px;">${primaryButton({ key: btnKey, action: "houseMapContinue", onDark: true, testId: "uitest.housemap.continue" })}</div>`,
-    { dim: false, contentStyle: "justify-content:flex-end;padding-bottom:calc(var(--safe-b) + 28px);" });
+      ${primaryButton({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}`,
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Names
 export function namesScreen(store) {
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
+      ${titleStar()}
       <h1 class="f-serif-title editorial-title">${escHtml(L("names.title"))}</h1>
       <div class="stack gap-14" style="margin-top:8px;">
         <div class="field-row"><span class="dot a"></span>
@@ -264,16 +298,20 @@ function statePickerSheet(store, ui, role) {
 
 // =========================================================== Calm Down
 export function calmDownScreen(ui) {
-  return `<div class="screen" style="align-items:center;text-align:center;">
+  return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <h1 class="f-serif-title" style="font-size:26px;">${escHtml(L("calm_down.title"))}</h1>
-      <p class="f-body secondary">${escHtml(L("calm_down.body"))}</p>
-      <div class="breathing-circle${ui.breathing ? " breathing" : ""}" style="${ui.breathing ? "" : "transform:scale(0.6);"}"></div>
+      <div style="text-align:center;">
+        ${titleStar()}
+        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("calm_down.title"))}</h1>
+        <p class="editorial-body">${escHtml(L("calm_down.body"))}</p>
+      </div>
+      <div class="breathing-circle${ui.breathing ? " breathing" : ""}" style="${ui.breathing ? "" : "transform:scale(0.6);"} margin:28px auto 0;"></div>
       <div class="spacer"></div>
       ${ui.breathing
         ? primaryButton({ key: "onboarding.got_it", action: "advance" })
-        : primaryButton({ key: "calm_down.start_breathing", action: "startBreathing" }) + secondaryButton({ key: "calm_down.skip", action: "advance" })}
-    </div>`;
+        : primaryButton({ key: "calm_down.start_breathing", action: "startBreathing" }) + secondaryButton({ key: "calm_down.skip", action: "advance", onPhoto: true })}
+    `,
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;text-align:center;" });
 }
 
 // =========================================================== Oath
