@@ -164,9 +164,9 @@ export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = nu
         ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--purple)" : "var(--green)"}">${escHtml(activeRoleName)}</span>` : ""}
       </div>
       <p class="room-title">${escHtml(L(cfg.questionKey))}</p>
-      <span class="mode-caption">${escHtml(L(modeCaptionKey))}</span>
       <div class="instruction-text">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</div>
-      ${hideExtras ? "" : `<div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>`}
+      ${hideExtras ? "" : `<span class="why-it-helps-label">${escHtml(L("room.why_it_helps_label"))}</span><div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>`}
+      <span class="mode-caption">${escHtml(L(modeCaptionKey))}</span>
       ${!hideExtras && cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
       <button class="read-it-btn pressable" data-action="toggleHeader">${escHtml(L("room.read_it"))}</button>
     </div>`;
