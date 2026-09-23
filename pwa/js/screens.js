@@ -325,6 +325,7 @@ export function oathScreen() {
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
       <div style="text-align:center;">
+        ${titleStar()}
         <h1 class="f-serif-title editorial-title" style="font-size:var(--text-title);">${escHtml(L("oath.title"))}</h1>
         <p class="editorial-body" style="margin:0 0 20px;">${escHtml(L("oath.instruction"))}</p>
         <div style="width:40px;height:1px;background:rgba(23,23,26,0.3);margin:0 auto 20px;"></div>
@@ -348,6 +349,7 @@ export function ritualScreen(ui) {
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
       <div style="text-align:center;">
+        ${titleStar()}
         <h1 class="f-serif-title editorial-title" style="font-size:var(--text-title);">${escHtml(L("ritual.title"))}</h1>
         <p class="editorial-body" style="margin:0 0 20px;">${escHtml(L("ritual.instruction"))}</p>
         <div style="width:40px;height:1px;background:rgba(23,23,26,0.3);margin:0 auto 20px;"></div>
