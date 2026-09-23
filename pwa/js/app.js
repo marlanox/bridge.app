@@ -1,7 +1,7 @@
 import { loadContent, L, LF, getLanguage, setLanguage, deck, room, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
-import { playTap, playWelcomeChime } from "./sounds.js";
+import { playTap, playWelcomeChime, startWelcomeMusic, stopWelcomeMusic } from "./sounds.js";
 import { escHtml } from "./components.js";
 
 const appEl = document.getElementById("app");
@@ -79,6 +79,7 @@ function render() {
     resetUiForStep(store.flow.step, store.flow.kind);
     lastFlowKey = key;
     lastActivePartner = store.activePartner;
+    syncWelcomeMusic(store.flow);
   } else if (
     (store.flow.step === "room" || store.flow.step === "basement") &&
     store.activePartner !== lastActivePartner
@@ -133,6 +134,18 @@ function globalNavBar() {
 // one listens" room physically rotates 180° for a private turn; every other screen,
 // room or not, needs the reminder that it's meant to be read together. Basement draws
 // its own copy inline (it needs to sit inside its own scroll layout, not float above it).
+// Every screen before the couple actually enters the first room (Hall) — the supplied
+// piano track plays through these and fades out the instant a room begins.
+const BEFORE_FIRST_ROOM_STEPS = new Set([
+  "welcome", "howItWorksWhatIsBridge", "howItWorksApology", "disclaimer",
+  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown",
+]);
+
+function syncWelcomeMusic(flow) {
+  if (BEFORE_FIRST_ROOM_STEPS.has(flow.step)) startWelcomeMusic();
+  else stopWelcomeMusic();
+}
+
 // Mirrors AppFlowStep.needsReadTogetherCaption on iOS. intensityState's partner-B half
 // is already rotated 180deg in place — that screen is two private halves, not one
 // shared screen, so the caption would be simply wrong there, not just redundant.
@@ -190,6 +203,7 @@ const actions = {
     // autoplay attempt on the bare language screen render — browsers block audio before
     // any interaction at all.
     playWelcomeChime();
+    startWelcomeMusic();
     setLanguage(el.dataset.arg);
     render();
   },

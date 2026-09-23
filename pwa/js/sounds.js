@@ -55,3 +55,44 @@ export function playWelcomeChime() {
     playTone(freq, audio.currentTime + i * (noteDuration + gap), noteDuration, 0.1);
   });
 }
+
+// =========================================================== Welcome music
+// A real licensed/supplied piano track (not synthesized — see the removed
+// AmbientMusic pad, which read as an unpleasant "phone dial tone"), looped through
+// every screen before the couple enters the first room. start()/stop() are both
+// idempotent and fade rather than cut, so call sites can call them freely on every
+// flow change without tracking whether it's already playing.
+const WELCOME_MUSIC_SRC = "assets/audio/welcome-piano.mp3";
+const WELCOME_MUSIC_VOLUME = 0.32;
+let welcomeMusic = null;
+let welcomeMusicFadeTimer = null;
+
+export function startWelcomeMusic() {
+  if (welcomeMusic) return;
+  clearInterval(welcomeMusicFadeTimer);
+  const el = new Audio(WELCOME_MUSIC_SRC);
+  el.loop = true;
+  el.volume = 0;
+  el.play().catch(() => {}); // blocked without a user gesture; the next real tap retries via the same call site
+  welcomeMusic = el;
+  let v = 0;
+  welcomeMusicFadeTimer = setInterval(() => {
+    v = Math.min(WELCOME_MUSIC_VOLUME, v + 0.03);
+    el.volume = v;
+    if (v >= WELCOME_MUSIC_VOLUME) clearInterval(welcomeMusicFadeTimer);
+  }, 60);
+}
+
+export function stopWelcomeMusic() {
+  if (!welcomeMusic) return;
+  const el = welcomeMusic;
+  welcomeMusic = null;
+  clearInterval(welcomeMusicFadeTimer);
+  welcomeMusicFadeTimer = setInterval(() => {
+    el.volume = Math.max(0, el.volume - 0.04);
+    if (el.volume <= 0) {
+      clearInterval(welcomeMusicFadeTimer);
+      el.pause();
+    }
+  }, 60);
+}

@@ -138,6 +138,11 @@
 "intensity.state_placeholder" = "Tap to choose one or more feelings";
 "intensity.custom_placeholder" = "Or write it your own way";
 "intensity.overwhelmed_flag" = "Overwhelmed";
+"intensity.level.0" = "Calm";
+"intensity.level.1" = "A little emotional";
+"intensity.level.2" = "Very emotional";
+"intensity.level.3" = "Barely tolerable";
+"intensity.level.4" = "Overload";
 "intensity.continue" = "Continue";
 "state.hurt" = "Hurt";
 "state.angry" = "Angry";

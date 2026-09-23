@@ -137,6 +137,11 @@
 "intensity.state_placeholder" = "Нажмите, чтобы выбрать одно или несколько чувств";
 "intensity.custom_placeholder" = "Или напишите своими словами";
 "intensity.overwhelmed_flag" = "Перегруз";
+"intensity.level.0" = "Спокойно";
+"intensity.level.1" = "Немного эмоционально";
+"intensity.level.2" = "Сильно эмоционально";
+"intensity.level.3" = "Еле терпимо";
+"intensity.level.4" = "Перегруз";
 "intensity.continue" = "Продолжить";
 "state.hurt" = "Обидно";
 "state.angry" = "Злюсь";
