@@ -548,7 +548,27 @@ async function boot() {
   store.subscribe(render);
   render();
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").then((reg) => {
+      // sw.js calls skipWaiting()+clients.claim() on every deploy, so a new worker
+      // takes control of this page within moments of install — but the HTML/JS
+      // *already loaded* in this tab or in an installed "Add to Home Screen" app
+      // doesn't magically re-fetch itself just because the worker behind it changed.
+      // Without this, a person has to know to manually clear Safari's site data to
+      // ever see a new deploy — reload once, automatically, the moment a new worker
+      // actually takes over, so an update is visible without anyone doing anything.
+      let reloadedForUpdate = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (reloadedForUpdate) return;
+        reloadedForUpdate = true;
+        window.location.reload();
+      });
+      // An installed home-screen app on iOS can sit frozen for days without ever
+      // re-checking for a new version on its own — force that check every time the
+      // app is actually brought back to the foreground, not just on a cold launch.
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reg.update().catch(() => {});
+      });
+    }).catch(() => {});
   }
 }
 
