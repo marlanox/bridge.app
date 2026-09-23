@@ -34,6 +34,9 @@ const ui = {
 
 let lastFlowKey = null;
 let lastActivePartner = null;
+let splashDone = false;
+let splashTimer = null;
+const SPLASH_DURATION_MS = 1800;
 
 function flowKey(flow) {
   return flow ? `${flow.step}:${flow.kind ?? ""}` : "";
@@ -69,6 +72,19 @@ function resetUiForStep(step, kind) {
 // =============================================================== render
 
 function render() {
+  if (!splashDone) {
+    appEl.innerHTML = S.splashScreen();
+    // Best-effort: iOS Safari blocks autoplay before any user gesture, so this often
+    // silently fails here — the guaranteed start is still the language-picker tap in
+    // setLanguage() below, but firing it here too means it just works whenever the
+    // platform does allow it (e.g. relaunching an already-installed PWA).
+    startWelcomeMusic();
+    if (!splashTimer) {
+      splashTimer = setTimeout(() => { splashDone = true; render(); }, SPLASH_DURATION_MS);
+    }
+    return;
+  }
+
   if (getLanguage() === null) {
     appEl.innerHTML = S.languageScreen();
     return;

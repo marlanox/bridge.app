@@ -157,6 +157,20 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .screen.no-scroll { overflow: hidden; }
 .screen.flush { padding: 0; }
 
+/* Launch splash — one flat fill, no seam, so it reads as a single-color screen. */
+.splash-screen {
+  align-items: center; justify-content: center; text-align: center;
+  background: var(--ivory); gap: 16px;
+}
+.splash-mark { animation: splash-in 0.7s ease both; }
+.splash-word {
+  font-family: var(--font-serif); font-size: 26px; font-weight: 500;
+  letter-spacing: 0.34em; color: var(--ink);
+  margin-left: 0.34em; /* optical centering against the trailing tracked space */
+  animation: splash-in 0.7s ease 0.15s both;
+}
+@keyframes splash-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 
 .spacer { flex: 1 1 auto; }
@@ -272,7 +286,11 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .seat-content {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
-  padding-top: var(--safe-t); padding-bottom: var(--safe-b);
+  /* --chrome-t, not just --safe-t: this edge sits right under the floating global
+     Back/Settings bar even in the upright (non-flipped) case, so it needs the same
+     nav-bar clearance the flipped case already gives its own top edge below — without
+     it, the room header's label/title render underneath the nav row instead of below it. */
+  padding-top: var(--chrome-t); padding-bottom: var(--safe-b);
   padding-left: var(--safe-l); padding-right: var(--safe-r);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -291,7 +309,9 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 }
 
 .fixed-badge {
-  position: absolute; top: calc(var(--safe-t) + 14px); right: calc(var(--safe-r) + 14px);
+  /* Below the floating global nav row (which sits at --safe-t + 6px), not level with
+     it — sharing that corner with the settings gear collided the two visually. */
+  position: absolute; top: calc(var(--chrome-t) + 4px); right: calc(var(--safe-r) + 14px);
   transition: transform 0.5s cubic-bezier(.4,0,.2,1);
   z-index: 5;
   /* Purely informational — never intercept a tap meant for a real control that ends up
@@ -773,14 +793,28 @@ input[type=range]::-webkit-slider-thumb {
   filter: drop-shadow(0 0 3px rgba(255,255,255,0.9));
 }
 .read-together-row { display: flex; justify-content: center; }
-/* Plain tracked text, no pill/background — reads fine on both a plain screen and a
-   photo since the text-shadow does the contrast work a background chip used to. */
+/* Plain tracked text, no pill/background — a soft white glow (not a hard shadow) keeps
+   it legible over a bright sky without looking washed out or boxed in. */
 .read-together-badge {
   font-family: var(--font-body);
-  font-size: 13px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(23,23,26,0.6);
-  text-shadow: 0 0 6px rgba(255,255,255,0.9), 0 1px 2px rgba(255,255,255,0.7);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(23,23,26,0.82);
+  text-shadow: 0 0 10px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,0.95);
 }
+
+/* A short gold line — star — gold line divider, the recurring flourish under the
+   "read together" caption on every full-bleed editorial screen. */
+.ornament-divider {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 14px 0 18px;
+}
+.ornament-divider .line { width: 36px; height: 1px; background: rgba(204,171,102,0.65); }
+.ornament-divider .star { color: var(--gold); font-size: 15px; line-height: 1; }
+
+/* A lone star-with-tail directly above a title — see titleStar() in components.js. */
+.title-star { display: flex; flex-direction: column; align-items: center; margin: 0 0 12px; }
+.title-star .glyph { color: var(--gold); font-size: 20px; line-height: 1; }
+.title-star .tail { width: 1px; height: 20px; background: rgba(204,171,102,0.55); margin-top: 3px; }
 
 /* ============================================================
    Misc

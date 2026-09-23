@@ -24,6 +24,15 @@ export function escHtml(s) {
   return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** A single gold star with a thin tail beneath it, sitting directly above a title —
+ * the recurring mark at the top of every full-bleed editorial screen (Welcome, Oath,
+ * Ritual, Names, House Map, the plain onboarding-text pages). Distinct from
+ * ornamentDivider(), which is a line-star-line rule used mid-screen to separate an
+ * instruction from a quote below it, not a mark over a title. */
+export function titleStar() {
+  return `<div class="title-star"><span class="glyph">✦</span><span class="tail"></span></div>`;
+}
+
 export function dots(count, activeIndex, gold = false) {
   let html = `<div class="dots${gold ? " gold" : ""}">`;
   for (let i = 0; i < count; i++) {
