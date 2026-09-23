@@ -198,7 +198,7 @@ function renderFlowScreen() {
     case "basement": return S.basementScreen(store, ui);
     case "bridgeFinale": return S.bridgeFinaleScreen(store, ui);
     case "voiceSnapshot": return S.voiceSnapshotScreen(store, ui);
-    case "closing": return S.closingScreen(ui);
+    case "closing": return S.closingScreen(store, ui);
     default: return `<div class="screen">Unknown step: ${f.step}</div>`;
   }
 }
@@ -499,11 +499,14 @@ appEl.addEventListener("input", (e) => {
   if (el.id === "writeOwnInput") ui.customCardDraft = el.value;
 });
 
+// Mirrors intensityColor() in screens.js exactly — kept in sync by hand since this
+// copy runs on every live slider drag (see handleIntensitySliderInput below) while
+// the other renders the initial value; they must always agree on the same gradient.
 function intensityColor(v) {
   const t = v / 10;
-  const r = Math.round((0.55 + 0.4 * t) * 255);
-  const g = Math.round((0.45 - 0.35 * t) * 255);
-  const b = Math.round((0.2 - 0.15 * t) * 255);
+  const r = Math.round(63 + (214 - 63) * t);
+  const g = Math.round(114 + (69 - 114) * t);
+  const b = Math.round(201 + (94 - 201) * t);
   return `rgb(${r},${g},${b})`;
 }
 
