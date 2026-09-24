@@ -6,7 +6,7 @@
 // device even after being pushed — every load kept re-serving the same stale cache
 // entry.) Bump CACHE_NAME on every deploy anyway, so an update is never silently missed
 // even for a client that's briefly offline.
-const CACHE_NAME = "bridge-pwa-v18";
+const CACHE_NAME = "bridge-pwa-v19";
 
 const CORE_FILES = [
   "./",

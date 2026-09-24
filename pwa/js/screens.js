@@ -322,7 +322,7 @@ export function calmDownScreen(ui) {
 
 // =========================================================== Oath
 export function oathScreen() {
-  return photoScreen("house-exterior", `
+  return photoScreen("oath", `
       <div class="spacer"></div>
       <div style="text-align:center;">
         ${titleStar()}
