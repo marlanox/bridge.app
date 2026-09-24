@@ -7,6 +7,26 @@ import { escHtml } from "./components.js";
 const appEl = document.getElementById("app");
 let store;
 
+/** `#app`'s own `position:fixed;inset:0` is supposed to be enough on its own, but iOS
+ * Safari (both a plain tab, where the address bar hides/shows as you scroll, and an
+ * installed standalone app) has repeatedly been seen leaving `inset: 0` computed
+ * against a stale/short viewport in exactly this app — the fixed box just doesn't
+ * always get re-measured against the *current* visual viewport. Measuring
+ * `window.innerHeight` directly in JS and writing it as an explicit pixel height is
+ * the one thing that can't be wrong regardless of which viewport unit iOS decides to
+ * shortchange that day. Re-measured on every resize/orientation change, and once more
+ * a beat after each one since iOS sometimes reports the old height for a moment
+ * during the address-bar hide/show transition. */
+function syncViewportHeight() {
+  appEl.style.height = `${window.innerHeight}px`;
+}
+syncViewportHeight();
+window.addEventListener("resize", syncViewportHeight);
+window.addEventListener("orientationchange", () => {
+  syncViewportHeight();
+  setTimeout(syncViewportHeight, 300);
+});
+
 /** Ephemeral, per-screen UI state that mirrors each SwiftUI view's local `@State` —
  * never persisted, reset whenever the flow moves to a different step. See
  * `resetUiForStep`. */
