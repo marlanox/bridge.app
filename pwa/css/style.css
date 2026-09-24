@@ -236,16 +236,6 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
   position: absolute; inset: 0; overflow: hidden; z-index: 0;
   background-size: cover; background-position: center;
 }
-/* A soft, out-of-focus backdrop rather than a sharp photo competing with the text on
-   top of it — matches the reference mockups, whose photos read as atmosphere behind
-   the words, not as a crisp image the reader has to look past. Scaled up to push the
-   blur filter's own soft edge outside the visible frame. Only used on the plain
-   "read together" text screens (Welcome, Oath, Ritual, ...) — a room's own photo
-   stays sharp, since there it's the thing being looked at, not a backdrop for a title. */
-.photo-screen.soft-focus {
-  filter: blur(14px) saturate(1.05) brightness(1.04);
-  transform: scale(1.15);
-}
 .photo-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
 .photo-gradient-bottom {
   position: absolute; inset: 0;
@@ -256,7 +246,7 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
    underneath without hiding the photo the way a black scrim would. */
 .photo-light-wash {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0.55) 100%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.12) 40%, rgba(255,255,255,0.4) 100%);
 }
 /* Sits above the photo layer (explicit stacking, not just DOM order) and fills the
    same box, so foreground content is never accidentally covered by its own background. */
@@ -551,7 +541,10 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 .editorial-title {
   font-size: var(--text-title); font-weight: 400; line-height: 1.05; letter-spacing: -0.025em;
   color: var(--ink); margin: 0 auto 10px; max-width: 320px;
-  text-shadow: 0 1px 24px rgba(255,255,255,0.8), 0 1px 3px rgba(255,255,255,0.6);
+  /* A light, tight shadow, not the heavy wide-blur glow this used to carry — on a
+     photo whose text zone is already a plain, near-white wall, a big soft halo just
+     puffed up the letterforms and read as bold/fuzzy rather than crisp. */
+  text-shadow: 0 1px 6px rgba(255,255,255,0.6);
 }
 .editorial-caption {
   font-family: var(--font-body); font-size: 13px; font-weight: 500;
@@ -641,6 +634,17 @@ input[type=range]::-webkit-slider-thumb {
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-radius: 22px;
   padding: 14px 16px 16px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+}
+/* A real frosted-glass backing behind text on a photo — for the one or two screens
+   (like House Map) that call for a distinct panel rather than plain text directly on
+   the photo. Same recipe as .intensity-card, under its own name since it's used for
+   plain text blocks, not the intensity check-in specifically. */
+.frosted-panel {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 24px 22px;
   box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }
 /* A visible blue-to-red gradient across the whole track — the thumb's position on it
@@ -813,7 +817,7 @@ input[type=range]::-webkit-slider-thumb {
   font-family: var(--font-body);
   font-size: 13px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
   color: rgba(23,23,26,0.82);
-  text-shadow: 0 0 10px rgba(255,255,255,0.95), 0 0 3px rgba(255,255,255,0.95);
+  text-shadow: 0 0 4px rgba(255,255,255,0.7);
 }
 
 /* A short gold line — star — gold line divider, the recurring flourish under the
