@@ -10,9 +10,9 @@ const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "conf
  * sits at z-index 0, `inner` renders into a full-size flex column at z-index 1 above
  * it — a real stacking order, not just DOM order, so nothing about the background
  * layer can ever intercept a tap meant for the content above it. */
-function photoScreen(imageName, inner, { dim = true, gradient = false, lightWash = false, softFocus = false, contentStyle = "" } = {}) {
+function photoScreen(imageName, inner, { dim = true, gradient = false, lightWash = false, contentStyle = "" } = {}) {
   return `<div class="screen flush no-scroll">
-      <div class="photo-screen${softFocus ? " soft-focus" : ""}" style="background-image:url('assets/rooms/${imageName}.jpg')">
+      <div class="photo-screen" style="background-image:url('assets/rooms/${imageName}.jpg')">
         ${dim ? '<div class="photo-dim"></div>' : ""}
         ${gradient ? '<div class="photo-gradient-bottom"></div>' : ""}
         ${lightWash ? '<div class="photo-light-wash"></div>' : ""}
@@ -69,7 +69,7 @@ export function welcomeScreen() {
       </div>
       <div class="spacer"></div>
       ${primaryButton({ key: "welcome.begin", action: "beginFromWelcome" })}`,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "text-align:center;padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "text-align:center;padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Onboarding text pages
@@ -84,7 +84,7 @@ export function onboardingTextPage({ titleKey, bodyKey, buttonKey, pageIndex, pa
       <div class="spacer"></div>
       ${primaryButton({ key: buttonKey, action })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Disclaimer
@@ -100,7 +100,7 @@ export function disclaimerScreen() {
       <div class="spacer"></div>
       ${primaryButton({ key: "disclaimer.continue", action: "advance" })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== House Map
@@ -112,14 +112,14 @@ export function houseMapScreen(ctx) {
   const btnKey = ctx === "onboarding" ? "housemap.button_first" : "housemap.button_reopen";
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      <div style="text-align:center;">
+      <div class="frosted-panel" style="text-align:center;">
         ${titleStar()}
         <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("housemap.title"))}</h1>
         <p class="editorial-body">${escHtml(L("housemap.body"))}</p>
       </div>
       <div class="spacer"></div>
       ${primaryButton({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}`,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, contentStyle: "padding-left:24px;padding-right:24px;" });
 }
 
 // =========================================================== Names
@@ -139,7 +139,7 @@ export function namesScreen(store) {
       <div class="spacer" style="flex:0 0 28px;"></div>
       ${primaryButton({ key: "names.continue", action: "submitNames" })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Couple's Agreement
@@ -208,7 +208,7 @@ export function diceScreen(ui, store) {
       <div class="spacer"></div>
       ${stage === "done" ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Intensity & State
@@ -317,7 +317,7 @@ export function calmDownScreen(ui) {
         ? primaryButton({ key: "onboarding.got_it", action: "advance" })
         : primaryButton({ key: "calm_down.start_breathing", action: "startBreathing" }) + secondaryButton({ key: "calm_down.skip", action: "advance", onPhoto: true })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;text-align:center;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;text-align:center;" });
 }
 
 // =========================================================== Oath
@@ -334,7 +334,7 @@ export function oathScreen() {
       <div class="spacer"></div>
       ${primaryButton({ key: "oath.ready", action: "completeOathAndAdvance" })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Ritual (Hold Hands)
@@ -358,7 +358,7 @@ export function ritualScreen(ui) {
       <div class="spacer"></div>
       ${primaryButton({ key: "ritual.continue", action: "completeRitualAndAdvance", enabled: true })}
     `,
-    { dim: false, lightWash: true, softFocus: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
 // =========================================================== Generic room
