@@ -126,7 +126,7 @@ export function houseMapScreen(ctx) {
 export function namesScreen(store) {
   return photoScreen("house-exterior", `
       <div class="spacer"></div>
-      ${titleStar()}
+      <div class="ornament-divider"><span class="line"></span><span class="star">✦</span><span class="line"></span></div>
       <h1 class="f-serif-title editorial-title">${escHtml(L("names.title"))}</h1>
       <div class="stack gap-14" style="margin-top:8px;">
         <div class="field-row"><span class="dot a"></span>

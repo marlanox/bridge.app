@@ -76,8 +76,8 @@
 // MARK: - Names Entry
 
 "names.title" = "Как вас зовут?";
-"names.partner_a_placeholder" = "Имя первого партнёра";
-"names.partner_b_placeholder" = "Имя второго партнёра";
+"names.partner_a_placeholder" = "Ваше имя";
+"names.partner_b_placeholder" = "Имя партнёра";
 "names.continue" = "Продолжить";
 
 // MARK: - Couple's Agreement Setup

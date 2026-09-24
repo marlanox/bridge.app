@@ -77,8 +77,8 @@
 // MARK: - Names Entry
 
 "names.title" = "What are your names?";
-"names.partner_a_placeholder" = "First partner's name";
-"names.partner_b_placeholder" = "Second partner's name";
+"names.partner_a_placeholder" = "Your name";
+"names.partner_b_placeholder" = "Partner's name";
 "names.continue" = "Continue";
 
 // MARK: - Couple's Agreement Setup
