@@ -2,6 +2,7 @@ import { L, LF, deck, room, allRoomKinds } from "./content.js";
 import {
   primaryButton, secondaryButton, titleStar, timerBanner, placedCards,
   deckDropdownList, deckSheet, revealOverlay, roomHeader, waitingBadge, escHtml, escAttr,
+  bScreen, bTopbar, bStar, bCta, bSideCaption,
 } from "./components.js";
 
 const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
@@ -60,16 +61,21 @@ export function languageScreen() {
 
 // =========================================================== Welcome
 export function welcomeScreen() {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-hero);">${escHtml(L("app.name"))}</h1>
-        <p class="editorial-body" style="max-width:320px;margin:0 auto;">${escHtml(L("app.tagline"))}</p>
+  return bScreen({
+    bg: "bg-sunset", photo: "bg-villa", photoHeight: 400,
+    contentStyle: "padding:54px 24px 34px;",
+    inner: `
+      ${bTopbar({ back: false })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:28px;">
+        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+        ${bStar()}
+        <h1 class="b-display">${escHtml(L("app.name"))}</h1>
+        <p class="b-lead" style="text-align:center;max-width:310px;">${escHtml(L("app.tagline"))}</p>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "welcome.begin", action: "beginFromWelcome" })}`,
-    { dim: false, lightWash: true, contentStyle: "text-align:center;padding-left:28px;padding-right:28px;" });
+      <div style="flex-grow:1;"></div>
+      ${bCta({ key: "welcome.begin", action: "beginFromWelcome" })}
+    `,
+  });
 }
 
 // =========================================================== Onboarding text pages
@@ -110,36 +116,52 @@ export function disclaimerScreen() {
 // this now uses the same "house-exterior" photo every other onboarding screen does.
 export function houseMapScreen(ctx) {
   const btnKey = ctx === "onboarding" ? "housemap.button_first" : "housemap.button_reopen";
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div class="frosted-panel" style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("housemap.title"))}</h1>
-        <p class="editorial-body">${escHtml(L("housemap.body"))}</p>
+  const paragraphs = L("housemap.body")
+    .split("\n\n")
+    .map((p) => `<p class="b-body" style="font-size:14.5px;">${escHtml(p)}</p>`)
+    .join("");
+  return bScreen({
+    bg: "bg-interior", photo: "bg-rules", photoHeight: 150,
+    contentStyle: "padding:54px 24px 34px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      <div class="b-glass" style="margin-top:20px;padding:26px 22px 22px;display:flex;flex-direction:column;gap:16px;background:rgba(250,246,240,0.58);">
+        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+        <h1 class="b-h2" style="font-size:36px;margin-top:6px;">${escHtml(L("housemap.title"))}</h1>
+        ${paragraphs}
+        <div style="margin-top:4px;">
+          ${bCta({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}
+        </div>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}`,
-    { dim: false, contentStyle: "padding-left:24px;padding-right:24px;" });
+    `,
+  });
 }
 
 // =========================================================== Names
 export function namesScreen(store) {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div class="ornament-divider"><span class="line"></span><span class="star">✦</span><span class="line"></span></div>
-      <h1 class="f-serif-title editorial-title">${escHtml(L("names.title"))}</h1>
-      <div class="stack gap-14" style="margin-top:8px;">
-        <div class="field-row"><span class="dot a"></span>
-          <input id="nameA" class="text-field on-photo-field" placeholder="${escAttr(L("names.partner_a_placeholder"))}" value="${escAttr(store.session.partnerA.name)}">
+  return bScreen({
+    bg: "bg-interior", photo: "bg-lounge", photoHeight: 330,
+    contentStyle: "padding:54px 24px 34px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;gap:22px;margin-top:28px;">
+        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+        ${bStar({ horizontal: true })}
+        <h1 class="b-h1" style="font-size:58px;margin-top:8px;">${escHtml(L("names.title"))}</h1>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:10px;">
+          <label class="b-field"><span class="b-field__dot" style="background:var(--ink);"></span>
+            <input id="nameA" class="b-input" type="text" placeholder="${escAttr(L("names.partner_a_placeholder"))}" value="${escAttr(store.session.partnerA.name)}">
+          </label>
+          <label class="b-field"><span class="b-field__dot" style="background:var(--gold);"></span>
+            <input id="nameB" class="b-input" type="text" placeholder="${escAttr(L("names.partner_b_placeholder"))}" value="${escAttr(store.session.partnerB.name)}">
+          </label>
         </div>
-        <div class="field-row"><span class="dot b"></span>
-          <input id="nameB" class="text-field on-photo-field" placeholder="${escAttr(L("names.partner_b_placeholder"))}" value="${escAttr(store.session.partnerB.name)}">
+        <div style="margin-top:16px;">
+          ${bCta({ key: "names.continue", action: "submitNames" })}
         </div>
       </div>
-      <div class="spacer" style="flex:0 0 28px;"></div>
-      ${primaryButton({ key: "names.continue", action: "submitNames" })}
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== Couple's Agreement
@@ -234,26 +256,30 @@ function intensityLevelKey(v) {
 }
 
 export function intensityScreen(store, ui) {
-  const section = (role) => {
+  const section = (role, flipped) => {
     const intensity = ui.intensity[role];
     const selected = ui.stateSelected[role];
     const vivid = intensityColor(intensity);
     const summary = selected.length
       ? selected.map((s) => L(`state.${s}`)).sort().join(", ")
       : escHtml(L("intensity.state_placeholder"));
-    return `<div class="intensity-card">
-        <div class="field-row"><span class="dot ${role === "partnerA" ? "a" : "b"}"></span><span class="f-serif-headline" style="font-size:17px;">${escHtml(store.name(role))}</span></div>
-        <div class="editorial-body" style="margin:6px 0 2px;font-size:var(--text-small);">${escHtml(L("intensity.slider_label"))}</div>
-        <div class="field-row">
-          <input type="range" min="0" max="10" step="1" value="${intensity}" class="intensity-slider" style="--slider-color:${vivid}" data-action="intensitySlider" data-arg="${role}">
-          <span style="font-weight:600;width:22px;color:${vivid};font-family:var(--font-body);font-size:14px;">${intensity}</span>
+    const initial = (store.name(role).trim()[0] || "?").toUpperCase();
+    const roleColor = role === "partnerA" ? "var(--ink)" : "var(--gold)";
+    return `<div class="b-glass${flipped ? " b-flip" : ""}" style="padding:18px 20px;display:flex;flex-direction:column;gap:12px;border-radius:28px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="b-avatar">${escHtml(initial)}</span>
+          <span style="width:8px;height:8px;border-radius:50%;background:${roleColor};flex:0 0 auto;"></span>
+          <span style="font:400 19px/1.2 var(--serif);color:var(--ink);">${escHtml(L("intensity.question_self"))}</span>
         </div>
-        <span class="intensity-level-pill" style="background:${vivid};">${escHtml(L(intensityLevelKey(intensity)))}</span>
-        <div class="editorial-body" style="margin:8px 0 5px;font-size:var(--text-small);">${escHtml(L("intensity.state_label"))}</div>
-        <button class="pressable" data-action="openStatePicker" data-arg="${role}" style="width:100%;text-align:left;background:${selected.length ? "var(--gold-soft)" : "rgba(255,255,255,0.4)"};color:var(--ink);border:1px solid rgba(204,171,102,0.45);border-radius:999px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-body);font-weight:500;font-size:15px;">
-          <span>${summary}</span><span>${selected.length ? "▴" : "▾"}</span>
-        </button>
-        <input class="text-field on-photo-field" style="margin-top:6px;padding:9px 14px;background:rgba(255,255,255,0.5);font-size:15px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font:400 26px/1 var(--serif);color:var(--cool);">0</span>
+          <input type="range" min="0" max="10" step="1" value="${intensity}" class="b-range" style="--slider-color:${vivid}" data-action="intensitySlider" data-arg="${role}" aria-label="${escAttr(L("intensity.slider_label"))}">
+          <span style="font:400 26px/1 var(--serif);color:var(--hot);">10</span>
+        </div>
+        <div><span class="b-chip" style="background:${vivid};">${escHtml(L(intensityLevelKey(intensity)))}</span></div>
+        <div style="font:400 16px/1.2 var(--serif);color:var(--ink);">${escHtml(L("intensity.state_label"))}</div>
+        <button class="b-select pressable" type="button" data-action="openStatePicker" data-arg="${role}">${summary}</button>
+        <textarea class="b-textarea" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}">${escHtml(ui.stateCustom[role])}</textarea>
       </div>`;
   };
   const filled = (role) => ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0;
@@ -261,20 +287,17 @@ export function intensityScreen(store, ui) {
   const picker = ui.openStatePickerRole
     ? statePickerSheet(store, ui, ui.openStatePickerRole)
     : "";
-  return photoScreen("house-exterior", `
-      <div class="intensity-side-caption">
-        <span class="glyph">✦</span>
-        <span>${escHtml(L("intensity.title"))}</span>
-        <span class="glyph">✦</span>
-      </div>
-      <div class="spacer" style="flex:0 0 4px;"></div>
-      <div class="stack gap-8">
-        <div style="transform:rotate(180deg)">${section("partnerB")}</div>
-        ${section("partnerA")}
-      </div>
-      <div style="margin-top:10px;">${primaryButton({ key: "intensity.continue", action: "submitIntensityState", enabled: ready, compact: false })}</div>
+  return bScreen({
+    bg: "bg-peach",
+    extra: bSideCaption(L("intensity.title")),
+    contentStyle: "padding:54px 16px 20px 52px;display:flex;flex-direction:column;gap:14px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      ${section("partnerB", true)}
+      ${section("partnerA", false)}
+      ${bCta({ key: "intensity.continue", action: "submitIntensityState", enabled: ready })}
     `,
-    { dim: false, lightWash: true, contentStyle: "padding:calc(var(--chrome-cap) - 10px) 20px calc(var(--safe-b) + 10px) 44px;" }) + picker;
+  }) + picker;
 }
 
 function statePickerSheet(store, ui, role) {
@@ -322,19 +345,24 @@ export function calmDownScreen(ui) {
 
 // =========================================================== Oath
 export function oathScreen() {
-  return photoScreen("oath", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-title);">${escHtml(L("oath.title"))}</h1>
-        <p class="editorial-body" style="margin:0 0 20px;">${escHtml(L("oath.instruction"))}</p>
-        <div style="width:40px;height:1px;background:rgba(23,23,26,0.3);margin:0 auto 20px;"></div>
-        <p class="editorial-quote">${escHtml(L("oath.text"))}</p>
+  return bScreen({
+    bg: "bg-interior", photo: "bg-oath", photoHeight: 230,
+    contentStyle: "padding:54px 24px 34px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:24px;">
+        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+        ${bStar()}
+        <h1 class="b-display" style="font-size:66px;">${escHtml(L("oath.title"))}</h1>
+        <p class="b-sub" style="text-align:center;">${escHtml(L("oath.instruction"))}</p>
+        <div class="b-rule" style="margin-top:6px;margin-bottom:6px;"></div>
+        <p class="b-vow">${escHtml(L("oath.text"))}</p>
+        <div style="width:100%;margin-top:10px;">
+          ${bCta({ key: "oath.ready", action: "completeOathAndAdvance" })}
+        </div>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "oath.ready", action: "completeOathAndAdvance" })}
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== Ritual (Hold Hands)
@@ -343,22 +371,27 @@ export function oathScreen() {
 // only control on this screen is the continue button below.
 export function ritualScreen(ui) {
   const lines = ["ritual.line_1", "ritual.line_2"];
-  const options = lines
-    .map((key) => `<p class="editorial-quote" style="margin:0 0 14px;">${escHtml(L(key))}</p>`)
-    .join("");
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-title);">${escHtml(L("ritual.title"))}</h1>
-        <p class="editorial-body" style="margin:0 0 20px;">${escHtml(L("ritual.instruction"))}</p>
-        <div style="width:40px;height:1px;background:rgba(23,23,26,0.3);margin:0 auto 20px;"></div>
-        ${options}
+  const vows = lines.map((key) => `<p class="b-vow">${escHtml(L(key))}</p>`).join(`<div class="b-rule"></div>`);
+  return bScreen({
+    bg: "bg-sunset", photo: "bg-villa", photoHeight: 440,
+    contentStyle: "padding:54px 24px 34px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:22px;">
+        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+        ${bStar()}
+        <h1 class="b-h1" style="text-align:center;font-size:50px;">${escHtml(L("ritual.title"))}</h1>
+        <p class="b-sub" style="text-align:center;max-width:300px;">${escHtml(L("ritual.instruction"))}</p>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "ritual.continue", action: "completeRitualAndAdvance", enabled: true })}
+      <div style="flex-grow:1;"></div>
+      <div class="b-glass" style="padding:26px 22px;display:flex;flex-direction:column;gap:16px;align-items:center;">
+        ${vows}
+      </div>
+      <div style="margin-top:18px;">
+        ${bCta({ key: "ritual.continue", action: "completeRitualAndAdvance" })}
+      </div>
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== Generic room

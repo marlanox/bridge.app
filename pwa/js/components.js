@@ -24,6 +24,83 @@ export function escHtml(s) {
   return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// ================================================================
+// bridge.css component builders — see DESIGN.md. Every one of these renders
+// ONLY bridge.css classes; no ad hoc color/font/shadow ever belongs here
+// (rule I). Kept alongside the old title-star/photoScreen helpers below
+// while the redesign is rolled out screen by screen.
+const B_BACK_ARROW_SVG = `<svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7H2M8 1L2 7l6 6"></path></svg>`;
+const B_FORWARD_ARROW_SVG = `<svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h19M14 1l6 6-6 6"></path></svg>`;
+
+function bStarGlyph(size, fill) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.6 7.2 16.8 11.4 24 12 16.8 12.6 12.6 16.8 12 24 11.4 16.8 7.2 12.6 0 12 7.2 11.4 11.4 7.2 12 0Z" fill="${fill}"></path></svg>`;
+}
+
+/** The screen shell: .b-bg (blurred full-screen atmosphere) + an optional
+ * .b-photo (sharp photo, bottom only, masked to fade upward per rule II) +
+ * .b-content. Renders as the WHOLE top-level element for a redesigned
+ * screen — no outer .screen wrapper needed, .b-screen sizes itself to its
+ * parent (#app), which is already correctly sized (see syncViewportHeight
+ * in app.js). */
+export function bScreen({ bg, photo, photoHeight, inner, contentStyle = "", extra = "" }) {
+  return `<div class="b-screen">
+      <div class="b-bg ${bg}"></div>
+      ${photo ? `<div class="b-photo ${photo}" style="height:${photoHeight}px;"></div>` : ""}
+      ${extra}
+      <div class="b-content" style="${contentStyle}">${inner}</div>
+    </div>`;
+}
+
+/** The Emotions screen's vertical side caption — two small gold stars flanking a
+ * hairline, with the rotated label running the full height between them
+ * (rule VIII / the Emotions board in the design mockup). */
+export function bSideCaption(text) {
+  return `<div class="b-side-caption">
+      ${bStarGlyph(16, "#B8914F")}
+      <div class="b-side-caption__line"></div>
+      <div class="b-side-caption__text">${escHtml(text)}</div>
+      <div class="b-side-caption__line"></div>
+      ${bStarGlyph(16, "#B8914F")}
+    </div>`;
+}
+
+/** Rule IV: the same top-bar shell on every screen. `right` is "star" (the
+ * .b-iconbtn — wired to the real Settings sheet, just drawn as the gold
+ * star instead of a gear), an object {pill, step} for a room's "Ты
+ * слушаешь" + "2 / 10" readout, or null for no right-side control. */
+export function bTopbar({ back = true, right = "star" } = {}) {
+  const backHtml = back
+    ? `<button class="b-back pressable" type="button" data-action="goBack"><span class="b-back__circle">${B_BACK_ARROW_SVG}</span>${escHtml(L("nav.back"))}</button>`
+    : `<span></span>`;
+  let rightHtml = "";
+  if (right === "star") {
+    rightHtml = `<button class="b-iconbtn pressable" type="button" data-action="openSettings" aria-label="${escAttr(L("settings.title"))}">${bStarGlyph(18, "#1B1A18")}</button>`;
+  } else if (right && typeof right === "object") {
+    rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <span class="b-pill">${escHtml(right.pill)}</span>
+        ${right.step ? `<span class="b-step">${escHtml(right.step)}</span>` : ""}
+      </div>`;
+  }
+  return `<div class="b-topbar">${backHtml}${rightHtml}</div>`;
+}
+
+/** The signature gold star + hairline — rule V/VII. Vertical (above a
+ * centered title) by default, or horizontal (line—star—line) for a
+ * left-aligned eyebrow. */
+export function bStar({ horizontal = false } = {}) {
+  if (horizontal) {
+    return `<div class="b-star b-star--h"><div class="b-star__line"></div>${bStarGlyph(22, "#B8914F")}<div class="b-star__line"></div></div>`;
+  }
+  return `<div class="b-star">${bStarGlyph(28, "#B8914F")}<div class="b-star__line"></div></div>`;
+}
+
+/** Rule III: the one button style, .b-cta (or .b-cta--serif for a room
+ * card) — a single line, uppercase, arrow on the right. */
+export function bCta({ key, text, action, arg, enabled = true, serif = false, testId }) {
+  const label = text ?? L(key);
+  return `<button class="b-cta${serif ? " b-cta--serif" : ""} pressable" ${enabled ? "" : "disabled"} data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""} ${testId ? `data-testid="${testId}"` : ""}>${escHtml(label)}<span class="b-cta__arrow" aria-hidden="true">${B_FORWARD_ARROW_SVG}</span></button>`;
+}
+
 /** A single gold star with a thin tail beneath it, sitting directly above a title —
  * the recurring mark at the top of every full-bleed editorial screen (Welcome, Oath,
  * Ritual, Names, House Map, the plain onboarding-text pages). Distinct from
@@ -161,23 +238,20 @@ export function revealOverlay(store) {
  * the bottom (not an icon) is what collapses it. */
 export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true, instructionKeyOverride = null, hideExtras = false } = {}) {
   if (!expanded) {
-    return `<button class="expand-bar pressable" data-action="toggleHeader">
-        <span>${escHtml(L("room.expand"))}</span>
-      </button>`;
+    return `<button class="b-pill pressable" type="button" data-action="toggleHeader">${escHtml(L("room.expand"))}</button>`;
   }
   const modeCaptionKey = cfg.modes.includes("discussion") ? "room.mode_caption.discussion" : "room.mode_caption.sequential";
-  return `<div class="room-header">
-      <div class="top-row">
-        <span class="room-label">${escHtml(L(cfg.nameKey))}</span>
-        <span class="spacer"></span>
-        ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--purple)" : "var(--green)"}">${escHtml(activeRoleName)}</span>` : ""}
+  return `<div class="b-glass" style="margin-top:10px;padding:26px 22px 20px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="b-eyebrow b-eyebrow--left">${escHtml(L(cfg.nameKey))}</div>
+        ${activeRoleName ? `<span class="badge-name" style="color:${activeRoleDotClass === "a" ? "var(--ink)" : "var(--gold)"}">${escHtml(activeRoleName)}</span>` : ""}
       </div>
-      <p class="room-title">${escHtml(L(cfg.questionKey))}</p>
-      <div class="instruction-text">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</div>
-      ${hideExtras ? "" : `<span class="why-it-helps-label">${escHtml(L("room.why_it_helps_label"))}</span><div class="why-it-helps">${escHtml(L(cfg.whyItHelpsKey))}</div>`}
-      <span class="mode-caption">${escHtml(L(modeCaptionKey))}</span>
-      ${!hideExtras && cfg.forbiddenKey ? `<div class="forbidden-box"><strong>${escHtml(L("room.forbidden_prefix"))}</strong>${escHtml(L(cfg.forbiddenKey))}</div>` : ""}
-      <button class="read-it-btn pressable" data-action="toggleHeader">${escHtml(L("room.read_it"))}</button>
+      <h1 class="b-h1" style="font-size:44px;">${escHtml(L(cfg.questionKey))}</h1>
+      <div class="b-tile"><p class="b-body" style="font-size:16px;">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</p></div>
+      ${hideExtras ? "" : `<div style="padding:0 6px;"><p class="b-body" style="font-weight:500;color:var(--ink);font-size:16px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body" style="font-size:15px;">${escHtml(L(cfg.whyItHelpsKey))}</p></div>`}
+      <div class="b-label">${escHtml(L(modeCaptionKey))}</div>
+      ${!hideExtras && cfg.forbiddenKey ? `<div class="b-tile"><p class="b-body" style="color:var(--ink);font-size:16px;">${escHtml(L("room.forbidden_prefix"))}</p><p class="b-body" style="font-size:15px;">${escHtml(L(cfg.forbiddenKey))}</p></div>` : ""}
+      ${bCta({ key: "room.read_it", action: "toggleHeader", serif: true })}
     </div>`;
 }
 
