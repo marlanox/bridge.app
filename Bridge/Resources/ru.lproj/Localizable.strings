@@ -127,12 +127,14 @@
 "ritual.line_1" = "Прости меня, что тебе было больно.";
 "ritual.line_2" = "Мне жаль, что это причинило тебе боль.";
 "ritual.instruction" = "Прочитайте вслух вместе — то, что вам ближе, или обе фразы.";
-"ritual.continue" = "Мы взялись за руки и произнесли";
+"ritual.continue" = "Мы произнесли";
 
 // MARK: - Intensity & State
 
 "intensity.title" = "Насколько интенсивны твои эмоции в данный момент";
 "intensity.slider_label" = "Насколько сильно это ощущается, от 0 до 10?";
+"intensity.question_self" = "Как ты можешь описать свои эмоции прямо сейчас?";
+"intensity.question_partner" = "Как сейчас чувствует себя твой партнёр?";
 "intensity.state_label" = "Что ближе всего? Можно выбрать несколько.";
 "intensity.state_placeholder" = "Нажмите, чтобы выбрать одно или несколько чувств";
 "intensity.custom_placeholder" = "Или напишите своими словами";

@@ -128,12 +128,14 @@
 "ritual.line_1" = "Forgive me that you were hurt.";
 "ritual.line_2" = "I'm sorry that hurt you.";
 "ritual.instruction" = "Read both out loud together — say whichever one fits, or both.";
-"ritual.continue" = "We held hands and said it";
+"ritual.continue" = "We said it";
 
 // MARK: - Intensity & State
 
 "intensity.title" = "How intense are your emotions right now";
 "intensity.slider_label" = "How intense does this feel, 0 to 10?";
+"intensity.question_self" = "How would you describe your emotions right now?";
+"intensity.question_partner" = "How is your partner feeling right now?";
 "intensity.state_label" = "Which feels closest? Pick as many as apply.";
 "intensity.state_placeholder" = "Tap to choose one or more feelings";
 "intensity.custom_placeholder" = "Or write it your own way";

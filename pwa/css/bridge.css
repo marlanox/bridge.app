@@ -1,0 +1,211 @@
+/* ============================================================
+   bridge.css — the ONE stylesheet for the visual redesign.
+   Classes and variables here are the only thing screens may use for color,
+   font, or shadow (see DESIGN.md, rule I). Ported 1:1 from the approved
+   design mockup's own stylesheet — do not add ad hoc colors/fonts/shadows
+   in screens.js; extend this file instead.
+   ============================================================ */
+
+:root {
+  --ink: #1B1A18;          /* titles, main button */
+  --ink-2: #3A352F;        /* body text */
+  --muted: #6B6259;        /* captions/labels */
+  --ivory: #F7F2EA;        /* light background */
+  --sand: #DCCBB6;         /* lists, chips */
+  --gold: #B8914F;         /* star, lines */
+  --gold-line: rgba(201, 168, 106, 0.55);
+  --glass: rgba(250, 246, 240, 0.66);
+  --glass-strong: rgba(250, 246, 240, 0.80);
+  --glass-tile: rgba(236, 230, 222, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.72);
+  --hot: #C63A22;          /* strong emotion */
+  --cool: #4F7FDB;         /* mild emotion */
+  --shadow: 0 24px 60px rgba(40, 28, 16, 0.14);
+
+  --serif: "Noto Serif Display", "Times New Roman", serif;
+  --sans: "Golos Text", system-ui, sans-serif;
+
+  --gutter: 24px;
+  --safe-top: max(env(safe-area-inset-top, 0px), 14px);
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
+}
+
+/* ============================================================
+   Screen shell
+   ============================================================ */
+.b-screen {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  background: var(--ivory); color: var(--ink); font-family: var(--sans);
+  display: flex; flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+.b-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
+/* Sharp photo only at the bottom (rule II) — masked to fade into the blurred
+   .b-bg atmosphere above it, so text never has to sit on a sharp/busy photo. */
+.b-photo {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 0;
+  background-size: cover; background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 28%);
+}
+.b-content {
+  position: relative; z-index: 1; flex: 1;
+  display: flex; flex-direction: column;
+  padding: calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   Top bar (rule IV — identical shell on every screen)
+   ============================================================ */
+.b-topbar { display: flex; align-items: center; justify-content: space-between; height: 48px; flex: none; }
+.b-back {
+  display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 20px 0 0;
+  border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  font: 400 18px/1 var(--serif); color: var(--ink); text-decoration: none; cursor: pointer;
+}
+.b-back__circle {
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.7); flex: none;
+}
+.b-iconbtn {
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); cursor: pointer; flex: none;
+}
+.b-pill {
+  display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 20px; border-radius: 999px;
+  background: var(--glass-strong); font: 400 16px/1 var(--serif); color: var(--ink);
+}
+.b-pill::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+.b-step { font: 400 14px/1 var(--serif); color: var(--muted); text-align: right; }
+
+/* ============================================================
+   Typography
+   ============================================================ */
+.b-eyebrow { font: 500 11px/1.4 var(--sans); letter-spacing: .32em; text-transform: uppercase; color: #2A2724; text-align: center; }
+.b-eyebrow--left { text-align: left; display: flex; align-items: center; gap: 14px; }
+.b-eyebrow--left::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5; }
+.b-display { font: 400 72px/1 var(--serif); letter-spacing: -.025em; margin: 0; color: var(--ink); text-align: center; }
+.b-h1 { font: 400 50px/1.02 var(--serif); letter-spacing: -.02em; margin: 0; color: var(--ink); }
+.b-h2 { font: 400 40px/1.06 var(--serif); letter-spacing: -.015em; margin: 0; color: var(--ink); }
+.b-lead { font: 400 16px/1.5 var(--sans); color: var(--ink-2); margin: 0; }
+.b-sub { font: 400 16px/1.45 var(--sans); color: var(--muted); margin: 0; }
+.b-body { font: 400 15.5px/1.55 var(--sans); color: var(--ink-2); margin: 0; }
+.b-vow { font: italic 400 23px/1.45 var(--serif); color: var(--ink); margin: 0; text-align: center; }
+.b-label { font: 500 10px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+
+/* ============================================================
+   The gold star (rule V / VII — the signature mark of every
+   "read together" screen; never an emoji or stock icon)
+   ============================================================ */
+.b-star { display: flex; flex-direction: column; align-items: center; gap: 0; color: var(--gold); }
+.b-star__line { width: 1px; height: 44px; background: linear-gradient(var(--gold), transparent); }
+.b-star--h { flex-direction: row; gap: 14px; }
+.b-star--h .b-star__line { width: 120px; height: 1px; background: var(--gold-line); }
+.b-rule { width: 56px; height: 1px; background: var(--gold-line); margin: 0 auto; }
+
+/* ============================================================
+   Buttons (rule III)
+   ============================================================ */
+.b-cta {
+  position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 60px;
+  border-radius: 999px; background: var(--ink); color: #fff; border: 1px solid var(--gold-line);
+  box-shadow: 0 14px 30px rgba(20, 16, 12, 0.22); text-decoration: none; cursor: pointer;
+  font: 500 13px/1 var(--sans); letter-spacing: .28em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 64px;
+  box-sizing: border-box;
+}
+.b-cta:disabled, .b-cta[aria-disabled="true"] { opacity: .4; cursor: default; }
+.b-cta__arrow { position: absolute; right: 26px; top: 50%; transform: translateY(-50%); display: inline-flex; }
+
+.b-cta--serif {
+  font: 400 22px/1 var(--serif); letter-spacing: 0; text-transform: none; border: 0;
+}
+.b-cta--serif .b-cta__arrow {
+  right: 8px; width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* ============================================================
+   Glass / cards
+   ============================================================ */
+.b-glass {
+  background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px;
+  backdrop-filter: blur(24px) saturate(1.15); -webkit-backdrop-filter: blur(24px) saturate(1.15);
+  box-shadow: var(--shadow);
+}
+.b-tile { background: var(--glass-tile); border-radius: 20px; padding: 16px 20px; }
+.b-quote { border-left: 1.5px solid rgba(27, 26, 24, 0.55); padding: 2px 0 2px 22px; }
+.b-quote p { font: italic 400 21px/1.35 var(--serif); margin: 8px 0 0; color: var(--ink); }
+
+/* ============================================================
+   Form fields
+   ============================================================ */
+.b-field { display: flex; align-items: center; gap: 18px; }
+.b-field__dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.b-input {
+  flex: 1; height: 58px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(250, 246, 240, 0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  padding: 0 20px; font: 400 17px/1 var(--sans); color: var(--ink); outline: none; box-sizing: border-box; width: 100%;
+}
+.b-input::placeholder { color: #8A8279; }
+.b-select {
+  width: 100%; height: 52px; border-radius: 12px; border: 0; background: var(--sand);
+  padding: 0 44px 0 18px; font: 400 22px/1 var(--serif); color: var(--ink); appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 23px, calc(100% - 17px) 23px; background-size: 5px 5px; background-repeat: no-repeat;
+}
+.b-textarea {
+  width: 100%; height: 50px; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(160, 150, 140, 0.45);
+  background: rgba(255, 255, 255, 0.45); padding: 14px 16px; font: 400 14px/1.3 var(--sans); color: var(--ink); resize: none;
+}
+
+/* ============================================================
+   Intensity slider + chip + avatar (rule VIII)
+   ============================================================ */
+.b-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 9px; border-radius: 999px; outline: none;
+  background: linear-gradient(90deg, var(--cool) 0%, #D8C3B2 50%, var(--hot) 100%);
+}
+.b-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--hot); border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(198, 58, 34, 0.18), 0 6px 16px rgba(198, 58, 34, 0.45); cursor: pointer;
+}
+.b-range::-moz-range-thumb {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--hot); border: 3px solid #fff;
+  box-shadow: 0 0 0 6px rgba(198, 58, 34, 0.18), 0 6px 16px rgba(198, 58, 34, 0.45);
+}
+.b-chip { display: inline-flex; align-items: center; height: 40px; padding: 0 22px; border-radius: 999px; background: var(--hot); color: #fff; font: 400 20px/1 var(--serif); }
+.b-avatar { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex: none; background: rgba(214, 205, 196, 0.8); font: 400 26px/1 var(--serif); color: var(--ink); }
+/* The phone lies flat on a table between two people — one partner's card is
+   rotated 180deg so it reads right-side-up from across the table. */
+.b-flip { transform: rotate(180deg); }
+
+/* Vertical rotated side caption used on the Emotions screen, flanked by two
+   small gold stars with a hairline running the full height between them. */
+.b-side-caption {
+  position: absolute; left: 0; top: 150px; bottom: 60px; width: 44px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 1; color: var(--gold);
+}
+.b-side-caption__line { flex-grow: 1; width: 1px; background: rgba(184, 145, 79, 0.5); }
+.b-side-caption__text {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font: 500 10.5px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); white-space: nowrap;
+}
+
+/* ============================================================
+   Background photos (rule II — the only sharp imagery ever used
+   is at the bottom of the screen, via .b-photo)
+   ============================================================ */
+.bg-villa { background-image: url("../assets/bridge/bg-villa.jpg"); }
+.bg-sunset { background-image: url("../assets/bridge/bg-sunset.jpg"); }
+.bg-interior { background-image: url("../assets/bridge/bg-interior.jpg"); }
+.bg-library { background-image: url("../assets/bridge/bg-library.jpg"); }
+.bg-libph { background-image: url("../assets/bridge/bg-libph.jpg"); }
+.bg-peach { background-image: url("../assets/bridge/bg-peach.jpg"); }
+.bg-lounge { background-image: url("../assets/bridge/bg-lounge.jpg"); }
+.bg-oath { background-image: url("../assets/bridge/bg-oath.jpg"); }
+.bg-rules { background-image: url("../assets/bridge/bg-rules.jpg"); }

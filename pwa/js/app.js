@@ -134,7 +134,8 @@ function render() {
   } else {
     html = renderFlowScreen();
   }
-  const nav = (ui.paywallOpen || ui.settingsOpen) ? "" : globalNavBar();
+  const usesBridgeTopbar = store.flow && BRIDGE_REDESIGNED_STEPS.has(store.flow.step);
+  const nav = (ui.paywallOpen || ui.settingsOpen || usesBridgeTopbar) ? "" : globalNavBar();
   appEl.innerHTML = html + nav + S.globalOverlays(store, ui);
 }
 
@@ -184,6 +185,13 @@ function syncWelcomeMusic(flow) {
   if (BEFORE_FIRST_ROOM_STEPS.has(flow.step)) startWelcomeMusic();
   else stopWelcomeMusic();
 }
+
+// A screen rewritten onto bridge.css (see DESIGN.md) renders its own .b-topbar
+// inline — the old floating global-nav pill would just double it up.
+// roomHeader() (used inside roomScreen) is restyled onto bridge.css classes,
+// but the room screen's own shell (seat-rotator, deck sheet, timer) is not
+// yet converted, so "room" stays on the OLD global nav for now.
+const BRIDGE_REDESIGNED_STEPS = new Set(["ritual", "welcome", "names", "oath", "houseMap", "intensityState"]);
 
 // Mirrors AppFlowStep.needsReadTogetherCaption on iOS. intensityState's partner-B half
 // is already rotated 180deg in place — that screen is two private halves, not one
