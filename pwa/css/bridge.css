@@ -1,211 +1,177 @@
-/* ============================================================
-   bridge.css — the ONE stylesheet for the visual redesign.
-   Classes and variables here are the only thing screens may use for color,
-   font, or shadow (see DESIGN.md, rule I). Ported 1:1 from the approved
-   design mockup's own stylesheet — do not add ad hoc colors/fonts/shadows
-   in screens.js; extend this file instead.
-   ============================================================ */
+/* =========================================================
+   BRIDGE / МОСТ — дизайн-система v2 (тёмная + светлые экраны)
+   Единственный источник стилей. Свои цвета/шрифты/тени в коде — нельзя.
+   Шрифты (в <head>):
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+   ========================================================= */
 
-:root {
-  --ink: #1B1A18;          /* titles, main button */
-  --ink-2: #3A352F;        /* body text */
-  --muted: #6B6259;        /* captions/labels */
-  --ivory: #F7F2EA;        /* light background */
-  --sand: #DCCBB6;         /* lists, chips */
-  --gold: #B8914F;         /* star, lines */
-  --gold-line: rgba(201, 168, 106, 0.55);
-  --glass: rgba(250, 246, 240, 0.66);
-  --glass-strong: rgba(250, 246, 240, 0.80);
-  --glass-tile: rgba(236, 230, 222, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.72);
-  --hot: #C63A22;          /* strong emotion */
-  --cool: #4F7FDB;         /* mild emotion */
-  --shadow: 0 24px 60px rgba(40, 28, 16, 0.14);
+:root{
+  --bg:#0B0907;                     /* фон тёмных экранов */
+  --cream:#EFE6DA;                  /* главная кнопка, акцентный текст */
+  --text:#F4EDE4;                   /* заголовки */
+  --text-2:#D8CFC5;                 /* основной текст */
+  --muted:#A89D91;                  /* подписи */
+  --beige:#CDBBA6;                  /* курсивный акцент в заголовках */
+  --gold:#C9A45C;                   /* звезда, линии, «пройдено» */
+  --gold-line:rgba(201,164,92,.55);
+  --line:rgba(239,230,218,.16);
+  --card:rgba(14,11,9,.62);         /* тёмное стекло поверх интерьера */
+  --card-border:rgba(239,230,218,.14);
+  /* шкала эмоций */
+  --calm:#7FA3C8;                   /* 0–3 Спокойно */
+  --mid:#D9A55B;                    /* 4–6 Терпимо */
+  --hot:#D0583F;                    /* 7–10 Перегруз */
+  /* светлые экраны */
+  --ink:#1B1A18; --ink-2:#3A352F; --ivory:#F7F2EA;
 
-  --serif: "Noto Serif Display", "Times New Roman", serif;
-  --sans: "Golos Text", system-ui, sans-serif;
-
-  --gutter: 24px;
-  --safe-top: max(env(safe-area-inset-top, 0px), 14px);
-  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
-}
-
-/* ============================================================
-   Screen shell
-   ============================================================ */
-.b-screen {
-  position: relative; width: 100%; height: 100%; overflow: hidden;
-  background: var(--ivory); color: var(--ink); font-family: var(--sans);
-  display: flex; flex-direction: column;
-  -webkit-font-smoothing: antialiased;
+  --serif:"Noto Serif Display","Times New Roman",serif;
+  --sans:"Golos Text",system-ui,sans-serif;
+  --gutter:24px;
+  --safe-top:max(env(safe-area-inset-top),14px);
+  --safe-bottom:max(env(safe-area-inset-bottom),20px);
 }
 
-.b-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
-/* Sharp photo only at the bottom (rule II) — masked to fade into the blurred
-   .b-bg atmosphere above it, so text never has to sit on a sharp/busy photo. */
-.b-photo {
-  position: absolute; left: 0; right: 0; bottom: 0; z-index: 0;
-  background-size: cover; background-position: center top;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 28%);
-}
-.b-content {
-  position: relative; z-index: 1; flex: 1;
-  display: flex; flex-direction: column;
-  padding: calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom);
-  overflow-y: auto; -webkit-overflow-scrolling: touch;
-}
+/* ---------- ФИКС белой полосы внизу (iOS Safari) ---------- */
+html,body{margin:0;background:var(--bg);min-height:100%}
+body.is-light{background:var(--ivory)}
 
-/* ============================================================
-   Top bar (rule IV — identical shell on every screen)
-   ============================================================ */
-.b-topbar { display: flex; align-items: center; justify-content: space-between; height: 48px; flex: none; }
-.b-back {
-  display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 20px 0 0;
-  border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-  font: 400 18px/1 var(--serif); color: var(--ink); text-decoration: none; cursor: pointer;
-}
-.b-back__circle {
-  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
-  background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.7); flex: none;
-}
-.b-iconbtn {
-  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
-  background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); cursor: pointer; flex: none;
-}
-.b-pill {
-  display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 20px; border-radius: 999px;
-  background: var(--glass-strong); font: 400 16px/1 var(--serif); color: var(--ink);
-}
-.b-pill::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
-.b-step { font: 400 14px/1 var(--serif); color: var(--muted); text-align: right; }
+/* ---------- экран ---------- */
+.b-screen{position:relative;min-height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);
+  font-family:var(--sans);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+/* ИНТЕРЬЕР: фото на весь экран + затемнение. Слои fixed и 100lvh — уходят под панель Safari, белой полосы нет */
+.b-photo{position:fixed;left:0;right:0;top:0;height:100lvh;z-index:0;background-size:cover;background-position:center}
+.b-shade{position:fixed;left:0;right:0;top:0;height:100lvh;z-index:0;
+  background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,.82) 100%)}
+.b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,.85) 100%)}
+.b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,.9) 100%)}
+/* сильное затемнение сверху — для экранов, где заголовок лежит на светлом небе/фото */
+.b-shade--top{background:linear-gradient(180deg,rgba(11,9,7,.92) 0%,rgba(11,9,7,.78) 30%,rgba(11,9,7,.35) 55%,rgba(11,9,7,.88) 100%)}
+/* приглушить слишком оранжевый закат */
+.b-photo--muted{filter:saturate(.5) brightness(.85) contrast(1.05)}
+/* заголовки и текст на тёмных экранах всегда с мягкой тенью — читаются на любом фото */
+.b-screen:not(.b-screen--light) :is(.b-display,.b-h1,.b-h2,.b-lead,.b-eyebrow){text-shadow:0 1px 14px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.4)}
+.b-content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
+  padding:calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom)}
+.b-spacer{flex:1}
 
-/* ============================================================
-   Typography
-   ============================================================ */
-.b-eyebrow { font: 500 11px/1.4 var(--sans); letter-spacing: .32em; text-transform: uppercase; color: #2A2724; text-align: center; }
-.b-eyebrow--left { text-align: left; display: flex; align-items: center; gap: 14px; }
-.b-eyebrow--left::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5; }
-.b-display { font: 400 72px/1 var(--serif); letter-spacing: -.025em; margin: 0; color: var(--ink); text-align: center; }
-.b-h1 { font: 400 50px/1.02 var(--serif); letter-spacing: -.02em; margin: 0; color: var(--ink); }
-.b-h2 { font: 400 40px/1.06 var(--serif); letter-spacing: -.015em; margin: 0; color: var(--ink); }
-.b-lead { font: 400 16px/1.5 var(--sans); color: var(--ink-2); margin: 0; }
-.b-sub { font: 400 16px/1.45 var(--sans); color: var(--muted); margin: 0; }
-.b-body { font: 400 15.5px/1.55 var(--sans); color: var(--ink-2); margin: 0; }
-.b-vow { font: italic 400 23px/1.45 var(--serif); color: var(--ink); margin: 0; text-align: center; }
-.b-label { font: 500 10px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+/* ---------- верхняя панель ---------- */
+.b-topbar{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.b-back{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px 0 0;border-radius:999px;
+  border:1px solid rgba(239,230,218,.28);background:rgba(11,9,7,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  font:400 16px/1 var(--serif);color:var(--text);text-decoration:none}
+.b-back__circle{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(239,230,218,.35);background:rgba(239,230,218,.08)}
+.b-iconbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(239,230,218,.3);
+  background:rgba(11,9,7,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);cursor:pointer}
+/* кто держит телефон */
+.b-who{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;
+  background:var(--cream);color:#1A1511;font:500 13px/1 var(--sans)}
+.b-who__dot{width:8px;height:8px;border-radius:50%;background:#1A1511}
+.b-who--together{background:rgba(11,9,7,.45);color:var(--cream);border:1px solid rgba(239,230,218,.3)}
+/* прогресс по дому */
+.b-progress{height:1px;background:var(--line);margin-top:12px}
+.b-progress__fill{height:3px;margin-top:-1px;border-radius:3px;background:var(--cream)}
+.b-step{font:400 11px/1 var(--sans);letter-spacing:.2em;color:var(--muted)}
 
-/* ============================================================
-   The gold star (rule V / VII — the signature mark of every
-   "read together" screen; never an emoji or stock icon)
-   ============================================================ */
-.b-star { display: flex; flex-direction: column; align-items: center; gap: 0; color: var(--gold); }
-.b-star__line { width: 1px; height: 44px; background: linear-gradient(var(--gold), transparent); }
-.b-star--h { flex-direction: row; gap: 14px; }
-.b-star--h .b-star__line { width: 120px; height: 1px; background: var(--gold-line); }
-.b-rule { width: 56px; height: 1px; background: var(--gold-line); margin: 0 auto; }
+/* ---------- типографика (уменьшено) ---------- */
+.b-eyebrow{font:500 10px/1.4 var(--sans);letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+.b-display{font:400 52px/1 var(--serif);letter-spacing:-.02em;margin:0;color:var(--text)}
+.b-h1{font:400 36px/1.05 var(--serif);letter-spacing:-.015em;margin:0;color:var(--text)}
+.b-h2{font:400 28px/1.1 var(--serif);margin:0;color:var(--text)}
+.b-h1 em,.b-h2 em,.b-display em{font-style:italic;color:var(--beige)}
+.b-lead{font:400 16px/1.5 var(--sans);color:var(--text-2);margin:0}
+.b-body{font:400 15px/1.55 var(--sans);color:var(--text-2);margin:0}
+.b-small{font:400 13px/1.45 var(--sans);color:var(--muted);margin:0}
+.b-quote{font:italic 400 19px/1.35 var(--serif);color:var(--beige);margin:0}   /* курсив ≤ 19px */
 
-/* ============================================================
-   Buttons (rule III)
-   ============================================================ */
-.b-cta {
-  position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 60px;
-  border-radius: 999px; background: var(--ink); color: #fff; border: 1px solid var(--gold-line);
-  box-shadow: 0 14px 30px rgba(20, 16, 12, 0.22); text-decoration: none; cursor: pointer;
-  font: 500 13px/1 var(--sans); letter-spacing: .28em; text-transform: uppercase;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 64px;
-  box-sizing: border-box;
-}
-.b-cta:disabled, .b-cta[aria-disabled="true"] { opacity: .4; cursor: default; }
-.b-cta__arrow { position: absolute; right: 26px; top: 50%; transform: translateY(-50%); display: inline-flex; }
+/* ---------- золотая звезда с линией ---------- */
+.b-star{display:flex;flex-direction:column;align-items:center}
+.b-star__line{width:1px;height:40px;background:linear-gradient(var(--gold),transparent)}
+.b-star--h{flex-direction:row;gap:12px}
+.b-star--h .b-star__line{width:90px;height:1px;background:var(--gold-line)}
 
-.b-cta--serif {
-  font: 400 22px/1 var(--serif); letter-spacing: 0; text-transform: none; border: 0;
-}
-.b-cta--serif .b-cta__arrow {
-  right: 8px; width: 46px; height: 46px; border-radius: 50%;
-  display: grid; place-items: center; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14);
-}
+/* ---------- кнопки ---------- */
+.b-cta{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:56px;box-sizing:border-box;
+  border-radius:999px;background:var(--cream);color:#1A1511;border:0;text-decoration:none;cursor:pointer;
+  font:500 12.5px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;padding:0 60px;
+  box-shadow:0 12px 40px rgba(239,230,218,.1)}
+.b-cta__arrow{position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex}
+.b-cta.is-disabled,.b-cta[aria-disabled="true"]{background:rgba(239,230,218,.18);color:rgba(239,230,218,.5);box-shadow:none;pointer-events:none}
+.b-cta--ghost{background:transparent;color:var(--cream);border:1px solid rgba(239,230,218,.4);box-shadow:none}
+.b-link{display:inline-flex;align-items:center;gap:8px;font:500 14px/1 var(--sans);color:var(--cream);text-decoration:underline;text-underline-offset:4px}
 
-/* ============================================================
-   Glass / cards
-   ============================================================ */
-.b-glass {
-  background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px;
-  backdrop-filter: blur(24px) saturate(1.15); -webkit-backdrop-filter: blur(24px) saturate(1.15);
-  box-shadow: var(--shadow);
-}
-.b-tile { background: var(--glass-tile); border-radius: 20px; padding: 16px 20px; }
-.b-quote { border-left: 1.5px solid rgba(27, 26, 24, 0.55); padding: 2px 0 2px 22px; }
-.b-quote p { font: italic 400 21px/1.35 var(--serif); margin: 8px 0 0; color: var(--ink); }
+/* ---------- тёмное стекло ---------- */
+.b-card{background:var(--card);border:1px solid var(--card-border);border-radius:22px;padding:22px 20px;
+  backdrop-filter:blur(18px) saturate(1.1);-webkit-backdrop-filter:blur(18px) saturate(1.1)}
+.b-divider{height:1px;background:var(--line)}
 
-/* ============================================================
-   Form fields
-   ============================================================ */
-.b-field { display: flex; align-items: center; gap: 18px; }
-.b-field__dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
-.b-input {
-  flex: 1; height: 58px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(250, 246, 240, 0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  padding: 0 20px; font: 400 17px/1 var(--sans); color: var(--ink); outline: none; box-sizing: border-box; width: 100%;
-}
-.b-input::placeholder { color: #8A8279; }
-.b-select {
-  width: 100%; height: 52px; border-radius: 12px; border: 0; background: var(--sand);
-  padding: 0 44px 0 18px; font: 400 22px/1 var(--serif); color: var(--ink); appearance: none; -webkit-appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
-  background-position: calc(100% - 22px) 23px, calc(100% - 17px) 23px; background-size: 5px 5px; background-repeat: no-repeat;
-}
-.b-textarea {
-  width: 100%; height: 50px; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(160, 150, 140, 0.45);
-  background: rgba(255, 255, 255, 0.45); padding: 14px 16px; font: 400 14px/1.3 var(--sans); color: var(--ink); resize: none;
-}
+/* ---------- ПРАВИЛО КОМНАТЫ (должно читаться за 2 секунды) ---------- */
+.b-rule{border-radius:18px;border:1px solid var(--gold-line);background:rgba(14,11,9,.72);overflow:hidden}
+.b-rule__head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(201,164,92,.12);
+  font:500 10px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.b-rule__row{display:flex;align-items:center;gap:12px;padding:12px 16px;font:500 16px/1.3 var(--sans);color:var(--text)}
+.b-rule__row + .b-rule__row{border-top:1px solid var(--line)}
+.b-rule__icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none}
+.b-rule__icon--yes{background:var(--cream);color:#1A1511}
+.b-rule__icon--no{border:1.5px solid var(--hot);color:var(--hot)}
 
-/* ============================================================
-   Intensity slider + chip + avatar (rule VIII)
-   ============================================================ */
-.b-range {
-  -webkit-appearance: none; appearance: none; width: 100%; height: 9px; border-radius: 999px; outline: none;
-  background: linear-gradient(90deg, var(--cool) 0%, #D8C3B2 50%, var(--hot) 100%);
-}
-.b-range::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%;
-  background: var(--hot); border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(198, 58, 34, 0.18), 0 6px 16px rgba(198, 58, 34, 0.45); cursor: pointer;
-}
-.b-range::-moz-range-thumb {
-  width: 28px; height: 28px; border-radius: 50%; background: var(--hot); border: 3px solid #fff;
-  box-shadow: 0 0 0 6px rgba(198, 58, 34, 0.18), 0 6px 16px rgba(198, 58, 34, 0.45);
-}
-.b-chip { display: inline-flex; align-items: center; height: 40px; padding: 0 22px; border-radius: 999px; background: var(--hot); color: #fff; font: 400 20px/1 var(--serif); }
-.b-avatar { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; flex: none; background: rgba(214, 205, 196, 0.8); font: 400 26px/1 var(--serif); color: var(--ink); }
-/* The phone lies flat on a table between two people — one partner's card is
-   rotated 180deg so it reads right-side-up from across the table. */
-.b-flip { transform: rotate(180deg); }
+/* ---------- чек-строки (клятва, фразы) ---------- */
+.b-check{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px;border-radius:16px;cursor:pointer;
+  border:1px dashed rgba(239,230,218,.3);background:rgba(11,9,7,.35);color:var(--muted);font:italic 400 18px/1.35 var(--serif)}
+.b-check__box{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(239,230,218,.45);display:grid;place-items:center}
+.b-check.is-done{border:1px solid var(--gold-line);background:rgba(14,11,9,.7);color:var(--text)}
+.b-check.is-done .b-check__box{background:var(--gold);border-color:var(--gold);color:#1A1511}
 
-/* Vertical rotated side caption used on the Emotions screen, flanked by two
-   small gold stars with a hairline running the full height between them. */
-.b-side-caption {
-  position: absolute; left: 0; top: 150px; bottom: 60px; width: 44px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 1; color: var(--gold);
-}
-.b-side-caption__line { flex-grow: 1; width: 1px; background: rgba(184, 145, 79, 0.5); }
-.b-side-caption__text {
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  font: 500 10.5px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); white-space: nowrap;
-}
+/* ---------- шкала эмоций 0–10 ---------- */
+.b-scale{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;align-items:end}
+.b-seg{height:34px;border-radius:6px;border:0;padding:0;cursor:pointer;background:rgba(239,230,218,.12)}
+.b-seg.z-calm.is-on{background:var(--calm)} .b-seg.z-mid.is-on{background:var(--mid)} .b-seg.z-hot.is-on{background:var(--hot)}
+.b-scale-zones{display:grid;grid-template-columns:4fr 3fr 4fr;gap:4px;font:500 11px/1.2 var(--sans);color:var(--muted)}
+.b-scale-zones span:nth-child(2){text-align:center} .b-scale-zones span:nth-child(3){text-align:right}
+.b-level{font:italic 400 22px/1 var(--serif)}
+.b-level.z-calm{color:var(--calm)} .b-level.z-mid{color:var(--mid)} .b-level.z-hot{color:var(--hot)}
 
-/* ============================================================
-   Background photos (rule II — the only sharp imagery ever used
-   is at the bottom of the screen, via .b-photo)
-   ============================================================ */
-.bg-villa { background-image: url("../assets/bridge/bg-villa.jpg"); }
-.bg-sunset { background-image: url("../assets/bridge/bg-sunset.jpg"); }
-.bg-interior { background-image: url("../assets/bridge/bg-interior.jpg"); }
-.bg-library { background-image: url("../assets/bridge/bg-library.jpg"); }
-.bg-libph { background-image: url("../assets/bridge/bg-libph.jpg"); }
-.bg-peach { background-image: url("../assets/bridge/bg-peach.jpg"); }
-.bg-lounge { background-image: url("../assets/bridge/bg-lounge.jpg"); }
-.bg-oath { background-image: url("../assets/bridge/bg-oath.jpg"); }
-.bg-rules { background-image: url("../assets/bridge/bg-rules.jpg"); }
+/* ---------- метки-чувства ---------- */
+.b-chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(239,230,218,.28);background:rgba(11,9,7,.4);color:var(--text-2);font:400 14px/1 var(--sans)}
+.b-chip.is-on{background:var(--cream);border-color:var(--cream);color:#1A1511;font-weight:500}
+
+/* ---------- поля ---------- */
+.b-input{width:100%;box-sizing:border-box;height:52px;border-radius:14px;border:1px solid rgba(239,230,218,.22);
+  background:rgba(11,9,7,.5);color:var(--text);padding:0 16px;font:400 15px/1 var(--sans);outline:none}
+.b-input::placeholder{color:#8C8177}
+
+/* ---------- кубик ---------- */
+.b-die{width:76px;height:76px;border-radius:18px;background:var(--cream);display:grid;grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,1fr);padding:12px;box-sizing:border-box;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.b-pip{width:12px;height:12px;border-radius:50%;background:#1A1511;place-self:center}
+
+/* ---------- карта дома ---------- */
+.b-map{position:relative;width:100%}
+.b-map img{display:block;width:100%;height:auto}
+.b-pin{position:absolute;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;
+  border-radius:999px;background:rgba(11,9,7,.88);color:var(--text);font:500 11.5px/1 var(--sans);white-space:nowrap}
+.b-pin.is-done{color:var(--gold)}
+.b-pin.is-current{background:var(--cream);color:#1A1511;box-shadow:0 0 0 4px rgba(239,230,218,.25)}
+.b-pin.is-locked{color:rgba(244,237,228,.55)}
+
+/* ---------- меню / отношения ---------- */
+.b-owner{display:flex;align-items:center;gap:14px}
+.b-avatar{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;
+  border:1px solid var(--gold-line);background:rgba(11,9,7,.5);font:400 24px/1 var(--serif);color:var(--text)}
+.b-menu{display:flex;flex-direction:column}
+.b-menu__item{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding:0 4px;
+  border-bottom:1px solid var(--line);font:400 16px/1.3 var(--sans);color:var(--text);text-decoration:none;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer}
+.b-menu__item small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.b-menu__item--danger{color:#E58A74}
+
+/* ---------- СВЕТЛЫЙ экран (например «Как вас зовут») ---------- */
+.b-screen--light{background:var(--ivory);color:var(--ink)}
+.b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,.3) 100%)}
+.b-screen--light .b-h1,.b-screen--light .b-display{color:var(--ink)}
+.b-screen--light .b-eyebrow{color:#2A2724}
+.b-screen--light .b-back{color:var(--ink);background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.7)}
+.b-screen--light .b-back__circle{border-color:rgba(255,255,255,.8);background:rgba(255,255,255,.4)}
+.b-screen--light .b-cta{background:var(--ink);color:#fff;border:1px solid var(--gold-line)}
+.b-screen--light .b-input{background:rgba(250,246,240,.6);border-color:rgba(255,255,255,.85);color:var(--ink);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.b-screen--light .b-input::placeholder{color:#8A8279}
