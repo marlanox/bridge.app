@@ -1,4 +1,4 @@
-import { L, LF, deck, deckSections } from "./content.js";
+import { L } from "./content.js";
 
 export function primaryButton({ key, text, action, arg, enabled = true, compact = false, onDark = false, testId }) {
   const label = text ?? L(key);
@@ -32,6 +32,13 @@ export function escHtml(s) {
 const B_BACK_ARROW_SVG = `<svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7H2M8 1L2 7l6 6"></path></svg>`;
 const B_FORWARD_ARROW_SVG = `<svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h19M14 1l6 6-6 6"></path></svg>`;
 const B_CLOSE_SVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#EFE6DA" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg>`;
+const B_GEAR_SVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EFE6DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>`;
+const B_CHEVRON_DOWN_SVG = `<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 1.5l5 5 5-5"></path></svg>`;
+const B_CHEVRON_LEFT_SVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5L2 8l6.5 6.5"></path></svg>`;
+const B_CHEVRON_RIGHT_SVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 1.5L8 8l-6.5 6.5"></path></svg>`;
+const B_CHECK_SVG = `<svg width="12" height="10" viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5l3.5 3.5L11 1"></path></svg>`;
+const B_X_SVG = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M1 1l8 8M9 1L1 9"></path></svg>`;
+const B_SPEAK_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>`;
 
 function bStarGlyph(size, fill) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.6 7.2 16.8 11.4 24 12 16.8 12.6 12.6 16.8 12 24 11.4 16.8 7.2 12.6 0 12 7.2 11.4 11.4 7.2 12 0Z" fill="${fill}"></path></svg>`;
@@ -57,21 +64,23 @@ export function bScreen({ photo, photoPos = "center", muted = false, shade = "",
     </div>`;
 }
 
-/** The same top-bar shell on every screen. `right` is "star" (the settings
- * shortcut), `{who, together}` for the "who holds the phone" pill (DESIGN.md
- * §2: "Отвечает …", "Читает …" or "Вместе"), `{close: action}` for an X button,
- * or null for nothing on the right. */
-export function bTopbar({ back = true, backLabel, right = "star" } = {}) {
+/** The same top-bar shell on every screen. `right` is "gear" (the settings
+ * shortcut — FIXES-v4 §2: a gear, never a star, never a circle), `{who}` for
+ * the "who holds the phone" pill ("Отвечает …"/"Читает …"/"Бросает …" — there
+ * is no more "Вместе" pill, FIXES-v4 §0: every screen is answered/read/acted
+ * on by exactly one named person), `{close: action}` for an X button, or null
+ * for nothing on the right. */
+export function bTopbar({ back = true, backLabel, right = "gear" } = {}) {
   const backHtml = back
     ? `<button class="b-back pressable" type="button" data-action="goBack"><span class="b-back__circle">${B_BACK_ARROW_SVG}</span>${escHtml(backLabel ?? L("nav.back"))}</button>`
     : `<span></span>`;
   let rightHtml = "";
-  if (right === "star") {
-    rightHtml = `<button class="b-iconbtn pressable" type="button" data-action="openSettings" aria-label="${escAttr(L("settings.title"))}">${bStarGlyph(18, "#EFE6DA")}</button>`;
+  if (right === "gear") {
+    rightHtml = `<button class="b-iconbtn pressable" type="button" data-action="openSettings" aria-label="${escAttr(L("settings.title"))}">${B_GEAR_SVG}</button>`;
   } else if (right && right.close) {
     rightHtml = `<button class="b-iconbtn pressable" type="button" data-action="${right.close}" aria-label="Close">${B_CLOSE_SVG}</button>`;
   } else if (right && right.who) {
-    rightHtml = `<span class="b-who${right.together ? " b-who--together" : ""}">${right.together ? "" : '<span class="b-who__dot"></span>'}${escHtml(right.who)}</span>`;
+    rightHtml = `<span class="b-who"><span class="b-who__dot"></span>${escHtml(right.who)}</span>`;
   }
   return `<div class="b-topbar">${backHtml}${rightHtml}</div>`;
 }
@@ -88,9 +97,9 @@ export function bStar({ horizontal = false } = {}) {
 /** The one button style, `.b-cta` (or `.b-cta--ghost` for a transparent
  * outline variant) — a single line, uppercase, arrow on the right. Disabled
  * state matches bridge.css's `.is-disabled`/`[aria-disabled]` selector. */
-export function bCta({ key, text, action, arg, enabled = true, ghost = false, testId }) {
+export function bCta({ key, text, action, arg, enabled = true, ghost = false, testId, style = "" }) {
   const label = text ?? L(key);
-  return `<button class="b-cta${ghost ? " b-cta--ghost" : ""}${enabled ? "" : " is-disabled"} pressable" ${enabled ? "" : 'aria-disabled="true" disabled'} data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""} ${testId ? `data-testid="${testId}"` : ""}>${escHtml(label)}<span class="b-cta__arrow" aria-hidden="true">${B_FORWARD_ARROW_SVG}</span></button>`;
+  return `<button class="b-cta${ghost ? " b-cta--ghost" : ""}${enabled ? "" : " is-disabled"} pressable" style="${style}" ${enabled ? "" : 'aria-disabled="true" disabled'} data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""} ${testId ? `data-testid="${testId}"` : ""}>${escHtml(label)}<span class="b-cta__arrow" aria-hidden="true">${B_FORWARD_ARROW_SVG}</span></button>`;
 }
 
 /** A ghost/link-styled button — `.b-link` — for a secondary, non-CTA action. */
@@ -101,16 +110,6 @@ export function bLink({ text, action, arg }) {
 /** The dark-glass card — `.b-card` — used for any block of body text. */
 export function bCard(inner, style = "") {
   return `<div class="b-card" style="${style}">${inner}</div>`;
-}
-
-/** DESIGN.md §2's "room rule" card — `.b-rule`: an optional eyebrow head, then
- * one row per rule line, each with a yes (filled check) or no (hollow cross)
- * icon. Used for "who speaks / who listens" plus a room's own forbidden list. */
-export function bRule({ head, rows }) {
-  const rowsHtml = rows
-    .map((r) => `<div class="b-rule__row"><span class="b-rule__icon b-rule__icon--${r.icon}">${r.icon === "yes" ? "✓" : "✕"}</span><span>${escHtml(r.text)}</span></div>`)
-    .join("");
-  return `<div class="b-rule">${head ? `<div class="b-rule__head">${escHtml(head)}</div>` : ""}${rowsHtml}</div>`;
 }
 
 /** An oath/vow checklist row — `.b-check` — tappable, `is-done` once checked. */
@@ -129,169 +128,114 @@ export function bProgress(fraction, stepText) {
  * big italic current-value readout. `action`/`arg` (role) drive the segment
  * taps; segments up to and including `value` light up in their own zone's
  * color, matching a fill-up meter rather than a single marker. */
+export function zoneOf(v) {
+  return v <= 3 ? "calm" : v <= 6 ? "mid" : "hot";
+}
+
+/** The "Сила эмоций" heading row above the scale — plain label on the left, the
+ * live "8 · Перегруз" readout on the right (or "Выберите силу" until a value's
+ * been picked, `value === null`). */
+export function bScaleHeader(value) {
+  const has = value !== null && value !== undefined;
+  const z = has ? zoneOf(value) : "";
+  const label = has ? `${value} · ${L(`intensity.zone.${z}`)}` : L("intensity.pick_value");
+  return `<div style="display:flex;align-items:baseline;justify-content:space-between"><span class="b-small">${escHtml(L("intensity.strength_label"))}</span><span class="b-level${z ? ` z-${z}` : ""}">${escHtml(label)}</span></div>`;
+}
+
+/** DESIGN.md §3 / FIXES-v4 §6's emotion scale: 11 discrete 0–10 segments,
+ * strictly zoned 0–3/4–6/7–10 (`z-calm`/`z-mid`/`z-hot`). `action`/`arg` (role)
+ * drive the segment taps; segments up to and including `value` light up in
+ * their own zone's color, matching a fill-up meter. `value === null` (nothing
+ * picked yet) lights no segment. */
 export function bScale({ value, action, arg }) {
-  const zoneOf = (v) => (v <= 3 ? "calm" : v <= 6 ? "mid" : "hot");
+  const has = value !== null && value !== undefined;
   const segs = Array.from({ length: 11 }, (_, i) => {
-    const on = i <= value;
+    const on = has && i <= value;
     return `<button class="b-seg z-${zoneOf(i)}${on ? " is-on" : ""}" type="button" data-action="${action}" data-arg="${escAttr(arg)}" data-arg2="${i}" aria-label="${i}"></button>`;
   }).join("");
-  const z = zoneOf(value);
   return `<div class="b-scale">${segs}</div>
-    <div class="b-scale-zones"><span>${escHtml(L("intensity.zone.calm"))}</span><span>${escHtml(L("intensity.zone.mid"))}</span><span>${escHtml(L("intensity.zone.hot"))}</span></div>
-    <div class="b-level z-${z}">${value} — ${escHtml(L(`intensity.zone.${z}`))}</div>`;
+    <div class="b-scale-zones"><span>${escHtml(L("intensity.zone.calm"))}</span><span>${escHtml(L("intensity.zone.mid"))}</span><span>${escHtml(L("intensity.zone.hot"))}</span></div>`;
 }
 
-/** A single gold star with a thin tail beneath it, sitting directly above a title —
- * the recurring mark at the top of every full-bleed editorial screen (Welcome, Oath,
- * Ritual, Names, House Map, the plain onboarding-text pages). Distinct from
- * ornamentDivider(), which is a line-star-line rule used mid-screen to separate an
- * instruction from a quote below it, not a mark over a title. */
-export function titleStar() {
-  return `<div class="title-star"><span class="glyph">✦</span><span class="tail"></span></div>`;
-}
-
-export function dots(count, activeIndex, gold = false) {
-  let html = `<div class="dots${gold ? " gold" : ""}">`;
-  for (let i = 0; i < count; i++) {
-    html += `<div class="dot-seg${i === activeIndex ? " active" : ""}"></div>`;
-  }
-  return html + "</div>";
-}
-
-/** Mirrors TimerBanner.swift. */
-export function timerBanner(store) {
-  const s = store.roomTimeRemainingSeconds;
-  const m = Math.max(s, 0) / 60 | 0;
-  const sec = Math.max(s, 0) % 60;
-  const time = `${m}:${String(sec).padStart(2, "0")}`;
-  if (store.timeUpBannerShown) {
-    return `<div class="timer-banner">
-      <div class="f-body" style="font-weight:600;">${L("room.time_up_banner")}</div>
-      <div class="timer-up-row">
-        ${secondaryButton({ key: "room.a_bit_more_time", action: "addMoreTime" })}
-        <button class="btn-done pressable" data-action="markRoomDoneForTimer">${L("room.done")}</button>
-      </div>
-    </div>`;
-  }
-  return `<div class="timer-banner"><span class="timer-clock">${time}</span></div>`;
-}
-
-/** Mirrors PlacedCardsOverlay.swift. */
-export function placedCards(store) {
-  if (store.placedCardsThisTurn.length === 0) return "";
-  const items = store.placedCardsThisTurn
-    .map((play) => `<div class="placed-card">${escHtml(cardDisplayText(play))}</div>`)
+/** FIXES-v4 §6's compact one-line room rule — `.b-rulebar`: a filled "speak"
+ * tag for who's talking, a plain tag for who's listening, and a hollow-X tag
+ * per forbidden item. Replaces the old full-height `.b-rule` card. */
+export function bRuleBar(tags) {
+  const html = tags
+    .map((t) => {
+      if (t.kind === "speak") return `<span class="b-tag b-tag--speak">${B_SPEAK_SVG}${escHtml(t.text)}</span>`;
+      if (t.kind === "no") return `<span class="b-tag b-tag--no">${B_X_SVG}${escHtml(t.text)}</span>`;
+      return `<span class="b-tag">${escHtml(t.text)}</span>`;
+    })
     .join("");
-  return `<div class="placed-cards">${items}</div>`;
+  return `<div class="b-rulebar">${html}</div>`;
 }
 
-export function cardDisplayText(play) {
-  if (play.customText) return play.customText;
-  const d = deck(play.deckId);
-  const card = d.cards.find((c) => c.id === play.cardId);
-  return card ? L(card.textKey) : "";
+/** The "Подробнее — зачем это" disclosure button used identically in every
+ * room (FIXES-v4 §0/§6) — replaces the old always-visible "why it helps" text
+ * and the old per-room "Развернуть" header toggle. */
+export function bMore({ action, arg, open }) {
+  return `<button type="button" class="b-more pressable" data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}>${escHtml(open ? L("room.less") : L("room.more"))} ${B_CHEVRON_DOWN_SVG}</button>`;
 }
 
-/** Mirrors CardGridView.swift — one dropdown pill per deck; tapping opens a bottom sheet. */
-export function deckDropdownList(deckIds) {
-  if (deckIds.length === 0) return "";
-  const buttons = deckIds
-    .map((id) => `<button class="deck-button pressable" data-action="openDeckSheet" data-arg="${id}">
-        <span>${L(deck(id).nameKey)}</span><span>▾</span>
-      </button>`)
+/** An even 3-column grid of feeling chips — `.b-chipgrid` — multi-select,
+ * uniform size, never gold (FIXES-v4 §6). */
+export function bChipGrid(items) {
+  const html = items
+    .map((it) => `<button type="button" class="b-chip${it.on ? " is-on" : ""}" data-action="${it.action}" data-arg="${escAttr(it.arg)}" ${it.arg2 !== undefined ? `data-arg2="${escAttr(it.arg2)}"` : ""}>${escHtml(it.text)}</button>`)
     .join("");
-  return `<div class="deck-list">${buttons}</div>`;
+  return `<div class="b-chipgrid">${html}</div>`;
 }
 
-/** `rotation` mirrors the room's current seat rotation — this sheet is presented as a
- * plain absolutely-positioned overlay (not a native modal), so unlike a browser-native
- * sheet it DOES need to be told the rotation explicitly, or it always faces the same
- * fixed physical orientation instead of whoever is actually answering right now (the
- * same fix as RevealCardOverlay/`reveal-card-rotator` for the reveal card). */
-export function deckSheet(deckId, selectableFilter = null, customDraft = "", rotation = 0) {
-  const d = deck(deckId);
-  const sections = deckSections(d);
-  let body = "";
-  for (const section of sections) {
-    if (section.category) {
-      body += `<div class="sheet-section-title">${escHtml(section.category)}</div>`;
-    }
-    for (const card of section.cards) {
-      if (selectableFilter && !selectableFilter(card)) continue;
-      body += `<button class="sheet-row pressable" data-action="pickCard" data-arg="${deckId}" data-arg2="${card.id}">
-          <span>${escHtml(L(card.textKey))}</span>
-        </button>`;
-    }
-  }
-  body += `<div class="write-own-row">
-      <input id="writeOwnInput" class="text-field" placeholder="${escAttr(L("card.write_your_own"))}" value="${escAttr(customDraft)}">
-      <button data-action="submitCustomCard" data-arg="${deckId}">${L("couples_agreement.add_rule")}</button>
-    </div>`;
-  return `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeSheet" style="transform:rotate(${rotation}deg)">
-      <div class="sheet">
-        <div class="sheet-handle"></div>
-        <div class="sheet-header"><span>${escHtml(L(d.nameKey))}</span><button data-action="closeSheet">${L("room.done")}</button></div>
-        <div class="sheet-body">${body}</div>
-      </div>
+/** A single-select list — `.b-choice` — for picking one fear/need/etc. out of
+ * a short list (radio dot fills in when `on`). */
+export function bChoice({ text, on, action, arg }) {
+  return `<button type="button" class="b-choice${on ? " is-on" : ""} pressable" data-action="${action}" data-arg="${escAttr(arg)}"><span class="b-choice__radio"></span>${escHtml(text)}</button>`;
+}
+
+/** The Basement stage-2 Да/Нет pair — `.b-yn`. */
+export function bYesNo({ yesAction, noAction, arg }) {
+  return `<div class="b-yn">
+      <button type="button" class="is-yes pressable" data-action="${yesAction}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}>${escHtml(L("basement.yes"))}</button>
+      <button type="button" class="pressable" data-action="${noAction}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}>${escHtml(L("basement.no"))}</button>
     </div>`;
 }
 
-/** Mirrors ActivePartnerContainer.swift's WaitingIndicator — names the *waiting*
- * partner but is oriented to be readable by whoever is actually holding/facing the
- * phone right now (the active partner), since it's a reassurance for the one currently
- * sharing, not a note to the one currently listening. */
-export function waitingBadge(store, waitingRole, activeRole) {
-  const rotation = store.seatRotation(activeRole);
-  return `<div class="fixed-badge" style="transform:rotate(${rotation}deg)">
-      <div class="waiting-pill">
-        <span class="dot ${waitingRole === "partnerA" ? "a" : "b"}"></span>
-        <span>${escHtml(store.name(waitingRole))}</span>
-        <span class="secondary">${L("nav.listening")}</span>
-      </div>
-    </div>`;
+/** A sticky, always-visible footer for a CTA on a screen whose body can
+ * scroll — `.b-footer` (FIXES-v4 v4 additions) — so the button is never
+ * pushed below the fold by long content. */
+export function bFooter(inner) {
+  return `<div class="b-footer">${inner}</div>`;
 }
 
-/** Mirrors RevealCardOverlay.swift — rotated to face the reader only; the room behind
- * it stays exactly as it was. */
-export function revealOverlay(store) {
-  const reveal = store.pendingReveal;
-  if (!reveal) return "";
-  const rotation = store.seatRotation(reveal.to);
-  const cardsHtml = reveal.cards
-    .map((play) => `<div>${escHtml(cardDisplayText(play))}</div>`)
-    .join("");
-  return `<div class="reveal-overlay">
-      <div class="reveal-card-rotator" style="transform:rotate(${rotation}deg)">
-        <div class="reveal-card">
-          <div class="reveal-from"><span class="dot ${reveal.from === "partnerA" ? "a" : "b"}"></span>${LF("handoff.shared_title", escHtml(store.name(reveal.from)))}</div>
-          <div class="reveal-cards">${cardsHtml}</div>
-          ${primaryButton({ key: "handoff.read_it", action: "confirmReveal", compact: true })}
-        </div>
-      </div>
-    </div>`;
+/** The 1–2–3 step dashes above the Bridge finale's three cards — `.b-steps`. */
+export function bSteps(count, activeIndex) {
+  const spans = Array.from({ length: count }, (_, i) => `<span${i === activeIndex ? ' class="is-on"' : ""}></span>`).join("");
+  return `<div class="b-steps">${spans}</div>`;
 }
 
-/** The room header shared by every generic room — mirrors RoomView.header. When
- * collapsed, this renders ONLY the slim "Expand" bar (not a chevron buried in a
- * corner) — tapping it is the one and only way back to the full text, and it stays
- * in the same place every time. When expanded, an explicit "I've read it" button at
- * the bottom (not an icon) is what collapses it. */
-export function roomHeader(cfg, { activeRoleName = null, activeRoleDotClass = null, expanded = true, instructionKeyOverride = null, hideExtras = false } = {}) {
-  if (!expanded) {
-    return `<button class="b-link pressable" type="button" data-action="toggleHeader">${escHtml(L("room.expand"))}</button>`;
-  }
-  const modeCaptionKey = cfg.modes.includes("discussion") ? "room.mode_caption.discussion" : "room.mode_caption.sequential";
-  return `<div class="b-card" style="margin-top:10px;display:flex;flex-direction:column;gap:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div class="b-eyebrow">${escHtml(L(cfg.nameKey))}</div>
-        ${activeRoleName ? `<span class="b-who">${escHtml(activeRoleName)}</span>` : ""}
-      </div>
-      <h1 class="b-h2">${escHtml(L(cfg.questionKey))}</h1>
-      <p class="b-body">${escHtml(L(instructionKeyOverride ?? cfg.instructionKey))}</p>
-      ${hideExtras ? "" : `<div class="b-divider"></div><p class="b-small" style="color:var(--gold);font-weight:600;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`}
-      <p class="b-small">${escHtml(L(modeCaptionKey))}</p>
-      ${!hideExtras && cfg.forbiddenKey ? `<div class="b-divider"></div><p class="b-small" style="color:var(--gold);font-weight:600;">${escHtml(L("room.forbidden_prefix"))}</p><p class="b-body">${escHtml(L(cfg.forbiddenKey))}</p>` : ""}
-      ${bCta({ key: "room.read_it", action: "toggleHeader" })}
-    </div>`;
+/** The Bridge finale's card carousel — prev/next arrow buttons around a
+ * `.b-card`, plus a dot row underneath. `inner` is the card's own content. */
+export function bCarousel({ inner, prevAction, nextAction, dotsCount, dotsIndex }) {
+  const dots = Array.from({ length: dotsCount }, (_, i) => `<i${i === dotsIndex ? ' class="is-on"' : ""}></i>`).join("");
+  return `<div class="b-carousel">
+      <button class="b-carousel__nav pressable" type="button" aria-label="Предыдущая" data-action="${prevAction}">${B_CHEVRON_LEFT_SVG}</button>
+      <div class="b-card" style="flex-grow:1;min-height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center;">${inner}</div>
+      <button class="b-carousel__nav pressable" type="button" aria-label="Следующая" data-action="${nextAction}">${B_CHEVRON_RIGHT_SVG}</button>
+    </div>
+    <div class="b-dots" style="margin-top:14px;">${dots}</div>`;
 }
+
+/** The voice-message record button — `.b-rec` (a plain circle, never a mic
+ * emoji per FIXES-v4 §0/§10). `recording` shows the pulsing red core. */
+export function bRec({ action, arg, recording }) {
+  return `<button class="b-rec pressable" type="button" data-action="${action}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""} aria-label="${recording ? "Стоп" : "Записать"}"><span class="b-rec__core"${recording ? ' style="animation:none;"' : ""}></span></button>`;
+}
+
+/** The light "paper" card used for the couple's contract and the closing
+ * certificate — `.b-paper` — a bright rectangle sitting on the dark screen. */
+export function bPaper(inner, style = "") {
+  return `<div class="b-paper" style="${style}">${inner}</div>`;
+}
+
 
