@@ -60,7 +60,7 @@ export function bScreen({ photo, photoPos = "center", muted = false, shade = "",
       ${photo ? `<div class="b-photo${muted ? " b-photo--muted" : ""}" style="background-image:url('assets/rooms/${photo}.jpg');background-position:${photoPos};"></div>` : ""}
       <div class="b-shade${shade ? ` b-shade--${shade}` : ""}"></div>
       ${extra}
-      <div class="b-content" style="max-height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;${contentStyle}">${inner}</div>
+      <div class="b-content" style="overflow-y:auto;-webkit-overflow-scrolling:touch;${contentStyle}">${inner}</div>
     </div>`;
 }
 
@@ -191,14 +191,6 @@ export function bChipGrid(items) {
  * a short list (radio dot fills in when `on`). */
 export function bChoice({ text, on, action, arg }) {
   return `<button type="button" class="b-choice${on ? " is-on" : ""} pressable" data-action="${action}" data-arg="${escAttr(arg)}"><span class="b-choice__radio"></span>${escHtml(text)}</button>`;
-}
-
-/** The Basement stage-2 Да/Нет pair — `.b-yn`. */
-export function bYesNo({ yesAction, noAction, arg }) {
-  return `<div class="b-yn">
-      <button type="button" class="is-yes pressable" data-action="${yesAction}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}>${escHtml(L("basement.yes"))}</button>
-      <button type="button" class="pressable" data-action="${noAction}" ${arg !== undefined ? `data-arg="${escAttr(arg)}"` : ""}>${escHtml(L("basement.no"))}</button>
-    </div>`;
 }
 
 /** A sticky, always-visible footer for a CTA on a screen whose body can

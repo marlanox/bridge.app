@@ -180,7 +180,7 @@ export class Store {
       placedCardsThisTurn: this.placedCardsThisTurn,
       basementStage: this.basementStage,
       basementFears: this.basementFears,
-      basementYN: this.basementYN,
+      basementAskedCount: this.basementAskedCount,
       voiceNoteSkipped: this.voiceNoteSkipped,
       history: this._history,
     };
@@ -211,7 +211,7 @@ export class Store {
     this.basementStage = "fears";
     this.basementFears = { partnerA: null, partnerB: null };
     this.basementFearReveal = null;
-    this.basementYN = { partnerA: [], partnerB: [] };
+    this.basementAskedCount = { partnerA: 0, partnerB: 0 };
     this.voiceNoteSkipped = { partnerA: false, partnerB: false };
     this.resetDice();
   }
@@ -229,7 +229,7 @@ export class Store {
     this.basementStage = snap.basementStage ?? "fears";
     this.basementFears = snap.basementFears ?? { partnerA: null, partnerB: null };
     this.basementFearReveal = null;
-    this.basementYN = snap.basementYN ?? { partnerA: [], partnerB: [] };
+    this.basementAskedCount = snap.basementAskedCount ?? { partnerA: 0, partnerB: 0 };
     this.voiceNoteSkipped = snap.voiceNoteSkipped;
     const cfg = this.currentRoomConfig();
     this.roomTimeRemainingSeconds = (cfg?.timeMinutes ?? 7) * 60;
@@ -546,7 +546,7 @@ export class Store {
     this.basementStage = "fears";
     this.basementFears = { partnerA: null, partnerB: null };
     this.basementFearReveal = null;
-    this.basementYN = { partnerA: [], partnerB: [] };
+    this.basementAskedCount = { partnerA: 0, partnerB: 0 };
     this.activePartner = this.session.firstToSpeak || "partnerA";
     this.timerFired = false;
     this.timeUpBannerShown = false;
@@ -582,13 +582,13 @@ export class Store {
     });
   }
 
-  /** Stage 2: `activePartner` is the asker (asking aloud, not typed); the other
-   * partner answers Да/Нет, recorded here so both the running history and the
-   * 15-question cap are visible on screen. */
-  recordBasementAnswer(isYes) {
+  /** Stage 2 (FIXES-v5 §4): `activePartner` is the asker (asking aloud, not typed);
+   * the other partner answers aloud too — "да"/"нет" spoken, never typed — so there's
+   * nothing to capture per-answer, only a running tally up to the 15-question cap. */
+  advanceBasementAsked() {
     this.set(() => {
-      if (this.basementYN[this.activePartner].length >= 15) return;
-      this.basementYN[this.activePartner].push(isYes);
+      if (this.basementAskedCount[this.activePartner] >= 15) return;
+      this.basementAskedCount[this.activePartner] += 1;
     });
   }
 

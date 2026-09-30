@@ -1,40 +1,29 @@
 import { loadContent, L, LF, getLanguage, setLanguage, deck, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
-import { playTap, playWelcomeChime, startWelcomeMusic, stopWelcomeMusic } from "./sounds.js";
+import {
+  playTap, playWelcomeChime, playDice, playSuccess, playPage,
+  startAmbientMusic, duckAmbientMusic, unduckAmbientMusic,
+  muteAmbientForRecording, unmuteAmbientAfterRecording,
+  isMusicEnabled, isSoundEnabled, setMusicEnabled, setSoundEnabled,
+} from "./sounds.js";
 import { escHtml } from "./components.js";
+import { saveVoiceNote, listVoiceNotes, deleteVoiceNotesForRelationship } from "./voiceStore.js";
 
 const appEl = document.getElementById("app");
 let store;
 
-/** `#app`'s own `position:fixed;inset:0` is supposed to be enough on its own, but iOS
- * Safari (both a plain tab, where the address bar hides/shows as you scroll, and an
- * installed standalone app) has repeatedly been seen leaving `inset: 0` computed
- * against a stale/short viewport in exactly this app — the fixed box just doesn't
- * always get re-measured against the *current* visual viewport. `window.visualViewport`
- * (where available) is the API iOS actually keeps live during the address-bar
- * hide/show animation — it fires its own `resize` repeatedly *during* that animation,
- * where a plain `window.resize` typically only fires once it settles, so preferring it
- * (falling back to `window.innerHeight` where it doesn't exist) closes the exact gap
- * that let a sliver of the page show past #app's bottom edge for a moment. Re-measured
- * on every viewport/orientation change, and once more a beat later since iOS sometimes
- * reports a stale height for a moment during the transition. */
-function currentViewportHeight() {
-  return window.visualViewport ? window.visualViewport.height : window.innerHeight;
-}
-function syncViewportHeight() {
-  appEl.style.height = `${currentViewportHeight()}px`;
-}
-syncViewportHeight();
-window.addEventListener("resize", syncViewportHeight);
-window.addEventListener("orientationchange", () => {
-  syncViewportHeight();
-  setTimeout(syncViewportHeight, 300);
-});
-if (window.visualViewport) {
-  window.visualViewport.addEventListener("resize", syncViewportHeight);
-  window.visualViewport.addEventListener("scroll", syncViewportHeight);
-}
+/** `#app` fills the screen via plain `position:fixed;inset:0` in CSS and nothing else.
+ * An earlier version of this file set `#app.style.height` from `window.innerHeight` /
+ * `window.visualViewport.height` on every resize, meant to patch a black bar at the
+ * bottom on iOS. It didn't — the bar is a documented iOS standalone-PWA bug where
+ * *any* measured viewport height (`innerHeight`, `visualViewport.height`, and the CSS
+ * `dvh`/`lvh`/`svh` units alike) under-reports the real usable height by roughly the
+ * home-indicator's height, so setting an explicit `height` from any of them just
+ * recreated the same shortfall under a different name — `inset:0` alone reads the
+ * browser's actual viewport rect directly, with no unit/measurement step to be wrong
+ * about, so every full-bleed layer (`#app`, `.b-photo`, `.b-shade` in bridge.css) now
+ * uses it instead. Do not reintroduce a JS- or dvh-measured height here. */
 
 /** Ephemeral, per-screen UI state that mirrors each SwiftUI view's local `@State` —
  * never persisted, reset whenever the flow moves to a different step. See
@@ -57,7 +46,9 @@ const ui = {
   voiceTurn: "partnerA",
   voiceStage: "handoff",
   voiceBlobUrl: { partnerA: null, partnerB: null },
+  voiceBlob: { partnerA: null, partnerB: null },
   voiceRecordSeconds: 0,
+  voiceNotesList: null,
   recordingRole: null,
   recorders: { partnerA: null, partnerB: null },
   closingLineIsCourage: Math.random() < 0.5,
@@ -111,8 +102,9 @@ function resetUiForStep(step, kind) {
     ui.voiceTurn = "partnerA";
     ui.voiceStage = "handoff";
     ui.voiceBlobUrl = { partnerA: null, partnerB: null };
+    ui.voiceBlob = { partnerA: null, partnerB: null };
   }
-  if (step === "closing") { ui.closingLineIsCourage = Math.random() < 0.5; ui.closingSaved = false; }
+  if (step === "closing") { ui.closingLineIsCourage = Math.random() < 0.5; ui.closingSaved = false; playSuccess(); }
   if (step === "houseMap") ui.houseMapTextExpanded = true;
 }
 
@@ -125,7 +117,7 @@ function render() {
     // silently fails here — the guaranteed start is still the language-picker tap in
     // setLanguage() below, but firing it here too means it just works whenever the
     // platform does allow it (e.g. relaunching an already-installed PWA).
-    startWelcomeMusic();
+    startAmbientMusic();
     if (!splashTimer) {
       splashTimer = setTimeout(() => { splashDone = true; render(); }, SPLASH_DURATION_MS);
     }
@@ -141,8 +133,11 @@ function render() {
   if (key !== lastFlowKey) {
     resetUiForStep(store.flow.step, store.flow.kind);
     lastFlowKey = key;
-    syncWelcomeMusic(store.flow);
   }
+  // Every render, not just on a step change — ui.voiceStage (handoff -> record) toggles
+  // within the same "voiceSnapshot" step, and the mute-for-recording rule needs to react
+  // to that too. All of these are idempotent, so calling them redundantly is harmless.
+  syncAmbientMusic(store.flow, ui);
 
   let html;
   if (ui.paywallOpen) {
@@ -160,16 +155,18 @@ function render() {
   document.body.classList.toggle("is-light", !ui.paywallOpen && !ui.settingsOpen && LIGHT_STEPS.has(store.flow?.step));
 }
 
-// Every screen before the couple actually enters the first room (Hall) — the supplied
-// piano track plays through these and fades out the instant a room begins.
-const BEFORE_FIRST_ROOM_STEPS = new Set([
-  "welcome", "howItWorksWhatIsBridge", "howItWorksApology", "disclaimer",
-  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown", "houseMapGate",
-]);
-
-function syncWelcomeMusic(flow) {
-  if (BEFORE_FIRST_ROOM_STEPS.has(flow.step)) startWelcomeMusic();
-  else stopWelcomeMusic();
+// FIXES-v5 §6: the ambient loop now plays throughout instead of stopping once the
+// couple enters the first room — it just ducks to ~15% in a room/basement
+// conversation, and mutes outright on the voice-recording screen specifically.
+function syncAmbientMusic(flow, uiState) {
+  startAmbientMusic();
+  if (flow.step === "voiceSnapshot" && uiState.voiceStage === "record") {
+    muteAmbientForRecording();
+    return;
+  }
+  unmuteAmbientAfterRecording();
+  if (flow.step === "room" || flow.step === "basement") duckAmbientMusic();
+  else unduckAmbientMusic();
 }
 
 // bridge.css's `.b-screen--light` (daytime onboarding screens like Names) needs
@@ -225,13 +222,15 @@ const actions = {
     // autoplay attempt on the bare language screen render — browsers block audio before
     // any interaction at all.
     playWelcomeChime();
-    startWelcomeMusic();
+    startAmbientMusic();
     setLanguage(el.dataset.arg);
     render();
   },
   setLanguageInSettings(el) { setLanguage(el.dataset.arg); ui.globalSheet = null; render(); },
 
   openSettings() { ui.settingsOpen = true; render(); },
+  toggleMusicPref() { setMusicEnabled(!isMusicEnabled()); render(); },
+  toggleSoundPref() { setSoundEnabled(!isSoundEnabled()); render(); },
   closeSettings() { ui.settingsOpen = false; render(); },
   goBack() { store.back(); render(); },
   confirmStartOver() { ui.globalSheet = "startOverConfirm"; render(); },
@@ -259,6 +258,20 @@ const actions = {
   },
 
   openProfiles() { ui.globalSheet = "profiles"; render(); },
+  openVoiceNotes() {
+    ui.globalSheet = "voiceNotes";
+    ui.voiceNotesList = null;
+    render();
+    listVoiceNotes(store.activeProfileId).then((notes) => {
+      if (ui.globalSheet !== "voiceNotes") return;
+      ui.voiceNotesList = notes;
+      render();
+    });
+  },
+  playVoiceNote(el) {
+    const note = (ui.voiceNotesList || [])[Number(el.dataset.arg)];
+    if (note) new Audio(URL.createObjectURL(note.blob)).play();
+  },
   openHouseMapFromSettings() { ui.houseMapTextExpanded = true; ui.globalSheet = "houseMapSettings"; render(); },
   openDisclaimerSheet() { ui.globalSheet = "disclaimer"; render(); },
   openCrisis() { ui.globalSheet = "crisis"; render(); },
@@ -267,7 +280,13 @@ const actions = {
   openLanguagePicker() { ui.globalSheet = "language"; render(); },
   closeGlobalSheet() { ui.globalSheet = null; render(); },
   confirmDeleteData() { ui.globalSheet = "deleteConfirm"; render(); },
-  deleteData() { store.deleteActiveProfileData(); ui.globalSheet = null; ui.settingsOpen = false; render(); },
+  deleteData() {
+    deleteVoiceNotesForRelationship(store.activeProfileId);
+    store.deleteActiveProfileData();
+    ui.globalSheet = null;
+    ui.settingsOpen = false;
+    render();
+  },
   createProfile() {
     const name = prompt("Name this relationship (optional):", "") || "";
     store.createProfile(name);
@@ -277,7 +296,14 @@ const actions = {
   selectProfile(el) { store.selectProfile(el.dataset.arg); ui.globalSheet = null; render(); },
   restorePurchasesTestMode() { alert("PWA test mode: no real purchases to restore. See PARITY.md."); },
 
-  advance() { store.advance(); render(); },
+  advance() {
+    store.advance();
+    // page.m4a — map and room-to-room transitions specifically (FIXES-v5 §6), not
+    // every single "advance" in the app (onboarding pages, agreement, etc).
+    const step = store.flow.step;
+    if (step === "houseMapGate" || step === "houseMapAfterRoom" || step === "room" || step === "basement" || step === "bridge") playPage();
+    render();
+  },
 
   // House Map
   collapseHouseMapText() { ui.houseMapTextExpanded = false; render(); },
@@ -319,22 +345,21 @@ const actions = {
     render();
   },
 
-  // Dice
+  // Dice — FIXES-v5 §5: a real CSS 3D tumble (.b-die.is-rolling, ~0.8s) rather than
+  // flickering through faces by re-rendering, so the animation must run uninterrupted —
+  // a single render() starts it, a single render() 0.8s later reveals the result. The
+  // sound plays the instant the roll starts; the haptic fires once the spin settles.
   rollDice() {
     ui.diceRolling = true;
-    // Actually cycle through different faces while it "rolls" — a single static face
-    // just spinning in place reads as broken/unresponsive, not as a die being rolled.
-    const faceTimer = setInterval(() => {
-      ui.diceFace = 1 + Math.floor(Math.random() * 6);
-      render();
-    }, 60);
+    playDice();
+    render();
     setTimeout(() => {
-      clearInterval(faceTimer);
       const value = store.rollDiceStep();
       ui.diceFace = value;
       ui.diceRolling = false;
+      if (navigator.vibrate) navigator.vibrate(20);
       render();
-    }, 600);
+    }, 800);
   },
 
   // Intensity & state
@@ -379,7 +404,7 @@ const actions = {
 
   // Oath
   toggleOathLine(el) { ui.oathChecked[Number(el.dataset.arg)] = !ui.oathChecked[Number(el.dataset.arg)]; render(); },
-  completeOathAndAdvance() { store.completeOath(); store.advance(); },
+  completeOathAndAdvance() { store.completeOath(); playSuccess(); store.advance(); },
 
   // Ritual
   completeRitualAndAdvance() {
@@ -416,13 +441,32 @@ const actions = {
     store.submitRoomTurn(ui.roomV3.emotion);
   },
   confirmRevealV3() {
-    ui.roomV3.handoffAcked = false;
+    // FIXES-v5 §3: the "X, ваша очередь" ready screen is only for a genuinely new
+    // step starting with someone else — not for this specific handback, where the
+    // partner who just finished reading immediately answers the very same question.
+    // roomDoneFlags[reveal.to] is still false exactly when that's what's about to
+    // happen (confirmReveal() below then sets activePartner = reveal.to); when it's
+    // already true this reveal instead finishes the room and advances to a new step,
+    // whose own screen resets ui.roomV3 anyway, so the value set here doesn't matter.
+    const reveal = store.pendingReveal;
+    const continuesSameQuestion = !!reveal && !store.roomDoneFlags[reveal.to];
+    if (reveal && !continuesSameQuestion) playSuccess(); // the room just finished
+    ui.roomV3.handoffAcked = continuesSameQuestion;
+    ui.roomV3.told = false;
+    ui.roomV3.moreOpen = false;
+    ui.roomV3.emotion = { value: null, chips: [], custom: "" };
     store.confirmReveal();
   },
 
   // Kitchen (the one genuine two-person discussion room) and every other still-
   // generic "both tap their own Done" usage reuse this directly.
-  markRoomDone(el) { store.markRoomDone(el.dataset.arg); render(); },
+  markRoomDone(el) {
+    const role = el.dataset.arg;
+    const bothWereNotDoneYet = !store.roomDoneFlags.partnerA || !store.roomDoneFlags.partnerB;
+    store.markRoomDone(role);
+    if (bothWereNotDoneYet && store.roomDoneFlags.partnerA && store.roomDoneFlags.partnerB) playSuccess();
+    render();
+  },
 
   // Basement — FIXES-v4 §7.
   basementHandoffReady() {
@@ -451,9 +495,12 @@ const actions = {
     ui.basementV3.handoffAcked = false;
     store.confirmBasementFearRead();
   },
-  basementAnswerYes() { store.recordBasementAnswer(true); },
-  basementAnswerNo() { store.recordBasementAnswer(false); },
-  finishBasementAskingV3() { store.finishBasementAsking(); },
+  basementAnswerGiven() { store.advanceBasementAsked(); },
+  finishBasementAskingV3() {
+    const bothWereNotDoneYet = !store.roomDoneFlags.partnerA || !store.roomDoneFlags.partnerB;
+    store.finishBasementAsking();
+    if (bothWereNotDoneYet && store.roomDoneFlags.partnerA && store.roomDoneFlags.partnerB) playSuccess();
+  },
 
   // Bridge finale — FIXES-v4 §8: sequential, one partner's 3-step carousel + promise
   // checklist at a time, never side-by-side tabs.
@@ -518,6 +565,7 @@ const actions = {
       recorder.onstop = () => {
         stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(chunks, { type: "audio/webm" });
+        ui.voiceBlob[role] = blob;
         ui.voiceBlobUrl[role] = URL.createObjectURL(blob);
         render();
       };
@@ -547,6 +595,8 @@ const actions = {
   },
   saveVoiceAndAdvance() {
     store.markVoiceNoteRecorded(ui.voiceTurn);
+    const blob = ui.voiceBlob[ui.voiceTurn];
+    if (blob) saveVoiceNote(store.activeProfileId, ui.voiceTurn, blob);
     if (ui.voiceTurn === "partnerA") {
       ui.voiceTurn = "partnerB";
       ui.voiceStage = "handoff";
@@ -579,17 +629,19 @@ const actions = {
   },
   closeSession() { store.endActiveSession(); render(); },
 
-  // Contract
+  // Contract — FIXES-v5 §8: "PDF" via the browser's own print sheet (window.print(),
+  // scoped to just .b-paper by the @media print rule in bridge.css — no PDF library
+  // needed, and iOS's print sheet itself offers "Save to Files" as a real PDF).
+  // "В Фото" keeps the existing share-image flow — the honest web equivalent of
+  // PHPhotoLibrary, there's no native photo-library API available to a PWA.
+  printContract() { window.print(); },
   saveContract() {
     const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
     downloadOrShareImage({
-      title: L("contract.title"), lines: [names, ...store.couplesAgreement], filename: "bridge-contract.png", share: false,
-    });
-  },
-  shareContract() {
-    const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
-    downloadOrShareImage({
-      title: L("contract.title"), lines: [names, ...store.couplesAgreement], filename: "bridge-contract.png", share: true,
+      title: L("contract.title"),
+      lines: [names, L("contract.section_stop"), ...store.couplesAgreement, "", L("contract.section_promise"), L("bridge.promise_1"), L("bridge.promise_2")],
+      filename: "bridge-contract.png",
+      share: true,
     });
   },
 };
@@ -598,20 +650,23 @@ const actions = {
  * tab, from which iOS Safari's share sheet offers "Save Image") or hands it to the
  * real Web Share API when `share` is true and the browser supports sharing files —
  * there is no native PDF generator or photo-library API available to a PWA, so this
- * is the honest web equivalent of both. */
+ * is the honest web equivalent of both. FIXES-v5 §8: exported at 1290x2796 (3x) —
+ * the resolution the spec gives for a proper Photos save on a current iPhone. */
 async function downloadOrShareImage({ title, lines, filename, share }) {
   const canvas = document.createElement("canvas");
-  canvas.width = 640; canvas.height = 760;
+  canvas.width = 1290; canvas.height = 2796;
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "#F4EDE2"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "#C9A45C"; ctx.lineWidth = 3; ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
-  ctx.fillStyle = "#1B1A18"; ctx.font = "bold 30px Georgia, serif"; ctx.textAlign = "center";
-  ctx.fillText(title, canvas.width / 2, 90);
-  ctx.font = "22px -apple-system, sans-serif"; ctx.fillStyle = "#1B1A18";
-  let y = 160;
+  ctx.strokeStyle = "#C9A45C"; ctx.lineWidth = 6; ctx.strokeRect(16, 16, canvas.width - 32, canvas.height - 32);
+  ctx.strokeStyle = "#C9A45C"; ctx.lineWidth = 2; ctx.strokeRect(34, 34, canvas.width - 68, canvas.height - 68);
+  ctx.fillStyle = "#1B1A18"; ctx.font = "bold 64px Georgia, serif"; ctx.textAlign = "center";
+  ctx.fillText(title, canvas.width / 2, 190);
+  ctx.fillStyle = "#1B1A18"; ctx.textAlign = "center";
+  let y = 330;
   for (const line of lines) {
-    ctx.font = "22px -apple-system, sans-serif";
-    y = wrapText(ctx, line, canvas.width / 2, y, 540, 30) + 26;
+    if (line === "") { y += 30; continue; }
+    ctx.font = /^[IVX]+\./.test(line) || line === lines[1] ? "600 40px -apple-system, sans-serif" : "44px -apple-system, sans-serif";
+    y = wrapText(ctx, line, canvas.width / 2, y, 1120, 58) + 50;
   }
   const blob = await new Promise((resolve) => canvas.toBlob(resolve));
   if (share && navigator.canShare && navigator.canShare({ files: [new File([blob], filename, { type: "image/png" })] })) {
@@ -662,6 +717,39 @@ appEl.addEventListener("input", (e) => {
   if (el.id === "custom-partnerB") ui.stateCustom.partnerB = el.value;
   if (el.id === "newRuleInput") ui.newRuleDraft = el.value;
 });
+
+// Finger-signature canvases on the contract (FIXES-v5 §8) — drawing never goes
+// through a data-action, so it never triggers render() and never gets wiped
+// mid-stroke; a fresh .b-sigpad element after any real render just starts blank
+// again, which is fine since nothing here needs to persist past that screen.
+let signing = null;
+function sigPos(el, e) {
+  const rect = el.getBoundingClientRect();
+  const point = e.touches ? e.touches[0] : e;
+  return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+}
+appEl.addEventListener("pointerdown", (e) => {
+  const el = e.target.closest(".b-sigpad");
+  if (!el) return;
+  e.preventDefault();
+  const ctx = el.getContext("2d");
+  ctx.strokeStyle = "#1B1A18";
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  const { x, y } = sigPos(el, e);
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  signing = el;
+});
+appEl.addEventListener("pointermove", (e) => {
+  if (!signing) return;
+  e.preventDefault();
+  const ctx = signing.getContext("2d");
+  const { x, y } = sigPos(signing, e);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+});
+window.addEventListener("pointerup", () => { signing = null; });
 
 // =============================================================== ticking
 

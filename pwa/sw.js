@@ -6,7 +6,7 @@
 // device even after being pushed — every load kept re-serving the same stale cache
 // entry.) Bump CACHE_NAME on every deploy anyway, so an update is never silently missed
 // even for a client that's briefly offline.
-const CACHE_NAME = "bridge-pwa-v24";
+const CACHE_NAME = "bridge-pwa-v25";
 
 const CORE_FILES = [
   "./",
@@ -20,6 +20,7 @@ const CORE_FILES = [
   "./js/components.js",
   "./js/screens.js",
   "./js/sounds.js",
+  "./js/voiceStore.js",
   "./content/strings.en.json",
   "./content/strings.ru.json",
   "./content/decks.json",
