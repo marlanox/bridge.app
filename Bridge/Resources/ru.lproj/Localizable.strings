@@ -144,6 +144,11 @@
 "intensity.level.2" = "Сильно эмоционально";
 "intensity.level.3" = "Еле терпимо";
 "intensity.level.4" = "Перегруз";
+"intensity.zone.calm" = "Спокойно";
+"intensity.zone.mid" = "Терпимо";
+"intensity.zone.hot" = "Перегруз";
+"intensity.screen_title" = "Сила эмоций";
+"intensity.continue_button" = "Дальше";
 "room.why_it_helps_label" = "Почему это помогает";
 "intensity.continue" = "Продолжить";
 "state.hurt" = "Обидно";
@@ -201,6 +206,23 @@
 "room.flag_broken" = "Договор нарушен";
 "handoff.shared_title" = "%@ поделился(ась):";
 "handoff.read_it" = "Я прочитал(а)";
+"handoff.read_continue" = "Прочитал(а) — моя очередь";
+"handoff.pass_title" = "%@, ваша очередь";
+"handoff.pass_ready" = "Мы готовы";
+"handoff.listen_note" = "%@ пока просто слушает.";
+"room.who_answers" = "Отвечает %@";
+"room.who_reads" = "Читает %@";
+"room.who_together" = "Вместе";
+"room.enter_continue" = "Понятно";
+"room.rule_speaks" = "%@ говорит";
+"room.rule_listens" = "%@ слушает, не перебивает";
+"room.rule_head" = "Правило комнаты";
+"room.number_label" = "Комната %@";
+"map.title" = "Вот ваш дом";
+"map.enter_room" = "Войти в %@";
+"map.enter_bridge" = "Выйти на мост";
+"map.room_done" = "%@ пройдена ✓";
+"map.next_room" = "Дальше — %@";
 
 // MARK: - Basement (Fears)
 

@@ -1,6 +1,7 @@
 import { loadContent, L, LF, getLanguage, setLanguage, deck, room, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
+import { V3_ROOM_KINDS } from "./screens.js";
 import { playTap, playWelcomeChime, startWelcomeMusic, stopWelcomeMusic } from "./sounds.js";
 import { escHtml } from "./components.js";
 
@@ -39,6 +40,10 @@ const ui = {
   breathing: false,
   headerExpanded: true,
   openDeckId: null,
+  oathChecked: [],
+  roomV3: { entered: false, handoffAcked: false },
+  intensityTurn: "partnerA",
+  intensityHandoffAcked: false,
   bridgeActiveTab: "partnerA",
   recordingRole: null,
   recorders: { partnerA: null, partnerB: null },
@@ -72,8 +77,11 @@ function resetUiForStep(step, kind) {
     };
     ui.stateCustom = { partnerA: store.session.stateA.customText, partnerB: store.session.stateB.customText };
     ui.openStatePickerRole = null;
+    ui.intensityTurn = "partnerA";
+    ui.intensityHandoffAcked = false;
   }
   if (step === "calmDown") ui.breathing = false;
+  if (step === "oath") ui.oathChecked = [];
   if (step === "room" || step === "basement") {
     // Collapsed by default on short screens (SE-class phones) so the fully-expanded
     // instruction/why-it-helps/forbidden text doesn't push the Done button below the
@@ -81,6 +89,7 @@ function resetUiForStep(step, kind) {
     ui.headerExpanded = window.innerHeight >= 700;
     ui.openDeckId = null;
     ui.customCardDraft = "";
+    ui.roomV3 = { entered: false, handoffAcked: false };
   }
   if (step === "couplesAgreementSetup") ui.newRuleDraft = "";
   if (step === "bridgeFinale") ui.bridgeActiveTab = "partnerA";
@@ -134,9 +143,13 @@ function render() {
   } else {
     html = renderFlowScreen();
   }
-  const usesBridgeTopbar = store.flow && BRIDGE_REDESIGNED_STEPS.has(store.flow.step);
+  const usesBridgeTopbar = store.flow && (
+    BRIDGE_REDESIGNED_STEPS.has(store.flow.step) ||
+    (store.flow.step === "room" && V3_ROOM_KINDS.has(store.flow.kind))
+  );
   const nav = (ui.paywallOpen || ui.settingsOpen || usesBridgeTopbar) ? "" : globalNavBar();
   appEl.innerHTML = html + nav + S.globalOverlays(store, ui);
+  document.body.classList.toggle("is-light", !ui.paywallOpen && !ui.settingsOpen && LIGHT_STEPS.has(store.flow?.step));
 }
 
 /** Back (all the way to the first screen) and Settings (which itself holds "start
@@ -178,7 +191,7 @@ function globalNavBar() {
 // piano track plays through these and fades out the instant a room begins.
 const BEFORE_FIRST_ROOM_STEPS = new Set([
   "welcome", "howItWorksWhatIsBridge", "howItWorksApology", "disclaimer",
-  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown",
+  "ritual", "oath", "houseMap", "names", "dice", "intensityState", "calmDown", "houseMapGate",
 ]);
 
 function syncWelcomeMusic(flow) {
@@ -191,7 +204,12 @@ function syncWelcomeMusic(flow) {
 // roomHeader() (used inside roomScreen) is restyled onto bridge.css classes,
 // but the room screen's own shell (seat-rotator, deck sheet, timer) is not
 // yet converted, so "room" stays on the OLD global nav for now.
-const BRIDGE_REDESIGNED_STEPS = new Set(["ritual", "welcome", "names", "oath", "houseMap", "intensityState"]);
+const BRIDGE_REDESIGNED_STEPS = new Set(["ritual", "welcome", "names", "oath", "houseMap", "intensityState", "houseMapGate", "houseMapAfterRoom"]);
+
+// bridge.css's `.b-screen--light` (daytime onboarding screens like Names) needs
+// `body.is-light` too, or the strip of body background visible during iOS's overscroll
+// bounce stays the dark v3 default instead of matching the light screen underneath.
+const LIGHT_STEPS = new Set(["names"]);
 
 // Mirrors AppFlowStep.needsReadTogetherCaption on iOS. intensityState's partner-B half
 // is already rotated 180deg in place — that screen is two private halves, not one
@@ -215,12 +233,14 @@ function renderFlowScreen() {
       return S.onboardingTextPage({ titleKey: "onboarding.apology.title", bodyKey: "onboarding.apology.body", buttonKey: "onboarding.next", pageIndex: 1, pageCount: 2, action: "advance" });
     case "disclaimer": return S.disclaimerScreen();
     case "houseMap": return S.houseMapScreen("onboarding", ui.houseMapTextExpanded);
+    case "houseMapGate": return S.houseMapGateScreen();
+    case "houseMapAfterRoom": return S.houseMapAfterRoomScreen(f.completedKind);
     case "names": return S.namesScreen(store);
     case "couplesAgreementSetup": return S.couplesAgreementScreen(store, ui);
     case "dice": return S.diceScreen(ui, store);
     case "intensityState": return S.intensityScreen(store, ui);
     case "calmDown": return S.calmDownScreen(ui);
-    case "oath": return S.oathScreen();
+    case "oath": return S.oathScreen(ui);
     case "ritual": return S.ritualScreen(ui);
     case "room": return S.roomScreen(store, ui, f.kind);
     case "basement": return S.basementScreen(store, ui);
@@ -372,11 +392,29 @@ const actions = {
     store.setCustomStateText(customB, "partnerB");
     store.advance();
   },
+  intensityHandoffReady() { ui.intensityHandoffAcked = true; render(); },
+  setEmotionValue(el) { ui.intensity[el.dataset.arg] = Number(el.dataset.arg2); render(); },
+  submitIntensityTurn() {
+    const role = ui.intensityTurn;
+    const customEl = document.getElementById(`custom-${role}`);
+    if (customEl) ui.stateCustom[role] = customEl.value.trim();
+    store.setIntensity(ui.intensity[role], role);
+    for (const s of ui.stateSelected[role]) store.toggleState(s, role);
+    store.setCustomStateText(ui.stateCustom[role], role);
+    if (role === "partnerA") {
+      ui.intensityTurn = "partnerB";
+      ui.intensityHandoffAcked = false;
+      render();
+    } else {
+      store.advance();
+    }
+  },
 
   // Calm down
   startBreathing() { ui.breathing = true; render(); },
 
   // Oath
+  toggleOathLine(el) { ui.oathChecked[Number(el.dataset.arg)] = !ui.oathChecked[Number(el.dataset.arg)]; render(); },
   completeOathAndAdvance() { store.completeOath(); store.advance(); },
 
   // Ritual
@@ -384,6 +422,18 @@ const actions = {
     store.completeRitual();
     store.advance();
   },
+
+  // Rooms — DESIGN.md §2 linear cycle (currently only the Hall room; see
+  // V3_ROOM_KINDS in screens.js). Never touches store.activePartner/pendingReveal
+  // directly — those stay exactly as state.js already manages them; this only
+  // decides which of the 4 screens to show right now.
+  enterRoomV3() { ui.roomV3.entered = true; render(); },
+  handoffReadyV3() { ui.roomV3.handoffAcked = true; render(); },
+  markRoomDoneV3(el) {
+    ui.roomV3.handoffAcked = false;
+    store.markRoomDone(el.dataset.arg);
+  },
+  confirmRevealV3() { store.confirmReveal(); },
 
   // Rooms (generic)
   toggleHeader() { ui.headerExpanded = !ui.headerExpanded; render(); },

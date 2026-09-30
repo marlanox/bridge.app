@@ -374,28 +374,30 @@ export class Store {
         case "couplesAgreementSetup": this.flow = { step: "voiceSnapshot" }; break;
         case "dice": this.flow = { step: "intensityState" }; break;
         case "intensityState":
-          if (this.needsCalmDown()) {
-            this.flow = { step: "calmDown" };
-          } else {
-            this.flow = { step: "room", kind: "hall" };
-            this._startRoom("hall");
-          }
+          this.flow = this.needsCalmDown() ? { step: "calmDown" } : { step: "houseMapGate" };
           break;
-        case "calmDown":
+        case "calmDown": this.flow = { step: "houseMapGate" }; break;
+        case "houseMapGate":
           this.flow = { step: "room", kind: "hall" };
           this._startRoom("hall");
           break;
-        case "room":
-          if (f.kind === "kitchen") {
+        // DESIGN.md §1: the house map reappears after every room (and after the
+        // basement), with the just-finished room checked off and the next one
+        // highlighted, before the walk actually continues into it.
+        case "room": this.flow = { step: "houseMapAfterRoom", completedKind: f.kind }; break;
+        case "houseMapAfterRoom":
+          if (f.completedKind === "kitchen") {
             this.flow = { step: "basement" };
             this._startBasement();
+          } else if (f.completedKind === "basement") {
+            this.flow = { step: "bridgeFinale" };
           } else {
-            const next = ROOM_ORDER[ROOM_ORDER.indexOf(f.kind) + 1];
+            const next = ROOM_ORDER[ROOM_ORDER.indexOf(f.completedKind) + 1];
             this.flow = { step: "room", kind: next };
             this._startRoom(next);
           }
           break;
-        case "basement": this.flow = { step: "bridgeFinale" }; break;
+        case "basement": this.flow = { step: "houseMapAfterRoom", completedKind: "basement" }; break;
         case "bridgeFinale":
           this._awardTokens(1, 0);
           this.flow = { step: "couplesAgreementSetup" };

@@ -2,8 +2,21 @@ import { L, LF, deck, room, allRoomKinds } from "./content.js";
 import {
   primaryButton, secondaryButton, titleStar, timerBanner, placedCards,
   deckDropdownList, deckSheet, revealOverlay, roomHeader, waitingBadge, escHtml, escAttr,
-  bScreen, bTopbar, bStar, bCta, bSideCaption,
+  bScreen, bTopbar, bStar, bCta, bCard, bRule, bCheck, bProgress, bScale, bLink, cardDisplayText,
 } from "./components.js";
+
+// Full walk order, including the two non-"room" stops (basement, bridge) — used by
+// the house-map screens (DESIGN.md §1/§7) to compute pin status and pick the next
+// destination's name/photo.
+const MAP_PINS = [
+  { kind: "hall", nameKey: "room.hall.name", x: 18.6, y: 8.4 },
+  { kind: "livingRoom", nameKey: "room.living_room.name", x: 62.7, y: 15.3 },
+  { kind: "study", nameKey: "room.study.name", x: 28.7, y: 29.3 },
+  { kind: "kidsRoom", nameKey: "room.kids_room.name", x: 70.7, y: 30.7 },
+  { kind: "kitchen", nameKey: "room.kitchen.name", x: 43, y: 43.4 },
+  { kind: "basement", nameKey: "room.basement.name", x: 47.1, y: 59.1 },
+  { kind: "bridge", nameKey: "bridge.title", x: 47.1, y: 83.9 },
+];
 
 const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
 
@@ -62,17 +75,17 @@ export function languageScreen() {
 // =========================================================== Welcome
 export function welcomeScreen() {
   return bScreen({
-    bg: "bg-sunset", photo: "bg-villa", photoHeight: 400,
+    photo: "bridge", muted: true, shade: "top",
     contentStyle: "padding:54px 24px 34px;",
     inner: `
       ${bTopbar({ back: false })}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:28px;">
-        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;">
         ${bStar()}
         <h1 class="b-display">${escHtml(L("app.name"))}</h1>
-        <p class="b-lead" style="text-align:center;max-width:310px;">${escHtml(L("app.tagline"))}</p>
+        <p class="b-lead" style="max-width:310px;">${escHtml(L("app.tagline"))}</p>
       </div>
-      <div style="flex-grow:1;"></div>
+      <div class="b-spacer"></div>
       ${bCta({ key: "welcome.begin", action: "beginFromWelcome" })}
     `,
   });
@@ -109,30 +122,80 @@ export function disclaimerScreen() {
     { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
 }
 
-// =========================================================== House Map
-// Plain text directly on the house photo, like every other read-together screen —
-// no card, no expand/collapse toggle. The old "house-map" background (a photo with a
-// room list baked directly into its own pixels) visually collided with this text, so
-// this now uses the same "house-exterior" photo every other onboarding screen does.
+// =========================================================== House rules ("Сегодня
+// этот дом принадлежит вам" — P08 in the v3 handoff). Villa photo, muted (too orange
+// otherwise), strongly shaded at the top so the title reads on bright sky.
 export function houseMapScreen(ctx) {
   const btnKey = ctx === "onboarding" ? "housemap.button_first" : "housemap.button_reopen";
   const paragraphs = L("housemap.body")
     .split("\n\n")
-    .map((p) => `<p class="b-body" style="font-size:14.5px;">${escHtml(p)}</p>`)
-    .join("");
+    .map((p) => `<p class="b-body">${escHtml(p)}</p>`)
+    .join(`<div class="b-divider" style="margin:12px 0;"></div>`);
   return bScreen({
-    bg: "bg-interior", photo: "bg-rules", photoHeight: 150,
-    contentStyle: "padding:54px 24px 34px;",
+    photo: "house-exterior", muted: true, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
     inner: `
       ${bTopbar({ right: null })}
-      <div class="b-glass" style="margin-top:20px;padding:26px 22px 22px;display:flex;flex-direction:column;gap:16px;background:rgba(250,246,240,0.58);">
-        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
-        <h1 class="b-h2" style="font-size:36px;margin-top:6px;">${escHtml(L("housemap.title"))}</h1>
-        ${paragraphs}
-        <div style="margin-top:4px;">
-          ${bCta({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}
-        </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("housemap.title"))}</h1>
       </div>
+      <div class="b-spacer"></div>
+      ${bCard(paragraphs)}
+      <div style="margin-top:16px;">
+        ${bCta({ key: btnKey, action: "houseMapContinue", testId: "uitest.housemap.continue" })}
+      </div>
+    `,
+  });
+}
+
+// =========================================================== House map (with pins) —
+// P09/P09b in the v3 handoff. `variant` is "gate" (before the very first room) or
+// "afterRoom" (between rooms, `completedKind` names the room just finished).
+function mapPinStatus(variant, completedKind) {
+  const doneUpToIndex = variant === "gate" ? -1 : MAP_PINS.findIndex((p) => p.kind === completedKind);
+  const currentIndex = doneUpToIndex + 1;
+  return MAP_PINS.map((p, i) => (i <= doneUpToIndex ? "done" : i === currentIndex ? "current" : "locked"));
+}
+
+export function houseMapGateScreen() {
+  const statuses = mapPinStatus("gate", null);
+  const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
+  return bScreen({
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("map.title"))}</h1>
+      </div>
+      <div class="b-spacer"></div>
+      <div class="b-map"><img src="assets/rooms/house-map.jpg" alt="">${pins}</div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: LF("map.enter_room", L("room.hall.name")), action: "advance" })}
+    `,
+  });
+}
+
+export function houseMapAfterRoomScreen(completedKind) {
+  const idx = MAP_PINS.findIndex((p) => p.kind === completedKind);
+  const next = MAP_PINS[idx + 1];
+  const statuses = mapPinStatus("afterRoom", completedKind);
+  const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
+  const ctaText = next.kind === "bridge" ? L("map.enter_bridge") : LF("map.enter_room", L(next.nameKey));
+  return bScreen({
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("map.title"))}</h1>
+        <p class="b-body">${escHtml(LF("map.room_done", L(MAP_PINS[idx].nameKey)))} · ${escHtml(LF("map.next_room", L(next.nameKey)))}</p>
+      </div>
+      <div class="b-spacer"></div>
+      <div class="b-map"><img src="assets/rooms/house-map.jpg" alt="">${pins}</div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: ctaText, action: "advance" })}
     `,
   });
 }
@@ -140,23 +203,18 @@ export function houseMapScreen(ctx) {
 // =========================================================== Names
 export function namesScreen(store) {
   return bScreen({
-    bg: "bg-interior", photo: "bg-lounge", photoHeight: 330,
+    photo: "living-room", light: true,
     contentStyle: "padding:54px 24px 34px;",
     inner: `
       ${bTopbar()}
-      <div style="display:flex;flex-direction:column;gap:22px;margin-top:28px;">
-        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+      <div style="display:flex;flex-direction:column;gap:20px;margin-top:22px;">
         ${bStar({ horizontal: true })}
-        <h1 class="b-h1" style="font-size:58px;margin-top:8px;">${escHtml(L("names.title"))}</h1>
-        <div style="display:flex;flex-direction:column;gap:14px;margin-top:10px;">
-          <label class="b-field"><span class="b-field__dot" style="background:var(--ink);"></span>
-            <input id="nameA" class="b-input" type="text" placeholder="${escAttr(L("names.partner_a_placeholder"))}" value="${escAttr(store.session.partnerA.name)}">
-          </label>
-          <label class="b-field"><span class="b-field__dot" style="background:var(--gold);"></span>
-            <input id="nameB" class="b-input" type="text" placeholder="${escAttr(L("names.partner_b_placeholder"))}" value="${escAttr(store.session.partnerB.name)}">
-          </label>
+        <h1 class="b-h1" style="font-size:42px;">${escHtml(L("names.title"))}</h1>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:6px;">
+          <input id="nameA" class="b-input" type="text" placeholder="${escAttr(L("names.partner_a_placeholder"))}" value="${escAttr(store.session.partnerA.name)}">
+          <input id="nameB" class="b-input" type="text" placeholder="${escAttr(L("names.partner_b_placeholder"))}" value="${escAttr(store.session.partnerB.name)}">
         </div>
-        <div style="margin-top:16px;">
+        <div style="margin-top:6px;">
           ${bCta({ key: "names.continue", action: "submitNames" })}
         </div>
       </div>
@@ -255,74 +313,54 @@ function intensityLevelKey(v) {
   return "intensity.level.4";
 }
 
+// No more two-card, one-flipped layout (DESIGN.md §2 bans upside-down screens) — each
+// partner gets their own turn: an explicit handoff (`ui.intensityHandoffAcked`), then
+// the scale/chips/free-text for `ui.intensityTurn`, one role at a time.
 export function intensityScreen(store, ui) {
-  const section = (role, flipped) => {
-    const intensity = ui.intensity[role];
-    const selected = ui.stateSelected[role];
-    const vivid = intensityColor(intensity);
-    const summary = selected.length
-      ? selected.map((s) => L(`state.${s}`)).sort().join(", ")
-      : escHtml(L("intensity.state_placeholder"));
-    const initial = (store.name(role).trim()[0] || "?").toUpperCase();
-    const roleColor = role === "partnerA" ? "var(--ink)" : "var(--gold)";
-    return `<div class="b-glass${flipped ? " b-flip" : ""}" style="padding:18px 20px;display:flex;flex-direction:column;gap:12px;border-radius:28px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <span class="b-avatar">${escHtml(initial)}</span>
-          <span style="width:8px;height:8px;border-radius:50%;background:${roleColor};flex:0 0 auto;"></span>
-          <span style="font:400 19px/1.2 var(--serif);color:var(--ink);">${escHtml(L("intensity.question_self"))}</span>
+  const role = ui.intensityTurn;
+  const other = role === "partnerA" ? "partnerB" : "partnerA";
+  if (!ui.intensityHandoffAcked) {
+    return bScreen({
+      photo: "house-exterior", muted: true, shade: "text",
+      contentStyle: "padding:54px 24px 30px;",
+      inner: `
+        ${bTopbar({ back: false, right: { who: L("room.who_together"), together: true } })}
+        <div class="b-spacer"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+          ${bStar()}
+          <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(role)))}</h1>
+          <p class="b-body">${escHtml(LF("handoff.listen_note", store.name(other)))}</p>
         </div>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <span style="font:400 26px/1 var(--serif);color:var(--cool);">0</span>
-          <input type="range" min="0" max="10" step="1" value="${intensity}" class="b-range" style="--slider-color:${vivid}" data-action="intensitySlider" data-arg="${role}" aria-label="${escAttr(L("intensity.slider_label"))}">
-          <span style="font:400 26px/1 var(--serif);color:var(--hot);">10</span>
-        </div>
-        <div><span class="b-chip" style="background:${vivid};">${escHtml(L(intensityLevelKey(intensity)))}</span></div>
-        <div style="font:400 16px/1.2 var(--serif);color:var(--ink);">${escHtml(L("intensity.state_label"))}</div>
-        <button class="b-select pressable" type="button" data-action="openStatePicker" data-arg="${role}">${summary}</button>
-        <textarea class="b-textarea" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}">${escHtml(ui.stateCustom[role])}</textarea>
-      </div>`;
-  };
-  const filled = (role) => ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0;
-  const ready = filled("partnerA") && filled("partnerB");
-  const picker = ui.openStatePickerRole
-    ? statePickerSheet(store, ui, ui.openStatePickerRole)
-    : "";
-  return bScreen({
-    bg: "bg-peach",
-    extra: bSideCaption(L("intensity.title")),
-    contentStyle: "padding:54px 16px 20px 52px;display:flex;flex-direction:column;gap:14px;",
-    inner: `
-      ${bTopbar({ right: null })}
-      ${section("partnerB", true)}
-      ${section("partnerA", false)}
-      ${bCta({ key: "intensity.continue", action: "submitIntensityState", enabled: ready })}
-    `,
-  }) + picker;
-}
-
-function statePickerSheet(store, ui, role) {
-  const rows = STATE_KEYS.map((s) => {
-    const checked = ui.stateSelected[role].includes(s);
-    return `<button class="sheet-row pressable" data-action="toggleStateOption" data-arg="${role}" data-arg2="${s}">
-        <span>${escHtml(L(`state.${s}`))}</span>${checked ? '<span class="check">✓</span>' : ""}
-      </button>`;
+        <div class="b-spacer"></div>
+        ${bCta({ text: L("handoff.pass_ready"), action: "intensityHandoffReady" })}
+      `,
+    });
+  }
+  const value = ui.intensity[role];
+  const chips = STATE_KEYS.map((s) => {
+    const on = ui.stateSelected[role].includes(s);
+    return `<button class="b-chip${on ? " is-on" : ""}" type="button" data-action="toggleStateOption" data-arg="${role}" data-arg2="${s}">${escHtml(L(`state.${s}`))}</button>`;
   }).join("");
-  // partnerB's whole section on the intensity screen is rotated 180deg (they're sitting
-  // across the table, reading upside down otherwise) — a sheet opened from that section
-  // has to rotate the same way, or it pops up right-side-up for the WRONG partner. The
-  // rotation goes on an inner wrapper, not `.sheet` itself, since `.sheet` already
-  // animates its own `transform` for the slide-up and a second transform there would
-  // just replace it instead of combining.
-  const rotation = role === "partnerB" ? 180 : 0;
-  return `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeStatePicker">
-      <div class="sheet">
-        <div style="transform:rotate(${rotation}deg)">
-          <div class="sheet-handle"></div>
-          <div class="sheet-header"><span>${escHtml(L("intensity.state_label"))}</span><button data-action="closeStatePicker">${L("room.done")}</button></div>
-          <div class="sheet-body">${rows}</div>
-        </div>
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(role)) } })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:4px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("intensity.screen_title"))}</h1>
       </div>
-    </div>`;
+      ${bCard(`
+        ${bScale({ value, action: "setEmotionValue", arg: role })}
+        <div class="b-divider" style="margin:16px 0;"></div>
+        <p class="b-small" style="margin-bottom:10px;">${escHtml(L("intensity.state_label"))}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">${chips}</div>
+        <textarea class="b-input" style="margin-top:12px;min-height:70px;padding-top:12px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}">${escHtml(ui.stateCustom[role])}</textarea>
+      `, "margin-top:14px;")}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("intensity.continue_button"), action: "submitIntensityTurn" })}
+    `,
+  });
 }
 
 // =========================================================== Calm Down
@@ -344,22 +382,29 @@ export function calmDownScreen(ui) {
 }
 
 // =========================================================== Oath
-export function oathScreen() {
+// A checklist, one line per promise, rather than a single wall of text — each tap
+// is a small commitment, and the CTA only unlocks once every line has been
+// acknowledged (DESIGN.md §10 / the P07 handoff mockup's pseudo-code).
+export function oathScreen(ui) {
+  const lines = L("oath.text").split(/(?<=[.!?])\s+/).filter(Boolean);
+  const doneCount = ui.oathChecked.filter(Boolean).length;
+  const allDone = lines.length > 0 && doneCount === lines.length;
+  const rows = lines.map((line, i) => bCheck({ text: line, done: !!ui.oathChecked[i], action: "toggleOathLine", arg: i })).join("");
   return bScreen({
-    bg: "bg-interior", photo: "bg-oath", photoHeight: 230,
+    photo: "oath", shade: "text",
     contentStyle: "padding:54px 24px 34px;",
     inner: `
       ${bTopbar()}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:24px;">
-        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
         ${bStar()}
-        <h1 class="b-display" style="font-size:66px;">${escHtml(L("oath.title"))}</h1>
-        <p class="b-sub" style="text-align:center;">${escHtml(L("oath.instruction"))}</p>
-        <div class="b-rule" style="margin-top:6px;margin-bottom:6px;"></div>
-        <p class="b-vow">${escHtml(L("oath.text"))}</p>
-        <div style="width:100%;margin-top:10px;">
-          ${bCta({ key: "oath.ready", action: "completeOathAndAdvance" })}
-        </div>
+        <h1 class="b-display">${escHtml(L("oath.title"))}</h1>
+        <p class="b-body">${escHtml(L("oath.instruction"))}</p>
+      </div>
+      ${bProgress(lines.length ? doneCount / lines.length : 0)}
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">${rows}</div>
+      <div style="margin-top:16px;">
+        ${bCta({ key: "oath.ready", action: "completeOathAndAdvance", enabled: allDone })}
       </div>
     `,
   });
@@ -371,22 +416,19 @@ export function oathScreen() {
 // only control on this screen is the continue button below.
 export function ritualScreen(ui) {
   const lines = ["ritual.line_1", "ritual.line_2"];
-  const vows = lines.map((key) => `<p class="b-vow">${escHtml(L(key))}</p>`).join(`<div class="b-rule"></div>`);
+  const vows = lines.map((key) => `<p class="b-quote">${escHtml(L(key))}</p>`).join(`<div class="b-divider" style="margin:14px 0;"></div>`);
   return bScreen({
-    bg: "bg-sunset", photo: "bg-villa", photoHeight: 440,
+    photo: "house-exterior", muted: true, shade: "top",
     contentStyle: "padding:54px 24px 34px;",
     inner: `
-      ${bTopbar()}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:22px;">
-        <div class="b-eyebrow">${escHtml(L("nav.read_together"))}</div>
+      ${bTopbar({ right: null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:6px;text-align:center;">
         ${bStar()}
-        <h1 class="b-h1" style="text-align:center;font-size:50px;">${escHtml(L("ritual.title"))}</h1>
-        <p class="b-sub" style="text-align:center;max-width:300px;">${escHtml(L("ritual.instruction"))}</p>
+        <h1 class="b-h1">${escHtml(L("ritual.title"))}</h1>
+        <p class="b-body" style="max-width:300px;">${escHtml(L("ritual.instruction"))}</p>
       </div>
-      <div style="flex-grow:1;"></div>
-      <div class="b-glass" style="padding:26px 22px;display:flex;flex-direction:column;gap:16px;align-items:center;">
-        ${vows}
-      </div>
+      <div class="b-spacer"></div>
+      ${bCard(vows)}
       <div style="margin-top:18px;">
         ${bCta({ key: "ritual.continue", action: "completeRitualAndAdvance" })}
       </div>
@@ -395,7 +437,122 @@ export function ritualScreen(ui) {
 }
 
 // =========================================================== Generic room
+// Rooms in V3_ROOM_KINDS get the new DESIGN.md §2 linear pass-the-phone cycle
+// (roomScreenV3, below); every other room keeps the old flip-based mechanic
+// unchanged until its own turn to be converted.
+export const V3_ROOM_KINDS = new Set(["hall"]);
+
 export function roomScreen(store, ui, kind) {
+  if (V3_ROOM_KINDS.has(kind)) return roomScreenV3(store, ui, kind);
+  return legacyRoomScreen(store, ui, kind);
+}
+
+/** DESIGN.md §2's cycle: enter → handoff → question+rule → answer → handoff →
+ * partner reads → (partner answers the same question, no handoff) → … → the room's
+ * `state.js` mechanics (activePartner/roomDoneFlags/pendingReveal/confirmReveal) are
+ * untouched — this only decides which of 4 screens to show for the current state,
+ * never which state comes next (that stays exactly as it was, no upside-down flip). */
+function roomScreenV3(store, ui, kind) {
+  const cfg = room(kind);
+  if (!ui.roomV3.entered) return roomEnterScreenV3(cfg);
+  const reveal = store.pendingReveal;
+  if (reveal) {
+    return ui.roomV3.handoffAcked
+      ? roomPartnerReadsScreenV3(store, reveal)
+      : roomHandoffScreenV3(store, reveal.to, reveal.from);
+  }
+  if (!ui.roomV3.handoffAcked) {
+    return roomHandoffScreenV3(store, store.activePartner, store.other(store.activePartner));
+  }
+  return roomQuestionScreenV3(store, ui, cfg);
+}
+
+function roomEnterScreenV3(cfg) {
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <span class="b-eyebrow">${escHtml(LF("room.number_label", cfg.order))}</span>
+        <h1 class="b-h1">${escHtml(L(cfg.nameKey))}</h1>
+      </div>
+      <div class="b-spacer"></div>
+      ${bCard(`<p class="b-body">${escHtml(L(cfg.instructionKey))}</p><div class="b-divider" style="margin:14px 0;"></div><p class="b-small" style="color:var(--gold);font-weight:600;margin-bottom:6px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`)}
+      <div style="margin-top:16px;">${bCta({ text: L("room.enter_continue"), action: "enterRoomV3" })}</div>
+    `,
+  });
+}
+
+function roomHandoffScreenV3(store, toRole, otherRole) {
+  const cfg = room(store.session.currentRoom);
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: L("room.who_together"), together: true } })}
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(toRole)))}</h1>
+        <p class="b-body">${escHtml(LF("handoff.listen_note", store.name(otherRole)))}</p>
+      </div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("handoff.pass_ready"), action: "handoffReadyV3" })}
+    `,
+  });
+}
+
+function roomPartnerReadsScreenV3(store, reveal) {
+  const cfg = room(store.session.currentRoom);
+  const cardsHtml = reveal.cards.map((play) => `<p class="b-body">${escHtml(cardDisplayText(play))}</p>`).join("");
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
+      <div class="b-spacer"></div>
+      <h1 class="b-h2" style="text-align:center;">${escHtml(LF("handoff.shared_title", store.name(reveal.from)))}</h1>
+      ${bCard(cardsHtml || `<p class="b-body">${escHtml(L("intensity.state_placeholder"))}</p>`, "margin-top:14px;")}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("handoff.read_continue"), action: "confirmRevealV3" })}
+    `,
+  });
+}
+
+function roomQuestionScreenV3(store, ui, cfg) {
+  const active = store.activePartner;
+  const other = store.other(active);
+  const forbiddenRows = cfg.forbiddenKey
+    ? L(cfg.forbiddenKey).split("\n").map((line) => ({ icon: "no", text: line.replace(/^•\s*/, "") }))
+    : [];
+  const rows = [
+    { icon: "yes", text: LF("room.rule_speaks", store.name(active)) },
+    { icon: "no", text: LF("room.rule_listens", store.name(other)) },
+    ...forbiddenRows,
+  ];
+  const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft, 0) : "";
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(active)) } })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:4px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h2">${escHtml(L(cfg.questionKey))}</h1>
+      </div>
+      ${bRule({ head: L("room.rule_head"), rows })}
+      ${bCard(`<p class="b-small" style="color:var(--gold);font-weight:600;margin-bottom:4px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`, "margin-top:12px;")}
+      ${placedCards(store)}
+      ${deckDropdownList(cfg.deckIds)}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("room.done"), action: "markRoomDoneV3", arg: active, enabled: store.placedCardsThisTurn.length > 0 })}
+    `,
+  }) + sheet;
+}
+
+function legacyRoomScreen(store, ui, kind) {
   const cfg = room(kind);
   const isSequential = cfg.modes.includes("speaks");
   const active = store.activePartner;

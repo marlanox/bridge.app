@@ -145,6 +145,11 @@
 "intensity.level.2" = "Very emotional";
 "intensity.level.3" = "Barely tolerable";
 "intensity.level.4" = "Overload";
+"intensity.zone.calm" = "Calm";
+"intensity.zone.mid" = "Tolerable";
+"intensity.zone.hot" = "Overload";
+"intensity.screen_title" = "Strength of Feeling";
+"intensity.continue_button" = "Next";
 "room.why_it_helps_label" = "Why this helps";
 "intensity.continue" = "Continue";
 "state.hurt" = "Hurt";
@@ -202,6 +207,23 @@
 "room.flag_broken" = "Flag a broken rule";
 "handoff.shared_title" = "%@ shared:";
 "handoff.read_it" = "I've read it";
+"handoff.read_continue" = "I've read it — my turn";
+"handoff.pass_title" = "%@, your turn";
+"handoff.pass_ready" = "We're ready";
+"handoff.listen_note" = "%@ just listens for now.";
+"room.who_answers" = "%@ is answering";
+"room.who_reads" = "%@ is reading";
+"room.who_together" = "Together";
+"room.enter_continue" = "Got it";
+"room.rule_speaks" = "%@ speaks";
+"room.rule_listens" = "%@ listens, no interrupting";
+"room.rule_head" = "Room rule";
+"room.number_label" = "Room %@";
+"map.title" = "This is your house";
+"map.enter_room" = "Enter the %@";
+"map.enter_bridge" = "Step onto the bridge";
+"map.room_done" = "%@ done ✓";
+"map.next_room" = "Next — %@";
 
 // MARK: - Basement (Fears)
 
