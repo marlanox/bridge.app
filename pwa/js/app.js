@@ -510,16 +510,10 @@ const actions = {
     ui.bridgeCarouselIndex = 0;
     render();
   },
-  bridgeCarouselPrev() {
-    const kind = ["stepToward", "need", "gift"][ui.bridgeStepIndex];
-    const count = deck({ stepToward: "step_toward", need: "needs_connection", gift: "gifts" }[kind]).cards.length;
-    ui.bridgeCarouselIndex = (ui.bridgeCarouselIndex - 1 + count) % count;
-    render();
-  },
-  bridgeCarouselNext() {
-    const kind = ["stepToward", "need", "gift"][ui.bridgeStepIndex];
-    const count = deck({ stepToward: "step_toward", need: "needs_connection", gift: "gifts" }[kind]).cards.length;
-    ui.bridgeCarouselIndex = (ui.bridgeCarouselIndex + 1) % count;
+  // FIXES-v5: the step/need/gift deck is a tap-to-select icon grid now, not a
+  // swipe carousel — a tile tap sets the selected index directly.
+  selectBridgeGridCard(el) {
+    ui.bridgeCarouselIndex = Number(el.dataset.arg);
     render();
   },
   bridgeSelectCard() {
@@ -617,14 +611,15 @@ const actions = {
     }
   },
 
-  // Closing (certificate)
+  // Closing (certificate) — share:true so iOS's real share sheet ("Save Image", which
+  // goes straight to Photos) is what opens, not a generic file download into Files.
   saveClosingCard() {
     const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
     downloadOrShareImage({
       title: L("closing.certificate"),
       lines: [names, L("closing.certificate_body"), new Date().toLocaleDateString()],
       filename: "bridge-certificate.png",
-      share: false,
+      share: true,
     }).then(() => { ui.closingSaved = true; render(); });
   },
   closeSession() { store.endActiveSession(); render(); },

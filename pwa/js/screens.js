@@ -3,8 +3,8 @@ import { isMusicEnabled, isSoundEnabled } from "./sounds.js";
 import {
   primaryButton, secondaryButton, escHtml, escAttr,
   bScreen, bTopbar, bStar, bCta, bCard, bCheck, bProgress, bScale, bScaleHeader, zoneOf,
-  bLink, bMore, bRuleBar, bChipGrid, bChoice, bFooter, bSteps, bCarousel,
-  bRec, bPaper,
+  bLink, bMore, bRuleBar, bChipGrid, bChoice, bFooter, bSteps,
+  bRec, bPaper, bCardGrid,
 } from "./components.js";
 
 // Full walk order, including the two non-"room" stops (basement, bridge) — used by
@@ -169,7 +169,7 @@ function mapPinStatus(variant, completedKind) {
 // FIXES-v5 §1: the map fills the whole screen with no scroll — .b-mapframe/.b-mapbox
 // crop the 941:1672 photo to the viewport instead of the old scrollable full-image
 // layout, and the CTA is a plain, full-width .b-cta (never part of the image).
-function houseMapNavScreen({ pins, headline, subline, ctaText }) {
+function houseMapNavScreen({ pins, headline, ctaText }) {
   return `<div class="b-screen b-mapscreen">
       <div class="b-mapframe">
         <div class="b-mapbox">
@@ -179,12 +179,7 @@ function houseMapNavScreen({ pins, headline, subline, ctaText }) {
       </div>
       <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
       <div class="b-content" style="padding:54px 24px 30px;position:relative;z-index:2;">
-        ${bTopbar({ right: null })}
-        <div class="b-map-title">
-          ${bStar()}
-          <h1 class="b-h1" style="margin:6px 0 0;">${escHtml(headline)}</h1>
-          ${subline ? `<p class="b-body" style="margin:4px 0 0;">${subline}</p>` : ""}
-        </div>
+        ${bTopbar({ right: { title: headline } })}
         <div class="b-spacer"></div>
         ${bCta({ text: ctaText, action: "advance" })}
       </div>
@@ -321,16 +316,6 @@ export function diceScreen(ui, store) {
 }
 
 // =========================================================== Intensity & State
-/** Five plain-language bands rather than a bare number — "7" doesn't mean anything on
- * its own, but "barely tolerable" does. */
-function intensityLevelKey(v) {
-  if (v <= 2) return "intensity.level.0";
-  if (v <= 4) return "intensity.level.1";
-  if (v <= 6) return "intensity.level.2";
-  if (v <= 8) return "intensity.level.3";
-  return "intensity.level.4";
-}
-
 // No more two-card, one-flipped layout (DESIGN.md §2 bans upside-down screens) — each
 // partner gets their own turn: an explicit handoff (`ui.intensityHandoffAcked`), then
 // the scale/chips/free-text for `ui.intensityTurn`, one role at a time.
@@ -759,8 +744,8 @@ function basementQuestionsScreen(store, ui) {
     inner: `
       ${bTopbar({ right: { who: LF("basement.who_asks", store.name(asker)) } })}
       <span class="b-eyebrow" style="margin-top:14px;">${escHtml(L("basement.stage2_eyebrow"))}</span>
-      <h1 class="b-h2" style="margin-top:8px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
-      ${bCard(`<p class="b-body">${escHtml(LF("basement.stage2_body", store.name(asker), store.name(answerer)))}</p>`, "margin-top:14px;")}
+      <h1 class="b-h1" style="margin-top:8px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
+      ${bCard(`<p class="b-body" style="font-size:16.5px;line-height:1.5;">${escHtml(LF("basement.stage2_body", store.name(asker), store.name(answerer)))}</p>`, "margin-top:14px;")}
       <div class="b-spacer"></div>
       <div class="b-count"><span class="b-count__num">${count}</span><span class="b-count__of">/ 15</span></div>
       <div class="b-ticks">${ticks}</div>
@@ -783,6 +768,30 @@ function basementQuestionsScreen(store, ui) {
 const BRIDGE_KIND_ORDER = ["stepToward", "need", "gift"];
 const BRIDGE_DECK_ID = { stepToward: "step_toward", need: "needs_connection", gift: "gifts" };
 const BRIDGE_STEP_LABEL_KEY = { stepToward: "bridge.step_label.step_toward", need: "bridge.step_label.need", gift: "bridge.step_label.gift" };
+const BRIDGE_INSTRUCTION_KEY = { stepToward: "bridge.instruction.step_toward", need: "bridge.instruction.need", gift: "bridge.instruction.gift" };
+
+// A rough keyword -> icon match against the (Russian) card text, just enough to give
+// each tile in the Bridge finale's grid a glyph that roughly matches its meaning —
+// not meant to be exhaustive, "star" is a perfectly fine fallback for anything that
+// doesn't match (FIXES-v5: the gift deck's bare nouns like "машина"/"цветы" read as
+// literal without ANY visual framing; a matching icon is part of the fix).
+const CARD_ICON_RULES = [
+  [/объят|обним|рядом побыть|близост/i, "heart"],
+  [/руку|за руку|прикосн/i, "closeness"],
+  [/глаза|смотри/i, "eye"],
+  [/скажи|слов|говор|честн|слуша/i, "speech"],
+  [/чай|кофе|завтрак|ужин|массаж/i, "cup"],
+  [/молч|одному|одной|тишин|без телефон|вечер/i, "moon"],
+  [/цвет/i, "flower"],
+  [/песн|танец|музык/i, "music"],
+  [/книг|письмо/i, "book"],
+  [/машин|поездк|путешеств/i, "car"],
+  [/кольц|часы|украшен|сумка/i, "gift"],
+];
+function cardIcon(text) {
+  for (const [re, name] of CARD_ICON_RULES) if (re.test(text)) return name;
+  return "star";
+}
 
 export function bridgeFinaleScreen(store, ui) {
   const turn = ui.bridgeTurn;
@@ -847,12 +856,15 @@ export function bridgeFinaleScreen(store, ui) {
     });
   }
 
-  // ui.bridgeStage === "cards"
+  // ui.bridgeStage === "cards" — FIXES-v5: every option is a tappable icon+label tile
+  // in one grid, not a one-at-a-time swipe carousel (the redundant .b-progress bar
+  // stacked right above .b-steps — two progress indicators for the same 3 steps — is
+  // also gone here, that pairing is what read as "stripes layering" at the top).
   const kind = BRIDGE_KIND_ORDER[ui.bridgeStepIndex];
   const d = deck(BRIDGE_DECK_ID[kind]);
   const cards = d.cards;
   const idx = Math.min(ui.bridgeCarouselIndex, cards.length - 1);
-  const card = cards[idx];
+  const tiles = cards.map((c) => ({ text: L(c.textKey), icon: cardIcon(L(c.textKey)) }));
   return bScreen({
     photo: "bridge", muted: true, shade: "top",
     contentStyle: "padding:54px 24px 30px;",
@@ -860,21 +872,12 @@ export function bridgeFinaleScreen(store, ui) {
       ${bTopbar({ right: { who: LF("room.who_answers", store.name(turn)) } })}
       <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
         <span class="b-eyebrow">${escHtml(L("bridge.eyebrow_step"))}</span>
-        <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:${Math.round(((ui.bridgeStepIndex + 1) / 3) * 100)}%;"></div></div>
         <span class="b-step">${ui.bridgeStepIndex + 1} / 3</span>
       </div>
       ${bSteps(3, ui.bridgeStepIndex)}
-      <div style="display:flex;justify-content:space-between;margin-top:8px;">
-        <span class="b-small" style="color:#F4EDE4;">${escHtml(LF("bridge.step_num_label", ui.bridgeStepIndex + 1, L(BRIDGE_STEP_LABEL_KEY[kind])))}</span>
-      </div>
-      <p class="b-body" style="margin-top:18px;">${escHtml(L("bridge.carousel_instruction"))}</p>
-      <div style="margin-top:14px;">
-        ${bCarousel({
-          inner: `${bStar()}<p class="b-quote" style="color:#F4EDE4;font-size:19px;">${escHtml(L(card.textKey))}</p>`,
-          prevAction: "bridgeCarouselPrev", nextAction: "bridgeCarouselNext",
-          dotsCount: cards.length, dotsIndex: idx,
-        })}
-      </div>
+      <h1 class="b-h2" style="margin-top:14px;">${escHtml(L(BRIDGE_STEP_LABEL_KEY[kind]))}</h1>
+      <p class="b-body" style="margin-top:6px;">${escHtml(L(BRIDGE_INSTRUCTION_KEY[kind]))}</p>
+      <div style="margin-top:14px;">${bCardGrid(tiles, idx, "selectBridgeGridCard")}</div>
       <div class="b-spacer"></div>
       ${bCta({ text: L("bridge.pick_this"), action: "bridgeSelectCard" })}
     `,
@@ -936,32 +939,6 @@ export function voiceSnapshotScreen(store, ui) {
 }
 
 // =========================================================== Closing
-// The intensity/state check-in a couple fills in before their first room is never
-// shown to either partner again after that screen — recap it here, at the one moment
-// the app already looks back over the whole session, so filling it in actually pays
-// off later instead of disappearing the moment they tap Continue.
-/** "Стало" for the было→стало certificate line — the average of every emotion-scale
- * value that partner actually submitted during the rooms (kind:"emotion" entries in
- * cardsPlayed), falling back to their starting intensity if they never got one (e.g.
- * the walk ended early). */
-function finalEmotionAverage(store, role) {
-  const entries = store.session.cardsPlayed.filter((c) => c.kind === "emotion" && c.role === role);
-  if (!entries.length) return store.session[role === "partnerA" ? "intensityA" : "intensityB"];
-  return Math.round(entries.reduce((sum, c) => sum + c.value, 0) / entries.length);
-}
-
-function closingRecapRow(store, role) {
-  const state = store.session[role === "partnerA" ? "stateA" : "stateB"];
-  const level = store.session[role === "partnerA" ? "intensityA" : "intensityB"];
-  const labels = state.states.map((s) => L(`state.${s}`));
-  if (state.customText.trim()) labels.push(state.customText.trim());
-  const summary = labels.length ? labels.join(", ") : L(intensityLevelKey(level));
-  return `<div class="field-row">
-      <span class="dot ${role === "partnerA" ? "a" : "b"}"></span>
-      <span class="on-photo" style="font-size:15px;"><b>${escHtml(store.name(role))}</b> — ${escHtml(summary)}</span>
-    </div>`;
-}
-
 const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"];
 function toRoman(n) {
   return ROMAN_NUMERALS[n - 1] || String(n);
@@ -1023,8 +1000,6 @@ export function contractViewScreen(store) {
 export function closingScreen(store, ui) {
   const dateStr = new Date().toLocaleDateString(getLanguage() === "ru" ? "ru-RU" : "en-US", { year: "numeric", month: "long", day: "numeric" });
   const certNo = store.activeProfileId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 6).toUpperCase();
-  const wasBecameRow = (role) =>
-    `<p style="margin:0;font-size:12.5px;">${escHtml(LF("closing.was_became", store.name(role), String(store.session[role === "partnerA" ? "intensityA" : "intensityB"]), String(finalEmotionAverage(store, role))))}</p>`;
   return bScreen({
     photo: "ending", shade: "soft",
     contentStyle: "padding:54px 24px 30px;",
@@ -1037,14 +1012,10 @@ export function closingScreen(store, ui) {
         <h3 style="font-size:30px;margin-top:2px;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
         <p style="margin:6px 0 0;max-width:260px;">${escHtml(L("closing.certificate_body"))}</p>
         ${bStarGlyphInline()}
-        <div style="display:flex;flex-direction:column;gap:2px;margin-top:2px;">${wasBecameRow("partnerA")}${wasBecameRow("partnerB")}</div>
         <div style="width:60px;height:1px;background:#C9A45C;margin:6px auto;"></div>
         <p style="margin:0;font-size:12px;color:#8A7654;">${escHtml(LF("closing.number", certNo, dateStr))}</p>
       `, "margin-top:18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px 22px;border:1px solid #C9A45C;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 0 0 5px #F4EDE2,inset 0 0 0 6px #C9A45C;")}
-      <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;text-align:left;">
-        ${closingRecapRow(store, "partnerA")}
-        ${closingRecapRow(store, "partnerB")}
-      </div>
+      <p class="b-body" style="margin-top:18px;text-align:center;">${escHtml(L("closing.encouragement"))}</p>
       <div class="b-spacer"></div>
       ${bCta({ key: "closing.save_to_gallery", action: "saveClosingCard", ghost: true, enabled: !ui.closingSaved })}
       <div style="margin-top:10px;">${bCta({ key: "closing.close", action: "closeSession" })}</div>

@@ -34,11 +34,32 @@ const B_FORWARD_ARROW_SVG = `<svg width="22" height="14" viewBox="0 0 22 14" fil
 const B_CLOSE_SVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#EFE6DA" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg>`;
 const B_GEAR_SVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EFE6DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>`;
 const B_CHEVRON_DOWN_SVG = `<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 1.5l5 5 5-5"></path></svg>`;
-const B_CHEVRON_LEFT_SVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 1.5L2 8l6.5 6.5"></path></svg>`;
-const B_CHEVRON_RIGHT_SVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 1.5L8 8l-6.5 6.5"></path></svg>`;
 const B_CHECK_SVG = `<svg width="12" height="10" viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5l3.5 3.5L11 1"></path></svg>`;
 const B_X_SVG = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M1 1l8 8M9 1L1 9"></path></svg>`;
 const B_SPEAK_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>`;
+
+/** A small, generic icon set for `bCardGrid` tiles (FIXES-v5: gift/need/step cards
+ * read as bare nouns with nothing to say what kind of thing they are — a matching
+ * glyph next to the word does a lot of that work without needing bespoke art per
+ * card). Deliberately plain line icons, not emoji (see FIXES-v4 §0). */
+const B_TILE_ICON = {
+  heart: `<path d="M12 20.3c-.3 0-.6-.1-.8-.3C7.8 17 4 13.2 4 9.4 4 6.7 6.1 4.6 8.7 4.6c1.4 0 2.7.7 3.3 1.8.6-1.1 1.9-1.8 3.3-1.8 2.6 0 4.7 2.1 4.7 4.8 0 3.8-3.8 7.6-7.2 10.6-.2.2-.5.3-.8.3Z"/>`,
+  closeness: `<circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><path d="M10 12h4"/>`,
+  eye: `<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`,
+  speech: `<path d="M4 5h16v10H9l-4 4v-4H4Z"/>`,
+  cup: `<path d="M5 8h11v6a5 5 0 0 1-5 5H9a4 4 0 0 1-4-4Z"/><path d="M16 9.5h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3.5v2M11 3.5v2"/>`,
+  moon: `<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/>`,
+  flower: `<circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="6" r="2.6"/><circle cx="12" cy="18" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/>`,
+  gift: `<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 13h16M12 9v11M8 9c-1.8 0-2.5-3-1-4 1.3-.9 3 1 4 4 1-3 2.7-4.9 4-4 1.5 1 .8 4-1 4"/>`,
+  star: `<path d="M12 3l2.3 5.6L20 9.2l-4.4 3.8L17 19l-5-3.3L7 19l1.4-6-4.4-3.8 5.7-.6Z"/>`,
+  music: `<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>`,
+  book: `<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21Z"/><path d="M4 5.5v15"/>`,
+  car: `<path d="M4 16V12l2-5h12l2 5v4"/><path d="M4 16h16M7 16v2M17 16v2"/><circle cx="7.5" cy="16" r="1.4"/><circle cx="16.5" cy="16" r="1.4"/>`,
+  letter: `<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6 8.5 7 8.5-7"/>`,
+};
+function bTileIcon(name) {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${B_TILE_ICON[name] || B_TILE_ICON.star}</svg>`;
+}
 
 function bStarGlyph(size, fill) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.6 7.2 16.8 11.4 24 12 16.8 12.6 12.6 16.8 12 24 11.4 16.8 7.2 12.6 0 12 7.2 11.4 11.4 7.2 12 0Z" fill="${fill}"></path></svg>`;
@@ -81,6 +102,8 @@ export function bTopbar({ back = true, backLabel, right = "gear" } = {}) {
     rightHtml = `<button class="b-iconbtn pressable" type="button" data-action="${right.close}" aria-label="Close">${B_CLOSE_SVG}</button>`;
   } else if (right && right.who) {
     rightHtml = `<span class="b-who"><span class="b-who__dot"></span>${escHtml(right.who)}</span>`;
+  } else if (right && right.title) {
+    rightHtml = `<span class="b-topbar-title">${escHtml(right.title)}</span>`;
   }
   return `<div class="b-topbar">${backHtml}${rightHtml}</div>`;
 }
@@ -193,6 +216,19 @@ export function bChoice({ text, on, action, arg }) {
   return `<button type="button" class="b-choice${on ? " is-on" : ""} pressable" data-action="${action}" data-arg="${escAttr(arg)}"><span class="b-choice__radio"></span>${escHtml(text)}</button>`;
 }
 
+/** A 3-column grid of icon+label tiles — `.b-cardgrid` — single-select, used for the
+ * Bridge finale's step/need/gift decks in place of a one-at-a-time swipe carousel:
+ * every option is visible and tappable at once, `selectedIndex` glows cream (FIXES-v5). */
+export function bCardGrid(items, selectedIndex, action) {
+  const html = items
+    .map((it, i) => `<button type="button" class="b-cardtile${i === selectedIndex ? " is-on" : ""} pressable" data-action="${action}" data-arg="${i}">
+        <span class="b-cardtile__icon">${bTileIcon(it.icon)}</span>
+        <span class="b-cardtile__label">${escHtml(it.text)}</span>
+      </button>`)
+    .join("");
+  return `<div class="b-cardgrid">${html}</div>`;
+}
+
 /** A sticky, always-visible footer for a CTA on a screen whose body can
  * scroll — `.b-footer` (FIXES-v4 v4 additions) — so the button is never
  * pushed below the fold by long content. */
@@ -204,18 +240,6 @@ export function bFooter(inner) {
 export function bSteps(count, activeIndex) {
   const spans = Array.from({ length: count }, (_, i) => `<span${i === activeIndex ? ' class="is-on"' : ""}></span>`).join("");
   return `<div class="b-steps">${spans}</div>`;
-}
-
-/** The Bridge finale's card carousel — prev/next arrow buttons around a
- * `.b-card`, plus a dot row underneath. `inner` is the card's own content. */
-export function bCarousel({ inner, prevAction, nextAction, dotsCount, dotsIndex }) {
-  const dots = Array.from({ length: dotsCount }, (_, i) => `<i${i === dotsIndex ? ' class="is-on"' : ""}></i>`).join("");
-  return `<div class="b-carousel">
-      <button class="b-carousel__nav pressable" type="button" aria-label="Предыдущая" data-action="${prevAction}">${B_CHEVRON_LEFT_SVG}</button>
-      <div class="b-card" style="flex-grow:1;min-height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center;">${inner}</div>
-      <button class="b-carousel__nav pressable" type="button" aria-label="Следующая" data-action="${nextAction}">${B_CHEVRON_RIGHT_SVG}</button>
-    </div>
-    <div class="b-dots" style="margin-top:14px;">${dots}</div>`;
 }
 
 /** The voice-message record button — `.b-rec` (a plain circle, never a mic
