@@ -1,8 +1,9 @@
-import { L, LF, deck, room } from "./content.js";
+import { L, LF, deck, room, getLanguage } from "./content.js";
+import { isMusicEnabled, isSoundEnabled } from "./sounds.js";
 import {
   primaryButton, secondaryButton, escHtml, escAttr,
   bScreen, bTopbar, bStar, bCta, bCard, bCheck, bProgress, bScale, bScaleHeader, zoneOf,
-  bLink, bMore, bRuleBar, bChipGrid, bChoice, bYesNo, bFooter, bSteps, bCarousel,
+  bLink, bMore, bRuleBar, bChipGrid, bChoice, bFooter, bSteps, bCarousel,
   bRec, bPaper,
 } from "./components.js";
 
@@ -10,13 +11,13 @@ import {
 // the house-map screens (DESIGN.md §1/§7) to compute pin status and pick the next
 // destination's name/photo.
 const MAP_PINS = [
-  { kind: "hall", nameKey: "room.hall.name", x: 18.6, y: 8.4 },
-  { kind: "livingRoom", nameKey: "room.living_room.name", x: 62.7, y: 15.3 },
-  { kind: "study", nameKey: "room.study.name", x: 28.7, y: 29.3 },
-  { kind: "kidsRoom", nameKey: "room.kids_room.name", x: 70.7, y: 30.7 },
-  { kind: "kitchen", nameKey: "room.kitchen.name", x: 43, y: 43.4 },
-  { kind: "basement", nameKey: "room.basement.name", x: 47.1, y: 59.1 },
-  { kind: "bridge", nameKey: "bridge.title", x: 47.1, y: 83.9 },
+  { kind: "hall", nameKey: "room.hall.name", enterKey: "map.enter_room.hall", x: 18.6, y: 8.4 },
+  { kind: "livingRoom", nameKey: "room.living_room.name", enterKey: "map.enter_room.living_room", x: 62.7, y: 15.3 },
+  { kind: "study", nameKey: "room.study.name", enterKey: "map.enter_room.study", x: 28.7, y: 29.3 },
+  { kind: "kidsRoom", nameKey: "room.kids_room.name", enterKey: "map.enter_room.kids_room", x: 70.7, y: 30.7 },
+  { kind: "kitchen", nameKey: "room.kitchen.name", enterKey: "map.enter_room.kitchen", x: 43, y: 43.4 },
+  { kind: "basement", nameKey: "room.basement.name", enterKey: "map.enter_room.basement", x: 47.1, y: 59.1 },
+  { kind: "bridge", nameKey: "bridge.title", enterKey: "map.enter_bridge", x: 47.1, y: 83.9 },
 ];
 
 const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
@@ -165,23 +166,35 @@ function mapPinStatus(variant, completedKind) {
   return MAP_PINS.map((p, i) => (i <= doneUpToIndex ? "done" : i === currentIndex ? "current" : "locked"));
 }
 
+// FIXES-v5 §1: the map fills the whole screen with no scroll — .b-mapframe/.b-mapbox
+// crop the 941:1672 photo to the viewport instead of the old scrollable full-image
+// layout, and the CTA is a plain, full-width .b-cta (never part of the image).
+function houseMapNavScreen({ pins, headline, subline, ctaText }) {
+  return `<div class="b-screen b-mapscreen">
+      <div class="b-mapframe">
+        <div class="b-mapbox">
+          <img src="assets/rooms/house-map.jpg" alt="">
+          ${pins}
+        </div>
+      </div>
+      <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
+      <div class="b-content" style="padding:54px 24px 30px;position:relative;z-index:2;">
+        ${bTopbar({ right: null })}
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;text-align:center;">
+          ${bStar()}
+          <h1 class="b-h1">${escHtml(headline)}</h1>
+          ${subline ? `<p class="b-body">${subline}</p>` : ""}
+        </div>
+        <div class="b-spacer"></div>
+        ${bCta({ text: ctaText, action: "advance" })}
+      </div>
+    </div>`;
+}
+
 export function houseMapGateScreen() {
   const statuses = mapPinStatus("gate", null);
   const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
-  return bScreen({
-    contentStyle: "padding:54px 24px 30px;",
-    inner: `
-      ${bTopbar({ right: null })}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
-        ${bStar()}
-        <h1 class="b-h1">${escHtml(L("map.title"))}</h1>
-      </div>
-      <div class="b-spacer"></div>
-      <div class="b-map"><img src="assets/rooms/house-map.jpg" alt="">${pins}</div>
-      <div class="b-spacer"></div>
-      ${bCta({ text: LF("map.enter_room", L("room.hall.name")), action: "advance" })}
-    `,
-  });
+  return houseMapNavScreen({ pins, headline: L("map.title"), ctaText: L(MAP_PINS[0].enterKey) });
 }
 
 export function houseMapAfterRoomScreen(completedKind) {
@@ -189,21 +202,14 @@ export function houseMapAfterRoomScreen(completedKind) {
   const next = MAP_PINS[idx + 1];
   const statuses = mapPinStatus("afterRoom", completedKind);
   const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
-  const ctaText = next.kind === "bridge" ? L("map.enter_bridge") : LF("map.enter_room", L(next.nameKey));
-  return bScreen({
-    contentStyle: "padding:54px 24px 30px;",
-    inner: `
-      ${bTopbar({ right: null })}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;text-align:center;">
-        ${bStar()}
-        <h1 class="b-h1">${escHtml(L("map.title"))}</h1>
-        <p class="b-body">${escHtml(LF("map.room_done", L(MAP_PINS[idx].nameKey)))} · ${escHtml(LF("map.next_room", L(next.nameKey)))}</p>
-      </div>
-      <div class="b-spacer"></div>
-      <div class="b-map"><img src="assets/rooms/house-map.jpg" alt="">${pins}</div>
-      <div class="b-spacer"></div>
-      ${bCta({ text: ctaText, action: "advance" })}
-    `,
+  // No subline here (FIXES-v5 §1's reference keeps the map header to just the title) —
+  // the glowing gold "current" pin on the map itself plus the CTA's own destination
+  // name already say what's next, and a subline at this height collided with the
+  // pins sitting right behind it.
+  return houseMapNavScreen({
+    pins,
+    headline: L("map.title"),
+    ctaText: L(next.enterKey),
   });
 }
 
@@ -280,11 +286,11 @@ const DIE_PIP_LAYOUT = {
   6: ["1/1", "1/3", "2/1", "2/3", "3/1", "3/3"],
 };
 
-function dieFace(value, size = 120) {
+function dieFace(value, size = 120, rolling = false) {
   const pips = (DIE_PIP_LAYOUT[value] || DIE_PIP_LAYOUT[1])
     .map((area) => `<span class="b-pip" style="grid-area:${area};width:${Math.round(size * 0.15)}px;height:${Math.round(size * 0.15)}px;"></span>`)
     .join("");
-  return `<div class="b-die" style="width:${size}px;height:${size}px;border-radius:28px;padding:18px;">${pips}</div>`;
+  return `<div class="b-die-stage"><div class="b-die${rolling ? " is-rolling" : ""}" style="width:${size}px;height:${size}px;border-radius:28px;padding:18px;">${pips}</div></div>`;
 }
 
 export function diceScreen(ui, store) {
@@ -301,7 +307,7 @@ export function diceScreen(ui, store) {
         <p class="b-body">${escHtml(store.diceJustTied ? L("dice.tie") : L("dice.subtitle"))}</p>
       </div>
       <div class="b-spacer"></div>
-      <div style="display:flex;justify-content:center;">${dieFace(ui.diceFace || 1)}</div>
+      <div style="display:flex;justify-content:center;">${dieFace(ui.diceFace || 1, 120, ui.diceRolling)}</div>
       ${(store.diceValueA != null || store.diceValueB != null) ? `
         <div class="b-card" style="margin-top:22px;display:grid;grid-template-columns:1fr 1fr;padding:0;overflow:hidden;">
           <div style="padding:14px 16px;border-right:1px solid rgba(239,230,218,0.14);"><div class="b-small">${escHtml(store.name("partnerA"))}</div><div style="font:400 30px/1 var(--serif);color:#F4EDE4;margin-top:6px;">${store.diceValueA ?? "—"}</div></div>
@@ -552,7 +558,7 @@ function roomPartnerReadsScreenV3(store, reveal) {
       `, "margin-top:18px;")}
       <p class="b-small" style="margin-top:12px;">${escHtml(L("handoff.read_note"))}</p>
       <div class="b-spacer"></div>
-      ${bCta({ text: L("handoff.read_continue"), action: "confirmRevealV3" })}
+      ${bCta({ text: L("handoff.read_it"), action: "confirmRevealV3" })}
     `,
   });
 }
@@ -602,6 +608,7 @@ function roomTellScreenV3(store, ui, cfg) {
  * until a level is picked AND at least one feeling (or free text) is given. */
 function roomEmotionScreenV3(store, ui, cfg) {
   const active = store.activePartner;
+  const other = store.other(active);
   const e = ui.roomV3.emotion;
   const chips = ROOM_FEELING_KEYS.map((s) => ({ text: L(`state.${s}`), on: e.chips.includes(s), action: "toggleRoomEmotionChipV3", arg: s }));
   const ready = e.value !== null && (e.chips.length > 0 || e.custom.trim().length > 0);
@@ -619,7 +626,7 @@ function roomEmotionScreenV3(store, ui, cfg) {
       <div style="margin-top:8px;">${bChipGrid(chips)}</div>
       <input class="b-input" type="text" id="roomEmotionCustom" placeholder="${escAttr(L("intensity.custom_placeholder"))}" value="${escAttr(e.custom)}" style="margin-top:10px;height:46px;">
       <div class="b-spacer"></div>
-      ${bCta({ text: L("room.done"), action: "submitRoomEmotionV3", enabled: ready })}
+      ${bCta({ text: LF("room.emotion_handoff", store.name(other)), action: "submitRoomEmotionV3", enabled: ready })}
     `,
   });
 }
@@ -737,32 +744,29 @@ function basementFearReadScreen(store, reveal) {
   });
 }
 
+// FIXES-v5 §4: verbal Да/Нет, not tapped — there's nothing to capture per-answer
+// (no more .b-yn buttons), just a running tally up to 15, kept as a big numeral + a
+// row of ticks, with one button that advances the count and a separate "done" button.
 function basementQuestionsScreen(store, ui) {
   const asker = store.activePartner;
   const answerer = store.other(asker);
-  const history = store.basementYN[asker];
-  const count = history.length;
-  const rows = history.map((isYes, i) => `<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(239,230,218,0.1);"><span class="b-small">${escHtml(LF("basement.question_n", i + 1))}</span><span style="font:500 13px/1 var(--sans);color:${isYes ? "#EFE6DA" : "#E9A08F"};">${escHtml(isYes ? L("basement.yes") : L("basement.no"))}</span></div>`).join("");
+  const count = store.basementAskedCount[asker];
+  const atCap = count >= 15;
+  const ticks = Array.from({ length: 15 }, (_, i) => `<span class="b-tick${i < count ? " is-on" : ""}"></span>`).join("");
   return bScreen({
     photo: "basement", shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
       ${bTopbar({ right: { who: LF("basement.who_asks", store.name(asker)) } })}
-      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
-        <span class="b-eyebrow">${escHtml(L("basement.stage2_eyebrow"))}</span>
-        <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:${Math.round((count / 15) * 100)}%;"></div></div>
-        <span class="b-step">${count} / 15</span>
-      </div>
-      <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
-      <div style="margin-top:12px;">${bRuleBar([{ kind: "speak", text: LF("room.rule_speaks", store.name(asker)) }, { kind: "plain", text: LF("basement.answerer_note", store.name(answerer)) }])}</div>
-      <p class="b-small" style="margin-top:10px;">${escHtml(L("basement.yn_example"))}</p>
-      ${bCard(`
-        <div style="display:flex;justify-content:space-between;align-items:baseline;"><span class="b-eyebrow">${escHtml(LF("basement.answer_of", store.name(answerer)))}</span><span class="b-step">${count} / 15</span></div>
-        <div style="margin-top:14px;">${bYesNo({ yesAction: "basementAnswerYes", noAction: "basementAnswerNo" })}</div>
-      `, "margin-top:16px;")}
-      ${rows ? `<div style="margin-top:10px;">${rows}</div>` : ""}
+      <span class="b-eyebrow" style="margin-top:14px;">${escHtml(L("basement.stage2_eyebrow"))}</span>
+      <h1 class="b-h2" style="margin-top:8px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
+      ${bCard(`<p class="b-body">${escHtml(LF("basement.stage2_body", store.name(asker), store.name(answerer)))}</p>`, "margin-top:14px;")}
       <div class="b-spacer"></div>
-      ${bCta({ text: L("basement.no_more_questions"), action: "finishBasementAskingV3" })}
+      <div class="b-count"><span class="b-count__num">${count}</span><span class="b-count__of">/ 15</span></div>
+      <div class="b-ticks">${ticks}</div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: LF("basement.answered_next", store.name(answerer)), action: "basementAnswerGiven", enabled: !atCap, style: "padding:0 48px 0 16px;letter-spacing:.02em;font-size:11px;" })}
+      <div style="margin-top:12px;">${bCta({ text: L("basement.no_more_questions"), action: "finishBasementAskingV3", ghost: true })}</div>
     `,
   });
 }
@@ -936,6 +940,16 @@ export function voiceSnapshotScreen(store, ui) {
 // shown to either partner again after that screen — recap it here, at the one moment
 // the app already looks back over the whole session, so filling it in actually pays
 // off later instead of disappearing the moment they tap Continue.
+/** "Стало" for the было→стало certificate line — the average of every emotion-scale
+ * value that partner actually submitted during the rooms (kind:"emotion" entries in
+ * cardsPlayed), falling back to their starting intensity if they never got one (e.g.
+ * the walk ended early). */
+function finalEmotionAverage(store, role) {
+  const entries = store.session.cardsPlayed.filter((c) => c.kind === "emotion" && c.role === role);
+  if (!entries.length) return store.session[role === "partnerA" ? "intensityA" : "intensityB"];
+  return Math.round(entries.reduce((sum, c) => sum + c.value, 0) / entries.length);
+}
+
 function closingRecapRow(store, role) {
   const state = store.session[role === "partnerA" ? "stateA" : "stateB"];
   const level = store.session[role === "partnerA" ? "intensityA" : "intensityB"];
@@ -948,12 +962,24 @@ function closingRecapRow(store, role) {
     </div>`;
 }
 
-// =========================================================== Contract (V11) — the
-// couple's agreement rules, as a compact "paper" receipt, with Save/Share. Save uses
-// the same download-a-PNG technique as the certificate; Share uses the real Web
-// Share API (the system share sheet) when the browser supports it.
+const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"];
+function toRoman(n) {
+  return ROMAN_NUMERALS[n - 1] || String(n);
+}
+function clauseSection(titleKey, texts) {
+  if (!texts.length) return "";
+  const rows = texts.map((t, i) => `<p class="b-clause"><span class="b-clause__num">${toRoman(i + 1)}.</span><span>${escHtml(t)}</span></p>`).join("");
+  return `<div class="b-clause-section"><span class="b-clause-section__title">${escHtml(L(titleKey))}</span>${rows}</div>`;
+}
+
+// =========================================================== Contract (V11) — a
+// double-gold-bordered "paper" with two roman-numeral sections (what the couple
+// stops doing / what they promise), a contract number + date, and a finger-signature
+// pad per partner (FIXES-v5 §8). "PDF" prints just this card via the browser's own
+// print sheet; "В Фото" keeps the existing share-image flow.
 export function contractViewScreen(store) {
-  const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const dateStr = new Date().toLocaleDateString(getLanguage() === "ru" ? "ru-RU" : "en-US", { year: "numeric", month: "long", day: "numeric" });
+  const contractNo = store.activeProfileId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 6).toUpperCase();
   const rules = store.couplesAgreement;
   return bScreen({
     photo: "bridge", shade: "text",
@@ -962,20 +988,29 @@ export function contractViewScreen(store) {
       ${bTopbar()}
       <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("contract.title"))}</h1>
       ${bPaper(`
-        <span class="b-eyebrow">${escHtml(LF("contract.eyebrow", dateStr))}</span>
+        <div class="b-monogram">B</div>
+        <span class="b-eyebrow">${escHtml(LF("contract.number", contractNo, dateStr))}</span>
         <h3>${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
-        ${rules.length
-          ? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">${rules.map((r) => `<p style="margin:0;">· ${escHtml(r)}</p>`).join("")}</div>`
-          : `<p style="margin:0;">${escHtml(L("contract.no_rules"))}</p>`}
-        <div style="height:1px;background:rgba(27,26,24,0.15);margin:6px 0;"></div>
-        <p style="margin:0;font-style:italic;">${escHtml(L("bridge.promise_1"))}</p>
-      `, "margin-top:16px;display:flex;flex-direction:column;gap:12px;")}
+        ${rules.length ? clauseSection("contract.section_stop", rules) : `<p style="margin:8px 0 0;">${escHtml(L("contract.no_rules"))}</p>`}
+        ${clauseSection("contract.section_promise", [L("bridge.promise_1"), L("bridge.promise_2")])}
+        <div style="height:1px;background:rgba(27,26,24,0.15);margin:10px 0 2px;width:100%;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;">
+          <div style="text-align:left;">
+            <canvas class="b-sigpad" width="260" height="110"></canvas>
+            <span class="b-clause-section__title" style="margin-top:4px;">${escHtml(LF("contract.signature_of", store.name("partnerA")))}</span>
+          </div>
+          <div style="text-align:left;">
+            <canvas class="b-sigpad" width="260" height="110"></canvas>
+            <span class="b-clause-section__title" style="margin-top:4px;">${escHtml(LF("contract.signature_of", store.name("partnerB")))}</span>
+          </div>
+        </div>
+      `, "margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;border:1px solid #C9A45C;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 0 0 5px #F4EDE2,inset 0 0 0 6px #C9A45C;")}
       <div class="b-spacer"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        ${bCta({ text: L("contract.save_pdf"), action: "saveContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
-        ${bCta({ text: L("contract.share"), action: "shareContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+        ${bCta({ text: L("contract.save_pdf"), action: "printContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+        ${bCta({ text: L("contract.share"), action: "saveContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
       </div>
-      <div style="margin-top:10px;">${bCta({ key: "intensity.continue_button", action: "advance" })}</div>
+      <div style="margin-top:10px;">${bCta({ text: L("contract.sign"), action: "advance" })}</div>
     `,
   });
 }
@@ -986,7 +1021,10 @@ export function contractViewScreen(store) {
 // there's no native photo library API to call from a PWA), "Завершить игру" makes
 // plain that the session is over.
 export function closingScreen(store, ui) {
-  const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const dateStr = new Date().toLocaleDateString(getLanguage() === "ru" ? "ru-RU" : "en-US", { year: "numeric", month: "long", day: "numeric" });
+  const certNo = store.activeProfileId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 6).toUpperCase();
+  const wasBecameRow = (role) =>
+    `<p style="margin:0;font-size:12.5px;">${escHtml(LF("closing.was_became", store.name(role), String(store.session[role === "partnerA" ? "intensityA" : "intensityB"]), String(finalEmotionAverage(store, role))))}</p>`;
   return bScreen({
     photo: "ending", shade: "soft",
     contentStyle: "padding:54px 24px 30px;",
@@ -994,13 +1032,15 @@ export function closingScreen(store, ui) {
       ${bTopbar({ back: false, right: null })}
       <div style="text-align:center;margin-top:10px;"><span class="b-eyebrow" style="color:#C9A45C;">${escHtml(L("closing.game_finished"))}</span></div>
       ${bPaper(`
-        ${bStarGlyphInline()}
-        <span class="b-eyebrow">${escHtml(L("closing.certificate"))}</span>
-        <h3 style="font-size:30px;margin-top:6px;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
+        <div class="b-monogram">B</div>
+        <span class="b-eyebrow" style="margin-top:6px;">${escHtml(L("closing.certified_intro"))}</span>
+        <h3 style="font-size:30px;margin-top:2px;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
         <p style="margin:6px 0 0;max-width:260px;">${escHtml(L("closing.certificate_body"))}</p>
+        ${bStarGlyphInline()}
+        <div style="display:flex;flex-direction:column;gap:2px;margin-top:2px;">${wasBecameRow("partnerA")}${wasBecameRow("partnerB")}</div>
         <div style="width:60px;height:1px;background:#C9A45C;margin:6px auto;"></div>
-        <p style="margin:0;font-size:12px;color:#8A7654;">${escHtml(dateStr)} · Bridge</p>
-      `, "margin-top:18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px 22px;border:1px solid #C9A45C;")}
+        <p style="margin:0;font-size:12px;color:#8A7654;">${escHtml(LF("closing.number", certNo, dateStr))}</p>
+      `, "margin-top:18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px 22px;border:1px solid #C9A45C;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 0 0 5px #F4EDE2,inset 0 0 0 6px #C9A45C;")}
       <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;text-align:left;">
         ${closingRecapRow(store, "partnerA")}
         ${closingRecapRow(store, "partnerB")}
@@ -1025,6 +1065,8 @@ export function settingsScreen(store, ui) {
   const section = (titleKey, items) => `<span class="b-eyebrow" style="margin-top:20px;color:#C9A45C;">${escHtml(L(titleKey))}</span><div class="b-menu">${items.join("")}</div>`;
   const item = (labelKey, action, { small, danger } = {}) =>
     `<button class="b-menu__item${danger ? " b-menu__item--danger" : ""} pressable" type="button" data-action="${action}"><span>${escHtml(L(labelKey))}${small ? `<small>${escHtml(L(small))}</small>` : ""}</span>${danger ? "" : `<svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h19M14 1l6 6-6 6"></path></svg>`}</button>`;
+  const toggleRow = (labelKey, on, action) =>
+    `<div class="b-menu__item"><span>${escHtml(L(labelKey))}</span><button type="button" class="b-switch${on ? " is-on" : ""}" role="switch" aria-checked="${on}" data-action="${action}"><span class="b-switch__knob"></span></button></div>`;
   return bScreen({
     photo: "living-room", shade: "text",
     contentStyle: "padding:54px 24px 20px;",
@@ -1042,6 +1084,11 @@ export function settingsScreen(store, ui) {
       ])}
       ${section("settings.section_relationship", [
         item("settings.relationships_row", "openProfiles"),
+        item("settings.voice_notes_row", "openVoiceNotes"),
+      ])}
+      ${section("settings.section_sound", [
+        toggleRow("settings.music_row", isMusicEnabled(), "toggleMusicPref"),
+        toggleRow("settings.sound_row", isSoundEnabled(), "toggleSoundPref"),
       ])}
       ${section("settings.section_support", [
         item("settings.crisis_row", "openCrisis"),
@@ -1079,6 +1126,21 @@ export function globalOverlays(store, ui) {
     html += modalSheet(L("profiles.title"), `<div class="settings-group">${rows}</div>
         <p class="secondary" style="padding:14px 4px;font-size:13px;">${escHtml(L("profiles.new_profile_prompt"))}</p>
         <button class="settings-row" data-action="createProfile">${escHtml(L("profiles.start_new"))}</button>`, "closeGlobalSheet");
+  }
+  if (ui.globalSheet === "voiceNotes") {
+    const notes = ui.voiceNotesList;
+    const rows = (notes || [])
+      .map((n, i) => `<button class="settings-row" style="color:var(--ink);flex-direction:column;align-items:flex-start;" data-action="playVoiceNote" data-arg="${i}">
+          <span style="font-weight:600;">${escHtml(store.name(n.role))}</span>
+          <span class="secondary" style="font-size:13px;">${escHtml(new Date(n.createdAt).toLocaleString())} · ${escHtml(L("voice_notes.play"))}</span>
+        </button>`)
+      .join("");
+    const body = notes === null
+      ? ""
+      : notes.length === 0
+        ? `<p class="secondary" style="padding:14px 4px;font-size:13px;">${escHtml(L("voice_notes.empty"))}</p>`
+        : `<div class="settings-group">${rows}</div>`;
+    html += modalSheet(L("voice_notes.title"), body, "closeGlobalSheet");
   }
   if (ui.globalSheet === "houseMapSettings") {
     html += fullSheet(houseMapScreen("settings", ui.houseMapTextExpanded));

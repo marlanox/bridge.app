@@ -69,11 +69,9 @@ html, body {
   position: fixed; inset: 0;
   overflow: hidden;
   /* bridge.css's dark theme is the app's default background now (Names is the only
-     light screen) — if #app's box is ever a hair short of the real viewport (an iOS
-     Safari dynamic-toolbar timing quirk: window.innerHeight briefly under-reports
-     while the address bar is animating, see syncViewportHeight() in app.js), whatever
-     sliver of html/body shows through at the bottom should read as more dark screen,
-     not a bright cream bar. */
+     light screen) — if #app's box is ever a hair short of the real viewport for any
+     reason, whatever sliver of html/body shows through at the bottom should read as
+     more dark screen, not a bright cream bar. */
   background: #0B0907;
   overscroll-behavior: none;
 }
