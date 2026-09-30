@@ -1,7 +1,6 @@
-import { loadContent, L, LF, getLanguage, setLanguage, deck, room, allRoomKinds } from "./content.js";
+import { loadContent, L, LF, getLanguage, setLanguage, deck, allRoomKinds } from "./content.js";
 import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
-import { V3_ROOM_KINDS } from "./screens.js";
 import { playTap, playWelcomeChime, startWelcomeMusic, stopWelcomeMusic } from "./sounds.js";
 import { escHtml } from "./components.js";
 
@@ -42,18 +41,23 @@ if (window.visualViewport) {
  * `resetUiForStep`. */
 const ui = {
   diceRolling: false, diceFace: 1,
-  intensity: { partnerA: 0, partnerB: 0 },
+  intensity: { partnerA: null, partnerB: null },
   stateSelected: { partnerA: [], partnerB: [] },
   stateCustom: { partnerA: "", partnerB: "" },
-  openStatePickerRole: null,
   breathing: false,
-  headerExpanded: true,
-  openDeckId: null,
   oathChecked: [],
-  roomV3: { entered: false, handoffAcked: false },
+  roomV3: { entered: false, handoffAcked: false, told: false, moreOpen: false, emotion: { value: null, chips: [], custom: "" } },
+  basementV3: { handoffAcked: false, fearChoice: null, fearCustom: "" },
   intensityTurn: "partnerA",
   intensityHandoffAcked: false,
-  bridgeActiveTab: "partnerA",
+  bridgeTurn: "partnerA",
+  bridgeStage: "handoff",
+  bridgeStepIndex: 0,
+  bridgeCarouselIndex: 0,
+  voiceTurn: "partnerA",
+  voiceStage: "handoff",
+  voiceBlobUrl: { partnerA: null, partnerB: null },
+  voiceRecordSeconds: 0,
   recordingRole: null,
   recorders: { partnerA: null, partnerB: null },
   closingLineIsCourage: Math.random() < 0.5,
@@ -63,11 +67,10 @@ const ui = {
   paywallOpen: false,
   globalSheet: null,
   newRuleDraft: "",
-  customCardDraft: "",
 };
 
+let voiceTimer = null;
 let lastFlowKey = null;
-let lastActivePartner = null;
 let splashDone = false;
 let splashTimer = null;
 const SPLASH_DURATION_MS = 1800;
@@ -79,30 +82,36 @@ function flowKey(flow) {
 function resetUiForStep(step, kind) {
   if (step === "dice") { ui.diceRolling = false; ui.diceFace = 1; store.resetDice(); }
   if (step === "intensityState") {
-    ui.intensity = { partnerA: store.session.intensityA, partnerB: store.session.intensityB };
+    ui.intensity = { partnerA: null, partnerB: null };
     ui.stateSelected = {
       partnerA: [...store.session.stateA.states],
       partnerB: [...store.session.stateB.states],
     };
     ui.stateCustom = { partnerA: store.session.stateA.customText, partnerB: store.session.stateB.customText };
-    ui.openStatePickerRole = null;
     ui.intensityTurn = "partnerA";
     ui.intensityHandoffAcked = false;
   }
   if (step === "calmDown") ui.breathing = false;
   if (step === "oath") ui.oathChecked = [];
-  if (step === "room" || step === "basement") {
-    // Collapsed by default on short screens (SE-class phones) so the fully-expanded
-    // instruction/why-it-helps/forbidden text doesn't push the Done button below the
-    // fold before a first-time user realizes they can collapse it themselves.
-    ui.headerExpanded = window.innerHeight >= 700;
-    ui.openDeckId = null;
-    ui.customCardDraft = "";
-    ui.roomV3 = { entered: false, handoffAcked: false };
+  if (step === "room") {
+    ui.roomV3 = { entered: false, handoffAcked: false, told: false, moreOpen: false, emotion: { value: null, chips: [], custom: "" } };
+  }
+  if (step === "basement") {
+    ui.basementV3 = { handoffAcked: false, fearChoice: null, fearCustom: "" };
   }
   if (step === "couplesAgreementSetup") ui.newRuleDraft = "";
-  if (step === "bridgeFinale") ui.bridgeActiveTab = "partnerA";
-  if (step === "voiceSnapshot") { ui.recordingRole = null; }
+  if (step === "bridgeFinale") {
+    ui.bridgeTurn = "partnerA";
+    ui.bridgeStage = "handoff";
+    ui.bridgeStepIndex = 0;
+    ui.bridgeCarouselIndex = 0;
+  }
+  if (step === "voiceSnapshot") {
+    ui.recordingRole = null;
+    ui.voiceTurn = "partnerA";
+    ui.voiceStage = "handoff";
+    ui.voiceBlobUrl = { partnerA: null, partnerB: null };
+  }
   if (step === "closing") { ui.closingLineIsCourage = Math.random() < 0.5; ui.closingSaved = false; }
   if (step === "houseMap") ui.houseMapTextExpanded = true;
 }
@@ -132,16 +141,7 @@ function render() {
   if (key !== lastFlowKey) {
     resetUiForStep(store.flow.step, store.flow.kind);
     lastFlowKey = key;
-    lastActivePartner = store.activePartner;
     syncWelcomeMusic(store.flow);
-  } else if (
-    (store.flow.step === "room" || store.flow.step === "basement") &&
-    store.activePartner !== lastActivePartner
-  ) {
-    // A new person taking their turn must see the full instructions, not whatever
-    // collapsed state the previous partner happened to leave it in.
-    ui.headerExpanded = true;
-    lastActivePartner = store.activePartner;
   }
 
   let html;
@@ -152,50 +152,14 @@ function render() {
   } else {
     html = renderFlowScreen();
   }
-  const usesBridgeTopbar = store.flow && (
-    BRIDGE_REDESIGNED_STEPS.has(store.flow.step) ||
-    (store.flow.step === "room" && V3_ROOM_KINDS.has(store.flow.kind))
-  );
-  const nav = (ui.paywallOpen || ui.settingsOpen || usesBridgeTopbar) ? "" : globalNavBar();
-  appEl.innerHTML = html + nav + S.globalOverlays(store, ui);
+  // Every real flow screen (see renderFlowScreen below) now renders its own
+  // `.b-topbar` via bScreen() — there is no more floating global nav pill to add on
+  // top of it (FIXES-v4 §0 also retires the "read together" caption that pill used
+  // to carry, and its gear icon lives in each screen's own topbar instead).
+  appEl.innerHTML = html + S.globalOverlays(store, ui);
   document.body.classList.toggle("is-light", !ui.paywallOpen && !ui.settingsOpen && LIGHT_STEPS.has(store.flow?.step));
 }
 
-/** Back (all the way to the first screen) and Settings (which itself holds "start
- * over" / "redo this page") are reachable from every single screen — getting stuck
- * on one dead-end step, with no way out, is exactly the failure this exists to
- * prevent. */
-// A plain inline SVG, not a Unicode "⚙" glyph — the character renders in a colorful
-// "emoji-style" on some devices depending on font fallback, which read as a broken/
-// "crazy 3D" icon instead of a plain flat settings glyph. Stroke-only (no filled
-// teeth, no drop-shadow) and evenly spaced — a flat, perfectly symmetric cog rather
-// than the previous filled-path version, which could read as slightly lopsided at
-// this size.
-const GEAR_SVG = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <circle cx="12" cy="12" r="3"/>
-  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-</svg>`;
-
-function globalNavBar() {
-  const back = store.canGoBack()
-    ? `<button class="nav-pill pressable" data-action="goBack"><span>‹</span><span>${L("nav.back")}</span></button>`
-    : "<span></span>";
-  const caption = store.flow && needsReadTogetherCaption(store.flow)
-    ? `<div class="read-together-row"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>`
-    : "";
-  return `<div class="global-nav-wrap">
-      <div class="global-nav">
-        ${back}
-        <button class="nav-gear pressable" data-action="openSettings" aria-label="${L("settings.title")}">${GEAR_SVG}</button>
-      </div>
-      ${caption}
-    </div>`;
-}
-
-// Mirrors AppFlowStep.needsReadTogetherCaption on iOS — only a sequential "one speaks,
-// one listens" room physically rotates 180° for a private turn; every other screen,
-// room or not, needs the reminder that it's meant to be read together. Basement draws
-// its own copy inline (it needs to sit inside its own scroll layout, not float above it).
 // Every screen before the couple actually enters the first room (Hall) — the supplied
 // piano track plays through these and fades out the instant a room begins.
 const BEFORE_FIRST_ROOM_STEPS = new Set([
@@ -208,29 +172,10 @@ function syncWelcomeMusic(flow) {
   else stopWelcomeMusic();
 }
 
-// A screen rewritten onto bridge.css (see DESIGN.md) renders its own .b-topbar
-// inline — the old floating global-nav pill would just double it up.
-// roomHeader() (used inside roomScreen) is restyled onto bridge.css classes,
-// but the room screen's own shell (seat-rotator, deck sheet, timer) is not
-// yet converted, so "room" stays on the OLD global nav for now.
-const BRIDGE_REDESIGNED_STEPS = new Set(["ritual", "welcome", "names", "oath", "houseMap", "intensityState", "houseMapGate", "houseMapAfterRoom"]);
-
 // bridge.css's `.b-screen--light` (daytime onboarding screens like Names) needs
 // `body.is-light` too, or the strip of body background visible during iOS's overscroll
 // bounce stays the dark v3 default instead of matching the light screen underneath.
 const LIGHT_STEPS = new Set(["names"]);
-
-// Mirrors AppFlowStep.needsReadTogetherCaption on iOS. intensityState's partner-B half
-// is already rotated 180deg in place — that screen is two private halves, not one
-// shared screen, so the caption would be simply wrong there, not just redundant.
-function needsReadTogetherCaption(flow) {
-  if (flow.step === "basement" || flow.step === "intensityState") return false;
-  if (flow.step === "room") {
-    const cfg = room(flow.kind);
-    return !cfg.modes.includes("speaks");
-  }
-  return true;
-}
 
 function renderFlowScreen() {
   const f = store.flow;
@@ -246,6 +191,7 @@ function renderFlowScreen() {
     case "houseMapAfterRoom": return S.houseMapAfterRoomScreen(f.completedKind);
     case "names": return S.namesScreen(store);
     case "couplesAgreementSetup": return S.couplesAgreementScreen(store, ui);
+    case "contractView": return S.contractViewScreen(store);
     case "dice": return S.diceScreen(ui, store);
     case "intensityState": return S.intensityScreen(store, ui);
     case "calmDown": return S.calmDownScreen(ui);
@@ -351,8 +297,21 @@ const actions = {
   },
 
   // Couple's agreement
-  addRuleFromKey(el) { store.addAgreementRule(L(el.dataset.arg)); render(); },
-  removeRule(el) { store.removeAgreementRule(Number(el.dataset.arg)); render(); },
+  toggleAgreementRule(el) {
+    const text = L(el.dataset.arg);
+    const i = store.couplesAgreement.indexOf(text);
+    if (i >= 0) store.removeAgreementRule(i);
+    else store.addAgreementRule(text);
+    render();
+  },
+  removeCustomRule(el) {
+    const exampleKeys = Array.from({ length: 7 }, (_, i) => `couples_agreement.example.${String(i + 1).padStart(2, "0")}`);
+    const customRules = store.couplesAgreement.filter((r) => !exampleKeys.some((k) => L(k) === r));
+    const text = customRules[Number(el.dataset.arg)];
+    const i = store.couplesAgreement.indexOf(text);
+    if (i >= 0) store.removeAgreementRule(i);
+    render();
+  },
   addCustomRule() {
     const input = document.getElementById("newRuleInput");
     store.addAgreementRule(input.value);
@@ -363,8 +322,6 @@ const actions = {
   // Dice
   rollDice() {
     ui.diceRolling = true;
-    const dieEl = document.querySelector(".die-face");
-    if (dieEl) dieEl.style.transform = "rotate(720deg)";
     // Actually cycle through different faces while it "rolls" — a single static face
     // just spinning in place reads as broken/unresponsive, not as a die being rolled.
     const faceTimer = setInterval(() => {
@@ -381,8 +338,6 @@ const actions = {
   },
 
   // Intensity & state
-  openStatePicker(el) { ui.openStatePickerRole = el.dataset.arg; render(); },
-  closeStatePicker() { ui.openStatePickerRole = null; render(); },
   toggleStateOption(el) {
     const role = el.dataset.arg, state = el.dataset.arg2;
     const list = ui.stateSelected[role];
@@ -432,61 +387,118 @@ const actions = {
     store.advance();
   },
 
-  // Rooms — DESIGN.md §2 linear cycle (currently only the Hall room; see
-  // V3_ROOM_KINDS in screens.js). Never touches store.activePartner/pendingReveal
-  // directly — those stay exactly as state.js already manages them; this only
-  // decides which of the 4 screens to show right now.
+  // Rooms — FIXES-v4 §6 linear cycle (every "speaks" room; Kitchen is a plain
+  // discussion, see markRoomDone below). Never touches store.activePartner/
+  // pendingReveal directly — those stay exactly as state.js already manages them;
+  // this only decides which of the cycle's screens to show right now.
   enterRoomV3() { ui.roomV3.entered = true; render(); },
-  handoffReadyV3() { ui.roomV3.handoffAcked = true; render(); },
-  markRoomDoneV3(el) {
+  handoffReadyV3() {
+    ui.roomV3.handoffAcked = true;
+    ui.roomV3.told = false;
+    ui.roomV3.moreOpen = false;
+    ui.roomV3.emotion = { value: null, chips: [], custom: "" };
+    render();
+  },
+  toggleRoomMoreV3() { ui.roomV3.moreOpen = !ui.roomV3.moreOpen; render(); },
+  roomTellDoneV3() { ui.roomV3.told = true; render(); },
+  setRoomEmotionValueV3(el) { ui.roomV3.emotion.value = Number(el.dataset.arg2); render(); },
+  toggleRoomEmotionChipV3(el) {
+    const s = el.dataset.arg;
+    const list = ui.roomV3.emotion.chips;
+    const i = list.indexOf(s);
+    if (i >= 0) list.splice(i, 1); else list.push(s);
+    render();
+  },
+  submitRoomEmotionV3() {
+    const customEl = document.getElementById("roomEmotionCustom");
+    if (customEl) ui.roomV3.emotion.custom = customEl.value.trim();
     ui.roomV3.handoffAcked = false;
-    store.markRoomDone(el.dataset.arg);
+    store.submitRoomTurn(ui.roomV3.emotion);
   },
-  confirmRevealV3() { store.confirmReveal(); },
+  confirmRevealV3() {
+    ui.roomV3.handoffAcked = false;
+    store.confirmReveal();
+  },
 
-  // Rooms (generic)
-  toggleHeader() { ui.headerExpanded = !ui.headerExpanded; render(); },
-  openDeckSheet(el) { ui.openDeckId = el.dataset.arg; ui.customCardDraft = ""; render(); },
-  closeSheet() { ui.openDeckId = null; render(); },
-  pickCard(el) {
-    const deckId = el.dataset.arg, cardId = el.dataset.arg2;
-    const d = deck(deckId);
-    const card = d.cards.find((c) => c.id === cardId);
-    if (!card) return;
-    store.playCard(card, deckId);
-    ui.openDeckId = null;
-    render();
-  },
-  submitCustomCard(el) {
-    const deckId = el.dataset.arg;
-    const input = document.getElementById("writeOwnInput");
-    const text = input.value.trim();
-    if (!text) return;
-    store.playCard({ id: `custom_${Date.now()}` }, deckId, text);
-    ui.openDeckId = null;
-    ui.customCardDraft = "";
-    render();
-  },
+  // Kitchen (the one genuine two-person discussion room) and every other still-
+  // generic "both tap their own Done" usage reuse this directly.
   markRoomDone(el) { store.markRoomDone(el.dataset.arg); render(); },
-  markRoomDoneActive() { store.markRoomDone(store.activePartner); render(); },
-  markRoomDoneForTimer() { store.markRoomDone(store.activePartner); render(); },
-  setActivePartner(el) { store.activePartner = el.dataset.arg; render(); },
-  addMoreTime() { store.addMoreTime(); render(); },
-  confirmReveal() { store.confirmReveal(); render(); },
-  flagAgreementBroken() {
-    store.flagAgreementBroken();
-    const btn = document.querySelector('[data-action="flagAgreementBroken"]');
-    if (btn) { btn.style.background = "rgba(200,60,60,0.35)"; setTimeout(() => { if (btn) btn.style.background = ""; }, 600); }
+
+  // Basement — FIXES-v4 §7.
+  basementHandoffReady() {
+    ui.basementV3.handoffAcked = true;
+    ui.basementV3.fearChoice = null;
+    ui.basementV3.fearCustom = "";
+    render();
   },
+  chooseBasementFearOption(el) { ui.basementV3.fearChoice = el.dataset.arg; render(); },
+  submitBasementFear() {
+    const choice = ui.basementV3.fearChoice;
+    let text;
+    if (choice === "custom") {
+      const input = document.getElementById("basementFearCustom");
+      text = (input?.value ?? ui.basementV3.fearCustom).trim();
+      if (!text) return;
+    } else {
+      const card = deck("fears").cards.find((c) => c.id === choice);
+      if (!card) return;
+      text = L(card.textKey);
+    }
+    ui.basementV3.handoffAcked = false;
+    store.chooseBasementFear(text);
+  },
+  confirmBasementFearReadV3() {
+    ui.basementV3.handoffAcked = false;
+    store.confirmBasementFearRead();
+  },
+  basementAnswerYes() { store.recordBasementAnswer(true); },
+  basementAnswerNo() { store.recordBasementAnswer(false); },
+  finishBasementAskingV3() { store.finishBasementAsking(); },
 
-  // Basement
-  markBasementFearsDone(el) { store.markBasementFearsDone(el.dataset.arg); render(); },
-  markBasementQuestionsDone(el) { store.markBasementQuestionsDone(el.dataset.arg); render(); },
-
-  // Bridge finale
-  setBridgeTab(el) { ui.bridgeActiveTab = el.dataset.arg; render(); },
-  selectBridgeCard(el) { store.selectBridgeCard(el.dataset.arg2, el.dataset.arg, ui.bridgeActiveTab); render(); },
-  completeMandatoryCard(el) { store.completeMandatoryCard(el.dataset.arg); render(); },
+  // Bridge finale — FIXES-v4 §8: sequential, one partner's 3-step carousel + promise
+  // checklist at a time, never side-by-side tabs.
+  bridgeHandoffReady() {
+    ui.bridgeStage = "cards";
+    ui.bridgeStepIndex = 0;
+    ui.bridgeCarouselIndex = 0;
+    render();
+  },
+  bridgeCarouselPrev() {
+    const kind = ["stepToward", "need", "gift"][ui.bridgeStepIndex];
+    const count = deck({ stepToward: "step_toward", need: "needs_connection", gift: "gifts" }[kind]).cards.length;
+    ui.bridgeCarouselIndex = (ui.bridgeCarouselIndex - 1 + count) % count;
+    render();
+  },
+  bridgeCarouselNext() {
+    const kind = ["stepToward", "need", "gift"][ui.bridgeStepIndex];
+    const count = deck({ stepToward: "step_toward", need: "needs_connection", gift: "gifts" }[kind]).cards.length;
+    ui.bridgeCarouselIndex = (ui.bridgeCarouselIndex + 1) % count;
+    render();
+  },
+  bridgeSelectCard() {
+    const kind = ["stepToward", "need", "gift"][ui.bridgeStepIndex];
+    const deckId = { stepToward: "step_toward", need: "needs_connection", gift: "gifts" }[kind];
+    const card = deck(deckId).cards[ui.bridgeCarouselIndex];
+    store.selectBridgeCard(card.id, kind, ui.bridgeTurn);
+    if (ui.bridgeStepIndex < 2) {
+      ui.bridgeStepIndex += 1;
+      ui.bridgeCarouselIndex = 0;
+      render();
+    } else {
+      ui.bridgeStage = "promise";
+      render();
+    }
+  },
+  toggleBridgePromise(el) {
+    const n = Number(el.dataset.arg);
+    const current = !!(store.session.bridgeFinal[ui.bridgeTurn] || {})[`promise${n}`];
+    store.setBridgePromise(ui.bridgeTurn, n, !current);
+  },
+  bridgeFinishTurn() {
+    ui.bridgeTurn = "partnerB";
+    ui.bridgeStage = "handoff";
+    render();
+  },
 
   // Voice snapshot
   async toggleVoiceRecording(el) {
@@ -494,6 +506,7 @@ const actions = {
     if (ui.recordingRole === role) {
       ui.recorders[role]?.stop();
       ui.recordingRole = null;
+      if (voiceTimer) { clearInterval(voiceTimer); voiceTimer = null; }
       render();
       return;
     }
@@ -504,49 +517,117 @@ const actions = {
       recorder.ondataavailable = (e) => chunks.push(e.data);
       recorder.onstop = () => {
         stream.getTracks().forEach((t) => t.stop());
-        store.markVoiceNoteRecorded(role);
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        ui.voiceBlobUrl[role] = URL.createObjectURL(blob);
         render();
       };
       recorder.start();
       ui.recorders[role] = recorder;
       ui.recordingRole = role;
+      ui.voiceRecordSeconds = 0;
+      voiceTimer = setInterval(() => {
+        ui.voiceRecordSeconds += 1;
+        if (ui.voiceRecordSeconds >= 60) actions.toggleVoiceRecording(el);
+        else render();
+      }, 1000);
       render();
     } catch {
       alert("Microphone access was not granted — you can skip the voice snapshot instead.");
     }
   },
+  voiceHandoffReady() { ui.voiceStage = "record"; render(); },
+  playVoiceRecording(el) {
+    const url = ui.voiceBlobUrl[el.dataset.arg];
+    if (url) new Audio(url).play();
+  },
+  retryVoiceRecording(el) {
+    ui.voiceBlobUrl[el.dataset.arg] = null;
+    ui.voiceRecordSeconds = 0;
+    render();
+  },
+  saveVoiceAndAdvance() {
+    store.markVoiceNoteRecorded(ui.voiceTurn);
+    if (ui.voiceTurn === "partnerA") {
+      ui.voiceTurn = "partnerB";
+      ui.voiceStage = "handoff";
+      ui.voiceRecordSeconds = 0;
+      render();
+    } else {
+      store.advance();
+    }
+  },
+  saveVoiceSkip() {
+    if (ui.voiceTurn === "partnerA") {
+      ui.voiceTurn = "partnerB";
+      ui.voiceStage = "handoff";
+      ui.voiceRecordSeconds = 0;
+      render();
+    } else {
+      store.advance();
+    }
+  },
 
-  // Closing
-  saveClosingCard() { saveClosingCardImage(); },
+  // Closing (certificate)
+  saveClosingCard() {
+    const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
+    downloadOrShareImage({
+      title: L("closing.certificate"),
+      lines: [names, L("closing.certificate_body"), new Date().toLocaleDateString()],
+      filename: "bridge-certificate.png",
+      share: false,
+    }).then(() => { ui.closingSaved = true; render(); });
+  },
   closeSession() { store.endActiveSession(); render(); },
+
+  // Contract
+  saveContract() {
+    const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
+    downloadOrShareImage({
+      title: L("contract.title"), lines: [names, ...store.couplesAgreement], filename: "bridge-contract.png", share: false,
+    });
+  },
+  shareContract() {
+    const names = `${store.name("partnerA")} ${L("closing.names_and")} ${store.name("partnerB")}`;
+    downloadOrShareImage({
+      title: L("contract.title"), lines: [names, ...store.couplesAgreement], filename: "bridge-contract.png", share: true,
+    });
+  },
 };
 
-function saveClosingCardImage() {
+/** Draws a plain "paper" card to a canvas and either downloads it (opens it in a new
+ * tab, from which iOS Safari's share sheet offers "Save Image") or hands it to the
+ * real Web Share API when `share` is true and the browser supports sharing files —
+ * there is no native PDF generator or photo-library API available to a PWA, so this
+ * is the honest web equivalent of both. */
+async function downloadOrShareImage({ title, lines, filename, share }) {
   const canvas = document.createElement("canvas");
   canvas.width = 640; canvas.height = 760;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "#b7944c"; ctx.lineWidth = 3; ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
-  ctx.fillStyle = "#b7944c"; ctx.font = "48px serif"; ctx.textAlign = "center";
-  ctx.fillText("🏅", canvas.width / 2, 140);
-  ctx.fillStyle = "#17171a"; ctx.font = "bold 34px Georgia, serif";
-  ctx.fillText(L("closing.title"), canvas.width / 2, 220);
-  ctx.font = "16px -apple-system, sans-serif"; ctx.fillStyle = "#666";
-  ctx.fillText(new Date().toLocaleDateString(), canvas.width / 2, 260);
-  ctx.fillStyle = "#17171a"; ctx.font = "22px -apple-system, sans-serif";
-  wrapText(ctx, L("closing.line_1"), canvas.width / 2, 340, 520, 30);
-  ctx.font = "bold 22px -apple-system, sans-serif";
-  wrapText(ctx, L(ui.closingLineIsCourage ? "closing.line_2b" : "closing.line_2a"), canvas.width / 2, 420, 520, 30);
-  canvas.toBlob((blob) => {
-    const url = URL.createObjectURL(blob);
-    const win = window.open(url, "_blank");
-    if (!win) {
-      const a = document.createElement("a");
-      a.href = url; a.download = "bridge-todays-mark.png"; a.click();
+  ctx.fillStyle = "#F4EDE2"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#C9A45C"; ctx.lineWidth = 3; ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+  ctx.fillStyle = "#1B1A18"; ctx.font = "bold 30px Georgia, serif"; ctx.textAlign = "center";
+  ctx.fillText(title, canvas.width / 2, 90);
+  ctx.font = "22px -apple-system, sans-serif"; ctx.fillStyle = "#1B1A18";
+  let y = 160;
+  for (const line of lines) {
+    ctx.font = "22px -apple-system, sans-serif";
+    y = wrapText(ctx, line, canvas.width / 2, y, 540, 30) + 26;
+  }
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve));
+  if (share && navigator.canShare && navigator.canShare({ files: [new File([blob], filename, { type: "image/png" })] })) {
+    try {
+      await navigator.share({ files: [new File([blob], filename, { type: "image/png" })], title });
+      return;
+    } catch {
+      // user cancelled the share sheet or it failed — fall through to download
     }
-    ui.closingSaved = true;
-    render();
-  });
+  }
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, "_blank");
+  if (!win) {
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+  }
 }
 
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -560,6 +641,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     } else line = test;
   }
   ctx.fillText(line, x, cy);
+  return cy;
 }
 
 // =============================================================== dispatch
@@ -576,45 +658,10 @@ appEl.addEventListener("click", (e) => {
 
 appEl.addEventListener("input", (e) => {
   const el = e.target;
-  if (el.dataset.action === "intensitySlider") {
-    handleIntensitySliderInput(el);
-    return;
-  }
   if (el.id === "custom-partnerA") ui.stateCustom.partnerA = el.value;
   if (el.id === "custom-partnerB") ui.stateCustom.partnerB = el.value;
   if (el.id === "newRuleInput") ui.newRuleDraft = el.value;
-  if (el.id === "writeOwnInput") ui.customCardDraft = el.value;
 });
-
-// Mirrors intensityColor() in screens.js exactly — kept in sync by hand since this
-// copy runs on every live slider drag (see handleIntensitySliderInput below) while
-// the other renders the initial value; they must always agree on the same gradient.
-function intensityColor(v) {
-  const t = v / 10;
-  const r = Math.round(63 + (214 - 63) * t);
-  const g = Math.round(114 + (69 - 114) * t);
-  const b = Math.round(201 + (94 - 201) * t);
-  return `rgb(${r},${g},${b})`;
-}
-
-/** Deliberately mutates the live DOM node directly instead of calling render() — a
- * full re-render mid-drag would recreate the slider element and cancel the user's
- * touch gesture. See the equivalent comment on Store.tick() in state.js. */
-function handleIntensitySliderInput(el) {
-  const role = el.dataset.arg;
-  const value = Number(el.value);
-  ui.intensity[role] = value;
-  const color = intensityColor(value);
-  el.style.setProperty("--slider-color", color);
-  const label = el.nextElementSibling;
-  if (label) { label.textContent = value; label.style.color = color; }
-  const section = el.closest(".partner-section");
-  const flag = section?.querySelector(".overwhelmed-flag");
-  if (flag) {
-    flag.style.display = value >= 7 ? "" : "none";
-    flag.style.background = color;
-  }
-}
 
 // =============================================================== ticking
 

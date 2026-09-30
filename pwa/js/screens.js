@@ -1,8 +1,9 @@
-import { L, LF, deck, room, allRoomKinds } from "./content.js";
+import { L, LF, deck, room } from "./content.js";
 import {
-  primaryButton, secondaryButton, titleStar, timerBanner, placedCards,
-  deckDropdownList, deckSheet, revealOverlay, roomHeader, waitingBadge, escHtml, escAttr,
-  bScreen, bTopbar, bStar, bCta, bCard, bRule, bCheck, bProgress, bScale, bLink, cardDisplayText,
+  primaryButton, secondaryButton, escHtml, escAttr,
+  bScreen, bTopbar, bStar, bCta, bCard, bCheck, bProgress, bScale, bScaleHeader, zoneOf,
+  bLink, bMore, bRuleBar, bChipGrid, bChoice, bYesNo, bFooter, bSteps, bCarousel,
+  bRec, bPaper,
 } from "./components.js";
 
 // Full walk order, including the two non-"room" stops (basement, bridge) — used by
@@ -93,33 +94,39 @@ export function welcomeScreen() {
 
 // =========================================================== Onboarding text pages
 export function onboardingTextPage({ titleKey, bodyKey, buttonKey, pageIndex, pageCount, action }) {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L(titleKey))}</h1>
-        <p class="editorial-body">${escHtml(L(bodyKey))}</p>
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L(titleKey))}</h1>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: buttonKey, action })}
+      <div class="b-spacer"></div>
+      ${bCard(`<p class="b-body">${escHtml(L(bodyKey))}</p>`)}
+      <div style="margin-top:16px;">${bCta({ key: buttonKey, action })}</div>
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== Disclaimer
 export function disclaimerScreen() {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("disclaimer.title"))}</h1>
-        <p class="editorial-body">${escHtml(L("disclaimer.body"))}</p>
-        <button data-action="openCrisis" class="pressable" style="background:none;border:none;margin-top:18px;font-family:var(--font-body);font-weight:600;font-size:var(--text-secondary);color:var(--ink);text-decoration:underline;text-underline-offset:4px;">${escHtml(L("disclaimer.need_help_now"))}</button>
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("disclaimer.title"))}</h1>
       </div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "disclaimer.continue", action: "advance" })}
+      <div class="b-spacer"></div>
+      ${bCard(`<p class="b-body">${escHtml(L("disclaimer.body"))}</p>`)}
+      <div style="text-align:center;margin-top:14px;">${bLink({ text: L("disclaimer.need_help_now"), action: "openCrisis" })}</div>
+      <div style="margin-top:16px;">${bCta({ key: "disclaimer.continue", action: "advance" })}</div>
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== House rules ("Сегодня
@@ -223,86 +230,91 @@ export function namesScreen(store) {
 }
 
 // =========================================================== Couple's Agreement
+// FIXES-v4 §9: dark `.b-choice` list with checkmarks, a "Своё…" free-text field, and
+// a single-line `.b-cta` ("Сохранить договор" — not the old two-button skip/save row).
 export function couplesAgreementScreen(store, ui) {
   const exampleKeys = Array.from({ length: 7 }, (_, i) => `couples_agreement.example.${String(i + 1).padStart(2, "0")}`);
   const active = store.couplesAgreement;
-  const remaining = exampleKeys.filter((k) => !active.includes(L(k)));
-  let rows = "";
-  if (active.length) {
-    rows += `<div class="sheet-section-title">${escHtml(L("couples_agreement.your_rules_header"))}</div>`;
-    rows += active
-      .map((rule, i) => `<button class="rule-row active pressable" data-action="removeRule" data-arg="${i}">
-          <span style="color:var(--gold)">✓</span><span>${escHtml(rule)}</span>
-          <span class="tail">${escHtml(L("couples_agreement.tap_to_remove"))}</span>
-        </button>`)
-      .join("");
-  }
-  if (remaining.length) {
-    rows += `<div class="sheet-section-title">${escHtml(L("couples_agreement.suggestions_header"))}</div>`;
-    rows += remaining
-      .map((k) => `<button class="rule-row suggestion pressable" data-action="addRuleFromKey" data-arg="${escAttr(k)}">
-          <span>○</span><span>${escHtml(L(k))}</span>
-        </button>`)
-      .join("");
-  }
-  return `<div class="screen form-screen">
-      <h1 class="f-serif-title" style="font-size:var(--text-section-title);">${escHtml(L("couples_agreement.title"))}</h1>
-      <p class="editorial-body" style="color:rgba(23,23,26,0.7);">${escHtml(L("couples_agreement.subtitle"))}</p>
-      <div class="stack gap-8" style="margin-top:14px;max-height:38vh;overflow-y:auto;">${rows}</div>
-      <div class="field-row" style="margin-top:14px;">
-        <input id="newRuleInput" class="text-field" placeholder="${escAttr(L("couples_agreement.placeholder"))}" value="${escAttr(ui.newRuleDraft)}">
-        <button class="pressable" data-action="addCustomRule" style="padding:0 16px;border-radius:10px;border:none;background:var(--ink);color:#fff;font-weight:600;height:44px;">${escHtml(L("couples_agreement.add_rule"))}</button>
+  const rows = exampleKeys
+    .map((k) => {
+      const text = L(k);
+      const on = active.includes(text);
+      return bChoice({ text, on, action: "toggleAgreementRule", arg: k });
+    })
+    .join("");
+  const customRules = active.filter((r) => !exampleKeys.some((k) => L(k) === r));
+  const customRows = customRules
+    .map((r, i) => bChoice({ text: r, on: true, action: "removeCustomRule", arg: i }))
+    .join("");
+  return bScreen({
+    photo: "living-room", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("couples_agreement.title"))}</h1>
+        <p class="b-body">${escHtml(L("couples_agreement.subtitle"))}</p>
       </div>
-      <div class="spacer" style="flex:0 0 16px;"></div>
-      <div style="display:flex;gap:12px;">
-        <div style="flex:1">${secondaryButton({ key: "couples_agreement.skip_for_now", action: "advance" })}</div>
-        <div style="flex:1">${primaryButton({ key: "couples_agreement.save", action: "advance", compact: false })}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">${customRows}${rows}</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <input id="newRuleInput" class="b-input" placeholder="${escAttr(L("couples_agreement.placeholder"))}" value="${escAttr(ui.newRuleDraft)}" style="flex-grow:1;">
+        <button class="pressable" data-action="addCustomRule" style="padding:0 18px;border-radius:14px;border:1px solid rgba(239,230,218,0.22);background:rgba(11,9,7,0.5);color:var(--text);font-weight:600;">${escHtml(L("couples_agreement.add_rule"))}</button>
       </div>
-    </div>`;
+      <div class="b-spacer"></div>
+      ${bCta({ key: "couples_agreement.save", action: "advance" })}
+      <div style="text-align:center;margin-top:10px;">${bLink({ text: L("couples_agreement.skip_for_now"), action: "advance" })}</div>
+    `,
+  });
 }
 
 // =========================================================== Dice
-const DIE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+// FIXES-v4 §4: a real cream die with pips (not a unicode glyph), a two-column
+// scorecard, and the result spelled out in a quote — all on the dark v3 shell.
+const DIE_PIP_LAYOUT = {
+  1: ["2/2"],
+  2: ["1/1", "3/3"],
+  3: ["1/1", "2/2", "3/3"],
+  4: ["1/1", "1/3", "3/1", "3/3"],
+  5: ["1/1", "1/3", "2/2", "3/1", "3/3"],
+  6: ["1/1", "1/3", "2/1", "2/3", "3/1", "3/3"],
+};
+
+function dieFace(value, size = 120) {
+  const pips = (DIE_PIP_LAYOUT[value] || DIE_PIP_LAYOUT[1])
+    .map((area) => `<span class="b-pip" style="grid-area:${area};width:${Math.round(size * 0.15)}px;height:${Math.round(size * 0.15)}px;"></span>`)
+    .join("");
+  return `<div class="b-die" style="width:${size}px;height:${size}px;border-radius:28px;padding:18px;">${pips}</div>`;
+}
 
 export function diceScreen(ui, store) {
-  const rotation = ui.diceRolling ? 720 : 0;
   const stage = store.diceStage;
-  const subtitle = store.diceJustTied
-    ? L("dice.tie")
-    : stage === "done"
-    ? L("dice.subtitle")
-    : LF("dice.subtitle_for", store.name(stage));
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("dice.title"))}</h1>
-        <p class="editorial-body" style="${store.diceJustTied ? "color:#c0392b;font-weight:600;" : ""}">${escHtml(subtitle)}</p>
+  const rollerRole = stage === "done" ? null : stage;
+  return bScreen({
+    photo: "living-room", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: rollerRole ? { who: LF("dice.who_rolls", store.name(rollerRole)) } : null })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:10px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("dice.title"))}</h1>
+        <p class="b-body">${escHtml(store.diceJustTied ? L("dice.tie") : L("dice.subtitle"))}</p>
       </div>
-      <div class="die-face" style="align-self:center;transform:rotate(${rotation}deg);margin:20px 0;font-size:64px;">${DIE_FACES[(ui.diceFace || 1) - 1]}</div>
-      <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
-        ${stage !== "partnerA" && store.diceValueA != null ? `<p class="editorial-body" style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerA"), store.diceValueA))}</p>` : ""}
-        ${stage === "done" && store.diceValueB != null ? `<p class="editorial-body" style="font-weight:600;">${escHtml(LF("dice.value", store.name("partnerB"), store.diceValueB))}</p>` : ""}
-      </div>
-      ${stage === "done" && store.session.firstToSpeak ? `<p class="editorial-body" style="text-align:center;font-weight:700;color:${store.session.firstToSpeak === "partnerA" ? "var(--purple)" : "var(--green)"}">${escHtml(LF("dice.result", store.name(store.session.firstToSpeak)))}</p>` : ""}
-      <div class="spacer"></div>
-      ${stage === "done" ? primaryButton({ key: "oath.ready", action: "advance" }) : primaryButton({ key: "dice.roll", action: "rollDice" })}
+      <div class="b-spacer"></div>
+      <div style="display:flex;justify-content:center;">${dieFace(ui.diceFace || 1)}</div>
+      ${(store.diceValueA != null || store.diceValueB != null) ? `
+        <div class="b-card" style="margin-top:22px;display:grid;grid-template-columns:1fr 1fr;padding:0;overflow:hidden;">
+          <div style="padding:14px 16px;border-right:1px solid rgba(239,230,218,0.14);"><div class="b-small">${escHtml(store.name("partnerA"))}</div><div style="font:400 30px/1 var(--serif);color:#F4EDE4;margin-top:6px;">${store.diceValueA ?? "—"}</div></div>
+          <div style="padding:14px 16px;"><div class="b-small">${escHtml(store.name("partnerB"))}</div><div style="font:400 30px/1 var(--serif);color:#C9A45C;margin-top:6px;">${store.diceValueB ?? "—"}</div></div>
+        </div>` : ""}
+      ${stage === "done" && store.session.firstToSpeak ? `<p class="b-quote" style="text-align:center;margin-top:14px;color:#F4EDE4;">${escHtml(LF("dice.result", store.name(store.session.firstToSpeak)))}</p>` : ""}
+      <div class="b-spacer"></div>
+      ${stage === "done" ? bCta({ key: "oath.ready", action: "advance" }) : bCta({ key: "dice.roll", action: "rollDice" })}
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;" });
+  });
 }
 
 // =========================================================== Intensity & State
-// Interpolates the same blue (#3f72c9, calm) -> red (#d6455e, intense) gradient the
-// slider's own track uses — this used to run gold -> red instead, so the thumb, the
-// number, and the level pill all read a different color than the track it sits on.
-function intensityColor(v) {
-  const t = v / 10;
-  const r = Math.round(63 + (214 - 63) * t);
-  const g = Math.round(114 + (69 - 114) * t);
-  const b = Math.round(201 + (94 - 201) * t);
-  return `rgb(${r},${g},${b})`;
-}
-
 /** Five plain-language bands rather than a bare number — "7" doesn't mean anything on
  * its own, but "barely tolerable" does. */
 function intensityLevelKey(v) {
@@ -324,7 +336,7 @@ export function intensityScreen(store, ui) {
       photo: "house-exterior", muted: true, shade: "text",
       contentStyle: "padding:54px 24px 30px;",
       inner: `
-        ${bTopbar({ back: false, right: { who: L("room.who_together"), together: true } })}
+        ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(role)) } })}
         <div class="b-spacer"></div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
           ${bStar()}
@@ -337,10 +349,8 @@ export function intensityScreen(store, ui) {
     });
   }
   const value = ui.intensity[role];
-  const chips = STATE_KEYS.map((s) => {
-    const on = ui.stateSelected[role].includes(s);
-    return `<button class="b-chip${on ? " is-on" : ""}" type="button" data-action="toggleStateOption" data-arg="${role}" data-arg2="${s}">${escHtml(L(`state.${s}`))}</button>`;
-  }).join("");
+  const chips = STATE_KEYS.map((s) => ({ text: L(`state.${s}`), on: ui.stateSelected[role].includes(s), action: "toggleStateOption", arg: role, arg2: s }));
+  const ready = value !== null && (ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0);
   return bScreen({
     photo: "house-exterior", muted: true, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
@@ -351,34 +361,44 @@ export function intensityScreen(store, ui) {
         <h1 class="b-h1">${escHtml(L("intensity.screen_title"))}</h1>
       </div>
       ${bCard(`
+        ${bScaleHeader(value)}
         ${bScale({ value, action: "setEmotionValue", arg: role })}
-        <div class="b-divider" style="margin:16px 0;"></div>
-        <p class="b-small" style="margin-bottom:10px;">${escHtml(L("intensity.state_label"))}</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">${chips}</div>
-        <textarea class="b-input" style="margin-top:12px;min-height:70px;padding-top:12px;" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}">${escHtml(ui.stateCustom[role])}</textarea>
-      `, "margin-top:14px;")}
+      `, "margin-top:14px;padding:16px 18px;")}
+      <p class="b-small" style="margin-top:14px;">${escHtml(L("intensity.state_label"))}</p>
+      <div style="margin-top:8px;">${bChipGrid(chips)}</div>
+      <input class="b-input" type="text" placeholder="${escAttr(L("intensity.custom_placeholder"))}" id="custom-${role}" value="${escAttr(ui.stateCustom[role])}" style="margin-top:10px;height:46px;">
       <div class="b-spacer"></div>
-      ${bCta({ text: L("intensity.continue_button"), action: "submitIntensityTurn" })}
+      ${bCta({ text: L("intensity.continue_button"), action: "submitIntensityTurn", enabled: ready })}
     `,
   });
 }
 
 // =========================================================== Calm Down
 export function calmDownScreen(ui) {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div style="text-align:center;">
-        ${titleStar()}
-        <h1 class="f-serif-title editorial-title" style="font-size:var(--text-section-title);">${escHtml(L("calm_down.title"))}</h1>
-        <p class="editorial-body">${escHtml(L("calm_down.body"))}</p>
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: "gear" })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:10px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(L("calm_down.title"))}</h1>
+        <p class="b-body" style="max-width:290px;">${escHtml(L("calm_down.body"))}</p>
       </div>
-      <div class="breathing-circle${ui.breathing ? " breathing" : ""}" style="${ui.breathing ? "" : "transform:scale(0.6);"} margin:28px auto 0;"></div>
-      <div class="spacer"></div>
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <div class="breathing-circle${ui.breathing ? " breathing" : ""}" style="${ui.breathing ? "" : "transform:scale(0.7);"} width:220px;height:220px;border-radius:50%;border:1px solid rgba(201,164,92,0.6);display:grid;place-items:center;background:radial-gradient(circle,rgba(239,230,218,0.22),rgba(11,9,7,0.35));">
+          <div style="width:150px;height:150px;border-radius:50%;background:rgba(239,230,218,0.16);border:1px solid rgba(239,230,218,0.5);display:grid;place-items:center;">
+            <span style="font:italic 400 22px/1 var(--serif);color:#F4EDE4;">${escHtml(L(ui.breathing ? "calm_down.inhale" : "calm_down.ready"))}</span>
+          </div>
+        </div>
+      </div>
+      <div class="b-spacer"></div>
       ${ui.breathing
-        ? primaryButton({ key: "onboarding.got_it", action: "advance" })
-        : primaryButton({ key: "calm_down.start_breathing", action: "startBreathing" }) + secondaryButton({ key: "calm_down.skip", action: "advance", onPhoto: true })}
+        ? bCta({ key: "onboarding.got_it", action: "advance" })
+        : bCta({ key: "calm_down.start_breathing", action: "startBreathing" }) + `<div style="margin-top:10px;text-align:center;">${bLink({ text: L("calm_down.skip"), action: "advance" })}</div>`}
     `,
-    { dim: false, lightWash: true, contentStyle: "padding-left:28px;padding-right:28px;text-align:center;" });
+  });
 }
 
 // =========================================================== Oath
@@ -437,21 +457,25 @@ export function ritualScreen(ui) {
 }
 
 // =========================================================== Generic room
-// Rooms in V3_ROOM_KINDS get the new DESIGN.md §2 linear pass-the-phone cycle
-// (roomScreenV3, below); every other room keeps the old flip-based mechanic
-// unchanged until its own turn to be converted.
-export const V3_ROOM_KINDS = new Set(["hall"]);
+// Every sequential ("speaks") room is in V3_ROOM_KINDS and gets the FIXES-v4 §6
+// linear pass-the-phone cycle (roomScreenV3, below); Kitchen is a genuine two-person
+// discussion (kitchenDiscussionScreen); legacyRoomScreen is now dead code kept only
+// as a reference until it's deleted outright.
+export const V3_ROOM_KINDS = new Set(["hall", "livingRoom", "study", "kidsRoom"]);
 
 export function roomScreen(store, ui, kind) {
   if (V3_ROOM_KINDS.has(kind)) return roomScreenV3(store, ui, kind);
+  if (kind === "kitchen") return kitchenDiscussionScreen(store, ui);
   return legacyRoomScreen(store, ui, kind);
 }
 
-/** DESIGN.md §2's cycle: enter → handoff → question+rule → answer → handoff →
- * partner reads → (partner answers the same question, no handoff) → … → the room's
- * `state.js` mechanics (activePartner/roomDoneFlags/pendingReveal/confirmReveal) are
- * untouched — this only decides which of 4 screens to show for the current state,
- * never which state comes next (that stays exactly as it was, no upside-down flip). */
+const ROOM_FEELING_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
+
+/** FIXES-v4 §6's cycle, strictly one screen = one person, no exceptions: enter →
+ * [ready → tell it out loud (V02) → rate it (V03, emotions) → ready(for the other,
+ * reading) → partner reads (V04)] × 2 → next question or map. The room's own
+ * mechanics (activePartner/roomDoneFlags/pendingReveal/confirmReveal) are untouched
+ * — this only decides which screen to show for the current state. */
 function roomScreenV3(store, ui, kind) {
   const cfg = room(kind);
   if (!ui.roomV3.entered) return roomEnterScreenV3(cfg);
@@ -459,12 +483,13 @@ function roomScreenV3(store, ui, kind) {
   if (reveal) {
     return ui.roomV3.handoffAcked
       ? roomPartnerReadsScreenV3(store, reveal)
-      : roomHandoffScreenV3(store, reveal.to, reveal.from);
+      : roomReadyScreenV3(store, reveal.to, reveal.from);
   }
   if (!ui.roomV3.handoffAcked) {
-    return roomHandoffScreenV3(store, store.activePartner, store.other(store.activePartner));
+    return roomReadyScreenV3(store, store.activePartner, store.other(store.activePartner));
   }
-  return roomQuestionScreenV3(store, ui, cfg);
+  if (!ui.roomV3.told) return roomTellScreenV3(store, ui, cfg);
+  return roomEmotionScreenV3(store, ui, cfg);
 }
 
 function roomEnterScreenV3(cfg) {
@@ -485,18 +510,21 @@ function roomEnterScreenV3(cfg) {
   });
 }
 
-function roomHandoffScreenV3(store, toRole, otherRole) {
+/** The "X, ваша очередь" / "Я готов(а)" screen (V05) — shown before EVERY turn,
+ * answering or reading alike (FIXES-v4 §6: no more skipping it just because the
+ * phone happened to already be in the right hands). */
+function roomReadyScreenV3(store, toRole, otherRole) {
   const cfg = room(store.session.currentRoom);
   return bScreen({
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: L("room.who_together"), together: true } })}
+      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(toRole)) } })}
       <div class="b-spacer"></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
-        ${bStar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+        <div style="width:92px;height:92px;border-radius:50%;border:1px solid rgba(201,164,92,0.7);display:grid;place-items:center;font:400 42px/1 var(--serif);color:#F4EDE4;background:rgba(11,9,7,0.5);">${escHtml((store.name(toRole).trim()[0] || "?").toUpperCase())}</div>
         <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(toRole)))}</h1>
-        <p class="b-body">${escHtml(LF("handoff.listen_note", store.name(otherRole)))}</p>
+        <p class="b-body" style="max-width:290px;">${escHtml(LF("handoff.listen_note", store.name(otherRole)))}</p>
       </div>
       <div class="b-spacer"></div>
       ${bCta({ text: L("handoff.pass_ready"), action: "handoffReadyV3" })}
@@ -506,170 +534,237 @@ function roomHandoffScreenV3(store, toRole, otherRole) {
 
 function roomPartnerReadsScreenV3(store, reveal) {
   const cfg = room(store.session.currentRoom);
-  const cardsHtml = reveal.cards.map((play) => `<p class="b-body">${escHtml(cardDisplayText(play))}</p>`).join("");
+  const z = zoneOf(reveal.emotion.value);
+  const chipsHtml = reveal.emotion.chips.map((s) => `<span class="b-chip is-on">${escHtml(L(`state.${s}`))}</span>`).join("");
   return bScreen({
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
       ${bTopbar({ back: false, right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
-      <div class="b-spacer"></div>
-      <h1 class="b-h2" style="text-align:center;">${escHtml(LF("handoff.shared_title", store.name(reveal.from)))}</h1>
-      ${bCard(cardsHtml || `<p class="b-body">${escHtml(L("intensity.state_placeholder"))}</p>`, "margin-top:14px;")}
+      <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
+      <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("handoff.shared_title", store.name(reveal.to), store.name(reveal.from)))}</h1>
+      ${bCard(`
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span class="b-small">${escHtml(L("intensity.strength_label"))}</span><span class="b-level z-${z}">${reveal.emotion.value} · ${escHtml(L(`intensity.zone.${z}`))}</span></div>
+        <div class="b-scale" style="margin-top:10px;">${Array.from({ length: 11 }, (_, i) => `<span class="b-seg z-${zoneOf(i)}${i <= reveal.emotion.value ? " is-on" : ""}"></span>`).join("")}</div>
+        <div class="b-divider" style="margin:14px 0;"></div>
+        <div class="b-chipgrid">${chipsHtml || `<span class="b-small">${escHtml(L("intensity.state_placeholder"))}</span>`}</div>
+        ${reveal.emotion.custom ? `<p class="b-quote" style="color:#F4EDE4;margin-top:12px;">«${escHtml(reveal.emotion.custom)}»</p>` : ""}
+      `, "margin-top:18px;")}
+      <p class="b-small" style="margin-top:12px;">${escHtml(L("handoff.read_note"))}</p>
       <div class="b-spacer"></div>
       ${bCta({ text: L("handoff.read_continue"), action: "confirmRevealV3" })}
     `,
   });
 }
 
-function roomQuestionScreenV3(store, ui, cfg) {
+/** V02: the purely-verbal step — question, compact rule bar, an example drawn from
+ * the room's own real deck content (kept, just no longer a pick-list), a "Подробнее"
+ * disclosure for why it helps, and a confirm button. No text is captured here; what
+ * gets shown to the partner is the emotion rating that follows (roomEmotionScreenV3). */
+function roomTellScreenV3(store, ui, cfg) {
   const active = store.activePartner;
   const other = store.other(active);
-  const forbiddenRows = cfg.forbiddenKey
-    ? L(cfg.forbiddenKey).split("\n").map((line) => ({ icon: "no", text: line.replace(/^•\s*/, "") }))
+  const forbidden = cfg.forbiddenKey
+    ? L(cfg.forbiddenKey).split("\n").map((line) => ({ kind: "no", text: line.replace(/^•\s*/, "") }))
     : [];
-  const rows = [
-    { icon: "yes", text: LF("room.rule_speaks", store.name(active)) },
-    { icon: "no", text: LF("room.rule_listens", store.name(other)) },
-    ...forbiddenRows,
+  const tags = [
+    { kind: "speak", text: LF("room.rule_speaks", store.name(active)) },
+    { kind: "plain", text: LF("room.rule_listens", store.name(other)) },
+    ...forbidden,
   ];
-  const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft, 0) : "";
+  const exampleCard = cfg.deckIds.length ? deck(cfg.deckIds[0]).cards[0] : null;
   return bScreen({
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
       ${bTopbar({ right: { who: LF("room.who_answers", store.name(active)) } })}
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:4px;text-align:center;">
-        ${bStar()}
-        <h1 class="b-h2">${escHtml(L(cfg.questionKey))}</h1>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+        <span class="b-eyebrow">${escHtml(L(cfg.nameKey))}</span>
       </div>
-      ${bRule({ head: L("room.rule_head"), rows })}
-      ${bCard(`<p class="b-small" style="color:var(--gold);font-weight:600;margin-bottom:4px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`, "margin-top:12px;")}
-      ${placedCards(store)}
-      ${deckDropdownList(cfg.deckIds)}
+      <h1 class="b-h1" style="margin-top:18px;">${escHtml(L(cfg.questionKey))}</h1>
+      <div style="margin-top:14px;">${bRuleBar(tags)}</div>
+      ${bCard(`
+        <span class="b-eyebrow" style="color:#C9A45C;">${escHtml(L("room.tell_aloud_label"))}</span>
+        <p class="b-body" style="margin-top:8px;">${escHtml(L(cfg.instructionKey))}</p>
+        ${exampleCard ? `<p class="b-quote" style="margin-top:8px;">«${escHtml(L(exampleCard.textKey))}»</p>` : ""}
+        ${ui.roomV3.moreOpen
+          ? `<div class="b-divider" style="margin:10px 0;"></div><p class="b-small" style="color:var(--gold);font-weight:600;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body" style="margin-top:4px;">${escHtml(L(cfg.whyItHelpsKey))}</p>`
+          : bMore({ action: "toggleRoomMoreV3", open: ui.roomV3.moreOpen })}
+      `, "margin-top:16px;")}
       <div class="b-spacer"></div>
-      ${bCta({ text: L("room.done"), action: "markRoomDoneV3", arg: active, enabled: store.placedCardsThisTurn.length > 0 })}
+      ${bCta({ text: L("room.i_told"), action: "roomTellDoneV3" })}
     `,
-  }) + sheet;
+  });
 }
 
-function legacyRoomScreen(store, ui, kind) {
-  const cfg = room(kind);
-  const isSequential = cfg.modes.includes("speaks");
+/** V03: the structured answer — the same emotion-scale component used at the global
+ * check-in (DESIGN.md §3), scoped to this one question/turn. Done stays disabled
+ * until a level is picked AND at least one feeling (or free text) is given. */
+function roomEmotionScreenV3(store, ui, cfg) {
   const active = store.activePartner;
-  const rotation = isSequential ? store.seatRotation(active) : 0;
-  const activeColorClass = active === "partnerA" ? "a" : "b";
-
-  const header = roomHeader(cfg, { activeRoleName: isSequential ? store.name(active) : null, activeRoleDotClass: activeColorClass, expanded: ui.headerExpanded });
-
-  let body;
-  if (isSequential) {
-    body = `<div class="seat-rotator${rotation ? " flipped" : ""}">
-        <div class="photo-screen" style="background-image:url('assets/rooms/${cfg.backgroundImage}.jpg')"></div>
-        <div class="seat-content">
-          ${header}
-          <div class="spacer" style="flex:0 0 8px;"></div>
-          ${placedCards(store)}
-          <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
-          ${deckDropdownList(cfg.deckIds)}
-          <div class="spacer"></div>
-          ${flagRow()}
-          <div style="padding:0 16px 16px;text-align:right;">
-            <button class="pressable" data-action="markRoomDoneActive" ${store.placedCardsThisTurn.length === 0 ? "disabled" : ""} style="background:${store.placedCardsThisTurn.length === 0 ? "rgba(120,120,120,0.55)" : (active === "partnerA" ? "var(--purple)" : "var(--green)")};color:#fff;border:none;border-radius:24px;padding:12px 24px;font-weight:700;">${escHtml(L("room.done"))}</button>
-          </div>
-        </div>
+  const e = ui.roomV3.emotion;
+  const chips = ROOM_FEELING_KEYS.map((s) => ({ text: L(`state.${s}`), on: e.chips.includes(s), action: "toggleRoomEmotionChipV3", arg: s }));
+  const ready = e.value !== null && (e.chips.length > 0 || e.custom.trim().length > 0);
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(active)) } })}
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+        <span class="b-eyebrow">${escHtml(L(cfg.nameKey))}</span>
       </div>
-      ${waitingBadge(store, store.other(active), active)}`;
-  } else {
-    const doneRow = (role, colorClass) => {
-      const done = store.roomDoneFlags[role];
-      return `<button class="pressable" data-action="setActivePartner" data-arg="${role}" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:blur(10px);border:none;border-radius:20px;padding:8px 10px;font-weight:600;font-size:13px;">
-          <span class="dot ${colorClass}"></span>${escHtml(store.name(role))}${active === role ? " 👆" : ""}
-        </button>
-        <button class="pressable" data-action="markRoomDone" data-arg="${role}" ${done ? "disabled" : ""}
-          style="padding:8px 14px;border-radius:20px;border:none;font-weight:600;font-size:13px;color:${done ? "rgba(0,0,0,0.4)" : "#fff"};background:${done ? "rgba(255,255,255,0.4)" : (colorClass === "a" ? "var(--purple)" : "var(--green)")};">${escHtml(L("room.done"))}</button>`;
-    };
-    body = `${header}
-      <div class="spacer" style="flex:0 0 8px;"></div>
-      ${placedCards(store)}
-      <div style="padding:0 16px;margin-top:8px;">${timerBanner(store)}</div>
-      ${cfg.deckIds.length ? deckDropdownList(cfg.deckIds) : '<div class="spacer" style="flex:0 0 24px;"></div>'}
-      <div class="spacer"></div>
-      <div style="display:flex;gap:12px;padding:16px;">${doneRow("partnerA", "a")}${doneRow("partnerB", "b")}</div>`;
-  }
-
-  const sheet = ui.openDeckId ? deckSheet(ui.openDeckId, null, ui.customCardDraft, rotation) : "";
-  // `.screen` already establishes a positioning context via its own `position: absolute;
-  // inset: 0` (filling #app) — overriding that to `position: relative` here (as this used
-  // to do) drops the "inset: 0" sizing entirely, so with every child of this div itself
-  // absolutely positioned (.seat-rotator/.seat-content, both inset:0) nothing is left to
-  // give `.screen` an intrinsic height. It collapses to 0 and its absolutely-positioned
-  // children collapse right along with it — down to just their own safe-area padding —
-  // which reads as "the room is broken": almost everything renders scrolled out of the
-  // sliver that's left, and taps miss whatever accidentally still overlaps it.
-  const screen = isSequential
-    ? `<div class="screen flush no-scroll">${body}</div>`
-    : photoScreen(cfg.backgroundImage, body, { dim: false });
-  return screen + revealOverlay(store) + sheet;
+      <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("room.emotion_question"))}</h1>
+      ${bCard(`${bScaleHeader(e.value)}${bScale({ value: e.value, action: "setRoomEmotionValueV3" })}`, "margin-top:14px;padding:16px 18px;")}
+      <p class="b-small" style="margin-top:14px;">${escHtml(L("intensity.state_label"))}</p>
+      <div style="margin-top:8px;">${bChipGrid(chips)}</div>
+      <input class="b-input" type="text" id="roomEmotionCustom" placeholder="${escAttr(L("intensity.custom_placeholder"))}" value="${escAttr(e.custom)}" style="margin-top:10px;height:46px;">
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("room.done"), action: "submitRoomEmotionV3", enabled: ready })}
+    `,
+  });
 }
 
-function flagRow() {
-  return `<div style="padding:0 16px;">
-      <button class="pressable" data-action="flagAgreementBroken" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:blur(10px);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600;">
-        🚩 <span>${escHtml(L("room.flag_broken"))}</span>
-      </button>
-    </div>`;
+/** Kitchen is genuinely a two-person discussion, not a sequential turn — the one
+ * deliberate exception to "one screen = one person". No `.b-who--together` pill
+ * (FIXES-v4 §0 retires it); each partner just taps their own Done when the two of
+ * them are finished talking, same as before, restyled onto v3. */
+function kitchenDiscussionScreen(store, ui) {
+  const cfg = room("kitchen");
+  const doneRow = (role) => {
+    const done = store.roomDoneFlags[role];
+    return `<button class="b-choice pressable${done ? " is-on" : ""}" type="button" data-action="markRoomDone" data-arg="${role}" ${done ? "disabled" : ""}><span class="b-choice__radio"></span>${escHtml(store.name(role))}${done ? ` — ${escHtml(L("room.done"))}` : ""}</button>`;
+  };
+  return bScreen({
+    photo: cfg.backgroundImage, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar()}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:6px;text-align:center;">
+        ${bStar()}
+        <span class="b-eyebrow">${escHtml(L(cfg.nameKey))}</span>
+        <h1 class="b-h1">${escHtml(L(cfg.questionKey))}</h1>
+      </div>
+      ${bCard(`<p class="b-body">${escHtml(L(cfg.instructionKey))}</p><div class="b-divider" style="margin:12px 0;"></div><p class="b-small" style="color:var(--gold);font-weight:600;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body" style="margin-top:4px;">${escHtml(L(cfg.whyItHelpsKey))}</p>`, "margin-top:16px;")}
+      <p class="b-small" style="margin-top:16px;">${escHtml(L("room.mark_done_both"))}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">${doneRow("partnerA")}${doneRow("partnerB")}</div>
+      <div class="b-spacer"></div>
+    `,
+  });
 }
+
 
 // =========================================================== Basement
-// Two stages, neither of which loops back into the other: (1) both partners voice
-// whichever fears they choose from the list, each tapping their own Done when
-// finished; (2) a free, untimed-per-question window for up to 15 verbal yes/no
-// questions, ended the same way. Never rotates — both partners read and use it
-// together, side by side. Mirrors BasementView.swift's redesign.
+// FIXES-v4 §7: two stages, neither loops into the other, both strictly one-person-
+// at-a-time. Stage 1 — each partner picks ONE fear from the real 44-card fears deck
+// (or their own words), the other reads it, roles swap. Stage 2 — one partner asks
+// up to 15 questions aloud, the other answers only Да/Нет (tapped by the asker, who
+// holds the phone throughout — handing it over every single question would make a
+// 15-question round unworkable), then roles swap.
 export function basementScreen(store, ui) {
-  const cfg = room("basement");
-  const stage = store.basementStage;
-  const header = roomHeader(cfg, {
-    expanded: ui.headerExpanded,
-    instructionKeyOverride: stage === "fears" ? null : "basement.questions_instruction",
-    hideExtras: stage !== "fears",
-  });
+  return store.basementStage === "fears" ? basementFearsScreen(store, ui) : basementQuestionsScreen(store, ui);
+}
 
-  const doneButton = (role) => {
-    const done = store.roomDoneFlags[role];
-    return `<button class="pressable" data-action="${stage === "fears" ? "markBasementFearsDone" : "markBasementQuestionsDone"}" data-arg="${role}" ${done ? "disabled" : ""}
-        style="flex:1;display:flex;align-items:center;gap:6px;justify-content:space-between;padding:12px 16px;border-radius:16px;border:1px solid rgba(23,23,26,${done ? "0.15" : "0.35"});font-weight:700;color:${done ? "rgba(23,23,26,0.45)" : "var(--ink)"};background:${done ? "rgba(255,255,255,0.5)" : "var(--gold)"};">
-        <span style="display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;"><span class="dot ${role === "partnerA" ? "a" : "b"}"></span>${escHtml(store.name(role))}</span>
-        <span>${escHtml(L("room.done"))}</span>
-      </button>`;
-  };
-  const doneRow = `<div style="display:flex;gap:12px;padding:16px;">${doneButton("partnerA")}${doneButton("partnerB")}</div>`;
-
-  let content;
-  if (stage === "fears") {
-    const switcher = ["partnerA", "partnerB"]
-      .map((role) => `<button class="pressable" data-action="setActivePartner" data-arg="${role}" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:20px;border:1px solid rgba(23,23,26,0.2);font-weight:600;font-size:13px;background:${store.activePartner === role ? "var(--gold)" : "var(--ivory)"};color:var(--ink);">
-          <span class="dot ${role === "partnerA" ? "a" : "b"}"></span>${escHtml(store.name(role))}${store.activePartner === role ? " 👆" : ""}
-        </button>`)
-      .join("");
-    content = `<div class="read-together-row" style="padding-top:6px;"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>
-      ${header}
-      <div class="spacer" style="flex:0 0 8px;"></div>
-      ${placedCards(store)}
-      <div style="display:flex;gap:8px;padding:6px 16px 0;">${switcher}</div>
-      ${deckDropdownList(["fears"])}
-      ${doneRow}`;
-  } else {
-    content = `<div class="read-together-row" style="padding-top:6px;"><span class="read-together-badge">${escHtml(L("nav.read_together"))}</span></div>
-      ${header}
-      <div class="spacer" style="flex:0 0 12px;"></div>
-      <div style="padding:0 16px;">${timerBanner(store)}</div>
-      <div class="spacer"></div>
-      ${doneRow}`;
+function basementFearsScreen(store, ui) {
+  const reveal = store.basementFearReveal;
+  if (reveal) {
+    return ui.basementV3.handoffAcked
+      ? basementFearReadScreen(store, reveal)
+      : basementReadyScreen(store, reveal.to, reveal.from);
   }
+  if (!ui.basementV3.handoffAcked) {
+    return basementReadyScreen(store, store.activePartner, store.other(store.activePartner));
+  }
+  return basementFearChoiceScreen(store, ui);
+}
 
-  const sheet = ui.openDeckId ? deckSheet("fears", null, ui.customCardDraft, 0) : "";
-  return photoScreen("basement", content, { dim: true }) + sheet;
+function basementReadyScreen(store, toRole, otherRole) {
+  return bScreen({
+    photo: "basement", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(toRole)) } })}
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+        <div style="width:92px;height:92px;border-radius:50%;border:1px solid rgba(201,164,92,0.7);display:grid;place-items:center;font:400 42px/1 var(--serif);color:#F4EDE4;background:rgba(11,9,7,0.5);">${escHtml((store.name(toRole).trim()[0] || "?").toUpperCase())}</div>
+        <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(toRole)))}</h1>
+        <p class="b-body" style="max-width:290px;">${escHtml(LF("handoff.listen_note", store.name(otherRole)))}</p>
+      </div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("handoff.pass_ready"), action: "basementHandoffReady" })}
+    `,
+  });
+}
+
+function basementFearChoiceScreen(store, ui) {
+  const cards = deck("fears").cards;
+  const rows = cards.map((c) => bChoice({ text: L(c.textKey), on: ui.basementV3.fearChoice === c.id, action: "chooseBasementFearOption", arg: c.id })).join("");
+  const customOn = ui.basementV3.fearChoice === "custom";
+  const ready = (ui.basementV3.fearChoice && ui.basementV3.fearChoice !== "custom") || (customOn && ui.basementV3.fearCustom.trim().length > 0);
+  return bScreen({
+    photo: "basement", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(store.activePartner)) } })}
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+        <span class="b-eyebrow">${escHtml(L("basement.stage1_eyebrow"))}</span>
+        <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:50%;"></div></div>
+        <span class="b-step">1 / 2</span>
+      </div>
+      <h1 class="b-h1" style="margin-top:16px;">${escHtml(L("basement.fear_question"))}</h1>
+      <p class="b-body" style="margin-top:8px;">${escHtml(L("basement.fear_instruction"))}</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
+        ${rows}
+        ${bChoice({ text: L("basement.fear_custom_option"), on: customOn, action: "chooseBasementFearOption", arg: "custom" })}
+        ${customOn ? `<input class="b-input" type="text" id="basementFearCustom" placeholder="${escAttr(L("basement.fear_custom_placeholder"))}" value="${escAttr(ui.basementV3.fearCustom)}">` : ""}
+      </div>
+      ${bFooter(bCta({ text: L("basement.fear_chosen"), action: "submitBasementFear", enabled: ready }))}
+    `,
+  });
+}
+
+function basementFearReadScreen(store, reveal) {
+  return bScreen({
+    photo: "basement", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
+      <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
+      <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("basement.fear_reveal_title", store.name(reveal.to)))}</h1>
+      ${bCard(`<p class="b-quote" style="color:#F4EDE4;">«${escHtml(reveal.text)}»</p>`, "margin-top:18px;")}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("handoff.read_continue"), action: "confirmBasementFearReadV3" })}
+    `,
+  });
+}
+
+function basementQuestionsScreen(store, ui) {
+  const asker = store.activePartner;
+  const answerer = store.other(asker);
+  const history = store.basementYN[asker];
+  const count = history.length;
+  const rows = history.map((isYes, i) => `<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(239,230,218,0.1);"><span class="b-small">${escHtml(LF("basement.question_n", i + 1))}</span><span style="font:500 13px/1 var(--sans);color:${isYes ? "#EFE6DA" : "#E9A08F"};">${escHtml(isYes ? L("basement.yes") : L("basement.no"))}</span></div>`).join("");
+  return bScreen({
+    photo: "basement", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("basement.who_asks", store.name(asker)) } })}
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+        <span class="b-eyebrow">${escHtml(L("basement.stage2_eyebrow"))}</span>
+        <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:${Math.round((count / 15) * 100)}%;"></div></div>
+        <span class="b-step">${count} / 15</span>
+      </div>
+      <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
+      <div style="margin-top:12px;">${bRuleBar([{ kind: "speak", text: LF("room.rule_speaks", store.name(asker)) }, { kind: "plain", text: LF("basement.answerer_note", store.name(answerer)) }])}</div>
+      <p class="b-small" style="margin-top:10px;">${escHtml(L("basement.yn_example"))}</p>
+      ${bCard(`
+        <div style="display:flex;justify-content:space-between;align-items:baseline;"><span class="b-eyebrow">${escHtml(LF("basement.answer_of", store.name(answerer)))}</span><span class="b-step">${count} / 15</span></div>
+        <div style="margin-top:14px;">${bYesNo({ yesAction: "basementAnswerYes", noAction: "basementAnswerNo" })}</div>
+      `, "margin-top:16px;")}
+      ${rows ? `<div style="margin-top:10px;">${rows}</div>` : ""}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("basement.no_more_questions"), action: "finishBasementAskingV3" })}
+    `,
+  });
 }
 
 /** Done only ever finishes the room once BOTH partners have tapped it during their
@@ -677,92 +772,163 @@ export function basementScreen(store, ui) {
  * without this note, a partner can tap Done, watch nothing happen, and not
  * understand why. Mirrors the same hint in BasementView.swift on iOS. */
 // =========================================================== Bridge Finale
+// FIXES-v4 §8: sequential, one partner at a time (never G/J tabs on one screen) — 3
+// steps with a carousel per step, then a 2-line promise checklist, then "Передайте
+// телефон" and the same for the other partner; "Мы на одной стороне" only appears
+// right at the very end, once both are done.
 const BRIDGE_KIND_ORDER = ["stepToward", "need", "gift"];
 const BRIDGE_DECK_ID = { stepToward: "step_toward", need: "needs_connection", gift: "gifts" };
-const BRIDGE_PROMPT_KEY = { stepToward: "bridge.choose_step_toward", need: "bridge.choose_need", gift: "bridge.choose_gift" };
+const BRIDGE_STEP_LABEL_KEY = { stepToward: "bridge.step_label.step_toward", need: "bridge.step_label.need", gift: "bridge.step_label.gift" };
 
 export function bridgeFinaleScreen(store, ui) {
-  const activeTab = ui.bridgeActiveTab;
-  const currentKind = BRIDGE_KIND_ORDER.find((k) => !store.selectedBridgeCardID(k, activeTab));
-  const mandatoryCard = deck("step_toward").cards.find((c) => c.id === "step_toward_x_12");
+  const turn = ui.bridgeTurn;
+  const other = store.other(turn);
 
-  let deckBlock;
-  if (currentKind) {
-    const index = BRIDGE_KIND_ORDER.indexOf(currentKind) + 1;
-    const d = deck(BRIDGE_DECK_ID[currentKind]);
-    const cards = d.cards.filter((c) => !(currentKind === "stepToward" && c.id === "step_toward_x_12"));
-    const grid = cards
-      .map((c) => {
-        const selected = store.selectedBridgeCardID(currentKind, activeTab) === c.id;
-        return `<button class="pressable${selected ? " selected" : ""}" data-action="selectBridgeCard" data-arg="${currentKind}" data-arg2="${c.id}">
-            ${selected ? "✓ " : ""}${escHtml(L(c.textKey))}
-          </button>`;
-      })
-      .join("");
-    deckBlock = `<div class="stack gap-12" style="padding:16px;max-height:380px;overflow-y:auto;">
-        <div class="step-progress">
-          <span class="f-label secondary">${escHtml(LF("bridge.step_progress", index, 3))}</span>
+  if (ui.bridgeStage === "handoff") {
+    return bScreen({
+      photo: "bridge", muted: true, shade: "top",
+      contentStyle: "padding:54px 24px 30px;",
+      inner: `
+        ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(turn)) } })}
+        <div class="b-spacer"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+          ${bStar()}
+          <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(turn)))}</h1>
+          <p class="b-body">${escHtml(LF("handoff.listen_note", store.name(other)))}</p>
         </div>
-        <div class="deck-prompt">${escHtml(L(BRIDGE_PROMPT_KEY[currentKind]))}</div>
-        <div class="deck-grid">${grid}</div>
-      </div>`;
-  } else {
-    deckBlock = `<div style="padding:20px;text-align:center;margin:0 16px;background:var(--ivory);border:1px solid rgba(204,171,102,0.5);border-radius:16px;color:var(--ink);">
-        <div style="font-size:30px;">✓</div>
-        <p style="font-weight:600;">${escHtml(LF("bridge.partner_cards_done", store.name(activeTab)))}</p>
-      </div>`;
+        <div class="b-spacer"></div>
+        ${bCta({ text: L("handoff.pass_ready"), action: "bridgeHandoffReady" })}
+      `,
+    });
   }
 
-  const mandatoryDoneA = store.session.bridgeFinal.partnerA?.completedMandatoryCard;
-  const mandatoryDoneB = store.session.bridgeFinal.partnerB?.completedMandatoryCard;
-
-  return photoScreen("bridge", `
-      <div class="bridge-header">
-        <div class="f-serif-title" style="font-size:30px;">${escHtml(L("bridge.title"))}</div>
-        <p style="font-weight:500;">${escHtml(L("bridge.question"))}</p>
-        <p style="font-size:13px;font-weight:600;">${escHtml(L("bridge.choose_all_prompt"))}</p>
-      </div>
-      <div class="bridge-tabs">
-        <button class="${activeTab === "partnerA" ? "active" : ""}" data-action="setBridgeTab" data-arg="partnerA">${escHtml(store.session.partnerA.name)}</button>
-        <button class="${activeTab === "partnerB" ? "active" : ""}" data-action="setBridgeTab" data-arg="partnerB">${escHtml(store.session.partnerB.name)}</button>
-      </div>
-      ${deckBlock}
-      <div class="mandatory-section">
-        <div class="secondary" style="font-size:13px;">${escHtml(L("bridge.mandatory_card_prompt"))}</div>
-        <div style="font-weight:600;">${escHtml(L(mandatoryCard.textKey))}</div>
-        <div class="mandatory-check-row">
-          <button class="pressable" style="background:${mandatoryDoneA ? "rgba(23,23,26,0.35)" : "rgba(23,23,26,0.15)"}" data-action="completeMandatoryCard" data-arg="partnerA" ${mandatoryDoneA ? "disabled" : ""}>${mandatoryDoneA ? "✓" : "○"} ${escHtml(store.session.partnerA.name)}</button>
-          <button class="pressable" style="background:${mandatoryDoneB ? "rgba(183,148,76,0.4)" : "rgba(183,148,76,0.15)"}" data-action="completeMandatoryCard" data-arg="partnerB" ${mandatoryDoneB ? "disabled" : ""}>${mandatoryDoneB ? "✓" : "○"} ${escHtml(store.session.partnerB.name)}</button>
+  if (ui.bridgeStage === "promise") {
+    const sel = store.session.bridgeFinal[turn] || {};
+    const cardText = (kind) => {
+      const id = sel[`${kind}CardID`];
+      const d = deck(BRIDGE_DECK_ID[kind]);
+      const c = d.cards.find((cc) => cc.id === id);
+      return c ? L(c.textKey) : "";
+    };
+    const bothDone = turn === "partnerB" && store.bridgeCardsChosen("partnerA") && store.bridgePromisesChecked("partnerA");
+    const isLast = turn === "partnerB";
+    const ready = store.bridgePromisesChecked(turn);
+    return bScreen({
+      photo: "bridge", muted: true, shade: "top",
+      contentStyle: "padding:54px 24px 30px;",
+      inner: `
+        ${bTopbar({ right: { who: store.name(turn) } })}
+        <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+          <span class="b-eyebrow">${escHtml(L("bridge.eyebrow_promise"))}</span>
+          <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:100%;"></div></div>
+          <span class="b-step">3 / 3</span>
         </div>
+        <h1 class="b-h1" style="margin-top:16px;">${escHtml(L("bridge.promise_title"))}</h1>
+        <p class="b-body" style="margin-top:8px;">${escHtml(LF("bridge.promise_instruction", store.name(other)))}</p>
+        ${bCard(`<div class="b-small">${escHtml(L("bridge.you_chose"))}</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font:400 14.5px/1.4 var(--sans);color:#D8CFC5;margin-top:6px;">
+            <span>· ${escHtml(cardText("stepToward"))}</span>
+            <span>· ${escHtml(cardText("need"))}</span>
+            <span>· ${escHtml(cardText("gift"))}</span>
+          </div>`, "margin-top:16px;")}
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
+          ${bCheck({ text: L("bridge.promise_1"), done: !!sel.promise1, action: "toggleBridgePromise", arg: 1 })}
+          ${bCheck({ text: L("bridge.promise_2"), done: !!sel.promise2, action: "toggleBridgePromise", arg: 2 })}
+        </div>
+        <div class="b-spacer"></div>
+        ${isLast
+          ? bCta({ text: L("bridge.same_side_button"), action: "advance", enabled: store.bridgeFinaleComplete() })
+          : bCta({ text: LF("bridge.next_turn", store.name(other)), action: "bridgeFinishTurn", enabled: ready })}
+      `,
+    });
+  }
+
+  // ui.bridgeStage === "cards"
+  const kind = BRIDGE_KIND_ORDER[ui.bridgeStepIndex];
+  const d = deck(BRIDGE_DECK_ID[kind]);
+  const cards = d.cards;
+  const idx = Math.min(ui.bridgeCarouselIndex, cards.length - 1);
+  const card = cards[idx];
+  return bScreen({
+    photo: "bridge", muted: true, shade: "top",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(turn)) } })}
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;">
+        <span class="b-eyebrow">${escHtml(L("bridge.eyebrow_step"))}</span>
+        <div style="flex-grow:1;" class="b-progress"><div class="b-progress__fill" style="width:${Math.round(((ui.bridgeStepIndex + 1) / 3) * 100)}%;"></div></div>
+        <span class="b-step">${ui.bridgeStepIndex + 1} / 3</span>
       </div>
-      <div class="together-section">
-        ${primaryButton({ key: "bridge.same_side_button", action: "advance", enabled: store.bridgeFinaleComplete() })}
-      </div>`,
-    { dim: false });
+      ${bSteps(3, ui.bridgeStepIndex)}
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span class="b-small" style="color:#F4EDE4;">${escHtml(LF("bridge.step_num_label", ui.bridgeStepIndex + 1, L(BRIDGE_STEP_LABEL_KEY[kind])))}</span>
+      </div>
+      <p class="b-body" style="margin-top:18px;">${escHtml(L("bridge.carousel_instruction"))}</p>
+      <div style="margin-top:14px;">
+        ${bCarousel({
+          inner: `${bStar()}<p class="b-quote" style="color:#F4EDE4;font-size:19px;">${escHtml(L(card.textKey))}</p>`,
+          prevAction: "bridgeCarouselPrev", nextAction: "bridgeCarouselNext",
+          dotsCount: cards.length, dotsIndex: idx,
+        })}
+      </div>
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("bridge.pick_this"), action: "bridgeSelectCard" })}
+    `,
+  });
 }
 
 // =========================================================== Voice Snapshot
+// FIXES-v4 §10: sequential (not both partners on one screen), a plain circular
+// `.b-rec` button (no mic emoji), a running timer, then Прослушать/Заново/Сохранить.
 export function voiceSnapshotScreen(store, ui) {
-  const row = (role, colorClass) => {
-    const recording = ui.recordingRole === role;
-    const recorded = store.session.voiceNoteRecorded[role];
-    return `<div style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);">
-        <span class="dot ${colorClass}"></span>
-        <span class="on-photo" style="font-weight:500;">${escHtml(store.name(role))}</span>
-        <span class="spacer"></span>
-        ${recorded ? '<span class="on-photo secondary" style="font-size:13px;">✓</span>' : ""}
-        <button class="pressable" data-action="toggleVoiceRecording" data-arg="${role}" style="background:none;border:none;font-size:26px;color:${colorClass === "a" ? "var(--purple)" : "var(--gold)"};">${recording ? "⏹" : "🎙"}</button>
-      </div>`;
-  };
-  return photoScreen("end", `
-      <div class="spacer"></div>
-      <h1 class="f-serif-title on-photo" style="font-size:24px;">${escHtml(L("voice.title"))}</h1>
-      <p class="on-photo secondary">${escHtml(L("voice.body"))}</p>
-      <div class="stack gap-12" style="margin-top:16px;">${row("partnerA", "a")}${row("partnerB", "b")}</div>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "voice.save", action: "advance", onDark: true })}
-      ${secondaryButton({ key: "voice.not_this_time", action: "advance", onPhoto: true })}`,
-    { contentStyle: "padding:28px;text-align:center;" });
+  const turn = ui.voiceTurn;
+  const other = store.other(turn);
+  if (ui.voiceStage === "handoff") {
+    return bScreen({
+      photo: "bridge", shade: "text",
+      contentStyle: "padding:54px 24px 30px;",
+      inner: `
+        ${bTopbar({ back: false, right: { who: LF("voice.who_records", store.name(turn)) } })}
+        <div class="b-spacer"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+          ${bStar()}
+          <h1 class="b-h1">${escHtml(LF("handoff.pass_title", store.name(turn)))}</h1>
+          <p class="b-body">${escHtml(LF("handoff.listen_note", store.name(other)))}</p>
+        </div>
+        <div class="b-spacer"></div>
+        ${bCta({ text: L("handoff.pass_ready"), action: "voiceHandoffReady" })}
+      `,
+    });
+  }
+  const recording = ui.recordingRole === turn;
+  const hasBlob = !!ui.voiceBlobUrl[turn];
+  const mm = String((ui.voiceRecordSeconds / 60 | 0)).padStart(1, "0");
+  const ss = String(ui.voiceRecordSeconds % 60).padStart(2, "0");
+  return bScreen({
+    photo: "bridge", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: { who: LF("voice.who_records", store.name(turn)) } })}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px;text-align:center;">
+        ${bStar()}
+        <h1 class="b-h1">${escHtml(LF("voice.title_for", store.name(other)))}</h1>
+      </div>
+      ${bCard(`<p class="b-body">${escHtml(L("voice.body"))}</p>`, "margin-top:14px;")}
+      <div class="b-spacer"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+        ${bRec({ action: "toggleVoiceRecording", arg: turn, recording })}
+        <span style="font:400 28px/1 var(--serif);color:#F4EDE4;">${mm}:${ss}</span>
+        <span class="b-small">${escHtml(L(recording ? "voice.tap_to_stop" : hasBlob ? "voice.recorded_note" : "voice.tap_to_record"))}</span>
+      </div>
+      <div class="b-spacer"></div>
+      ${hasBlob ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        ${bCta({ text: L("voice.play"), action: "playVoiceRecording", arg: turn, ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+        ${bCta({ text: L("voice.retry"), action: "retryVoiceRecording", arg: turn, ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+      </div>` : ""}
+      ${bCta({ text: L("voice.save"), action: "saveVoiceAndAdvance", enabled: hasBlob })}
+      <div style="text-align:center;margin-top:10px;">${bLink({ text: L("voice.not_this_time"), action: "saveVoiceSkip" })}</div>
+    `,
+  });
 }
 
 // =========================================================== Closing
@@ -782,69 +948,114 @@ function closingRecapRow(store, role) {
     </div>`;
 }
 
+// =========================================================== Contract (V11) — the
+// couple's agreement rules, as a compact "paper" receipt, with Save/Share. Save uses
+// the same download-a-PNG technique as the certificate; Share uses the real Web
+// Share API (the system share sheet) when the browser supports it.
+export function contractViewScreen(store) {
+  const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const rules = store.couplesAgreement;
+  return bScreen({
+    photo: "bridge", shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar()}
+      <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("contract.title"))}</h1>
+      ${bPaper(`
+        <span class="b-eyebrow">${escHtml(LF("contract.eyebrow", dateStr))}</span>
+        <h3>${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
+        ${rules.length
+          ? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">${rules.map((r) => `<p style="margin:0;">· ${escHtml(r)}</p>`).join("")}</div>`
+          : `<p style="margin:0;">${escHtml(L("contract.no_rules"))}</p>`}
+        <div style="height:1px;background:rgba(27,26,24,0.15);margin:6px 0;"></div>
+        <p style="margin:0;font-style:italic;">${escHtml(L("bridge.promise_1"))}</p>
+      `, "margin-top:16px;display:flex;flex-direction:column;gap:12px;")}
+      <div class="b-spacer"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        ${bCta({ text: L("contract.save_pdf"), action: "saveContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+        ${bCta({ text: L("contract.share"), action: "shareContract", ghost: true, style: "padding:0;letter-spacing:0.14em;" })}
+      </div>
+      <div style="margin-top:10px;">${bCta({ key: "intensity.continue_button", action: "advance" })}</div>
+    `,
+  });
+}
+
+// FIXES-v4 §11: a certificate, not a rosette emoji — a light "paper" card on the
+// dark bridge-at-night photo, "Сохранить в Фото" (opens the generated image so it
+// can be saved from the share sheet — the honest web equivalent of PHPhotoLibrary,
+// there's no native photo library API to call from a PWA), "Завершить игру" makes
+// plain that the session is over.
 export function closingScreen(store, ui) {
   const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-  return photoScreen("ending", `
-      <div class="spacer"></div>
-      <div class="closing-card">
-        <div class="rosette">🏅</div>
-        <div class="f-serif-title" style="font-size:30px;">${escHtml(L("closing.title"))}</div>
-        <div class="secondary">${dateStr}</div>
-        <div class="stack gap-8">
-          <div style="font-size:19px;">${escHtml(L("closing.line_1"))}</div>
-          <div style="font-size:19px;font-weight:600;">${escHtml(L(ui.closingLineIsCourage ? "closing.line_2b" : "closing.line_2a"))}</div>
-        </div>
-      </div>
-      <div class="stack gap-8" style="margin-top:18px;text-align:left;">
-        <div class="on-photo secondary" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;">${escHtml(L("closing.recap_title"))}</div>
+  return bScreen({
+    photo: "ending", shade: "soft",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ back: false, right: null })}
+      <div style="text-align:center;margin-top:10px;"><span class="b-eyebrow" style="color:#C9A45C;">${escHtml(L("closing.game_finished"))}</span></div>
+      ${bPaper(`
+        ${bStarGlyphInline()}
+        <span class="b-eyebrow">${escHtml(L("closing.certificate"))}</span>
+        <h3 style="font-size:30px;margin-top:6px;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</h3>
+        <p style="margin:6px 0 0;max-width:260px;">${escHtml(L("closing.certificate_body"))}</p>
+        <div style="width:60px;height:1px;background:#C9A45C;margin:6px auto;"></div>
+        <p style="margin:0;font-size:12px;color:#8A7654;">${escHtml(dateStr)} · Bridge</p>
+      `, "margin-top:18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px 22px;border:1px solid #C9A45C;")}
+      <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;text-align:left;">
         ${closingRecapRow(store, "partnerA")}
         ${closingRecapRow(store, "partnerB")}
       </div>
-      <p class="on-photo secondary" style="margin-top:20px;">${escHtml(L("closing.save_prompt"))}</p>
-      <div class="spacer"></div>
-      ${primaryButton({ key: "closing.save_to_gallery", action: "saveClosingCard", enabled: !ui.closingSaved, onDark: true })}
-      ${secondaryButton({ key: "closing.close", action: "closeSession", onPhoto: true })}`,
-    { contentStyle: "padding:28px;text-align:center;" });
+      <div class="b-spacer"></div>
+      ${bCta({ key: "closing.save_to_gallery", action: "saveClosingCard", ghost: true, enabled: !ui.closingSaved })}
+      <div style="margin-top:10px;">${bCta({ key: "closing.close", action: "closeSession" })}</div>
+    `,
+  });
 }
 
-// =========================================================== Settings
+function bStarGlyphInline() {
+  return `<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C12.6 7.2 16.8 11.4 24 12 16.8 12.6 12.6 16.8 12 24 11.4 16.8 7.2 12.6 0 12 7.2 11.4 11.4 7.2 12 0Z" fill="#C9A45C"></path></svg>`;
+}
+
+// =========================================================== Settings — FIXES-v4
+// §12: a dark screen in the app's own style, not a bare system sheet.
 export function settingsScreen(store, ui) {
-  const appVersion = "1.0 (PWA)";
-  return `<div class="screen flush" style="background:#f2f2f4;">
-      <div class="top-bar"><span style="width:60px;"></span><span>${escHtml(L("settings.title"))}</span>
-        <button data-action="closeSettings">${escHtml(L("settings.done"))}</button></div>
-      <div style="padding:0 16px;overflow-y:auto;">
-        <div class="settings-section-title">${escHtml(L("settings.section_progress") || "Progress")}</div>
-        <div class="settings-group">
-          <button class="settings-row" data-action="confirmRedoPage">${escHtml(L("nav.redo_page"))}</button>
-          <button class="settings-row destructive" data-action="confirmStartOver">${escHtml(L("nav.start_over"))}</button>
-        </div>
-        <div class="settings-section-title">${escHtml(L("settings.section_relationship"))}</div>
-        <div class="settings-group">
-          <button class="settings-row" data-action="openProfiles">${escHtml(L("settings.relationships_row"))}</button>
-          <button class="settings-row" data-action="openHouseMapFromSettings">${escHtml(L("settings.view_path_row"))}</button>
-        </div>
-        <div class="settings-section-title">${escHtml(L("settings.section_support"))}</div>
-        <div class="settings-group">
-          <button class="settings-row" data-action="openDisclaimerSheet">${escHtml(L("settings.disclaimer_row"))}</button>
-          <button class="settings-row" data-action="openCrisis">${escHtml(L("settings.crisis_row"))}</button>
-          <button class="settings-row" data-action="openLanguagePicker">${escHtml(L("settings.language_row"))}</button>
-        </div>
-        <div class="settings-section-title">${escHtml(L("settings.section_legal"))}</div>
-        <div class="settings-group">
-          <button class="settings-row" data-action="openPrivacy">${escHtml(L("settings.privacy_row"))}</button>
-          <button class="settings-row" data-action="openTerms">${escHtml(L("settings.terms_row"))}</button>
-          <button class="settings-row" data-action="restorePurchasesTestMode">${escHtml(L("settings.restore_purchases_row"))}</button>
-        </div>
-        <div class="settings-section-title">${escHtml(L("settings.section_data"))}</div>
-        <div class="settings-group">
-          <button class="settings-row destructive" data-action="confirmDeleteData">${escHtml(L("settings.delete_data_row"))}</button>
-        </div>
-        <div class="settings-group" style="margin-top:20px;">
-          <div class="settings-row" style="cursor:default;color:var(--ink)"><span>${escHtml(L("settings.version_row"))}</span><span class="val">${appVersion}</span></div>
-        </div>
+  const idx = MAP_PINS.findIndex((p) => p.kind === store.session.currentRoom);
+  const roomNum = idx >= 0 ? idx + 1 : 1;
+  const ownerInitial = (store.name("partnerA").trim()[0] || "?").toUpperCase();
+  const section = (titleKey, items) => `<span class="b-eyebrow" style="margin-top:20px;color:#C9A45C;">${escHtml(L(titleKey))}</span><div class="b-menu">${items.join("")}</div>`;
+  const item = (labelKey, action, { small, danger } = {}) =>
+    `<button class="b-menu__item${danger ? " b-menu__item--danger" : ""} pressable" type="button" data-action="${action}"><span>${escHtml(L(labelKey))}${small ? `<small>${escHtml(L(small))}</small>` : ""}</span>${danger ? "" : `<svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h19M14 1l6 6-6 6"></path></svg>`}</button>`;
+  return bScreen({
+    photo: "living-room", shade: "text",
+    contentStyle: "padding:54px 24px 20px;",
+    inner: `
+      <div class="b-topbar"><h1 class="b-h2" style="margin:0;">${escHtml(L("settings.title"))}</h1><button class="b-iconbtn pressable" type="button" data-action="closeSettings" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#EFE6DA" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button></div>
+      <div class="b-owner" style="margin-top:18px;">
+        <span class="b-avatar">${escHtml(ownerInitial)}</span>
+        <div><div style="font:400 20px/1.1 var(--serif);color:#F4EDE4;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</div>
+        <div class="b-small" style="margin-top:4px;">${escHtml(LF("settings.owner_room_line", store.name("partnerA"), roomNum))}</div></div>
       </div>
-    </div>`;
+      ${section("settings.section_progress", [
+        item("settings.view_path_row", "openHouseMapFromSettings"),
+        item("nav.redo_page", "confirmRedoPage"),
+        item("nav.start_over", "confirmStartOver", { small: "settings.start_over_note" }),
+      ])}
+      ${section("settings.section_relationship", [
+        item("settings.relationships_row", "openProfiles"),
+      ])}
+      ${section("settings.section_support", [
+        item("settings.crisis_row", "openCrisis"),
+        item("settings.disclaimer_row", "openDisclaimerSheet"),
+        item("settings.language_row", "openLanguagePicker"),
+      ])}
+      ${section("settings.section_legal", [
+        item("settings.privacy_row", "openPrivacy"),
+        item("settings.terms_row", "openTerms"),
+        item("settings.restore_purchases_row", "restorePurchasesTestMode"),
+      ])}
+      <div style="margin-top:20px;">${item("settings.delete_data_row", "confirmDeleteData", { danger: true })}</div>
+    `,
+  });
 }
 
 /** Rendered once, on top of whatever screen is current — covers Settings' own

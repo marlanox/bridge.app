@@ -179,6 +179,8 @@ export class Store {
       activePartner: this.activePartner,
       placedCardsThisTurn: this.placedCardsThisTurn,
       basementStage: this.basementStage,
+      basementFears: this.basementFears,
+      basementYN: this.basementYN,
       voiceNoteSkipped: this.voiceNoteSkipped,
       history: this._history,
     };
@@ -207,6 +209,9 @@ export class Store {
     this.placedCardsThisTurn = [];
     this.pendingReveal = null;
     this.basementStage = "fears";
+    this.basementFears = { partnerA: null, partnerB: null };
+    this.basementFearReveal = null;
+    this.basementYN = { partnerA: [], partnerB: [] };
     this.voiceNoteSkipped = { partnerA: false, partnerB: false };
     this.resetDice();
   }
@@ -222,6 +227,9 @@ export class Store {
     this.activePartner = snap.activePartner;
     this.placedCardsThisTurn = snap.placedCardsThisTurn;
     this.basementStage = snap.basementStage ?? "fears";
+    this.basementFears = snap.basementFears ?? { partnerA: null, partnerB: null };
+    this.basementFearReveal = null;
+    this.basementYN = snap.basementYN ?? { partnerA: [], partnerB: [] };
     this.voiceNoteSkipped = snap.voiceNoteSkipped;
     const cfg = this.currentRoomConfig();
     this.roomTimeRemainingSeconds = (cfg?.timeMinutes ?? 7) * 60;
@@ -230,10 +238,6 @@ export class Store {
 
   other(role) {
     return role === "partnerA" ? "partnerB" : "partnerA";
-  }
-
-  seatRotation(role) {
-    return role === "partnerB" ? 180 : 0;
   }
 
   name(role) {
@@ -371,7 +375,8 @@ export class Store {
           break;
         case "houseMap": this.flow = { step: "names" }; break;
         case "names": this.flow = { step: "dice" }; break;
-        case "couplesAgreementSetup": this.flow = { step: "voiceSnapshot" }; break;
+        case "couplesAgreementSetup": this.flow = { step: "contractView" }; break;
+        case "contractView": this.flow = { step: "voiceSnapshot" }; break;
         case "dice": this.flow = { step: "intensityState" }; break;
         case "intensityState":
           this.flow = this.needsCalmDown() ? { step: "calmDown" } : { step: "houseMapGate" };
@@ -461,6 +466,21 @@ export class Store {
     });
   }
 
+  /** FIXES-v4 §6: a room's V3 cycle answer step is the emotion scale (value +
+   * feeling chips + free text), not a deck-card pick — this is the V3 rooms'
+   * equivalent of `playCard`+`markRoomDone`, reusing the same `pendingReveal`/
+   * `confirmReveal` hand-off plumbing every other room already has, just with
+   * an `emotion` payload on the reveal instead of `cards`. */
+  submitRoomTurn({ value, chips, custom }) {
+    this.set(() => {
+      const role = this.activePartner;
+      const entry = { room: this.session.currentRoom, role, value, chips: [...chips], custom, kind: "emotion" };
+      this.session.cardsPlayed.push(entry);
+      this.roomDoneFlags[role] = true;
+      this.pendingReveal = { from: role, to: this.other(role), emotion: { value, chips: [...chips], custom } };
+    });
+  }
+
   markRoomDone(role) {
     this.set(() => {
       if (this.isSequentialSpeakingRoom()) {
@@ -512,15 +532,21 @@ export class Store {
 
   // ------------------------------------------------------------- basement
 
-  // Two stages, neither of which loops back into the other: (1) both partners voice
-  // whichever fears they choose from the list, each tapping their own Done when
-  // finished; (2) a free, untimed-per-question window for up to 15 verbal yes/no
-  // questions, ended the same way. Mirrors SessionViewModel's Basement redesign.
+  // Two stages, neither of which loops back into the other, both one-person-at-a-time
+  // (FIXES-v4 §7): (1) each partner picks ONE childhood fear (from the real 44-card
+  // fears deck, plus their own words), the other reads it, roles swap; (2) one partner
+  // asks up to 15 verbal yes/no questions, the other answers only Да/Нет, a running
+  // history and count are kept, then roles swap. Mirrors SessionViewModel's Basement
+  // redesign, restructured onto the same single-reader/single-answerer shape every
+  // other room's cycle now uses.
   _startBasement(opts = {}) {
     this.session.currentRoom = "basement";
     this.roomDoneFlags = { partnerA: false, partnerB: false };
     this.placedCardsThisTurn = [];
     this.basementStage = "fears";
+    this.basementFears = { partnerA: null, partnerB: null };
+    this.basementFearReveal = null;
+    this.basementYN = { partnerA: [], partnerB: [] };
     this.activePartner = this.session.firstToSpeak || "partnerA";
     this.timerFired = false;
     this.timeUpBannerShown = false;
@@ -528,22 +554,52 @@ export class Store {
     if (opts.seed) this._seedForPreview();
   }
 
-  markBasementFearsDone(role) {
+  /** Stage 1: the active partner picks one fear — reuses the room cycle's own
+   * reveal/read shape (`basementFearReveal`, separate from the generic room
+   * `pendingReveal` since finishing stage 1 must move to stage 2, not leave the
+   * room the way a real room's `confirmReveal` would). */
+  chooseBasementFear(text) {
     this.set(() => {
+      const role = this.activePartner;
+      this.basementFears[role] = text;
       this.roomDoneFlags[role] = true;
+      this.basementFearReveal = { from: role, to: this.other(role), text };
+    });
+  }
+
+  confirmBasementFearRead() {
+    this.set(() => {
+      const reveal = this.basementFearReveal;
+      if (!reveal) return;
+      this.basementFearReveal = null;
       if (this.roomDoneFlags.partnerA && this.roomDoneFlags.partnerB) {
         this.basementStage = "questions";
         this.roomDoneFlags = { partnerA: false, partnerB: false };
+        this.activePartner = this.session.firstToSpeak || "partnerA";
+      } else {
+        this.activePartner = reveal.to;
       }
     });
   }
 
-  markBasementQuestionsDone(role) {
+  /** Stage 2: `activePartner` is the asker (asking aloud, not typed); the other
+   * partner answers Да/Нет, recorded here so both the running history and the
+   * 15-question cap are visible on screen. */
+  recordBasementAnswer(isYes) {
     this.set(() => {
-      this.roomDoneFlags[role] = true;
+      if (this.basementYN[this.activePartner].length >= 15) return;
+      this.basementYN[this.activePartner].push(isYes);
+    });
+  }
+
+  finishBasementAsking() {
+    this.set(() => {
+      this.roomDoneFlags[this.activePartner] = true;
       if (this.roomDoneFlags.partnerA && this.roomDoneFlags.partnerB) {
         this._awardTokens(1, 0);
         this._advanceInline();
+      } else {
+        this.activePartner = this.other(this.activePartner);
       }
     });
   }
@@ -562,17 +618,29 @@ export class Store {
     });
   }
 
-  completeMandatoryCard(role) {
+  /** FIXES-v4 §8: the old single "mandatory deck card" checkbox is replaced by two
+   * fixed promise lines every couple commits to, the same two for both partners. */
+  setBridgePromise(role, n, value) {
     this.set(() => {
       const sel = this.session.bridgeFinal[role] || {};
-      sel.completedMandatoryCard = true;
+      sel[`promise${n}`] = value;
       this.session.bridgeFinal[role] = sel;
     });
   }
 
+  bridgeCardsChosen(role) {
+    const s = this.session.bridgeFinal[role];
+    return !!(s && s.stepTowardCardID && s.needCardID && s.giftCardID);
+  }
+
+  bridgePromisesChecked(role) {
+    const s = this.session.bridgeFinal[role];
+    return !!(s && s.promise1 && s.promise2);
+  }
+
   bridgeFinaleComplete() {
-    const isComplete = (s) => !!(s && s.stepTowardCardID && s.needCardID && s.giftCardID && s.completedMandatoryCard);
-    return isComplete(this.session.bridgeFinal.partnerA) && isComplete(this.session.bridgeFinal.partnerB);
+    const isComplete = (role) => this.bridgeCardsChosen(role) && this.bridgePromisesChecked(role);
+    return isComplete("partnerA") && isComplete("partnerB");
   }
 
   // --------------------------------------------------------- voice snapshot

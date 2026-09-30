@@ -164,6 +164,51 @@ body.is-light{background:var(--ivory)}
 .b-menu__item small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
 .b-menu__item--danger{color:#E58A74}
 
+/* =================== v4 ДОБАВЛЕНИЯ =================== */
+/* Нижняя кнопка на экранах со скроллом — прилипает к низу, всегда видна, всегда полной высоты */
+.b-footer{position:sticky;bottom:0;z-index:2;margin:0 calc(var(--gutter)*-1);padding:18px var(--gutter) var(--safe-bottom);
+  background:linear-gradient(180deg,rgba(11,9,7,0) 0%,rgba(11,9,7,.92) 38%)}
+/* Правило комнаты — КОМПАКТНО, одной строкой меток (заменяет большой .b-rule) */
+.b-rulebar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.b-tag{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;
+  font:500 12.5px/1 var(--sans);color:var(--text-2);border:1px solid rgba(239,230,218,.22);background:rgba(11,9,7,.45);white-space:nowrap}
+.b-tag--speak{background:var(--cream);color:#1A1511;border-color:var(--cream)}
+.b-tag--no{color:#E9A08F;border-color:rgba(208,88,63,.45)}
+/* Метки-чувства — РОВНАЯ СЕТКА, все одного размера, не золотые */
+.b-chipgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.b-chipgrid .b-chip{width:100%;justify-content:center;padding:0 6px;height:40px;font-size:13.5px}
+/* Выбор одного варианта (страх, потребность и т.п.) */
+.b-choice{display:flex;align-items:center;gap:14px;width:100%;min-height:54px;padding:12px 16px;box-sizing:border-box;border-radius:16px;
+  border:1px solid rgba(239,230,218,.2);background:rgba(11,9,7,.45);color:var(--text-2);font:400 15px/1.35 var(--sans);text-align:left;cursor:pointer}
+.b-choice__radio{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(239,230,218,.45)}
+.b-choice.is-on{border-color:var(--cream);background:rgba(239,230,218,.1);color:var(--text)}
+.b-choice.is-on .b-choice__radio{border:6px solid var(--cream)}
+/* Да / Нет */
+.b-yn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.b-yn button{height:64px;border-radius:18px;font:400 24px/1 var(--serif);cursor:pointer;border:1px solid rgba(239,230,218,.3);background:rgba(11,9,7,.5);color:var(--text)}
+.b-yn button.is-yes{background:var(--cream);color:#1A1511;border-color:var(--cream)}
+/* «Подробнее» — одинаково во ВСЕХ комнатах */
+.b-more{display:inline-flex;align-items:center;gap:6px;font:500 13px/1 var(--sans);color:var(--beige);background:none;border:0;padding:6px 0;cursor:pointer}
+/* Карта: текущая комната крупнее и ярче */
+.b-pin.is-current{height:32px;padding:0 14px;font-size:14px;font-weight:600;z-index:2;
+  box-shadow:0 0 0 5px rgba(239,230,218,.25),0 0 28px 6px rgba(239,230,218,.55)}
+.b-pin.is-locked{opacity:.55}
+/* Шаги (1–2–3) и карусель карт */
+.b-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.b-steps span{height:3px;border-radius:3px;background:rgba(239,230,218,.18)}
+.b-steps span.is-on{background:var(--cream)}
+.b-carousel{display:flex;align-items:center;gap:10px}
+.b-carousel__nav{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(239,230,218,.35);background:rgba(11,9,7,.5);color:var(--cream);cursor:pointer}
+.b-dots{display:flex;gap:6px;justify-content:center}
+.b-dots i{width:6px;height:6px;border-radius:50%;background:rgba(239,230,218,.25)} .b-dots i.is-on{background:var(--cream)}
+/* Запись голоса */
+.b-rec{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold-line);background:rgba(11,9,7,.5);cursor:pointer}
+.b-rec__core{width:70px;height:70px;border-radius:50%;background:var(--hot);box-shadow:0 0 0 10px rgba(208,88,63,.18)}
+/* Документ (договор) и сертификат — светлая «бумага» на тёмном */
+.b-paper{background:#F4EDE2;color:#1B1A18;border-radius:18px;padding:22px 20px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.b-paper h3{margin:0;font:400 22px/1.15 var(--serif)} .b-paper p,.b-paper li{font:400 13.5px/1.5 var(--sans);color:#3A352F}
+.b-paper .b-eyebrow{color:#8A7654;text-shadow:none}
+
 /* ---------- СВЕТЛЫЙ экран (например «Как вас зовут») ---------- */
 .b-screen--light{background:var(--ivory);color:var(--ink)}
 .b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,.3) 100%)}
