@@ -264,6 +264,9 @@
 "bridge.step_label.need" = "My need";
 "bridge.step_label.gift" = "My gift";
 "bridge.carousel_instruction" = "Swipe through the cards with the arrows and pick one.";
+"bridge.instruction.step_toward" = "What are you willing to do differently, to grow closer? Pick one step — something you genuinely mean.";
+"bridge.instruction.need" = "What would you like right now, after this conversation? Pick whatever honestly resonates.";
+"bridge.instruction.gift" = "Pick a gesture to thank your partner for being here with you. It's a symbol, not a promise to do exactly this right now.";
 "bridge.pick_this" = "I'll pick this";
 "bridge.promise_title" = "Say it out loud";
 "bridge.promise_instruction" = "Tell %@, and check it off once you have.";
@@ -294,6 +297,7 @@
 "closing.names_and" = "and";
 "closing.certificate_body" = "walked through all 7 rooms and met in the middle of the bridge.";
 "closing.certified_intro" = "This certifies that";
+"closing.encouragement" = "It takes real strength and courage to walk this path. You should both be proud — you made it through all seven rooms and met in the middle of the bridge.";
 "closing.was_became" = "%@: was %@ → now %@";
 "closing.number" = "No. %@ · %@";
 "settings.owner_room_line" = "Owner — %@ · room %@ of 7";
