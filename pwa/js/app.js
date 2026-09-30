@@ -12,14 +12,19 @@ let store;
  * Safari (both a plain tab, where the address bar hides/shows as you scroll, and an
  * installed standalone app) has repeatedly been seen leaving `inset: 0` computed
  * against a stale/short viewport in exactly this app — the fixed box just doesn't
- * always get re-measured against the *current* visual viewport. Measuring
- * `window.innerHeight` directly in JS and writing it as an explicit pixel height is
- * the one thing that can't be wrong regardless of which viewport unit iOS decides to
- * shortchange that day. Re-measured on every resize/orientation change, and once more
- * a beat after each one since iOS sometimes reports the old height for a moment
- * during the address-bar hide/show transition. */
+ * always get re-measured against the *current* visual viewport. `window.visualViewport`
+ * (where available) is the API iOS actually keeps live during the address-bar
+ * hide/show animation — it fires its own `resize` repeatedly *during* that animation,
+ * where a plain `window.resize` typically only fires once it settles, so preferring it
+ * (falling back to `window.innerHeight` where it doesn't exist) closes the exact gap
+ * that let a sliver of the page show past #app's bottom edge for a moment. Re-measured
+ * on every viewport/orientation change, and once more a beat later since iOS sometimes
+ * reports a stale height for a moment during the transition. */
+function currentViewportHeight() {
+  return window.visualViewport ? window.visualViewport.height : window.innerHeight;
+}
 function syncViewportHeight() {
-  appEl.style.height = `${window.innerHeight}px`;
+  appEl.style.height = `${currentViewportHeight()}px`;
 }
 syncViewportHeight();
 window.addEventListener("resize", syncViewportHeight);
@@ -27,6 +32,10 @@ window.addEventListener("orientationchange", () => {
   syncViewportHeight();
   setTimeout(syncViewportHeight, 300);
 });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", syncViewportHeight);
+  window.visualViewport.addEventListener("scroll", syncViewportHeight);
+}
 
 /** Ephemeral, per-screen UI state that mirrors each SwiftUI view's local `@State` —
  * never persisted, reset whenever the flow moves to a different step. See

@@ -68,7 +68,13 @@ html, body {
   height: 100%; width: 100%;
   position: fixed; inset: 0;
   overflow: hidden;
-  background: var(--ivory);
+  /* bridge.css's dark theme is the app's default background now (Names is the only
+     light screen) — if #app's box is ever a hair short of the real viewport (an iOS
+     Safari dynamic-toolbar timing quirk: window.innerHeight briefly under-reports
+     while the address bar is animating, see syncViewportHeight() in app.js), whatever
+     sliver of html/body shows through at the bottom should read as more dark screen,
+     not a bright cream bar. */
+  background: #0B0907;
   overscroll-behavior: none;
 }
 
@@ -85,7 +91,7 @@ body {
    roughly the height of Safari's own (now-hidden) chrome, leaving a plain white gap at
    the bottom that doesn't belong to any of our own elements. Anchoring by inset instead
    of height sidesteps that unit entirely. */
-#app { position: fixed; inset: 0; background: var(--ivory); }
+#app { position: fixed; inset: 0; background: #0B0907; }
 
 img { -webkit-user-drag: none; user-select: none; }
 
