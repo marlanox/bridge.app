@@ -164,11 +164,17 @@ body.is-light{background:var(--ivory)}
 /* ---------- карта дома ---------- */
 .b-map{position:relative;width:100%}
 .b-map img{display:block;width:100%;height:auto}
-.b-pin{position:absolute;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;
-  border-radius:999px;background:rgba(11,9,7,.88);color:var(--text);font:500 11.5px/1 var(--sans);white-space:nowrap}
+/* Fully opaque, uppercase + letter-spaced so a pin never reads as part of the photo
+   underneath it (the photo itself has baked-in English room labels at roughly these
+   same spots — a translucent chip let them bleed through and mix with the Russian
+   pin text; solid background + a different typographic voice fixes both at once). */
+.b-pin{position:absolute;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;
+  border-radius:999px;background:#0B0907;border:1px solid rgba(239,230,218,.2);color:var(--text);
+  font:600 11px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+  text-shadow:0 1px 3px rgba(0,0,0,.6)}
 .b-pin.is-done{color:var(--gold)}
-.b-pin.is-current{background:var(--cream);color:#1A1511;box-shadow:0 0 0 4px rgba(239,230,218,.25)}
-.b-pin.is-locked{color:rgba(244,237,228,.55)}
+.b-pin.is-current{background:var(--cream);color:#1A1511;border-color:var(--cream);text-shadow:none}
+.b-pin.is-locked{color:rgba(244,237,228,.65);opacity:.85}
 
 /* ---------- карта дома: весь экран, без прокрутки (FIXES-v5 §1) ---------- */
 /* .b-mapscreen adds nothing of its own — .b-screen already gives it height:100%
@@ -178,10 +184,15 @@ body.is-light{background:var(--ivory)}
 .b-mapframe{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;z-index:0}
 .b-mapbox{position:relative;height:100%;aspect-ratio:941/1672;flex:none}
 .b-mapbox img{width:100%;height:100%;display:block;object-fit:cover}
-.b-mapshade-top{position:fixed;left:0;right:0;top:0;height:24%;z-index:1;pointer-events:none;
-  background:linear-gradient(#0B0907ee 45%,#0B090700)}
+.b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
+  background:linear-gradient(#0B0907f5 40%,#0B090700)}
 .b-mapshade-bottom{position:fixed;left:0;right:0;bottom:0;height:24%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B090700,#0B0907f0 55%)}
+/* «Вот ваш дом» — its own solid panel, never just the gradient, so it reads cleanly
+   no matter what the photo underneath happens to have baked into it at that spot. */
+.b-map-title{display:flex;flex-direction:column;align-items:center;text-align:center;
+  margin-top:14px;padding:16px 20px 18px;border-radius:20px;background:rgba(11,9,7,.85);
+  border:1px solid rgba(239,230,218,.14)}
 
 /* ---------- подвал, этап 2: счётчик устных ответов (FIXES-v5 §4) ---------- */
 .b-count{text-align:center}
@@ -229,10 +240,9 @@ body.is-light{background:var(--ivory)}
 .b-choice.is-on .b-choice__radio{border:6px solid var(--cream)}
 /* «Подробнее» — одинаково во ВСЕХ комнатах */
 .b-more{display:inline-flex;align-items:center;gap:6px;font:500 13px/1 var(--sans);color:var(--beige);background:none;border:0;padding:6px 0;cursor:pointer}
-/* Карта: текущая комната крупнее и ярче */
-.b-pin.is-current{height:32px;padding:0 14px;font-size:14px;font-weight:600;z-index:2;
-  box-shadow:0 0 0 5px rgba(239,230,218,.25),0 0 28px 6px rgba(239,230,218,.55)}
-.b-pin.is-locked{opacity:.55}
+/* Карта: текущая комната крупнее и ярче — единственный пин, который нельзя не заметить */
+.b-pin.is-current{height:36px;padding:0 16px;font-size:14px;letter-spacing:.03em;z-index:2;
+  box-shadow:0 0 0 5px rgba(239,230,218,.3),0 0 32px 8px rgba(239,230,218,.6)}
 /* Шаги (1–2–3) и карусель карт */
 .b-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .b-steps span{height:3px;border-radius:3px;background:rgba(239,230,218,.18)}
