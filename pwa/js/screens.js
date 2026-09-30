@@ -180,10 +180,10 @@ function houseMapNavScreen({ pins, headline, subline, ctaText }) {
       <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
       <div class="b-content" style="padding:54px 24px 30px;position:relative;z-index:2;">
         ${bTopbar({ right: null })}
-        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;text-align:center;">
+        <div class="b-map-title">
           ${bStar()}
-          <h1 class="b-h1">${escHtml(headline)}</h1>
-          ${subline ? `<p class="b-body">${subline}</p>` : ""}
+          <h1 class="b-h1" style="margin:6px 0 0;">${escHtml(headline)}</h1>
+          ${subline ? `<p class="b-body" style="margin:4px 0 0;">${subline}</p>` : ""}
         </div>
         <div class="b-spacer"></div>
         ${bCta({ text: ctaText, action: "advance" })}
