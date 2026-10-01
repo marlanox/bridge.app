@@ -1071,6 +1071,10 @@ export function settingsScreen(store, ui) {
         item("settings.crisis_row", "openCrisis"),
         item("settings.disclaimer_row", "openDisclaimerSheet"),
       ])}
+      <!-- TEMPORARY — strip-bug diagnostic (STRIP-FIX.md). Remove once the bottom-bar
+           report is closed. A plain same-origin <a> so it opens in the SAME standalone
+           context as the installed icon, not a Safari tab. -->
+      <a href="strip-test.html" class="b-menu__item pressable" style="text-decoration:none;color:#E58A74;">Диагностика полосы (временно)</a>
       ${section("settings.section_legal", [
         item("settings.privacy_row", "openPrivacy"),
         item("settings.terms_row", "openTerms"),
