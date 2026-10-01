@@ -66,6 +66,13 @@
 html, body {
   margin: 0; padding: 0;
   height: 100%; width: 100%;
+  /* -webkit-fill-available on top of the plain 100% above: on iOS Safari specifically,
+     100% has in some versions resolved against a shorter-than-real viewport even with
+     inset:0 anchoring further down the chain — this WebKit-only property is a second,
+     independent way of asking for "the real available height" that doesn't go through
+     the same calculation, so a bug in one doesn't take out both. Invalid everywhere
+     else, so it's simply ignored outside WebKit. */
+  height: -webkit-fill-available;
   position: fixed; inset: 0;
   overflow: hidden;
   /* bridge.css's dark theme is the app's default background now (Names is the only

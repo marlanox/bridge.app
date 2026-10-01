@@ -59,19 +59,21 @@ export function splashScreen() {
 
 // =========================================================== Language picker
 export function languageScreen() {
-  return photoScreen("house-exterior", `
-      <div class="spacer"></div>
-      <div class="f-serif-title on-photo" style="font-size:40px;">Bridge</div>
-      <div class="stack gap-16" style="margin-top:32px;width:100%;max-width:340px;">
-        <div class="on-photo" style="font-weight:500;">Choose your language</div>
-        <div class="on-photo" style="font-weight:500;">Выберите язык</div>
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "top",
+    contentStyle: "align-items:center;justify-content:center;text-align:center;padding:24px;",
+    inner: `
+      <div class="b-spacer"></div>
+      ${bStar()}
+      <h1 class="b-display">Bridge</h1>
+      <p class="b-lead" style="margin-top:10px;">Choose your language / Выберите язык</p>
+      <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-top:28px;">
+        ${bCta({ text: "English", action: "setLanguage", arg: "en" })}
+        ${bCta({ text: "Русский", action: "setLanguage", arg: "ru", ghost: true })}
       </div>
-      <div class="stack gap-16" style="margin-top:24px;width:100%;max-width:340px;">
-        <button class="lang-btn pressable f-button" data-action="setLanguage" data-arg="en">English</button>
-        <button class="lang-btn pressable f-button" data-action="setLanguage" data-arg="ru">Русский</button>
-      </div>
-      <div class="spacer"></div>`,
-    { contentStyle: "align-items:center;justify-content:center;text-align:center;padding:24px;" });
+      <div class="b-spacer"></div>
+    `,
+  });
 }
 
 // =========================================================== Welcome
@@ -327,7 +329,7 @@ export function intensityScreen(store, ui) {
       photo: "house-exterior", muted: true, shade: "text",
       contentStyle: "padding:54px 24px 30px;",
       inner: `
-        ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(role)) } })}
+        ${bTopbar({ right: { who: LF("room.who_answers", store.name(role)) } })}
         <div class="b-spacer"></div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
           ${bStar()}
@@ -346,7 +348,7 @@ export function intensityScreen(store, ui) {
     photo: "house-exterior", muted: true, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(role)) } })}
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(role)) } })}
       <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:4px;text-align:center;">
         ${bStar()}
         <h1 class="b-h1">${escHtml(L("intensity.screen_title"))}</h1>
@@ -510,7 +512,7 @@ function roomReadyScreenV3(store, toRole, otherRole) {
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(toRole)) } })}
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(toRole)) } })}
       <div class="b-spacer"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
         <div style="width:92px;height:92px;border-radius:50%;border:1px solid rgba(201,164,92,0.7);display:grid;place-items:center;font:400 42px/1 var(--serif);color:#F4EDE4;background:rgba(11,9,7,0.5);">${escHtml((store.name(toRole).trim()[0] || "?").toUpperCase())}</div>
@@ -531,7 +533,7 @@ function roomPartnerReadsScreenV3(store, reveal) {
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
+      ${bTopbar({ right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
       <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
       <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("handoff.shared_title", store.name(reveal.to), store.name(reveal.from)))}</h1>
       ${bCard(`
@@ -674,7 +676,7 @@ function basementReadyScreen(store, toRole, otherRole) {
     photo: "basement", shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(toRole)) } })}
+      ${bTopbar({ right: { who: LF("room.who_answers", store.name(toRole)) } })}
       <div class="b-spacer"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
         <div style="width:92px;height:92px;border-radius:50%;border:1px solid rgba(201,164,92,0.7);display:grid;place-items:center;font:400 42px/1 var(--serif);color:#F4EDE4;background:rgba(11,9,7,0.5);">${escHtml((store.name(toRole).trim()[0] || "?").toUpperCase())}</div>
@@ -719,7 +721,7 @@ function basementFearReadScreen(store, reveal) {
     photo: "basement", shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
+      ${bTopbar({ right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
       <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
       <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("basement.fear_reveal_title", store.name(reveal.to)))}</h1>
       ${bCard(`<p class="b-quote" style="color:#F4EDE4;">«${escHtml(reveal.text)}»</p>`, "margin-top:18px;")}
@@ -802,7 +804,7 @@ export function bridgeFinaleScreen(store, ui) {
       photo: "bridge", muted: true, shade: "top",
       contentStyle: "padding:54px 24px 30px;",
       inner: `
-        ${bTopbar({ back: false, right: { who: LF("room.who_answers", store.name(turn)) } })}
+        ${bTopbar({ right: { who: LF("room.who_answers", store.name(turn)) } })}
         <div class="b-spacer"></div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
           ${bStar()}
@@ -895,7 +897,7 @@ export function voiceSnapshotScreen(store, ui) {
       photo: "bridge", shade: "text",
       contentStyle: "padding:54px 24px 30px;",
       inner: `
-        ${bTopbar({ back: false, right: { who: LF("voice.who_records", store.name(turn)) } })}
+        ${bTopbar({ right: { who: LF("voice.who_records", store.name(turn)) } })}
         <div class="b-spacer"></div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
           ${bStar()}
@@ -915,7 +917,7 @@ export function voiceSnapshotScreen(store, ui) {
     photo: "bridge", shade: "text",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: { who: LF("voice.who_records", store.name(turn)) } })}
+      ${bTopbar({ right: { who: LF("voice.who_records", store.name(turn)) } })}
       <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px;text-align:center;">
         ${bStar()}
         <h1 class="b-h1">${escHtml(LF("voice.title_for", store.name(other)))}</h1>
@@ -1004,7 +1006,7 @@ export function closingScreen(store, ui) {
     photo: "ending", shade: "soft",
     contentStyle: "padding:54px 24px 30px;",
     inner: `
-      ${bTopbar({ back: false, right: null })}
+      ${bTopbar({ right: null })}
       <div style="text-align:center;margin-top:10px;"><span class="b-eyebrow" style="color:#C9A45C;">${escHtml(L("closing.game_finished"))}</span></div>
       ${bPaper(`
         <div class="b-monogram">B</div>
@@ -1048,6 +1050,10 @@ export function settingsScreen(store, ui) {
         <div><div style="font:400 20px/1.1 var(--serif);color:#F4EDE4;">${escHtml(LF("closing.names", store.name("partnerA"), store.name("partnerB")))}</div>
         <div class="b-small" style="margin-top:4px;">${escHtml(LF("settings.owner_room_line", store.name("partnerA"), roomNum))}</div></div>
       </div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button type="button" class="b-chip${getLanguage() === "en" ? " is-on" : ""}" style="flex:1;justify-content:center;" data-action="setLanguageInSettings" data-arg="en">English</button>
+        <button type="button" class="b-chip${getLanguage() === "ru" ? " is-on" : ""}" style="flex:1;justify-content:center;" data-action="setLanguageInSettings" data-arg="ru">Русский</button>
+      </div>
       ${section("settings.section_progress", [
         item("settings.view_path_row", "openHouseMapFromSettings"),
         item("nav.redo_page", "confirmRedoPage"),
@@ -1064,7 +1070,6 @@ export function settingsScreen(store, ui) {
       ${section("settings.section_support", [
         item("settings.crisis_row", "openCrisis"),
         item("settings.disclaimer_row", "openDisclaimerSheet"),
-        item("settings.language_row", "openLanguagePicker"),
       ])}
       ${section("settings.section_legal", [
         item("settings.privacy_row", "openPrivacy"),
@@ -1131,18 +1136,6 @@ export function globalOverlays(store, ui) {
   }
   if (ui.globalSheet === "terms") {
     html += modalSheet(L("terms.title"), `<p class="f-body" style="white-space:pre-wrap;">${escHtml(L("terms.full_text"))}</p>`, "closeGlobalSheet");
-  }
-  if (ui.globalSheet === "language") {
-    html += `<div class="sheet-backdrop" data-action="backdropClose" data-close="closeGlobalSheet">
-        <div class="sheet">
-          <div class="sheet-handle"></div>
-          <div class="sheet-header"><span>${escHtml(L("settings.language_row"))}</span><button data-action="closeGlobalSheet">${escHtml(L("settings.cancel"))}</button></div>
-          <div class="sheet-body">
-            <button class="sheet-row pressable" data-action="setLanguageInSettings" data-arg="en">English</button>
-            <button class="sheet-row pressable" data-action="setLanguageInSettings" data-arg="ru">Русский</button>
-          </div>
-        </div>
-      </div>`;
   }
   if (ui.globalSheet === "deleteConfirm") {
     html += confirmDialog(L("settings.delete_confirm_title"), L("settings.delete_confirm_message"), L("settings.delete_confirm_button"), "deleteData", L("settings.cancel"), "closeGlobalSheet");

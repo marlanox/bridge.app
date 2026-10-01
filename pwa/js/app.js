@@ -277,7 +277,6 @@ const actions = {
   openCrisis() { ui.globalSheet = "crisis"; render(); },
   openPrivacy() { ui.globalSheet = "privacy"; render(); },
   openTerms() { ui.globalSheet = "terms"; render(); },
-  openLanguagePicker() { ui.globalSheet = "language"; render(); },
   closeGlobalSheet() { ui.globalSheet = null; render(); },
   confirmDeleteData() { ui.globalSheet = "deleteConfirm"; render(); },
   deleteData() {
