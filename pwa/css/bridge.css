@@ -43,10 +43,13 @@ body.is-light{background:var(--ivory)}
    internally rather than growing .b-screen past #app's own height. */
 .b-screen{position:relative;height:100%;overflow:hidden;background:var(--bg);color:var(--text);
   font-family:var(--sans);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-/* ИНТЕРЬЕР: фото на весь экран + затемнение. inset:0 reads the real fixed-viewport rect
-   directly — no viewport-unit measurement to fall short under iOS standalone mode. */
-.b-photo{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center}
-.b-shade{position:fixed;inset:0;z-index:0;
+/* ИНТЕРЬЕР: фото на весь экран + затемнение. Measured on a real iPhone (STRIP-FIX.md):
+   inset:0 alone still stopped short of the true bottom edge — bottom:0 resolves
+   against the layout viewport, which excludes the home-indicator strip. These two are
+   pure decoration (z-index:0, under .b-content, nothing lays out relative to their own
+   bottom edge), so overshooting bottom past the visible edge is free insurance. */
+.b-photo{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);z-index:0;background-size:cover;background-position:center}
+.b-shade{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);z-index:0;
   background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,.82) 100%)}
 .b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,.85) 100%)}
 .b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,.9) 100%)}
@@ -184,14 +187,20 @@ body.is-light{background:var(--ivory)}
 /* ---------- карта дома: весь экран, без прокрутки (FIXES-v5 §1) ---------- */
 /* .b-mapscreen adds nothing of its own — .b-screen already gives it height:100%
    (from #app's real inset:0 viewport) and overflow:hidden, so no dvh/lvh unit is
-   needed here either. .b-mapframe is position:fixed;inset:0 for the same reason
-   #app itself is: the native viewport rect, not a re-measured unit. */
+   needed here either. .b-mapframe stays exactly inset:0 on purpose — .b-mapbox sizes
+   itself from .b-mapframe's height via aspect-ratio, so overshooting the frame would
+   also overshoot the map image's own box (and, through aspect-ratio, its width,
+   spilling past the sides). The ::after below paints the overshoot insurance into the
+   gap without touching .b-mapframe's own box, same trick as #app::after. */
 .b-mapframe{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;z-index:0}
+.b-mapframe::after{content:"";position:fixed;left:0;right:0;
+  bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);height:60px;background:#0B0907;pointer-events:none}
 .b-mapbox{position:relative;height:100%;aspect-ratio:941/1672;flex:none}
 .b-mapbox img{width:100%;height:100%;display:block;object-fit:cover}
 .b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
-.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:0;height:24%;z-index:1;pointer-events:none;
+.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);
+  height:calc(24% + env(safe-area-inset-bottom) + 60px);z-index:1;pointer-events:none;
   background:linear-gradient(#0B090700,#0B0907f0 55%)}
 
 /* ---------- подвал, этап 2: счётчик устных ответов (FIXES-v5 §4) ---------- */

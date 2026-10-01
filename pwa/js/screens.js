@@ -22,21 +22,6 @@ const MAP_PINS = [
 
 const STATE_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
 
-/** Every photo-backed screen (a room, house map, welcome, etc.): the background photo
- * sits at z-index 0, `inner` renders into a full-size flex column at z-index 1 above
- * it — a real stacking order, not just DOM order, so nothing about the background
- * layer can ever intercept a tap meant for the content above it. */
-function photoScreen(imageName, inner, { dim = true, gradient = false, lightWash = false, contentStyle = "" } = {}) {
-  return `<div class="screen flush no-scroll">
-      <div class="photo-screen" style="background-image:url('assets/rooms/${imageName}.jpg')">
-        ${dim ? '<div class="photo-dim"></div>' : ""}
-        ${gradient ? '<div class="photo-gradient-bottom"></div>' : ""}
-        ${lightWash ? '<div class="photo-light-wash"></div>' : ""}
-      </div>
-      <div class="photo-content" style="${contentStyle}">${inner}</div>
-    </div>`;
-}
-
 // =========================================================== Splash
 // The very first thing shown on a cold launch — a couple of seconds on a solid-color
 // mark before the language picker, matching a native app's launch screen. Deliberately
@@ -1074,7 +1059,7 @@ export function settingsScreen(store, ui) {
       <!-- TEMPORARY — strip-bug diagnostic (STRIP-FIX.md). Remove once the bottom-bar
            report is closed. A plain same-origin <a> so it opens in the SAME standalone
            context as the installed icon, not a Safari tab. -->
-      <a href="strip-test.html" class="b-menu__item pressable" style="text-decoration:none;color:#E58A74;">Диагностика полосы (временно)</a>
+      <a href="strip-test-2.html" class="b-menu__item pressable" style="text-decoration:none;color:#E58A74;">Диагностика полосы — проверка фикса (временно)</a>
       ${section("settings.section_legal", [
         item("settings.privacy_row", "openPrivacy"),
         item("settings.terms_row", "openTerms"),

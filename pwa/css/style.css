@@ -65,14 +65,15 @@
    own `.screen`/`.photo-content`, which stays a normal, correctly-sized element. */
 html, body {
   margin: 0; padding: 0;
-  height: 100%; width: 100%;
-  /* -webkit-fill-available on top of the plain 100% above: on iOS Safari specifically,
-     100% has in some versions resolved against a shorter-than-real viewport even with
-     inset:0 anchoring further down the chain — this WebKit-only property is a second,
-     independent way of asking for "the real available height" that doesn't go through
-     the same calculation, so a bug in one doesn't take out both. Invalid everywhere
-     else, so it's simply ignored outside WebKit. */
-  height: -webkit-fill-available;
+  width: 100%;
+  /* Measured on a real iPhone with a color-coded test page (STRIP-FIX.md): the gap at
+     the bottom was BLUE — body's own background, meaning body's box itself ends above
+     the true bottom edge even with height:100%/-webkit-fill-available/inset:0, all of
+     which resolve against the *layout* viewport (excludes the home-indicator strip),
+     not the taller *visual* one the screen actually shows. `min-height: calc(100% +
+     env(safe-area-inset-bottom))` asks for exactly that extra sliver explicitly, by
+     name, instead of hoping some other unit happens to already include it. */
+  min-height: 100%;
   position: fixed; inset: 0;
   overflow: hidden;
   /* bridge.css's dark theme is the app's default background now (Names is the only
@@ -82,8 +83,8 @@ html, body {
   background: #0B0907;
   overscroll-behavior: none;
 }
-
 body {
+  min-height: calc(100% + env(safe-area-inset-bottom));
   font-family: var(--font-body);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -91,12 +92,17 @@ body {
 }
 
 /* `position: fixed; inset: 0` anchors #app directly to the real viewport edges instead
-   of depending on html/body's computed height — on iOS, in installed/standalone display
-   mode specifically, a `100dvh`-based height can fall short of the actual screen by
-   roughly the height of Safari's own (now-hidden) chrome, leaving a plain white gap at
-   the bottom that doesn't belong to any of our own elements. Anchoring by inset instead
-   of height sidesteps that unit entirely. */
+   of depending on html/body's computed height. #app's OWN box stays exactly inset:0 —
+   it holds real interactive content (every screen's buttons render into it), and
+   overshooting its box like the pure-decoration layers below would push a bottom-
+   anchored CTA down past the visible edge, out of reach. Instead a ::after paints the
+   background color into the overshoot zone without affecting #app's own layout — the
+   same "insurance" trick STRIP-FIX.md gives for `.b-screen`, applied one level up so
+   it also covers the splash/language screens that render before any `.b-screen`. */
 #app { position: fixed; inset: 0; background: #0B0907; }
+#app::after { content: ""; position: fixed; left: 0; right: 0;
+  bottom: calc(-1 * env(safe-area-inset-bottom) - 60px); height: 60px;
+  background: #0B0907; pointer-events: none; }
 
 img { -webkit-user-drag: none; user-select: none; }
 
@@ -467,9 +473,17 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 }
 
 .sheet-backdrop {
+  /* Stays exact inset:0 — .sheet below is flex-aligned to this box's own bottom edge,
+     so overshooting here would push the visible sheet down past the true viewport
+     edge. Same #app::after trick for the dimming color itself, one level down. */
   position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20;
   display: flex; align-items: flex-end;
   animation: fadein 0.2s ease;
+}
+.sheet-backdrop::after {
+  content: ""; position: fixed; left: 0; right: 0;
+  bottom: calc(-1 * env(safe-area-inset-bottom) - 60px); height: 60px;
+  background: rgba(0,0,0,0.4); pointer-events: none;
 }
 .sheet {
   width: 100%; max-height: 88vh; background: var(--ivory);
