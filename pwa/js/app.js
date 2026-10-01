@@ -3,7 +3,7 @@ import { Store, ROOM_KIND_ORDER } from "./state.js";
 import * as S from "./screens.js";
 import {
   playTap, playWelcomeChime, playDice, playSuccess, playPage,
-  startAmbientMusic, duckAmbientMusic, unduckAmbientMusic,
+  startAmbientMusic, stopAmbientMusic, duckAmbientMusic, unduckAmbientMusic,
   muteAmbientForRecording, unmuteAmbientAfterRecording,
   isMusicEnabled, isSoundEnabled, setMusicEnabled, setSoundEnabled,
 } from "./sounds.js";
@@ -790,5 +790,13 @@ async function boot() {
     }).catch(() => {});
   }
 }
+
+// The ambient loop kept playing after the app was backgrounded/minimized — stop it
+// the moment the tab/app is hidden, resume (respecting the music toggle and whatever
+// duck level applied before) the moment it's visible again.
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") stopAmbientMusic();
+  else startAmbientMusic();
+});
 
 boot();
