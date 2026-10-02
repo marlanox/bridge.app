@@ -272,6 +272,25 @@ const actions = {
     const note = (ui.voiceNotesList || [])[Number(el.dataset.arg)];
     if (note) new Audio(URL.createObjectURL(note.blob)).play();
   },
+  // The IndexedDB copy (voiceStore.js) is already as durable as the relationship
+  // history in localStorage — same no-server, same-origin browser storage, same
+  // survives-close-and-reopen guarantee. This is a manual backup on top of that, not
+  // a fix for it: hands the actual audio file to the OS share sheet (Save to Files,
+  // AirDrop, any cloud app) exactly like saveContract()'s image export below, so a
+  // copy can live somewhere outside the browser's storage too.
+  async exportVoiceNote(el) {
+    const note = (ui.voiceNotesList || [])[Number(el.dataset.arg)];
+    if (!note) return;
+    const filename = `bridge-voice-${note.role}-${new Date(note.createdAt).toISOString().slice(0, 10)}.webm`;
+    const file = new File([note.blob], filename, { type: note.blob.type || "audio/webm" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: L("voice_notes.title") }); return; }
+      catch { /* user cancelled the share sheet or it failed — fall through to download */ }
+    }
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+  },
   openHouseMapFromSettings() { ui.houseMapTextExpanded = true; ui.globalSheet = "houseMapSettings"; render(); },
   openDisclaimerSheet() { ui.globalSheet = "disclaimer"; render(); },
   openCrisis() { ui.globalSheet = "crisis"; render(); },

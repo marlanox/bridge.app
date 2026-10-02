@@ -565,6 +565,8 @@
   "voice.who_records": "%@ is recording",
   "voice_notes.empty": "Nothing here yet.",
   "voice_notes.play": "Play",
+  "voice_notes.save": "Save",
+  "voice_notes.storage_note": "Stored on this phone as durably as your relationship history — no server, kept until you delete the app. \"Save\" also lets you export a note to your phone or any cloud via the system share sheet.",
   "voice_notes.title": "Our voice notes",
   "welcome.begin": "Begin"
 }

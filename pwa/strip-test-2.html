@@ -5,11 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Тест полосы — с исправлением</title>
+<title>Тест полосы — версия 3 (без прокрутки)</title>
 <style>
-  html { background: #E0115F; }            /* МАЛИНОВЫЙ = html */
-  body { margin: 0; background: #1E90FF; min-height: calc(100% + env(safe-area-inset-bottom)); } /* СИНИЙ = body */
-  #app { position: fixed; top: 0; left: 0; right: 0; bottom: calc(-1 * env(safe-area-inset-bottom) - 60px);
+  /* v3: добавлено overflow:hidden + overscroll-behavior:none на html/body (как в
+     настоящем приложении, pwa/css/style.css) и запас увеличен с 60px до 150px.
+     Без overflow:hidden любой скролл/бонс (оттягивание страницы пальцем вниз —
+     обычное дело при открытии и съёмке скриншота) на секунду показывает
+     собственный синий фон body позади зелёного — это и могло быть той самой
+     синей полосой на предыдущем скриншоте, а не настоящим провалом в CSS. */
+  html { background: #E0115F; height: 100%; overflow: hidden; overscroll-behavior: none; }  /* МАЛИНОВЫЙ = html */
+  body { margin: 0; background: #1E90FF; min-height: calc(100% + env(safe-area-inset-bottom));
+         overflow: hidden; overscroll-behavior: none; }  /* СИНИЙ = body */
+  #app { position: fixed; top: 0; left: 0; right: 0; bottom: calc(-1 * env(safe-area-inset-bottom) - 150px);
          background: repeating-linear-gradient(45deg,#2E8B57 0 20px,#3CB371 20px 40px); } /* ЗЕЛЁНЫЙ полосатый = наш экран */
   #info { position: fixed; left: 12px; right: 12px; top: 40%; padding: 14px; border-radius: 12px;
           background: rgba(0,0,0,.75); color: #fff; font: 15px/1.5 -apple-system, sans-serif; }
@@ -25,7 +32,8 @@
   const sb = getComputedStyle(p).paddingBottom;
   const vv = window.visualViewport ? Math.round(visualViewport.height) : '—';
   document.getElementById('info').innerHTML =
-    '<b>ТЕСТ 2 — С ИСПРАВЛЕНИЕМ.</b> Зелёный должен идти до самого низа.<br>' +
+    '<b>ТЕСТ 3 — БЕЗ ПРОКРУТКИ.</b> Зелёный должен идти до самого низа.<br>' +
+    'Откройте, НЕ трогайте экран пальцем, сразу сделайте скриншот.<br>' +
     'зелёная полоса до самого низа → всё ок<br>' +
     'синяя → body короче экрана<br>' +
     'малиновая → html короче экрана<br>' +
