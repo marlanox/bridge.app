@@ -171,6 +171,15 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
   padding-right: calc(var(--safe-r) + 24px);
   animation: fadein 0.28s ease;
 }
+/* Same fix as .b-screen in bridge.css: the sliver at the very bottom that no element
+   can paint on this iOS/WebKit version (proven by strip-test-4.html) showed #app's own
+   dark background through here, mismatched against this screen's own ivory — this is
+   the one surviving user of the older `.screen` system (the launch splash, and the
+   paywall), missed when every `.b-screen` got the same treatment. `background:inherit`
+   copies this screen's own ivory into the overshoot strip instead of leaving it dark. */
+.screen::after{content:"";position:fixed;left:0;right:0;
+  bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;
+  background:inherit;pointer-events:none;z-index:5}
 .screen.no-scroll { overflow: hidden; }
 .screen.flush { padding: 0; }
 
