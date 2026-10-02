@@ -6,7 +6,7 @@
 // device even after being pushed — every load kept re-serving the same stale cache
 // entry.) Bump CACHE_NAME on every deploy anyway, so an update is never silently missed
 // even for a client that's briefly offline.
-const CACHE_NAME = "bridge-pwa-v33";
+const CACHE_NAME = "bridge-pwa-v34";
 
 const CORE_FILES = [
   "./",
@@ -47,7 +47,14 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    fetch(event.request)
+    // `cache: "no-store"` forces an actual network round trip, bypassing the
+    // *browser's own* HTTP cache (separate from the Cache Storage this worker
+    // manages above) — GitHub Pages serves every file with a Cache-Control
+    // max-age, and a plain `fetch()` is allowed to silently answer from that
+    // HTTP cache without ever hitting the network at all. That defeats the
+    // whole point of "network-first": the fix had already shipped, but the
+    // phone kept quietly re-serving the exact bytes it fetched 10 minutes ago.
+    fetch(event.request, { cache: "no-store" })
       .then((response) => {
         if (response.ok) {
           const copy = response.clone();
