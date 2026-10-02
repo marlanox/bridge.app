@@ -101,7 +101,7 @@ body {
    it also covers the splash/language screens that render before any `.b-screen`. */
 #app { position: fixed; inset: 0; background: #0B0907; }
 #app::after { content: ""; position: fixed; left: 0; right: 0;
-  bottom: calc(-1 * env(safe-area-inset-bottom) - 60px); height: 60px;
+  bottom: calc(-1 * env(safe-area-inset-bottom) - 150px); height: 150px;
   background: #0B0907; pointer-events: none; }
 
 img { -webkit-user-drag: none; user-select: none; }
@@ -482,7 +482,7 @@ p, .selectable { -webkit-user-select: text; user-select: text; }
 }
 .sheet-backdrop::after {
   content: ""; position: fixed; left: 0; right: 0;
-  bottom: calc(-1 * env(safe-area-inset-bottom) - 60px); height: 60px;
+  bottom: calc(-1 * env(safe-area-inset-bottom) - 150px); height: 150px;
   background: rgba(0,0,0,0.4); pointer-events: none;
 }
 .sheet {

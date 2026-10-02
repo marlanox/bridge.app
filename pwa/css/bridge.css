@@ -43,13 +43,25 @@ body.is-light{background:var(--ivory)}
    internally rather than growing .b-screen past #app's own height. */
 .b-screen{position:relative;height:100%;overflow:hidden;background:var(--bg);color:var(--text);
   font-family:var(--sans);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+/* Measured directly on a real device (her own strip-test-2.html, run with the
+   designer's exact prescribed fix already applied): the home-indicator gap at the
+   bottom can still show through as the WRONG color — not just a same-color sliver —
+   because .b-screen itself only ever had protection on screens that also render a
+   .b-photo/.b-shade pair; a plain (no-photo) screen like the certificate/contract had
+   none at all, so the gap exposed html/body's own background instead of this screen's.
+   `background:inherit` copies *this* screen's own computed background (dark .b-screen
+   or the ivory of .b-screen--light alike) into the overshoot strip, so it's never a
+   mismatched color regardless of which screen is showing. */
+.b-screen::after{content:"";position:fixed;left:0;right:0;
+  bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;
+  background:inherit;pointer-events:none;z-index:5}
 /* ИНТЕРЬЕР: фото на весь экран + затемнение. Measured on a real iPhone (STRIP-FIX.md):
    inset:0 alone still stopped short of the true bottom edge — bottom:0 resolves
    against the layout viewport, which excludes the home-indicator strip. These two are
    pure decoration (z-index:0, under .b-content, nothing lays out relative to their own
    bottom edge), so overshooting bottom past the visible edge is free insurance. */
-.b-photo{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);z-index:0;background-size:cover;background-position:center}
-.b-shade{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);z-index:0;
+.b-photo{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;background-size:cover;background-position:center}
+.b-shade{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;
   background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,.82) 100%)}
 .b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,.85) 100%)}
 .b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,.9) 100%)}
@@ -79,8 +91,13 @@ body.is-light{background:var(--ivory)}
   background:var(--cream);color:#1A1511;font:500 13px/1 var(--sans)}
 .b-who__dot{width:8px;height:8px;border-radius:50%;background:#1A1511}
 .b-who--together{background:rgba(11,9,7,.45);color:var(--cream);border:1px solid rgba(239,230,218,.3)}
-/* Карта: заголовок в строке с «Назад» — не отдельная плашка, закрывающая дом */
-.b-topbar-title{font:400 19px/1 var(--serif);color:var(--text);text-shadow:0 1px 3px rgba(0,0,0,.6)}
+/* Карта: заголовок по центру верхней панели, а не прижат к кнопке «Назад» —
+   абсолютно центрируется относительно всей ширины .b-topbar (которой это и требует
+   position:relative выше), а не относительно свободного места рядом с кнопкой. */
+.b-topbar{position:relative}
+.b-topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  max-width:56%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none;
+  font:400 19px/1 var(--serif);color:var(--text);text-shadow:0 1px 3px rgba(0,0,0,.6)}
 /* прогресс по дому */
 .b-progress{height:1px;background:var(--line);margin-top:12px}
 .b-progress__fill{height:3px;margin-top:-1px;border-radius:3px;background:var(--cream)}
@@ -177,18 +194,14 @@ body.is-light{background:var(--ivory)}
    same spots — a translucent chip let them bleed through and mix with the Russian
    pin text; solid background + a different typographic voice fixes both at once). */
 /* The photo has English room names (LIVING ROOM, KIDS ROOM, KITCHEN, BASEMENT,
-   BRIDGE, …) baked in, left-anchored at roughly the same %-coordinates as these pins
-   — a pin only as wide as its own (often shorter) Russian word left the baked-in
-   label's tail end sticking out the right side, reading as "font on top of font".
-   min-width, kept generous and left-anchored same as the baked text, covers the
-   longest of those (LIVING ROOM/KIDS ROOM) with margin. */
-.b-pin{position:absolute;transform:translate(-105px,-50%);min-width:280px;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:29px;padding:0 12px;
-  border-radius:999px;background:#0B0907;border:1px solid rgba(239,230,218,.2);color:var(--text);
-  font:600 12px/1 var(--sans);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;
-  text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.b-pin.is-done{color:var(--gold)}
-.b-pin.is-current{background:var(--cream);color:#1A1511;border-color:var(--cream);text-shadow:none}
-.b-pin.is-locked{color:rgba(244,237,228,.65);opacity:.85}
+   BRIDGE, …) baked directly into the photo at roughly these same spots, in English,
+   not translated per-language — there is no image-generation tool in this environment
+   to produce a genuinely separate RU/EN localized photo, so stretching a translated
+   label wide enough to blot out the baked word underneath ("не надо делать такие
+   широкие черные полосы") just traded one visual problem for an uglier one. Removed
+   outright: the image's own baked numbered circles mark each stop language-neutrally,
+   and the CTA's own text already names the next room — nothing is overlaid on the
+   house photo at all now ("не надо ничего накладывать"). */
 
 /* ---------- карта дома: весь экран, без прокрутки (FIXES-v5 §1) ---------- */
 /* .b-mapscreen adds nothing of its own — .b-screen already gives it height:100%
@@ -206,13 +219,13 @@ body.is-light{background:var(--ivory)}
    the image ran edge-to-edge from y:0. */
 .b-mapframe{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;align-items:center;z-index:0}
 .b-mapframe::after{content:"";position:fixed;left:0;right:0;
-  bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);height:60px;background:#0B0907;pointer-events:none}
+  bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;background:#0B0907;pointer-events:none}
 .b-mapbox{position:relative;width:100%;aspect-ratio:941/1672;flex:none}
 .b-mapbox img{width:100%;height:100%;display:block}
 .b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
-.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 60px);
-  height:calc(24% + env(safe-area-inset-bottom) + 60px);z-index:1;pointer-events:none;
+.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);
+  height:calc(24% + env(safe-area-inset-bottom) + 150px);z-index:1;pointer-events:none;
   background:linear-gradient(#0B090700,#0B0907f0 55%)}
 
 /* ---------- подвал, этап 2: счётчик устных ответов (FIXES-v5 §4) ---------- */
@@ -270,9 +283,6 @@ body.is-light{background:var(--ivory)}
 .b-choice.is-on .b-choice__radio{border:6px solid var(--cream)}
 /* «Подробнее» — одинаково во ВСЕХ комнатах */
 .b-more{display:inline-flex;align-items:center;gap:6px;font:500 13px/1 var(--sans);color:var(--beige);background:none;border:0;padding:6px 0;cursor:pointer}
-/* Карта: текущая комната крупнее и ярче — единственный пин, который нельзя не заметить */
-.b-pin.is-current{height:36px;padding:0 16px;font-size:14px;letter-spacing:.03em;z-index:2;
-  box-shadow:0 0 0 5px rgba(239,230,218,.3),0 0 32px 8px rgba(239,230,218,.6)}
 /* Шаги (1–2–3) */
 .b-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .b-steps span{height:3px;border-radius:3px;background:rgba(239,230,218,.18)}

@@ -144,24 +144,19 @@ export function houseMapScreen(ctx) {
   });
 }
 
-// =========================================================== House map (with pins) —
+// =========================================================== House map —
 // P09/P09b in the v3 handoff. `variant` is "gate" (before the very first room) or
 // "afterRoom" (between rooms, `completedKind` names the room just finished).
-function mapPinStatus(variant, completedKind) {
-  const doneUpToIndex = variant === "gate" ? -1 : MAP_PINS.findIndex((p) => p.kind === completedKind);
-  const currentIndex = doneUpToIndex + 1;
-  return MAP_PINS.map((p, i) => (i <= doneUpToIndex ? "done" : i === currentIndex ? "current" : "locked"));
-}
-
 // FIXES-v5 §1: the map fills the whole screen with no scroll — .b-mapframe/.b-mapbox
 // crop the 941:1672 photo to the viewport instead of the old scrollable full-image
 // layout, and the CTA is a plain, full-width .b-cta (never part of the image).
-function houseMapNavScreen({ pins, headline, ctaText }) {
+// Nothing is overlaid on the house photo itself ("не надо ничего накладывать") — the
+// image's own baked numbered circles mark each stop, and the CTA names the next room.
+function houseMapNavScreen({ headline, ctaText }) {
   return `<div class="b-screen b-mapscreen">
       <div class="b-mapframe">
         <div class="b-mapbox">
           <img src="assets/rooms/house-map.jpg" alt="">
-          ${pins}
         </div>
       </div>
       <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
@@ -174,22 +169,13 @@ function houseMapNavScreen({ pins, headline, ctaText }) {
 }
 
 export function houseMapGateScreen() {
-  const statuses = mapPinStatus("gate", null);
-  const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
-  return houseMapNavScreen({ pins, headline: L("map.title"), ctaText: L(MAP_PINS[0].enterKey) });
+  return houseMapNavScreen({ headline: L("map.title"), ctaText: L(MAP_PINS[0].enterKey) });
 }
 
 export function houseMapAfterRoomScreen(completedKind) {
   const idx = MAP_PINS.findIndex((p) => p.kind === completedKind);
   const next = MAP_PINS[idx + 1];
-  const statuses = mapPinStatus("afterRoom", completedKind);
-  const pins = MAP_PINS.map((p, i) => `<span class="b-pin is-${statuses[i]}" style="left:${p.x}%;top:${p.y}%;">${statuses[i] === "done" ? "✓ " : ""}${escHtml(L(p.nameKey))}</span>`).join("");
-  // No subline here (FIXES-v5 §1's reference keeps the map header to just the title) —
-  // the glowing gold "current" pin on the map itself plus the CTA's own destination
-  // name already say what's next, and a subline at this height collided with the
-  // pins sitting right behind it.
   return houseMapNavScreen({
-    pins,
     headline: L("map.title"),
     ctaText: L(next.enterKey),
   });
@@ -1094,17 +1080,25 @@ export function globalOverlays(store, ui) {
   }
   if (ui.globalSheet === "voiceNotes") {
     const notes = ui.voiceNotesList;
+    // Playing a row (data-action on the row itself) and exporting it (a separate
+    // data-action on the small button inside) can share one row because click
+    // delegation walks up from the actual click target via closest("[data-action]")
+    // — a tap on the export button matches that button first, never the row.
     const rows = (notes || [])
-      .map((n, i) => `<button class="settings-row" style="color:var(--ink);flex-direction:column;align-items:flex-start;" data-action="playVoiceNote" data-arg="${i}">
-          <span style="font-weight:600;">${escHtml(store.name(n.role))}</span>
-          <span class="secondary" style="font-size:13px;">${escHtml(new Date(n.createdAt).toLocaleString())} · ${escHtml(L("voice_notes.play"))}</span>
-        </button>`)
+      .map((n, i) => `<div class="settings-row" style="color:var(--ink);align-items:center;" data-action="playVoiceNote" data-arg="${i}">
+          <span style="display:flex;flex-direction:column;align-items:flex-start;">
+            <span style="font-weight:600;">${escHtml(store.name(n.role))}</span>
+            <span class="secondary" style="font-size:13px;">${escHtml(new Date(n.createdAt).toLocaleString())} · ${escHtml(L("voice_notes.play"))}</span>
+          </span>
+          <button class="btn-secondary" style="width:auto;border-bottom:none;padding:6px 10px;font-size:13px;color:var(--gold);flex:none;" data-action="exportVoiceNote" data-arg="${i}">${escHtml(L("voice_notes.save"))}</button>
+        </div>`)
       .join("");
     const body = notes === null
       ? ""
       : notes.length === 0
         ? `<p class="secondary" style="padding:14px 4px;font-size:13px;">${escHtml(L("voice_notes.empty"))}</p>`
-        : `<div class="settings-group">${rows}</div>`;
+        : `<div class="settings-group">${rows}</div>
+           <p class="secondary" style="padding:14px 4px;font-size:13px;">${escHtml(L("voice_notes.storage_note"))}</p>`;
     html += modalSheet(L("voice_notes.title"), body, "closeGlobalSheet");
   }
   if (ui.globalSheet === "houseMapSettings") {
