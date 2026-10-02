@@ -322,7 +322,12 @@ body.is-light{background:var(--ivory)}
 
 /* ---------- СВЕТЛЫЙ экран (например «Как вас зовут») ---------- */
 .b-screen--light{background:var(--ivory);color:var(--ink)}
-.b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,.3) 100%)}
+/* Same fix as the dark .b-shade variants above, applied to the light theme's own
+   override: the bottom stop must be fully opaque --ivory, exactly matching
+   body.is-light's flat background — her "Как вас зовут" screenshot showed this one
+   specifically still cutting from visible photo detail straight to flat cream,
+   because this light-theme override was missed when the dark variants were fixed. */
+.b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,1) 100%)}
 .b-screen--light .b-h1,.b-screen--light .b-display{color:var(--ink)}
 .b-screen--light .b-eyebrow{color:#2A2724}
 .b-screen--light .b-back{color:var(--ink);background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.7)}
