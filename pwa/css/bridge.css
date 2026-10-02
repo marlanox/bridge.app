@@ -55,18 +55,28 @@ body.is-light{background:var(--ivory)}
 .b-screen::after{content:"";position:fixed;left:0;right:0;
   bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;
   background:inherit;pointer-events:none;z-index:5}
-/* ИНТЕРЬЕР: фото на весь экран + затемнение. Measured on a real iPhone (STRIP-FIX.md):
-   inset:0 alone still stopped short of the true bottom edge — bottom:0 resolves
-   against the layout viewport, which excludes the home-indicator strip. These two are
-   pure decoration (z-index:0, under .b-content, nothing lays out relative to their own
-   bottom edge), so overshooting bottom past the visible edge is free insurance. */
+/* ИНТЕРЬЕР: фото на весь экран + затемнение. Her own strip-test-4.html (4 completely
+   different CSS techniques — bottom:calc, height:calc(%), height:calc(vh), a JS-measured
+   fixed px height — tried side by side as 4 colored columns) proved this bottom sliver
+   is NOT a sizing/technique bug at all: all 4 columns stopped at the exact same height,
+   full-width, with the page's own flat background color showing through below every one
+   of them identically. No element, fixed/absolute/any-technique, can paint into that
+   sliver on this iOS/WebKit version in standalone mode — only the plain page background
+   (html/body) reaches the true physical bottom edge there (that's a real, if obscure,
+   platform boundary, not a mistake in any of the 4 candidates). The bottom:calc overshoot
+   below is kept anyway (harmless, and may still help on engines where the clip doesn't
+   apply), but it is NOT what closes this gap — the shade gradients' bottom stop being
+   bumped to fully opaque is: the plain body/html background is already the exact same
+   flat --bg color as that opaque stop, so the one sliver no element can ever reach
+   becomes visually indistinguishable from the shaded screen, instead of a hard color
+   or texture seam cutting across the photo right at the edge. */
 .b-photo{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;background-size:cover;background-position:center}
 .b-shade{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;
-  background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,.82) 100%)}
-.b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,.85) 100%)}
-.b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,.9) 100%)}
+  background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,1) 100%)}
+.b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,1) 100%)}
+.b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,1) 100%)}
 /* сильное затемнение сверху — для экранов, где заголовок лежит на светлом небе/фото */
-.b-shade--top{background:linear-gradient(180deg,rgba(11,9,7,.92) 0%,rgba(11,9,7,.78) 30%,rgba(11,9,7,.35) 55%,rgba(11,9,7,.88) 100%)}
+.b-shade--top{background:linear-gradient(180deg,rgba(11,9,7,.92) 0%,rgba(11,9,7,.78) 30%,rgba(11,9,7,.35) 55%,rgba(11,9,7,1) 100%)}
 /* приглушить слишком оранжевый закат */
 .b-photo--muted{filter:saturate(.5) brightness(.85) contrast(1.05)}
 /* заголовки и текст на тёмных экранах всегда с мягкой тенью — читаются на любом фото */
@@ -226,7 +236,7 @@ body.is-light{background:var(--ivory)}
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
 .b-mapshade-bottom{position:fixed;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);
   height:calc(24% + env(safe-area-inset-bottom) + 150px);z-index:1;pointer-events:none;
-  background:linear-gradient(#0B090700,#0B0907f0 55%)}
+  background:linear-gradient(#0B090700,#0B0907 55%)}
 
 /* ---------- подвал, этап 2: счётчик устных ответов (FIXES-v5 §4) ---------- */
 .b-count{text-align:center}
