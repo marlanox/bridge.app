@@ -55,23 +55,24 @@ body.is-light{background:var(--ivory)}
 .b-screen::after{content:"";position:fixed;left:0;right:0;
   bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;
   background:inherit;pointer-events:none;z-index:5}
-/* ИНТЕРЬЕР: фото на весь экран + затемнение. Her own strip-test-4.html (4 completely
-   different CSS techniques — bottom:calc, height:calc(%), height:calc(vh), a JS-measured
-   fixed px height — tried side by side as 4 colored columns) proved this bottom sliver
-   is NOT a sizing/technique bug at all: all 4 columns stopped at the exact same height,
-   full-width, with the page's own flat background color showing through below every one
-   of them identically. No element, fixed/absolute/any-technique, can paint into that
-   sliver on this iOS/WebKit version in standalone mode — only the plain page background
-   (html/body) reaches the true physical bottom edge there (that's a real, if obscure,
-   platform boundary, not a mistake in any of the 4 candidates). The bottom:calc overshoot
-   below is kept anyway (harmless, and may still help on engines where the clip doesn't
-   apply), but it is NOT what closes this gap — the shade gradients' bottom stop being
-   bumped to fully opaque is: the plain body/html background is already the exact same
-   flat --bg color as that opaque stop, so the one sliver no element can ever reach
-   becomes visually indistinguishable from the shaded screen, instead of a hard color
-   or texture seam cutting across the photo right at the edge. */
-.b-photo{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;background-size:cover;background-position:center}
-.b-shade{position:fixed;top:0;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);z-index:0;
+/* ИНТЕРЬЕР: фото на весь экран + затемнение. Её strip-test-4.html (4 совершенно
+   разные CSS-техники бок о бок) доказал: эту полоску внизу не может закрасить вообще
+   никакой элемент на этом iOS/WebKit — туда реально доходит только плоский фон
+   html/body. Предыдущая попытка (эта же .b-shade, но bottom:calc(...) с перехлёстом
+   далеко за экран) чинила цвет не в том месте: 100%-stop градиента (где он становится
+   полностью непрозрачным) приходился на нижний край РАЗДУТОГО перехлёстом бокса —
+   то есть глубоко в недоступной для прорисовки зоне, а не на настоящем нижнем крае
+   экрана. Поэтому в видимой части экрана градиент ещё не успевал дойти до полной
+   непрозрачности, когда упирался в границу обрезки: было видно текстуру фото почти
+   вплотную к границе, а сразу за ней — идеально ровную заливку. Это и читалось как
+   «чёрная полоса» — не из-за несовпадения цвета (цвет уже совпадал), а из-за резкой
+   смены ТЕКСТУРЫ «шумное фото» → «идеально ровная заливка». Теперь .b-photo/.b-shade
+   стоят ровно inset:0, без перехлёста — 100%-stop градиента приходится РОВНО на
+   настоящий нижний край экрана, и `.b-screen::after` (тот же цвет, background:inherit)
+   просто продолжает уже полностью непрозрачную заливку в недоступную зону — шва по
+   текстуре больше нет, потому что к границе обрезки фото уже нет вовсе. */
+.b-photo{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center}
+.b-shade{position:fixed;inset:0;z-index:0;
   background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,1) 100%)}
 .b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,1) 100%)}
 .b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,1) 100%)}
@@ -234,8 +235,11 @@ body.is-light{background:var(--ivory)}
 .b-mapbox img{width:100%;height:100%;display:block}
 .b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
-.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);
-  height:calc(24% + env(safe-area-inset-bottom) + 150px);z-index:1;pointer-events:none;
+/* Та же правка, что у .b-shade выше: без перехлёста, чтобы 100%-stop градиента (где
+   он уже полностью непрозрачен) приходился на настоящий нижний край экрана, а не на
+   край раздутого перехлёстом бокса — иначе у самой границы обрезки всё ещё была бы
+   видна текстура фото, обрывающаяся в плоскую заливку. */
+.b-mapshade-bottom{position:fixed;left:0;right:0;bottom:0;height:24%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B090700,#0B0907 55%)}
 
 /* ---------- подвал, этап 2: счётчик устных ответов (FIXES-v5 §4) ---------- */
