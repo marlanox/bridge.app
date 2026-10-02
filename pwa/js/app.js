@@ -786,7 +786,12 @@ async function boot() {
   store.subscribe(render);
   render();
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").then((reg) => {
+    // `updateViaCache: "none"` applies the same "never trust the browser's HTTP
+    // cache" fix sw.js's own fetch handler now uses, but for sw.js itself — without
+    // it, the UPDATE CHECK (fetching sw.js to see if it changed) could itself be
+    // answered from HTTP cache, so the phone would never even notice a new worker
+    // exists to install.
+    navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((reg) => {
       // sw.js calls skipWaiting()+clients.claim() on every deploy, so a new worker
       // takes control of this page within moments of install — but the HTML/JS
       // *already loaded* in this tab or in an installed "Add to Home Screen" app
@@ -800,9 +805,13 @@ async function boot() {
         reloadedForUpdate = true;
         window.location.reload();
       });
-      // An installed home-screen app on iOS can sit frozen for days without ever
-      // re-checking for a new version on its own — force that check every time the
-      // app is actually brought back to the foreground, not just on a cold launch.
+      // Browsers only check for a new sw.js on their own once every ~24h — an
+      // installed home-screen app opened minutes after a fresh deploy would
+      // otherwise keep running the OLD worker (and therefore never pick up new
+      // files) until that timer happens to elapse. Force a real check immediately
+      // on every single launch, cold or resumed, not just when coming back from
+      // the background.
+      reg.update().catch(() => {});
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") reg.update().catch(() => {});
       });
