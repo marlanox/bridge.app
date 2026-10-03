@@ -669,9 +669,13 @@ export class Store {
 
   // ------------------------------------------------------------- lifecycle
 
+  // The paywall is switched off for now, per explicit request — the game is free and
+  // isn't even on the App Store yet, so there's nothing to actually unlock. The real
+  // gate logic is kept here, commented, rather than deleted, for whenever real
+  // monetization is ready: `const p = this.activeProfile(); return
+  // !p.hasCompletedFirstSession || p.hasUnlockedFullVersion;`
   canStartSession() {
-    const p = this.activeProfile();
-    return !p.hasCompletedFirstSession || p.hasUnlockedFullVersion;
+    return true;
   }
 
   /** Mirrors AppState.endActiveSession(). */

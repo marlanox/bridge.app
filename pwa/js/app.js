@@ -302,7 +302,7 @@ const actions = {
   },
   playVoiceNote(el) {
     const note = (ui.voiceNotesList || [])[Number(el.dataset.arg)];
-    if (note) new Audio(URL.createObjectURL(note.blob)).play();
+    if (note) new Audio(URL.createObjectURL(note.blob)).play().catch(() => {});
   },
   // The IndexedDB copy (voiceStore.js) is already as durable as the relationship
   // history in localStorage — same no-server, same-origin browser storage, same
@@ -313,8 +313,13 @@ const actions = {
   async exportVoiceNote(el) {
     const note = (ui.voiceNotesList || [])[Number(el.dataset.arg)];
     if (!note) return;
-    const filename = `bridge-voice-${note.role}-${new Date(note.createdAt).toISOString().slice(0, 10)}.webm`;
-    const file = new File([note.blob], filename, { type: note.blob.type || "audio/webm" });
+    const type = note.blob.type || "audio/webm";
+    // Matches the real codec now that the recorder's actual mimeType is what gets
+    // stored (see toggleVoiceRecording) — mp4 on an iPhone, webm elsewhere — so a
+    // saved file always opens correctly instead of carrying a mismatched extension.
+    const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
+    const filename = `bridge-voice-${note.role}-${new Date(note.createdAt).toISOString().slice(0, 10)}.${ext}`;
+    const file = new File([note.blob], filename, { type });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try { await navigator.share({ files: [file], title: L("voice_notes.title") }); return; }
       catch { /* user cancelled the share sheet or it failed — fall through to download */ }
@@ -609,7 +614,14 @@ const actions = {
       recorder.ondataavailable = (e) => chunks.push(e.data);
       recorder.onstop = () => {
         stream.getTracks().forEach((t) => t.stop());
-        const blob = new Blob(chunks, { type: "audio/webm" });
+        // iOS Safari's MediaRecorder has no webm/Opus support at all — with no
+        // mimeType requested, it silently records audio/mp4 (AAC) instead, so
+        // hardcoding "audio/webm" here mislabeled every recording made on an iPhone:
+        // the bytes were valid mp4, but <audio> saw a blob declared as webm, tried to
+        // decode it as webm, and failed — "Прослушать" doing nothing is exactly that
+        // failure (it fails silently; .play()'s rejected promise was never even
+        // caught). recorder.mimeType reflects what the browser actually used.
+        const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
         ui.voiceBlob[role] = blob;
         ui.voiceBlobUrl[role] = URL.createObjectURL(blob);
         render();
@@ -631,7 +643,7 @@ const actions = {
   voiceHandoffReady() { ui.voiceStage = "record"; render(); },
   playVoiceRecording(el) {
     const url = ui.voiceBlobUrl[el.dataset.arg];
-    if (url) new Audio(url).play();
+    if (url) new Audio(url).play().catch(() => {});
   },
   retryVoiceRecording(el) {
     ui.voiceBlobUrl[el.dataset.arg] = null;
