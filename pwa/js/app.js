@@ -39,6 +39,7 @@ const ui = {
   basementV3: { handoffAcked: false, fearChoice: null, fearCustom: "" },
   intensityTurn: "partnerA",
   intensityHandoffAcked: false,
+  intensityReveal: null,
   bridgeTurn: "partnerA",
   bridgeStage: "handoff",
   bridgeStepIndex: 0,
@@ -99,6 +100,7 @@ function resetUiForStep(step, kind) {
     ui.stateCustom = { partnerA: store.session.stateA.customText, partnerB: store.session.stateB.customText };
     ui.intensityTurn = "partnerA";
     ui.intensityHandoffAcked = false;
+    ui.intensityReveal = null;
   }
   if (step === "calmDown") ui.breathing = false;
   if (step === "oath") ui.oathChecked = [];
@@ -440,12 +442,26 @@ const actions = {
   setEmotionValue(el) { ui.intensity[el.dataset.arg] = Number(el.dataset.arg2); render(); },
   submitIntensityTurn() {
     const role = ui.intensityTurn;
+    const other = role === "partnerA" ? "partnerB" : "partnerA";
     const customEl = document.getElementById(`custom-${role}`);
     if (customEl) ui.stateCustom[role] = customEl.value.trim();
     store.setIntensity(ui.intensity[role], role);
     for (const s of ui.stateSelected[role]) store.toggleState(s, role);
     store.setCustomStateText(ui.stateCustom[role], role);
-    if (role === "partnerA") {
+    // Same gap the room cycle used to have, fixed the same way: show the OTHER
+    // partner what this one just chose before moving on, instead of the old
+    // behavior (nothing shown — straight to the next handoff, or straight past
+    // intensityState entirely after partnerB).
+    ui.intensityReveal = {
+      from: role, to: other,
+      value: ui.intensity[role], chips: [...ui.stateSelected[role]], custom: ui.stateCustom[role],
+    };
+    render();
+  },
+  confirmIntensityReveal() {
+    const reveal = ui.intensityReveal;
+    ui.intensityReveal = null;
+    if (reveal.from === "partnerA") {
       ui.intensityTurn = "partnerB";
       ui.intensityHandoffAcked = false;
       render();
@@ -769,10 +785,41 @@ appEl.addEventListener("click", (e) => {
   }
 });
 
+// Deliberately NOT a full render() on every keystroke — render() replaces appEl's
+// entire innerHTML, which would tear down and recreate this very input element
+// mid-type and throw away focus/cursor position after a single character. Instead,
+// the Done/Continue button's disabled state is patched directly on the DOM node
+// that's already there. This is also the actual fix for "пишешь эмоцию словами —
+// кнопка «Далее» не работает": the button's enabled-ness used to only ever get
+// recomputed on the NEXT unrelated render (e.g. tapping the 0-10 scale) — typing
+// custom text alone, with nothing else touched, never triggered any update at all,
+// so the button stayed looking disabled no matter what was typed.
+function syncCtaEnabled(action, ready) {
+  const btn = appEl.querySelector(`.b-cta[data-action="${action}"]`);
+  if (!btn) return;
+  btn.classList.toggle("is-disabled", !ready);
+  btn.disabled = !ready;
+  if (ready) btn.removeAttribute("aria-disabled"); else btn.setAttribute("aria-disabled", "true");
+}
+
 appEl.addEventListener("input", (e) => {
   const el = e.target;
-  if (el.id === "custom-partnerA") ui.stateCustom.partnerA = el.value;
-  if (el.id === "custom-partnerB") ui.stateCustom.partnerB = el.value;
+  if (el.id === "custom-partnerA") {
+    ui.stateCustom.partnerA = el.value;
+    syncCtaEnabled("submitIntensityTurn", ui.stateSelected.partnerA.length > 0 || ui.stateCustom.partnerA.trim().length > 0);
+  }
+  if (el.id === "custom-partnerB") {
+    ui.stateCustom.partnerB = el.value;
+    syncCtaEnabled("submitIntensityTurn", ui.stateSelected.partnerB.length > 0 || ui.stateCustom.partnerB.trim().length > 0);
+  }
+  if (el.id === "roomEmotionCustom") {
+    ui.roomV3.emotion.custom = el.value;
+    syncCtaEnabled("submitRoomEmotionV3", ui.roomV3.emotion.chips.length > 0 || ui.roomV3.emotion.custom.trim().length > 0);
+  }
+  if (el.id === "basementFearCustom") {
+    ui.basementV3.fearCustom = el.value;
+    syncCtaEnabled("submitBasementFear", ui.basementV3.fearCustom.trim().length > 0);
+  }
   if (el.id === "newRuleInput") ui.newRuleDraft = el.value;
 });
 
