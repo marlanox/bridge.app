@@ -236,11 +236,24 @@ body.is-light{background:var(--ivory)}
    below (consistent with the screen's own background) — and that strip is also what
    pushes the "Прихожая" pin down clear of the topbar, which it was overlapping when
    the image ran edge-to-edge from y:0. */
-.b-mapframe{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;align-items:center;z-index:0}
+/* padding-top: измерено через getBoundingClientRect — без него зазор между нижним
+   краем топбара и кружком «1 HALL» (самый верхний пин, y:8.4%) был всего ~10px,
+   слишком мало с учётом разброса высоты verx safe-area на разных айфонах. Сдвигает
+   видимую часть дома вниз, чтобы у Прихожей было гарантированно больше воздуха. */
+.b-mapframe{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;align-items:center;padding-top:56px;z-index:0}
 .b-mapframe::after{content:"";position:fixed;left:0;right:0;
   bottom:calc(-1 * env(safe-area-inset-bottom) - 150px);height:150px;background:#0B0907;pointer-events:none}
 .b-mapbox{position:relative;width:100%;aspect-ratio:941/1672;flex:none}
 .b-mapbox img{width:100%;height:100%;display:block}
+/* Не текст, не перевод — просто кольцо-свечение вокруг запечённого в фото кружка той
+   комнаты, куда сейчас идти, чтобы было сразу понятно, какая именно из семи это, без
+   накладывания слов поверх фото. */
+.b-map-current{position:absolute;width:46px;height:46px;border-radius:50%;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:2;
+  border:2px solid var(--cream);
+  box-shadow:0 0 0 5px rgba(239,230,218,.28),0 0 26px 7px rgba(239,230,218,.55);
+  animation:b-map-current-pulse 2.2s ease-in-out infinite}
+@keyframes b-map-current-pulse{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
 .b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
 /* Та же правка, что у .b-shade выше: без перехлёста, чтобы 100%-stop градиента (где

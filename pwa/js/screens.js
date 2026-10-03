@@ -150,16 +150,27 @@ export function houseMapScreen(ctx) {
 // FIXES-v5 §1: the map fills the whole screen with no scroll — .b-mapframe/.b-mapbox
 // crop the 941:1672 photo to the viewport instead of the old scrollable full-image
 // layout, and the CTA is a plain, full-width .b-cta (never part of the image).
-// Nothing is overlaid on the house photo itself ("не надо ничего накладывать") — the
-// image's own baked numbered circles mark each stop, and the CTA names the next room.
-function houseMapNavScreen({ headline, ctaText }) {
+// Nothing TEXTUAL is overlaid on the house photo ("не надо ничего накладывать" was
+// about the translated word-pills) — the image's own baked numbered circles still mark
+// each stop, and the CTA names the next room. The one exception is a plain glow marker
+// (no text, no language-specific content) around whichever circle is the CURRENT stop,
+// so it's obvious at a glance which of the seven it is, same as a map pin without a label.
+function houseMapNavScreen({ headline, ctaText, current }) {
+  // The shades moved inside .b-mapframe (same stacking context as .b-mapbox, right
+  // before it in DOM order) so the glow marker — a child of .b-mapbox, after the shades
+  // in DOM order — paints on top of them instead of being hidden underneath. They were
+  // previously direct children of .b-screen, a sibling stacking context with a HIGHER
+  // z-index than .b-mapframe's own — the marker's z-index inside .b-mapframe could
+  // never win against that regardless of its own value. Purely a stacking fix; still
+  // position:fixed, still the same full-viewport coverage either way.
   return `<div class="b-screen b-mapscreen">
       <div class="b-mapframe">
+        <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
         <div class="b-mapbox">
           <img src="assets/rooms/house-map.jpg" alt="">
+          <span class="b-map-current" style="left:${current.x}%;top:${current.y}%;"></span>
         </div>
       </div>
-      <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
       <div class="b-content" style="padding:54px 24px 30px;position:relative;z-index:2;">
         ${bTopbar({ right: { title: headline } })}
         <div class="b-spacer"></div>
@@ -169,7 +180,7 @@ function houseMapNavScreen({ headline, ctaText }) {
 }
 
 export function houseMapGateScreen() {
-  return houseMapNavScreen({ headline: L("map.title"), ctaText: L(MAP_PINS[0].enterKey) });
+  return houseMapNavScreen({ headline: L("map.title"), ctaText: L(MAP_PINS[0].enterKey), current: MAP_PINS[0] });
 }
 
 export function houseMapAfterRoomScreen(completedKind) {
@@ -178,6 +189,7 @@ export function houseMapAfterRoomScreen(completedKind) {
   return houseMapNavScreen({
     headline: L("map.title"),
     ctaText: L(next.enterKey),
+    current: next,
   });
 }
 
@@ -696,6 +708,7 @@ function basementFearReadScreen(store, reveal) {
       <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
       <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("basement.fear_reveal_title", store.name(reveal.to)))}</h1>
       ${bCard(`<p class="b-quote" style="color:#F4EDE4;">«${escHtml(reveal.text)}»</p>`, "margin-top:18px;")}
+      ${bCard(`<p class="b-body">${escHtml(L("basement.fear_reflection"))}</p>`, "margin-top:12px;")}
       <div class="b-spacer"></div>
       ${bCta({ text: L("handoff.read_continue"), action: "confirmBasementFearReadV3" })}
     `,
@@ -718,7 +731,7 @@ function basementQuestionsScreen(store, ui) {
       ${bTopbar({ right: { who: LF("basement.who_asks", store.name(asker)) } })}
       <span class="b-eyebrow" style="margin-top:14px;">${escHtml(L("basement.stage2_eyebrow"))}</span>
       <h1 class="b-h1" style="margin-top:8px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
-      ${bCard(`<p class="b-body" style="font-size:16.5px;line-height:1.5;">${escHtml(LF("basement.stage2_body", store.name(asker), store.name(answerer)))}</p>`, "margin-top:14px;")}
+      ${bCard(`<p class="b-body" style="font-size:16.5px;line-height:1.5;">${escHtml(LF("basement.stage2_body", store.name(answerer), store.name(answerer)))}</p>`, "margin-top:14px;")}
       <div class="b-spacer"></div>
       <div class="b-count"><span class="b-count__num">${count}</span><span class="b-count__of">/ 15</span></div>
       <div class="b-ticks">${ticks}</div>
