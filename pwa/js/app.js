@@ -65,6 +65,12 @@ let lastFlowKey = null;
 let splashDone = false;
 let splashTimer = null;
 const SPLASH_DURATION_MS = 1800;
+// A stored language (from a previous launch) is still honored as the screen's default/
+// pre-selected choice, but the picker itself shows again on every cold launch, after the
+// logo — not just the very first time ever — per explicit request ("верни экран языка
+// вначале после лого"). This session-only flag (not persisted) is what gates that, kept
+// separate from content.js's own persisted getLanguage().
+let languageConfirmedThisSession = false;
 
 function flowKey(flow) {
   return flow ? `${flow.step}:${flow.kind ?? ""}` : "";
@@ -113,6 +119,12 @@ function resetUiForStep(step, kind) {
 function render() {
   if (!splashDone) {
     appEl.innerHTML = S.splashScreen();
+    // The splash is the one screen still on the ivory .screen system shown before
+    // store.flow even exists, so it renders here before the normal is-light toggle
+    // below ever runs — without this, body stays at its dark default underneath an
+    // ivory screen, and the sliver iOS won't let any element paint (proven by
+    // strip-test-4.html) shows that mismatched dark instead of ivory.
+    document.body.classList.add("is-light");
     // Best-effort: iOS Safari blocks autoplay before any user gesture, so this often
     // silently fails here — the guaranteed start is still the language-picker tap in
     // setLanguage() below, but firing it here too means it just works whenever the
@@ -124,7 +136,11 @@ function render() {
     return;
   }
 
-  if (getLanguage() === null) {
+  if (!languageConfirmedThisSession) {
+    // languageScreen() is a dark bScreen (house-exterior photo + shade), not the ivory
+    // splash — body must go back to its dark default here, or the sliver iOS won't let
+    // any element paint would still show the ivory left over from the splash screen.
+    document.body.classList.remove("is-light");
     appEl.innerHTML = S.languageScreen();
     return;
   }
@@ -152,7 +168,10 @@ function render() {
   // top of it (FIXES-v4 §0 also retires the "read together" caption that pill used
   // to carry, and its gear icon lives in each screen's own topbar instead).
   appEl.innerHTML = html + S.globalOverlays(store, ui);
-  document.body.classList.toggle("is-light", !ui.paywallOpen && !ui.settingsOpen && LIGHT_STEPS.has(store.flow?.step));
+  // paywallScreen() is also the old ivory .screen system (same as the splash) — it needs
+  // is-light too, not the dark default this used to force while it was open. settingsScreen
+  // is a dark bScreen, so it still forces is-light off like before.
+  document.body.classList.toggle("is-light", !ui.settingsOpen && (ui.paywallOpen || LIGHT_STEPS.has(store.flow?.step)));
 }
 
 // FIXES-v5 §6: the ambient loop now plays throughout instead of stopping once the
@@ -224,6 +243,7 @@ const actions = {
     playWelcomeChime();
     startAmbientMusic();
     setLanguage(el.dataset.arg);
+    languageConfirmedThisSession = true;
     render();
   },
   setLanguageInSettings(el) { setLanguage(el.dataset.arg); ui.globalSheet = null; render(); },
