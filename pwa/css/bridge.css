@@ -195,13 +195,19 @@ body.is-light{background:var(--ivory)}
 .b-die{width:76px;height:76px;border-radius:18px;background:var(--cream);display:grid;grid-template-columns:repeat(3,1fr);
   grid-template-rows:repeat(3,1fr);padding:12px;box-sizing:border-box;box-shadow:0 14px 40px rgba(0,0,0,.4);
   transform-style:preserve-3d}
-/* FIXES-v5 §5: a real 3D tumble, not just a flicker through faces. ~0.8s, eased out. */
+/* FIXES-v5 §5: a real 3D tumble, not just a flicker through faces. ~0.8s, eased out.
+   The original 3-stop keyframe actually REVERSED direction partway on every axis
+   (rotateX 380deg -> 360deg at the very end, rotateZ 12deg -> -8deg mid-flight) — each
+   reversal is a real backward motion, and landing right on one in the slow part of an
+   ease-out curve read as a little nervous twitch right as the die was meant to settle
+   ("дёргается, как будто невроз"). A plain 0%->100% tumble, each axis spinning the same
+   direction the whole time and landing on an exact multiple of 360deg (so the resting
+   orientation is identical to the unrotated one), lets the existing ease-out do the
+   settling on its own with nothing to reverse against. */
 .b-die.is-rolling{animation:b-die-roll .8s cubic-bezier(.22,.9,.32,1)}
 @keyframes b-die-roll{
   0%{transform:rotateX(0) rotateY(0) rotateZ(0)}
-  35%{transform:rotateX(190deg) rotateY(95deg) rotateZ(12deg)}
-  70%{transform:rotateX(380deg) rotateY(310deg) rotateZ(-8deg)}
-  100%{transform:rotateX(360deg) rotateY(360deg) rotateZ(0)}
+  100%{transform:rotateX(720deg) rotateY(1080deg) rotateZ(360deg)}
 }
 .b-pip{width:12px;height:12px;border-radius:50%;background:#1A1511;place-self:center}
 

@@ -6,7 +6,7 @@
 // device even after being pushed — every load kept re-serving the same stale cache
 // entry.) Bump CACHE_NAME on every deploy anyway, so an update is never silently missed
 // even for a client that's briefly offline.
-const CACHE_NAME = "bridge-pwa-v41";
+const CACHE_NAME = "bridge-pwa-v42";
 
 const CORE_FILES = [
   "./",
@@ -30,6 +30,27 @@ const CORE_FILES = [
   "./icons/icon-512.png",
 ];
 
+// Photos never change between deploys (a new one gets a new filename, not an edit in
+// place) and are 200-450KB each — re-fetching the SAME one over the network on every
+// single screen visit, which the network-first/no-store rule below used to do for
+// these too, is exactly what made navigating between rooms feel slow. Warmed into the
+// cache right after install (best-effort — see activate below), then served
+// cache-first by the fetch handler forever after.
+const ROOM_IMAGES = [
+  "./assets/rooms/hall.jpg",
+  "./assets/rooms/living-room.jpg",
+  "./assets/rooms/study.jpg",
+  "./assets/rooms/kids-room.jpg",
+  "./assets/rooms/kitchen.jpg",
+  "./assets/rooms/basement.jpg",
+  "./assets/rooms/bridge.jpg",
+  "./assets/rooms/house-exterior.jpg",
+  "./assets/rooms/house-map.jpg",
+  "./assets/rooms/oath.jpg",
+  "./assets/rooms/ending.jpg",
+  "./assets/rooms/end.jpg",
+];
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES)).then(() => self.skipWaiting())
@@ -41,11 +62,37 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
+      // allSettled, not addAll: a single flaky image fetch must never block activation
+      // (addAll is all-or-nothing) — every image gets its own best-effort attempt, and
+      // the fetch handler below falls back to fetching it live if it's still missing.
+      .then(() => caches.open(CACHE_NAME))
+      .then((cache) => Promise.allSettled(ROOM_IMAGES.map((url) => cache.add(url))))
   );
 });
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
+  const url = new URL(event.request.url);
+  const isRoomImage = url.pathname.includes("/assets/rooms/");
+
+  if (isRoomImage) {
+    // Cache-first: these are static, content-addressed-in-practice photos, not code —
+    // freshness was never the concern no-store exists for below, only for app code.
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        });
+      })
+    );
+    return;
+  }
+
   event.respondWith(
     // `cache: "no-store"` forces an actual network round trip, bypassing the
     // *browser's own* HTTP cache (separate from the Cache Storage this worker
