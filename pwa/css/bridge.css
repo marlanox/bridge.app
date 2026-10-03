@@ -103,7 +103,11 @@ body.is-light{background:var(--ivory)}
 .b-content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
   padding:calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom);
   overflow-y:auto;-webkit-overflow-scrolling:touch}
-.b-spacer{flex:1}
+/* min-height matters now that .b-content scrolls (see overflow-y:auto above): on a
+   screen whose content is tall enough to scroll, this flex:1 spacer has nothing
+   left to grow into and collapses to 0 — without a floor, the last field (e.g. the
+   custom-text input) ends up jammed straight against the CTA with no gap at all. */
+.b-spacer{flex:1;min-height:20px}
 
 /* ---------- верхняя панель ---------- */
 .b-topbar{display:flex;align-items:center;justify-content:space-between;min-height:48px;flex-shrink:0}
@@ -196,13 +200,22 @@ body.is-light{background:var(--ivory)}
 .b-level.z-calm{color:var(--calm)} .b-level.z-mid{color:var(--mid)} .b-level.z-hot{color:var(--hot)}
 
 /* ---------- метки-чувства ---------- */
-.b-chip{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;cursor:pointer;
-  border:1px solid rgba(239,230,218,.28);background:rgba(11,9,7,.4);color:var(--text-2);font:400 14px/1 var(--sans)}
+/* min-height, not height: these used to only ever hold one short generic word
+   ("страшно", "злюсь"), which always fit on one line at 36/40px. Now that chips
+   carry real deck card sentences ("Жаль, что я поступил(а) иначе"), a fixed
+   height clipped wrapped text right past the rounded pill edge — "надписи
+   выезжают за рамки плашки". The box now grows to fit whatever wraps instead. */
+.b-chip{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:36px;
+  padding:8px 14px;border-radius:18px;cursor:pointer;white-space:normal;line-height:1.25;
+  border:1px solid rgba(239,230,218,.28);background:rgba(11,9,7,.4);color:var(--text-2);font:400 14px/1.25 var(--sans)}
 .b-chip.is-on{background:var(--cream);border-color:var(--cream);color:#1A1511;font-weight:500}
 
 /* ---------- поля ---------- */
-.b-input{width:100%;box-sizing:border-box;height:52px;border-radius:14px;border:1px solid rgba(239,230,218,.22);
-  background:rgba(11,9,7,.5);color:var(--text);padding:0 16px;font:400 15px/1 var(--sans);outline:none}
+/* Full pill radius (was 14px — a plain rounded rectangle) so a manual-entry field
+   matches the same pill language as the chips above and the CTA below it instead
+   of looking like a separate, plainer, "узкое поле убогое" control. */
+.b-input{width:100%;box-sizing:border-box;height:52px;border-radius:999px;border:1px solid rgba(239,230,218,.32);
+  background:rgba(11,9,7,.5);color:var(--text);padding:0 20px;font:400 15px/1 var(--sans);outline:none}
 .b-input::placeholder{color:#8C8177}
 
 /* ---------- кубик ---------- */
@@ -322,7 +335,7 @@ body.is-light{background:var(--ivory)}
 .b-tag--no{color:#E9A08F;border-color:rgba(208,88,63,.45)}
 /* Метки-чувства — РОВНАЯ СЕТКА, все одного размера, не золотые */
 .b-chipgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.b-chipgrid .b-chip{width:100%;justify-content:center;padding:0 6px;height:40px;font-size:13.5px}
+.b-chipgrid .b-chip{width:100%;padding:9px 8px;min-height:40px;font-size:13.5px}
 /* Bridge finale: icon + label tiles replacing the one-at-a-time card carousel */
 .b-cardgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .b-cardtile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
