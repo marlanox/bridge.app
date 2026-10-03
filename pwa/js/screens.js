@@ -1004,7 +1004,7 @@ export function closingScreen(store, ui) {
         <div style="width:60px;height:1px;background:#C9A45C;margin:6px auto;"></div>
         <p style="margin:0;font-size:12px;color:#8A7654;">${escHtml(LF("closing.number", certNo, dateStr))}</p>
       `, "margin-top:18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:30px 22px;border:1px solid #C9A45C;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 0 0 5px #F4EDE2,inset 0 0 0 6px #C9A45C;")}
-      <p class="b-body" style="margin-top:18px;text-align:center;">${escHtml(L("closing.encouragement"))}</p>
+      <p class="b-body" style="margin-top:18px;text-align:center;color:var(--text);text-shadow:0 1px 4px rgba(0,0,0,.75),0 1px 12px rgba(0,0,0,.5);">${escHtml(L("closing.encouragement"))}</p>
       <div class="b-spacer"></div>
       ${bCta({ key: "closing.save_to_gallery", action: "saveClosingCard", ghost: true, enabled: !ui.closingSaved })}
       <div style="margin-top:10px;">${bCta({ key: "closing.close", action: "closeSession" })}</div>

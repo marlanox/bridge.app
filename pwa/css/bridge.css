@@ -333,7 +333,13 @@ body.is-light{background:var(--ivory)}
 .b-rec__core{width:70px;height:70px;border-radius:50%;background:var(--hot);box-shadow:0 0 0 10px rgba(208,88,63,.18)}
 /* Документ (договор) и сертификат — светлая «бумага» на тёмном */
 .b-paper{background:#F4EDE2;color:#1B1A18;border-radius:18px;padding:22px 20px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
-.b-paper h3{margin:0;font:400 22px/1.15 var(--serif)} .b-paper p,.b-paper li{font:400 13.5px/1.5 var(--sans);color:#3A352F}
+/* "подсвечено дурацкой тенью" — the names heading on the certificate/contract card:
+   explicit text-shadow:none, belt-and-suspenders against the dark-screen default shadow
+   rule above ever reaching in here through inheritance on some engine/version where it
+   might, even though it isn't supposed to apply to a plain <h3> with no matching class
+   in the first place. Dark text on light paper never needs a shadow for legibility. */
+.b-paper h3{margin:0;font:400 22px/1.15 var(--serif);text-shadow:none}
+.b-paper p,.b-paper li{font:400 13.5px/1.5 var(--sans);color:#3A352F;text-shadow:none}
 .b-paper .b-eyebrow{color:#8A7654;text-shadow:none}
 .b-monogram{width:52px;height:52px;border-radius:50%;border:1px solid #C9A45C;display:grid;place-items:center;
   font:400 24px/1 var(--serif);color:#8A7654;flex:none}
