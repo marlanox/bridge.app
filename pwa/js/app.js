@@ -35,7 +35,7 @@ const ui = {
   stateCustom: { partnerA: "", partnerB: "" },
   breathing: false,
   oathChecked: [],
-  roomV3: { entered: false, handoffAcked: false, told: false, moreOpen: false, emotion: { value: null, chips: [], custom: "" } },
+  roomV3: { entered: false, handoffAcked: false, told: false, moreOpen: true, emotion: { value: null, chips: [], custom: "" } },
   basementV3: { handoffAcked: false, fearChoice: null, fearCustom: "" },
   intensityTurn: "partnerA",
   intensityHandoffAcked: false,
@@ -105,7 +105,7 @@ function resetUiForStep(step, kind) {
   if (step === "calmDown") ui.breathing = false;
   if (step === "oath") ui.oathChecked = [];
   if (step === "room") {
-    ui.roomV3 = { entered: false, handoffAcked: false, told: false, moreOpen: false, emotion: { value: null, chips: [], custom: "" } };
+    ui.roomV3 = { entered: false, handoffAcked: false, told: false, moreOpen: true, emotion: { value: null, chips: [], custom: "" } };
   }
   if (step === "basement") {
     ui.basementV3 = { handoffAcked: false, fearChoice: null, fearCustom: "" };
@@ -129,6 +129,20 @@ function resetUiForStep(step, kind) {
 }
 
 // =============================================================== render
+
+/** A plain render() always re-renders scrolled to the top — correct when moving to
+ * a genuinely new screen, wrong for an in-place selection toggle (a feeling chip, a
+ * scale tap, a checkbox) on a screen whose content is tall enough to scroll: she'd
+ * pick "тревога" partway down the list and get thrown back to the top instead of
+ * staying put to look at the rest. Used by every handler that only flips a
+ * selection without moving to a new screen. */
+function renderKeepingScroll() {
+  const prev = appEl.querySelector(".b-content");
+  const scrollTop = prev ? prev.scrollTop : 0;
+  render();
+  const next = appEl.querySelector(".b-content");
+  if (next) next.scrollTop = scrollTop;
+}
 
 function render() {
   if (!splashDone) {
@@ -425,7 +439,7 @@ const actions = {
     const list = ui.stateSelected[role];
     const i = list.indexOf(state);
     if (i >= 0) list.splice(i, 1); else list.push(state);
-    render();
+    renderKeepingScroll();
   },
   submitIntensityState() {
     const customA = document.getElementById("custom-partnerA")?.value.trim() ?? ui.stateCustom.partnerA;
@@ -439,7 +453,7 @@ const actions = {
     store.advance();
   },
   intensityHandoffReady() { ui.intensityHandoffAcked = true; render(); },
-  setEmotionValue(el) { ui.intensity[el.dataset.arg] = Number(el.dataset.arg2); render(); },
+  setEmotionValue(el) { ui.intensity[el.dataset.arg] = Number(el.dataset.arg2); renderKeepingScroll(); },
   submitIntensityTurn() {
     const role = ui.intensityTurn;
     const other = role === "partnerA" ? "partnerB" : "partnerA";
@@ -474,7 +488,7 @@ const actions = {
   startBreathing() { ui.breathing = true; render(); },
 
   // Oath
-  toggleOathLine(el) { ui.oathChecked[Number(el.dataset.arg)] = !ui.oathChecked[Number(el.dataset.arg)]; render(); },
+  toggleOathLine(el) { ui.oathChecked[Number(el.dataset.arg)] = !ui.oathChecked[Number(el.dataset.arg)]; renderKeepingScroll(); },
   completeOathAndAdvance() { store.completeOath(); playSuccess(); store.advance(); },
 
   // Ritual
@@ -491,19 +505,21 @@ const actions = {
   handoffReadyV3() {
     ui.roomV3.handoffAcked = true;
     ui.roomV3.told = false;
-    ui.roomV3.moreOpen = false;
+    // Her explicit request: the "why does this help" text should already be visible
+    // the moment player 1 (or anyone) lands on the question, not hidden behind a tap.
+    ui.roomV3.moreOpen = true;
     ui.roomV3.emotion = { value: null, chips: [], custom: "" };
     render();
   },
-  toggleRoomMoreV3() { ui.roomV3.moreOpen = !ui.roomV3.moreOpen; render(); },
+  toggleRoomMoreV3() { ui.roomV3.moreOpen = !ui.roomV3.moreOpen; renderKeepingScroll(); },
   roomTellDoneV3() { ui.roomV3.told = true; render(); },
-  setRoomEmotionValueV3(el) { ui.roomV3.emotion.value = Number(el.dataset.arg2); render(); },
+  setRoomEmotionValueV3(el) { ui.roomV3.emotion.value = Number(el.dataset.arg2); renderKeepingScroll(); },
   toggleRoomEmotionChipV3(el) {
     const s = el.dataset.arg;
     const list = ui.roomV3.emotion.chips;
     const i = list.indexOf(s);
     if (i >= 0) list.splice(i, 1); else list.push(s);
-    render();
+    renderKeepingScroll();
   },
   submitRoomEmotionV3() {
     const customEl = document.getElementById("roomEmotionCustom");
@@ -525,7 +541,7 @@ const actions = {
     if (roomFinished) playSuccess(); // the room just finished
     ui.roomV3.handoffAcked = false;
     ui.roomV3.told = false;
-    ui.roomV3.moreOpen = false;
+    ui.roomV3.moreOpen = true;
     ui.roomV3.emotion = { value: null, chips: [], custom: "" };
     store.confirmReveal();
   },
@@ -547,7 +563,7 @@ const actions = {
     ui.basementV3.fearCustom = "";
     render();
   },
-  chooseBasementFearOption(el) { ui.basementV3.fearChoice = el.dataset.arg; render(); },
+  chooseBasementFearOption(el) { ui.basementV3.fearChoice = el.dataset.arg; renderKeepingScroll(); },
   submitBasementFear() {
     const choice = ui.basementV3.fearChoice;
     let text;
