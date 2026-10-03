@@ -62,7 +62,19 @@ const ui = {
 
 let voiceTimer = null;
 let lastFlowKey = null;
-let splashDone = false;
+// A service-worker-triggered reload (see controllerchange below) sets this sessionStorage
+// flag right before reloading — read it once here, synchronously, so the splash this fresh
+// boot() is about to show is skipped instead of replaying the same fade-in a second time
+// right after the reload that was itself invisible to the person using the app.
+let splashDone = (() => {
+  try {
+    if (sessionStorage.getItem("bridge.skipSplashOnce") === "1") {
+      sessionStorage.removeItem("bridge.skipSplashOnce");
+      return true;
+    }
+  } catch { /* sessionStorage unavailable (private mode etc.) — just show the splash */ }
+  return false;
+})();
 let splashTimer = null;
 const SPLASH_DURATION_MS = 1800;
 // A stored language (from a previous launch) is still honored as the screen's default/
@@ -823,6 +835,11 @@ async function boot() {
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (reloadedForUpdate) return;
         reloadedForUpdate = true;
+        // This reload is a real full navigation — boot() runs again from scratch, so
+        // without this flag the splash logo plays its fade-in a second time right
+        // after the first, reading as "the logo loads twice" (it's the same splash,
+        // just replayed by the reload, not an actual double load).
+        sessionStorage.setItem("bridge.skipSplashOnce", "1");
         window.location.reload();
       });
       // Browsers only check for a new sw.js on their own once every ~24h — an
