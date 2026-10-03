@@ -168,7 +168,9 @@ function houseMapNavScreen({ headline, ctaText, current }) {
         <div class="b-mapshade-top"></div><div class="b-mapshade-bottom"></div>
         <div class="b-mapbox">
           <img src="assets/rooms/house-map.jpg" alt="">
-          <span class="b-map-current" style="left:${current.x}%;top:${current.y}%;"></span>
+          <span class="b-map-current" style="left:${current.x}%;top:${current.y}%;">
+            <svg viewBox="0 0 24 24" fill="#F4EDE4" aria-hidden="true"><path d="M12 21s-7.5-4.6-10.3-9.2C.1 9.1 1 5.6 4.1 4.2c2.4-1.1 5 .1 6.3 2.3l1.6 2.6 1.6-2.6c1.3-2.2 3.9-3.4 6.3-2.3 3.1 1.4 4 4.9 2.4 7.6C19.5 16.4 12 21 12 21Z"/></svg>
+          </span>
         </div>
       </div>
       <div class="b-content" style="padding:54px 24px 30px;position:relative;z-index:2;">
@@ -692,6 +694,7 @@ function basementFearChoiceScreen(store, ui) {
       </div>
       <h1 class="b-h1" style="margin-top:16px;">${escHtml(L("basement.fear_question"))}</h1>
       <p class="b-body" style="margin-top:8px;">${escHtml(L("basement.fear_instruction"))}</p>
+      <p class="b-small" style="margin-top:8px;color:var(--muted);">${escHtml(L("basement.fear_trigger_note"))}</p>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
         ${rows}
         ${bChoice({ text: L("basement.fear_custom_option"), on: customOn, action: "chooseBasementFearOption", arg: "custom" })}
@@ -711,7 +714,6 @@ function basementFearReadScreen(store, reveal) {
       <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
       <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("basement.fear_reveal_title", store.name(reveal.to)))}</h1>
       ${bCard(`<p class="b-quote" style="color:#F4EDE4;">«${escHtml(reveal.text)}»</p>`, "margin-top:18px;")}
-      ${bCard(`<p class="b-body">${escHtml(L("basement.fear_reflection"))}</p>`, "margin-top:12px;")}
       <div class="b-spacer"></div>
       ${bCta({ text: L("handoff.read_continue"), action: "confirmBasementFearReadV3" })}
     `,
@@ -733,8 +735,8 @@ function basementQuestionsScreen(store, ui) {
     inner: `
       ${bTopbar({ right: { who: LF("basement.who_asks", store.name(asker)) } })}
       <span class="b-eyebrow" style="margin-top:14px;">${escHtml(L("basement.stage2_eyebrow"))}</span>
-      <h1 class="b-h1" style="margin-top:8px;">${escHtml(L("basement.ask_aloud_title"))}</h1>
-      ${bCard(`<p class="b-body" style="font-size:16.5px;line-height:1.5;">${escHtml(LF("basement.stage2_body", store.name(answerer), store.name(answerer)))}</p>`, "margin-top:14px;")}
+      <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("basement.ask_aloud_title", store.name(asker)))}</h1>
+      ${bCard(`<p class="b-body" style="font-size:16.5px;line-height:1.5;">${escHtml(L("basement.stage2_body"))}</p>`, "margin-top:14px;")}
       <div class="b-spacer"></div>
       <div class="b-count"><span class="b-count__num">${count}</span><span class="b-count__of">/ 15</span></div>
       <div class="b-ticks">${ticks}</div>
