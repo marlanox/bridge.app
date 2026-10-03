@@ -499,7 +499,6 @@
   "room.number_label": "Room %@",
   "room.read_it": "I've read it",
   "room.rule_head": "Room rule",
-  "room.read_rules_aloud": "%@, read the rule aloud so you both know it before you start",
   "room.rule_listens": "%@ listens, no interrupting",
   "room.rule_speaks": "%@ speaks",
   "room.study.forbidden": "• Arguing with the other's interpretation\n• Saying “that's not what I meant”",

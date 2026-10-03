@@ -519,7 +519,7 @@ function roomChipSections(cfg) {
  * are untouched — this only decides which screen to show for the current state. */
 function roomScreenV3(store, ui, kind) {
   const cfg = room(kind);
-  if (!ui.roomV3.entered) return roomEnterScreenV3(store, cfg);
+  if (!ui.roomV3.entered) return roomEnterScreenV3(cfg);
   const reveal = store.pendingReveal;
   if (reveal) return roomPartnerReadsScreenV3(store, reveal);
   if (!ui.roomV3.handoffAcked) {
@@ -529,19 +529,13 @@ function roomScreenV3(store, ui, kind) {
   return roomEmotionScreenV3(store, ui, cfg);
 }
 
-function roomEnterScreenV3(store, cfg) {
-  // Her explicit fix: the no-interrupting rule only ever showed up on
-  // roomTellScreenV3, a screen only the SPEAKING partner sees that turn — the
-  // listening partner never saw it at all, so they had no way to know they
-  // weren't supposed to interrupt. Shown here instead, before the phone is
-  // handed over for the first time, with both partners still looking at it
-  // together — "Прочитайте правила вслух" makes that explicit.
-  const active = store.activePartner;
-  const other = store.other(active);
-  const forbidden = cfg.forbiddenKey
-    ? L(cfg.forbiddenKey).split("\n").map((line) => ({ kind: "no", text: line.replace(/^•\s*/, "") }))
-    : [];
-  const tags = [{ kind: "plain", text: LF("room.rule_listens", store.name(other)) }, ...forbidden];
+function roomEnterScreenV3(cfg) {
+  // Her explicit correction: an earlier attempt added the no-interrupting rule bar
+  // here too, meant for the listening partner (who never sees roomTellScreenV3).
+  // But in practice this screen and roomTellScreenV3 get seen back-to-back by the
+  // same person a few taps apart, so the identical rule text twice just read as
+  // pointless repetition ("в этом нет никакой логики") — reverted. The rule still
+  // shows once, on roomTellScreenV3, right before the person about to speak starts.
   return bScreen({
     photo: cfg.backgroundImage, shade: "top",
     contentStyle: "padding:54px 24px 30px;",
@@ -554,8 +548,6 @@ function roomEnterScreenV3(store, cfg) {
       </div>
       <div class="b-spacer"></div>
       ${bCard(`<p class="b-body">${escHtml(L(cfg.instructionKey))}</p><div class="b-divider" style="margin:14px 0;"></div><p class="b-small" style="color:var(--gold);font-weight:600;margin-bottom:6px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`)}
-      <p class="b-small" style="margin-top:16px;color:var(--gold);font-weight:600;">${escHtml(LF("room.read_rules_aloud", store.name(active)))}</p>
-      <div style="margin-top:8px;">${bRuleBar(tags)}</div>
       <div style="margin-top:16px;">${bCta({ text: L("room.enter_continue"), action: "enterRoomV3" })}</div>
     `,
   });
