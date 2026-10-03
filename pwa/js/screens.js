@@ -448,19 +448,22 @@ export function roomScreen(store, ui, kind) {
 const ROOM_FEELING_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
 
 /** FIXES-v4 §6's cycle, strictly one screen = one person, no exceptions: enter →
- * [ready → tell it out loud (V02) → rate it (V03, emotions) → ready(for the other,
- * reading) → partner reads (V04)] × 2 → next question or map. The room's own
- * mechanics (activePartner/roomDoneFlags/pendingReveal/confirmReveal) are untouched
- * — this only decides which screen to show for the current state. */
+ * [ready to ANSWER (V05) → tell it out loud (V02) → rate it (V03, emotions) →
+ * partner reads it right away (V04, no screen before it — the phone was just handed
+ * over) → ready to answer again (V05)] × 2 → next question or map.
+ * Her explicit correction after watching the old order on her phone: the "X, ваша
+ * очередь" screen belongs ONLY right before answering, never before reading. The old
+ * order showed it right after the phone was passed, ahead of the partner's answer —
+ * backwards from what "ваша очередь" (the asker's turn) actually describes at that
+ * moment, which is reading, not answering. Now: phone passed -> straight to what the
+ * partner said -> "ваша очередь" (now accurately about answering) -> the question.
+ * The room's own mechanics (activePartner/roomDoneFlags/pendingReveal/confirmReveal)
+ * are untouched — this only decides which screen to show for the current state. */
 function roomScreenV3(store, ui, kind) {
   const cfg = room(kind);
   if (!ui.roomV3.entered) return roomEnterScreenV3(cfg);
   const reveal = store.pendingReveal;
-  if (reveal) {
-    return ui.roomV3.handoffAcked
-      ? roomPartnerReadsScreenV3(store, reveal)
-      : roomReadyScreenV3(store, reveal.to, reveal.from);
-  }
+  if (reveal) return roomPartnerReadsScreenV3(store, reveal);
   if (!ui.roomV3.handoffAcked) {
     return roomReadyScreenV3(store, store.activePartner, store.other(store.activePartner));
   }
@@ -641,13 +644,13 @@ export function basementScreen(store, ui) {
   return store.basementStage === "fears" ? basementFearsScreen(store, ui) : basementQuestionsScreen(store, ui);
 }
 
+// Same fix and same reasoning as roomScreenV3 above: the phone-passed reveal shows
+// immediately, with no "X, ваша очередь" screen ahead of it — that screen belongs only
+// right before NAMING the next fear (confirmBasementFearReadV3 already resets
+// handoffAcked to false for exactly that, unchanged here).
 function basementFearsScreen(store, ui) {
   const reveal = store.basementFearReveal;
-  if (reveal) {
-    return ui.basementV3.handoffAcked
-      ? basementFearReadScreen(store, reveal)
-      : basementReadyScreen(store, reveal.to, reveal.from);
-  }
+  if (reveal) return basementFearReadScreen(store, reveal);
   if (!ui.basementV3.handoffAcked) {
     return basementReadyScreen(store, store.activePartner, store.other(store.activePartner));
   }

@@ -491,17 +491,18 @@ const actions = {
     store.submitRoomTurn(ui.roomV3.emotion);
   },
   confirmRevealV3() {
-    // FIXES-v5 §3: the "X, ваша очередь" ready screen is only for a genuinely new
-    // step starting with someone else — not for this specific handback, where the
-    // partner who just finished reading immediately answers the very same question.
-    // roomDoneFlags[reveal.to] is still false exactly when that's what's about to
-    // happen (confirmReveal() below then sets activePartner = reveal.to); when it's
-    // already true this reveal instead finishes the room and advances to a new step,
-    // whose own screen resets ui.roomV3 anyway, so the value set here doesn't matter.
+    // Reverted from FIXES-v5 §3's "skip straight to the question" optimization per
+    // explicit correction after watching the actual order on a real phone: the
+    // "X, ваша очередь" screen needs to show HERE, right after reading and before
+    // answering — not be skipped, and never shown before the reading instead (that
+    // move is in roomScreenV3 above). handoffAcked=false always lands back on the
+    // ready-to-answer screen next; when this reveal instead finishes the room
+    // (roomDoneFlags[reveal.to] already true), a new step's own screen resets
+    // ui.roomV3 anyway, so the value set here doesn't matter in that case.
     const reveal = store.pendingReveal;
-    const continuesSameQuestion = !!reveal && !store.roomDoneFlags[reveal.to];
-    if (reveal && !continuesSameQuestion) playSuccess(); // the room just finished
-    ui.roomV3.handoffAcked = continuesSameQuestion;
+    const roomFinished = !!reveal && store.roomDoneFlags[reveal.to];
+    if (roomFinished) playSuccess(); // the room just finished
+    ui.roomV3.handoffAcked = false;
     ui.roomV3.told = false;
     ui.roomV3.moreOpen = false;
     ui.roomV3.emotion = { value: null, chips: [], custom: "" };
