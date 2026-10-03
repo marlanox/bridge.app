@@ -93,12 +93,20 @@ body.is-light{background:var(--ivory)}
    smudgy patch behind small/letter-spaced text (worst on .b-eyebrow) rather than a
    readability aid. */
 .b-screen:not(.b-screen--light) :is(.b-display,.b-h1,.b-h2,.b-lead,.b-eyebrow){text-shadow:0 1px 3px rgba(0,0,0,.55)}
+/* "Узкая уродливая плашка" bug: this used to have no overflow rule at all, so a
+   screen whose text ran long (room rules + instruction + example quote, etc.)
+   had nowhere to go — flexbox has no scrollbar to fall back on, so it just
+   compressed every child, including the CTA pill, down to a sliver instead of
+   making the excess content scroll. overflow-y:auto lets the CARD scroll while
+   .b-cta/.b-footer keep flex-shrink:0 below so the button itself is never one
+   of the things that gets squeezed. */
 .b-content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
-  padding:calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom)}
+  padding:calc(var(--safe-top) + 40px) var(--gutter) var(--safe-bottom);
+  overflow-y:auto;-webkit-overflow-scrolling:touch}
 .b-spacer{flex:1}
 
 /* ---------- верхняя панель ---------- */
-.b-topbar{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.b-topbar{display:flex;align-items:center;justify-content:space-between;min-height:48px;flex-shrink:0}
 .b-back{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px 0 0;border-radius:999px;
   border:1px solid rgba(239,230,218,.28);background:rgba(11,9,7,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   font:400 16px/1 var(--serif);color:var(--text);text-decoration:none}
@@ -147,7 +155,7 @@ body.is-light{background:var(--ivory)}
 .b-star--h .b-star__line{width:90px;height:1px;background:var(--gold-line)}
 
 /* ---------- кнопки ---------- */
-.b-cta{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:56px;box-sizing:border-box;
+.b-cta{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:56px;box-sizing:border-box;flex-shrink:0;
   border-radius:999px;background:var(--cream);color:#1A1511;border:0;text-decoration:none;cursor:pointer;
   font:500 12.5px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;padding:0 60px;
   box-shadow:0 12px 40px rgba(239,230,218,.1)}
@@ -304,7 +312,7 @@ body.is-light{background:var(--ivory)}
 
 /* =================== v4 ДОБАВЛЕНИЯ =================== */
 /* Нижняя кнопка на экранах со скроллом — прилипает к низу, всегда видна, всегда полной высоты */
-.b-footer{position:sticky;bottom:0;z-index:2;margin:0 calc(var(--gutter)*-1);padding:18px var(--gutter) var(--safe-bottom);
+.b-footer{position:sticky;bottom:0;z-index:2;flex-shrink:0;margin:0 calc(var(--gutter)*-1);padding:18px var(--gutter) var(--safe-bottom);
   background:linear-gradient(180deg,rgba(11,9,7,0) 0%,rgba(11,9,7,.92) 38%)}
 /* Правило комнаты — КОМПАКТНО, одной строкой меток (заменяет большой .b-rule) */
 .b-rulebar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}

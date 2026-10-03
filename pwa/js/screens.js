@@ -1,4 +1,4 @@
-import { L, LF, deck, room, getLanguage } from "./content.js";
+import { L, LF, deck, room, deckSections, getLanguage } from "./content.js";
 import { isMusicEnabled, isSoundEnabled } from "./sounds.js";
 import {
   primaryButton, secondaryButton, escHtml, escAttr,
@@ -306,7 +306,35 @@ export function diceScreen(ui, store) {
 // No more two-card, one-flipped layout (DESIGN.md §2 bans upside-down screens) — each
 // partner gets their own turn: an explicit handoff (`ui.intensityHandoffAcked`), then
 // the scale/chips/free-text for `ui.intensityTurn`, one role at a time.
+/** Analogous to roomPartnerReadsScreenV3: the previous partner's emotion/intensity,
+ * shown to whoever has the phone now, before THEY get a ready/answer turn of their
+ * own — her explicit correction that this screen used to show nothing at all between
+ * partners, same gap the room cycle had before it was fixed there. */
+function intensityRevealScreen(store, ui, reveal) {
+  const z = zoneOf(reveal.value);
+  const chipsHtml = reveal.chips.map((s) => `<span class="b-chip is-on">${escHtml(L(`state.${s}`))}</span>`).join("");
+  return bScreen({
+    photo: "house-exterior", muted: true, shade: "text",
+    contentStyle: "padding:54px 24px 30px;",
+    inner: `
+      ${bTopbar({ right: { who: LF("room.who_reads", store.name(reveal.to)) } })}
+      <span class="b-eyebrow" style="margin-top:22px;">${escHtml(LF("handoff.shared_eyebrow", store.name(reveal.from)))}</span>
+      <h1 class="b-h1" style="margin-top:8px;">${escHtml(LF("handoff.shared_title", store.name(reveal.to), store.name(reveal.from)))}</h1>
+      ${bCard(`
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span class="b-small">${escHtml(L("intensity.strength_label"))}</span><span class="b-level z-${z}">${reveal.value} · ${escHtml(L(`intensity.zone.${z}`))}</span></div>
+        <div class="b-scale" style="margin-top:10px;">${Array.from({ length: 11 }, (_, i) => `<span class="b-seg z-${zoneOf(i)}${i <= reveal.value ? " is-on" : ""}"></span>`).join("")}</div>
+        <div class="b-divider" style="margin:14px 0;"></div>
+        <div class="b-chipgrid">${chipsHtml || `<span class="b-small">${escHtml(L("intensity.state_placeholder"))}</span>`}</div>
+        ${reveal.custom ? `<p class="b-quote" style="color:#F4EDE4;margin-top:12px;">«${escHtml(reveal.custom)}»</p>` : ""}
+      `, "margin-top:18px;")}
+      <div class="b-spacer"></div>
+      ${bCta({ text: L("handoff.read_it"), action: "confirmIntensityReveal" })}
+    `,
+  });
+}
+
 export function intensityScreen(store, ui) {
+  if (ui.intensityReveal) return intensityRevealScreen(store, ui, ui.intensityReveal);
   const role = ui.intensityTurn;
   const other = role === "partnerA" ? "partnerB" : "partnerA";
   if (!ui.intensityHandoffAcked) {
@@ -328,7 +356,11 @@ export function intensityScreen(store, ui) {
   }
   const value = ui.intensity[role];
   const chips = STATE_KEYS.map((s) => ({ text: L(`state.${s}`), on: ui.stateSelected[role].includes(s), action: "toggleStateOption", arg: role, arg2: s }));
-  const ready = value !== null && (ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0);
+  // Picking a chip or typing a custom word is each its own complete answer — the 0-10
+  // scale above is a separate, genuinely optional signal, not a hidden prerequisite.
+  // Requiring it too meant typing custom text (the exact case that doesn't also force
+  // a scale tap) could never enable this button at all ("кнопка дальше не загорается").
+  const ready = ui.stateSelected[role].length > 0 || ui.stateCustom[role].trim().length > 0;
   return bScreen({
     photo: "house-exterior", muted: true, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
@@ -373,7 +405,7 @@ export function calmDownScreen(ui) {
       </div>
       <div class="b-spacer"></div>
       ${ui.breathing
-        ? bCta({ key: "onboarding.got_it", action: "advance" })
+        ? bCta({ key: "calm_down.finish_breathing", action: "advance" })
         : bCta({ key: "calm_down.start_breathing", action: "startBreathing" }) + `<div style="margin-top:10px;text-align:center;">${bLink({ text: L("calm_down.skip"), action: "advance" })}</div>`}
     `,
   });
@@ -447,7 +479,31 @@ export function roomScreen(store, ui, kind) {
   return legacyRoomScreen(store, ui, kind);
 }
 
-const ROOM_FEELING_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad", "confused"];
+/** Resolves a selected chip id back to its display text for a given room — the id is
+ * either one of that room's own deck cards, or (fallback, should not normally happen)
+ * one of the old generic STATE_KEYS, kept so nothing crashes on stale saved state. */
+function roomChipText(cfg, id) {
+  for (const deckId of cfg.deckIds) {
+    const card = deck(deckId).cards.find((c) => c.id === id);
+    if (card) return L(card.textKey);
+  }
+  return STATE_KEYS.includes(id) ? L(`state.${id}`) : id;
+}
+
+/** Each room's own real deck(s) (room.json's deckIds → decks.json), grouped into
+ * labeled sections — category name when the deck has categories (e.g. "emotions"'
+ * 6), else the deck's own name (e.g. "body_sensations", "childhood") — this is what
+ * her "своя суть" complaint was about: every room showing the same flat 7-word list
+ * instead of its own curated deck(s) is the regression this restores. */
+function roomChipSections(cfg) {
+  return cfg.deckIds.flatMap((deckId) => {
+    const d = deck(deckId);
+    return deckSections(d).map((sec) => ({
+      label: sec.category ? L(`category.${sec.category}`) : L(d.nameKey),
+      cards: sec.cards,
+    }));
+  });
+}
 
 /** FIXES-v4 §6's cycle, strictly one screen = one person, no exceptions: enter →
  * [ready to ANSWER (V05) → tell it out loud (V02) → rate it (V03, emotions) →
@@ -463,7 +519,7 @@ const ROOM_FEELING_KEYS = ["hurt", "angry", "scared", "guilty", "ashamed", "sad"
  * are untouched — this only decides which screen to show for the current state. */
 function roomScreenV3(store, ui, kind) {
   const cfg = room(kind);
-  if (!ui.roomV3.entered) return roomEnterScreenV3(cfg);
+  if (!ui.roomV3.entered) return roomEnterScreenV3(store, cfg);
   const reveal = store.pendingReveal;
   if (reveal) return roomPartnerReadsScreenV3(store, reveal);
   if (!ui.roomV3.handoffAcked) {
@@ -473,7 +529,19 @@ function roomScreenV3(store, ui, kind) {
   return roomEmotionScreenV3(store, ui, cfg);
 }
 
-function roomEnterScreenV3(cfg) {
+function roomEnterScreenV3(store, cfg) {
+  // Her explicit fix: the no-interrupting rule only ever showed up on
+  // roomTellScreenV3, a screen only the SPEAKING partner sees that turn — the
+  // listening partner never saw it at all, so they had no way to know they
+  // weren't supposed to interrupt. Shown here instead, before the phone is
+  // handed over for the first time, with both partners still looking at it
+  // together — "Прочитайте правила вслух" makes that explicit.
+  const active = store.activePartner;
+  const other = store.other(active);
+  const forbidden = cfg.forbiddenKey
+    ? L(cfg.forbiddenKey).split("\n").map((line) => ({ kind: "no", text: line.replace(/^•\s*/, "") }))
+    : [];
+  const tags = [{ kind: "plain", text: LF("room.rule_listens", store.name(other)) }, ...forbidden];
   return bScreen({
     photo: cfg.backgroundImage, shade: "top",
     contentStyle: "padding:54px 24px 30px;",
@@ -486,6 +554,8 @@ function roomEnterScreenV3(cfg) {
       </div>
       <div class="b-spacer"></div>
       ${bCard(`<p class="b-body">${escHtml(L(cfg.instructionKey))}</p><div class="b-divider" style="margin:14px 0;"></div><p class="b-small" style="color:var(--gold);font-weight:600;margin-bottom:6px;">${escHtml(L("room.why_it_helps_label"))}</p><p class="b-body">${escHtml(L(cfg.whyItHelpsKey))}</p>`)}
+      <p class="b-small" style="margin-top:16px;color:var(--gold);font-weight:600;">${escHtml(LF("room.read_rules_aloud", store.name(active)))}</p>
+      <div style="margin-top:8px;">${bRuleBar(tags)}</div>
       <div style="margin-top:16px;">${bCta({ text: L("room.enter_continue"), action: "enterRoomV3" })}</div>
     `,
   });
@@ -516,7 +586,7 @@ function roomReadyScreenV3(store, toRole, otherRole) {
 function roomPartnerReadsScreenV3(store, reveal) {
   const cfg = room(store.session.currentRoom);
   const z = zoneOf(reveal.emotion.value);
-  const chipsHtml = reveal.emotion.chips.map((s) => `<span class="b-chip is-on">${escHtml(L(`state.${s}`))}</span>`).join("");
+  const chipsHtml = reveal.emotion.chips.map((s) => `<span class="b-chip is-on">${escHtml(roomChipText(cfg, s))}</span>`).join("");
   return bScreen({
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
@@ -548,8 +618,10 @@ function roomTellScreenV3(store, ui, cfg) {
   const forbidden = cfg.forbiddenKey
     ? L(cfg.forbiddenKey).split("\n").map((line) => ({ kind: "no", text: line.replace(/^•\s*/, "") }))
     : [];
+  // No "X speaks" tag here — the white "Отвечает X" badge in the topbar right above
+  // already says that; repeating it right below was "масло масляное" (her words).
+  // This bar now only carries what the badge DOESN'T: the no-interrupting rule.
   const tags = [
-    { kind: "speak", text: LF("room.rule_speaks", store.name(active)) },
     { kind: "plain", text: LF("room.rule_listens", store.name(other)) },
     ...forbidden,
   ];
@@ -578,15 +650,22 @@ function roomTellScreenV3(store, ui, cfg) {
   });
 }
 
-/** V03: the structured answer — the same emotion-scale component used at the global
- * check-in (DESIGN.md §3), scoped to this one question/turn. Done stays disabled
- * until a level is picked AND at least one feeling (or free text) is given. */
+/** V03: the structured answer — the same 0-10 intensity scale used at the global
+ * check-in (DESIGN.md §3), plus THIS room's own curated deck(s) (room.json's
+ * deckIds), scoped to this one question/turn. Done stays disabled until at least
+ * one feeling (or free text) is given — the 0-10 scale itself is optional. */
 function roomEmotionScreenV3(store, ui, cfg) {
   const active = store.activePartner;
   const other = store.other(active);
   const e = ui.roomV3.emotion;
-  const chips = ROOM_FEELING_KEYS.map((s) => ({ text: L(`state.${s}`), on: e.chips.includes(s), action: "toggleRoomEmotionChipV3", arg: s }));
-  const ready = e.value !== null && (e.chips.length > 0 || e.custom.trim().length > 0);
+  const sections = roomChipSections(cfg);
+  const sectionsHtml = sections.map((sec) => `
+    <p class="b-small" style="margin-top:14px;color:var(--gold);font-weight:600;">${escHtml(sec.label)}</p>
+    <div style="margin-top:6px;">${bChipGrid(sec.cards.map((c) => ({ text: L(c.textKey), on: e.chips.includes(c.id), action: "toggleRoomEmotionChipV3", arg: c.id })))}</div>
+  `).join("");
+  // Same fix as intensityScreen: the 0-10 scale is optional, not a hidden prerequisite
+  // for continuing after typing a custom feeling.
+  const ready = e.chips.length > 0 || e.custom.trim().length > 0;
   return bScreen({
     photo: cfg.backgroundImage, shade: "text",
     contentStyle: "padding:54px 24px 30px;",
@@ -598,7 +677,7 @@ function roomEmotionScreenV3(store, ui, cfg) {
       <h1 class="b-h2" style="margin-top:16px;">${escHtml(L("room.emotion_question"))}</h1>
       ${bCard(`${bScaleHeader(e.value)}${bScale({ value: e.value, action: "setRoomEmotionValueV3" })}`, "margin-top:14px;padding:16px 18px;")}
       <p class="b-small" style="margin-top:14px;">${escHtml(L("intensity.state_label"))}</p>
-      <div style="margin-top:8px;">${bChipGrid(chips)}</div>
+      ${sectionsHtml}
       <input class="b-input" type="text" id="roomEmotionCustom" placeholder="${escAttr(L("intensity.custom_placeholder"))}" value="${escAttr(e.custom)}" style="margin-top:10px;height:46px;">
       <div class="b-spacer"></div>
       ${bCta({ text: LF("room.emotion_handoff", store.name(other)), action: "submitRoomEmotionV3", enabled: ready })}
