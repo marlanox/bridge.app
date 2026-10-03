@@ -72,12 +72,20 @@ body.is-light{background:var(--ivory)}
    просто продолжает уже полностью непрозрачную заливку в недоступную зону — шва по
    текстуре больше нет, потому что к границе обрезки фото уже нет вовсе. */
 .b-photo{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center}
+/* Другой её веб-апп (Family Hub) никогда не показывал эту кромку вообще — не потому
+   что там особый код, а потому что там нет ни одного экрана с фото во весь экран до
+   самого низа: сплошной ровный цвет сам по себе продолжается докуда угодно, и
+   недоступной для прорисовки полоске (которую доказал её же strip-test-4.html) просто
+   нечего обрывать. Тот же приём здесь: градиент теперь становится полностью
+   непрозрачным уже на 86% высоты экрана, а не на 100% — внизу каждого фото-экрана
+   сознательно оставлена плотная ровная полоса матового цвета (как в Family Hub),
+   которая и «доходит» до физической кромки, а не фото, которое до неё не дотягивает. */
 .b-shade{position:fixed;inset:0;z-index:0;
-  background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,1) 100%)}
-.b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,1) 100%)}
-.b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,1) 100%)}
+  background:linear-gradient(180deg,rgba(11,9,7,.86) 0%,rgba(11,9,7,.45) 34%,rgba(11,9,7,.18) 58%,rgba(11,9,7,1) 86%)}
+.b-shade--text{background:linear-gradient(180deg,rgba(11,9,7,.8) 0%,rgba(11,9,7,.55) 45%,rgba(11,9,7,1) 86%)}
+.b-shade--soft{background:linear-gradient(180deg,rgba(11,9,7,.55) 0%,rgba(11,9,7,0) 30%,rgba(11,9,7,0) 55%,rgba(11,9,7,1) 86%)}
 /* сильное затемнение сверху — для экранов, где заголовок лежит на светлом небе/фото */
-.b-shade--top{background:linear-gradient(180deg,rgba(11,9,7,.92) 0%,rgba(11,9,7,.78) 30%,rgba(11,9,7,.35) 55%,rgba(11,9,7,1) 100%)}
+.b-shade--top{background:linear-gradient(180deg,rgba(11,9,7,.92) 0%,rgba(11,9,7,.78) 30%,rgba(11,9,7,.35) 55%,rgba(11,9,7,1) 86%)}
 /* приглушить слишком оранжевый закат */
 .b-photo--muted{filter:saturate(.5) brightness(.85) contrast(1.05)}
 /* заголовки и текст на тёмных экранах всегда с мягкой тенью — читаются на любом фото */
@@ -331,7 +339,7 @@ body.is-light{background:var(--ivory)}
    body.is-light's flat background — her "Как вас зовут" screenshot showed this one
    specifically still cutting from visible photo detail straight to flat cream,
    because this light-theme override was missed when the dark variants were fixed. */
-.b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,1) 100%)}
+.b-screen--light .b-shade{background:linear-gradient(180deg,rgba(247,242,234,.9) 0%,rgba(247,242,234,.55) 40%,rgba(247,242,234,.1) 70%,rgba(247,242,234,1) 86%)}
 .b-screen--light .b-h1,.b-screen--light .b-display{color:var(--ink)}
 .b-screen--light .b-eyebrow{color:#2A2724}
 .b-screen--light .b-back{color:var(--ink);background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.7)}
