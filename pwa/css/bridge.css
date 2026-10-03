@@ -282,13 +282,18 @@ body.is-light{background:var(--ivory)}
 /* Не текст, не перевод — просто светящееся сердце над запечённым в фото кружком той
    комнаты, куда сейчас идти, чтобы было сразу понятно, какая именно из семи это, без
    накладывания слов поверх фото. Было кольцо — заменено на сердце по просьбе. */
+/* The photo itself has a numbered circle + room name printed at each pin's exact
+   x/y (that's what the coordinates were tuned to match) — anchoring the marker
+   dead-center there put it right on top of the label. Offset well clear of it,
+   up and to the left into the open photo above/beside the circle, instead of
+   sitting on the printed number and word. */
 .b-map-current{position:absolute;width:30px;height:30px;
-  transform:translate(-50%,-62%);pointer-events:none;z-index:2;
+  transform:translate(calc(-50% - 34px),-170%);pointer-events:none;z-index:2;
   display:grid;place-items:center;
   filter:drop-shadow(0 0 10px rgba(201,164,92,.85)) drop-shadow(0 0 22px rgba(239,230,218,.5));
   animation:b-map-current-pulse 2.2s ease-in-out infinite}
 .b-map-current svg{width:100%;height:100%}
-@keyframes b-map-current-pulse{0%,100%{opacity:.82;transform:translate(-50%,-62%) scale(1)}50%{opacity:1;transform:translate(-50%,-62%) scale(1.14)}}
+@keyframes b-map-current-pulse{0%,100%{opacity:.82;transform:translate(calc(-50% - 34px),-170%) scale(1)}50%{opacity:1;transform:translate(calc(-50% - 34px),-170%) scale(1.14)}}
 .b-mapshade-top{position:fixed;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;
   background:linear-gradient(#0B0907f5 40%,#0B090700)}
 /* Та же правка, что у .b-shade выше: без перехлёста, чтобы 100%-stop градиента (где
