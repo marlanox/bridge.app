@@ -5,11 +5,12 @@
   const root = document.getElementById('atelier');
   if (!root || !C) return;
   const $ = s => root.querySelector(s);
-  const KEY = 'oc-atelier-v1';
+  const KEY = 'oc-atelier-v2';
   const DEFAULT = [
-    { t: 'cable', cm: 12 }, { t: 'cameo' }, { t: 'bali', cm: 10 }, { t: 'goldring' }, { t: 'byzantine', cm: 6 }, { t: 'cable', cm: 12 }
+    { t: 'bali', cm: 6 }, { t: 'wing' }, { t: 'bali', cm: 4 }, { t: 'ruby' }, { t: 'cross' }, { t: 'goldring' }, { t: 'bali', cm: 8 },
+    { t: 'heart' }, { t: 'bali', cm: 6 }, { t: 'goldring' }, { t: 'relic' }, { t: 'bali', cm: 6 }, { t: 'cameo' }, { t: 'bead' }, { t: 'bali', cm: 4 }
   ];
-  const SHORT = { cable: 'C', bali: 'B', byzantine: 'Z', paperclip: 'L', cameo: 'CAM', ruby: 'RBY', goldring: 'AU', reliquary: 'REL' };
+  const SHORT = { cable: 'C', bali: 'B', byzantine: 'Z', paperclip: 'L', cameo: 'CAM', ruby: 'RBY', goldring: 'AU', reliquary: 'REL', wing: 'WNG', serpent: 'SRP', relic: 'BNE', crystal: 'XTL', pearl: 'PRL', cross: 'CRS', heart: 'HRT', bead: 'BD', drop: 'GRN' };
   let segs;
   try { segs = JSON.parse(localStorage.getItem(KEY)) || DEFAULT.slice(); } catch (e) { segs = DEFAULT.slice(); }
   const money = n => '$' + n.toLocaleString('en-US');
@@ -68,7 +69,7 @@
     const t = b.dataset.add, c = C.CATALOG[t];
     const arts = segs.filter(s => C.CATALOG[s.t].kind === 'artifact').length;
     const msg = $('#add-msg');
-    if (c.kind === 'artifact' && arts >= 6) { msg.textContent = 'Six artifacts is the limit of one chain. Remove one to add another.'; return; }
+    if (c.kind === 'artifact' && arts >= 9) { msg.textContent = 'Nine artifacts is the limit of one chain. Remove one to add another.'; return; }
     msg.textContent = '';
     segs.push(c.kind === 'chain' ? { t, cm: 8 } : c.variants ? { t, v: 'hair' } : { t });
     draw();

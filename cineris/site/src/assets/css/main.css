@@ -280,3 +280,38 @@ figure { margin: 0; }
   .nav { transition: none; }
 }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- photography ---------- */
+.hero-photo { position: relative; margin: 0; height: clamp(460px, 80vh, 880px); max-width: 100%; overflow: hidden; border: 1px solid var(--line); }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; display: block; filter: contrast(1.04) saturate(0.92); }
+.hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,9,0) 60%, rgba(10,9,9,0.75)); pointer-events: none; }
+.hero-photo .cap { z-index: 1; }
+@media (max-width: 860px) { .hero-photo { height: 64vh; order: 2; } }
+
+.plate.photo { aspect-ratio: 4 / 5; }
+.plate.photo img { position: absolute; inset: 0; }
+.plate.photo figcaption { z-index: 1; text-shadow: 0 1px 8px #000; }
+.plate.small { aspect-ratio: 16 / 9; }
+.plate.small svg { height: 80%; }
+.plate img { display: block; }
+
+.gallery { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: clamp(120px, 14vw, 200px); gap: 10px; }
+.gallery figure { overflow: hidden; border: 1px solid var(--line); background: var(--char); min-width: 0; }
+.gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.6s cubic-bezier(.2,.7,.1,1); }
+.gallery figure:hover img { transform: scale(1.04); }
+.g-a { grid-column: 1 / 4; grid-row: span 3; }
+.g-b { grid-column: 4 / 5; grid-row: span 3; }
+.g-c { grid-column: 5 / 7; grid-row: span 2; }
+.g-d { grid-column: 5 / 7; grid-row: span 2; }
+.g-e { grid-column: 1 / 4; grid-row: span 2; }
+.g-f { grid-column: 4 / 5; grid-row: span 2; }
+.g-b img, .g-d img, .g-f img { object-position: 50% 30%; }
+@media (max-width: 760px) {
+  .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 44vw; }
+  .g-a, .g-e { grid-column: 1 / 3; grid-row: span 2; }
+  .g-b, .g-c, .g-d, .g-f { grid-column: auto; grid-row: span 2; }
+}
+@media (prefers-reduced-motion: reduce) { .gallery img { transition: none; } }
+.plate.photo img[src*="wing-detail"], .gallery img[src*="wing-detail"] { object-position: 50% 74%; }
+.plate.photo img[src*="bone-cameo"] { object-position: 50% 55%; }
+.plate.photo img[src*="pearl-detail"] { object-position: 50% 38%; }

@@ -39,7 +39,7 @@ export default function core({ CFG, pieces, codex, journal }) {
       <div class="actions"><a class="btn" href="@/build.html">Build a chain</a><a class="btn ghost" href="@/legend.html">Read the legend</a></div>
       <div class="hero-meta"><span class="label">925 sterling</span><span class="label">Oxidized, never polished bright</span><span class="label">From $${CFG.priceFrom.toLocaleString('en-US')}</span></div>
     </div>
-    <div class="chain-drop" aria-hidden="true"><svg id="hero-chain"></svg></div>
+    <figure class="hero-photo"><img src="@/assets/img/photos/worn-crewneck.jpg" alt="A heavy oxidized silver chain with a wing, a serpent, a cameo and garnets, worn over a black sweater" fetchpriority="high"><figcaption class="cap">Worn over black wool · 60 cm</figcaption></figure>
   </div>
 </section>
 
@@ -52,12 +52,27 @@ export default function core({ CFG, pieces, codex, journal }) {
   </div>
 </section>
 
+
+<section class="band" aria-labelledby="bench">
+  <div class="wrap stack lg">
+    <div class="split" style="align-items:end"><div class="stack"><p class="eyebrow">From the bench</p><h2 id="bench">No two chains read the same.</h2></div><p class="rise">A wing that landed on the collarbone. A relic cast from a bone found in the desert. A rough crystal in eight claws. A baroque pearl that grew wrong. Every chain is a different sentence, written once.</p></div>
+    <div class="gallery rise">
+      <figure class="g-a"><img src="@/assets/img/photos/collar-relics.jpg" alt="Collar of oxidized silver with a wing, claw, bone relic, baroque pearls, cameo and heart" loading="lazy"></figure>
+      <figure class="g-b"><img src="@/assets/img/photos/wing-detail.jpg" alt="Hand-chased silver wing link" loading="lazy"></figure>
+      <figure class="g-c"><img src="@/assets/img/photos/ruby-crystal-detail.jpg" alt="Garnet, 18k gold ring and rough rock crystal in silver claws" loading="lazy"></figure>
+      <figure class="g-d"><img src="@/assets/img/photos/worn-turtleneck.jpg" alt="Silver chain with wing and garnet worn on a black turtleneck" loading="lazy"></figure>
+      <figure class="g-e"><img src="@/assets/img/photos/necklace-heart.jpg" alt="Necklace with wing, garnet, cross, gold links, bone relic, cameo and heart" loading="lazy"></figure>
+      <figure class="g-f"><img src="@/assets/img/photos/toggle-cameo-detail.jpg" alt="Toggle clasp, Bali bead and cameo in gold bezel" loading="lazy"></figure>
+    </div>
+    <div class="actions"><a class="btn" href="@/build.html">Compose your own</a><a class="btn ghost" href="@/pieces.html">All chains &amp; artifacts</a></div>
+  </div>
+</section>
 <section class="band" aria-labelledby="anat">
   <div class="wrap">
     <div class="stack" style="margin-bottom:6vh"><p class="eyebrow">Anatomy of a chain</p><h2 id="anat">Read it from the clasp.</h2></div>
     <div class="anatomy">
       <div class="steps">
-        <div class="step" data-step="0"><p class="cm">0 cm · The clasp</p><h3>A box clasp you can hear.</h3><p>Solid, cast and hand-chased, with the house mark under the tongue. It closes with a click you feel in the collarbone.</p></div>
+        <div class="step" data-step="0"><p class="cm">0 cm · The clasp</p><h3>A toggle with a long bar.</h3><p>Cast and hand-chased, the bar half again as long as the ring is wide, so the weight of the chain keeps it closed. The house mark is under the bar.</p></div>
         <div class="step" data-step="1"><p class="cm">3–13 cm · Plain cable</p><h3>Silence first.</h3><p>Forged oval links from 4.2 mm wire. Every chain opens with plain links, so that what follows reads as an event.</p></div>
         <div class="step" data-step="2"><p class="cm">13 cm · The cameo</p><h3>A face the size of a fingernail.</h3><p>Carved shell, 14 mm, set in a granulated bezel. She looks away from the wearer, toward whoever is looking.</p></div>
         <div class="step" data-step="3"><p class="cm">16–23 cm · Balinese links</p><h3>Granulation, the old way.</h3><p>Links stamped and beaded by hand in the manner of the silversmiths of Celuk, then blackened and rubbed back so the high points catch light like wet stone.</p></div>
@@ -231,10 +246,13 @@ ${plate([{ t: 'cable', cm: 10 }, { t: 'ash' }, { t: 'bali', cm: 9 }, { t: 'goldr
 <div class="atelier">
   <div class="stack lg" style="min-width:0">
     <ol class="seglist" id="seglist"></ol>
-    <div class="stack"><p class="label">Add</p>
+    <div class="stack"><p class="label">Chain</p>
       <div class="addbar">
         <button type="button" data-add="cable">+ Cable</button><button type="button" data-add="bali">+ Balinese</button><button type="button" data-add="byzantine">+ Byzantine</button><button type="button" data-add="paperclip">+ Long link</button>
+        </div><p class="label">Artifacts</p><div class="addbar">
         <button type="button" data-add="cameo">+ Cameo</button><button type="button" data-add="ruby">+ Ruby</button><button type="button" data-add="goldring">+ 18k ring</button><button type="button" data-add="reliquary">+ Reliquary</button>
+        <button type="button" data-add="wing">+ Wing</button><button type="button" data-add="serpent">+ Serpent</button><button type="button" data-add="relic">+ Bone relic</button><button type="button" data-add="crystal">+ Rock crystal</button>
+        <button type="button" data-add="pearl">+ Baroque pearl</button><button type="button" data-add="cross">+ Cross</button><button type="button" data-add="heart">+ Heart</button><button type="button" data-add="bead">+ Bali bead</button><button type="button" data-add="drop">+ Garnet drop</button>
       </div>
       <p class="muted" id="add-msg" aria-live="polite"></p>
       <div class="actions"><button type="button" class="btn small ghost" data-reset>Start again</button></div>
@@ -386,7 +404,7 @@ ${plate([{ t: 'cable', cm: 10 }, { t: 'ash' }, { t: 'bali', cm: 9 }, { t: 'goldr
     crumbs: [['Chains', 'pieces.html']],
     head: `<p class="eyebrow">The chains</p><h1 style="font-size:var(--step-3)">Chains &amp; artifacts</h1><p class="lede">Four chains, and the artifacts you can set into them. Every one is built to order in the atelier.</p>`,
     body: `<section class="band" style="padding-top:0"><div class="wrap"><div class="grid c4">
-${pieces.map(x => `<a class="cell" href="@/pieces/${x.slug}.html"><figure class="plate" style="aspect-ratio:1/1"><svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-hidden="true"></svg></figure><span class="label">${x.kind}</span><h3>${x.name}</h3><p>${x.short}</p><p class="mono num">${x.priceLabel}</p></a>`).join('')}
+${pieces.map(x => `<a class="cell" href="@/pieces/${x.slug}.html"><figure class="plate" style="aspect-ratio:1/1">${x.photo ? `<img src="@/assets/img/photos/${x.photo}.jpg" alt="" loading="lazy">` : `<svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-hidden="true"></svg>`}</figure><span class="label">${x.kind}</span><h3>${x.name}</h3><p>${x.short}</p><p class="mono num">${x.priceLabel}</p></a>`).join('')}
 </div></div></section>`
   });
 
@@ -465,7 +483,7 @@ ${pieces.map(x => `<a class="cell" href="@/pieces/${x.slug}.html"><figure class=
   const FAQ = [
     ['Is it real silver?', 'Yes. Every chain is 925 sterling silver, stamped and tagged with a hallmark. Gold rings are solid 18 karat gold. Rubies are natural. Cameos are carved shell.'],
     ['Can men wear these chains?', 'They were designed first for men: heavy, dark, without a pendant, made to lie on a black sweater. Women wear them too, often doubled. They are unisex by construction.'],
-    ['How much does a chain cost?', `From $${CFG.priceFrom.toLocaleString('en-US')}. Most chains are between $2,400 and $3,800 depending on length, links and artifacts. Burning editions are priced on application.`],
+    ['How much does a chain cost?', `From $${CFG.priceFrom.toLocaleString('en-US')}. Most chains are between $2,400 and $4,500 depending on length, links and artifacts. Burning editions are priced on application.`],
     ['How long does it take?', 'Nine to twenty-one days at the bench, depending on how many artifacts the chain carries.'],
     ['Why are there no returns?', 'Every chain is made for one person to a specification they chose, and many hold personal material. It cannot be sold to anyone else, so all sales are final. We repair workmanship for life.'],
     ['Can I put my own hair, or a loved one’s, in the chain?', 'Yes. The reliquary link is a sealed glass capsule for a lock of hair, a tear taken on silk, a line of a letter, or earth from a place. We seal it in front of you.'],

@@ -152,7 +152,7 @@ export default [
     related: ['how-to-tell-real-silver', 'clasps-box-lobster-toggle', 'byzantine-chain'],
     body: `<h2>Solid or hollow</h2><p>Hollow links look massive and weigh little. They dent, and cannot be repaired well. Ask for the weight in grams: a solid 55 cm chain with 4 mm wire weighs around 60–90 g; mixed chains with Byzantine sections weigh more.</p>
 <h2>Soldered links</h2><p>Every link of a good chain is soldered closed. Unsoldered links can be pulled open by a snag.</p>
-<h2>The clasp</h2><p>On a heavy chain, a small lobster clasp is the first thing to fail. Look for a <a href="@/codex/clasps-box-lobster-toggle.html">box clasp</a> in proportion to the chain.</p>
+<h2>The clasp</h2><p>On a heavy chain, a small lobster clasp is the first thing to fail. Look for a box clasp or a long-bar <a href="@/codex/clasps-box-lobster-toggle.html">toggle</a> in proportion to the chain.</p>
 <h2>Where the money goes</h2><p>The silver in a heavy chain is worth a fraction of its price. The rest is hours: forging, granulating, weaving, setting, oxidizing and burnishing by hand. A machine chain of the same weight costs a few hundred dollars. A hand-built chain with a cameo, a ruby and an 18k ring takes days of a jeweler’s work, and is priced accordingly.</p>`
   },
   {

@@ -155,13 +155,13 @@ export default [
   {
     slug: 'clasps-box-lobster-toggle', short: 'Box, lobster or toggle clasp', kicker: 'Construction',
     title: 'Chain Clasps: Box Clasp vs Lobster vs Toggle',
-    description: 'The differences between a box clasp, a lobster clasp and a toggle clasp on a heavy chain: security, ease of use, wear, and why we use a cast box clasp.',
+    description: 'The differences between a box clasp, a lobster clasp and a toggle clasp on a heavy chain: security, ease of use, wear, and why we use a long-bar toggle.',
     dek: 'The one moving part of a chain deserves the most attention.',
     related: ['buying-a-heavy-silver-chain', 'sterling-silver-925-hallmarks', 'how-to-care-for-oxidized-silver'],
     body: `<p>A clasp is the only mechanism in a chain and the part most likely to fail. On a heavy chain it matters more, because the weight keeps pulling on it.</p>
 <ul><li><b>Lobster clasp.</b> A spring-loaded hook. Secure and cheap, but on a massive chain it looks undersized, and its spring is the weakest part.</li><li><b>Toggle clasp.</b> A bar through a ring. Handsome and easy to close, but it can slip open if the chain is loose or worn in front.</li><li><b>Box clasp.</b> A tongue that snaps into a box, often with a safety catch. Proportionate to a heavy chain, very secure, and it gives a satisfying click.</li></ul>
 <h2>Our clasp</h2>
-<p>We use a cast and hand-chased box clasp, engraved with the house mark under the tongue. It is serviced free for life. See <a href="@/care.html">care &amp; repair</a>.</p>`
+<p>We use a cast, hand-chased toggle, and we solve its one weakness with proportion: the bar is half again as long as the ring is wide, and a heavy chain keeps it under tension, so it cannot turn back through the ring. It is the clasp you see in old watch chains, and it can be worn at the front as an ornament. It is serviced free for life. See <a href="@/care.html">care &amp; repair</a>.</p>`
   },
   {
     slug: 'memento-mori-jewelry', short: 'Memento mori', kicker: 'History',
