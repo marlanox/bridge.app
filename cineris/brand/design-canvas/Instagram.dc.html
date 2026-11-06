@@ -29,7 +29,7 @@ a{color:#E0F1FF}a:hover{color:#FFFFFF}
 
   <div style="display: flex; align-items: center; gap: 22px; padding: 6px 16px 12px">
     <div style="width: 86px; height: 86px; border-radius: 50%; background: #000; border: 1px solid #2E2E2E; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
-      <img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="Profile picture: the gothic 3" style="height: 52px; width: auto">
+      <img src="/_blob/b32370270824e6d9e6cf14fa76c22b5c" alt="Profile picture: the gothic 3" style="height: 40px; width: auto; opacity: .85">
     </div>
     <div style="display: flex; justify-content: space-around; flex: 1; text-align: center">
       <div style="display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 16px">12</span><span style="font-size: 13px">posts</span></div>
@@ -41,7 +41,7 @@ a{color:#E0F1FF}a:hover{color:#FFFFFF}
   <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 2px; line-height: 1.35">
     <span style="font-weight: 600">THE THREE — Fine Jewelry</span>
     <span style="color: #A8A8A8">Jewelry/watches</span>
-    <span>A chain that carries a letter.</span>
+    <span>A private vault. The key is a chain.</span>
     <span>Opens on the day you choose. Not before.</span>
     <span>Made by hand · Los Angeles · since 2011</span>
     <span style="color: #A8A8A8">@thethree.couture</span>
@@ -81,7 +81,7 @@ a{color:#E0F1FF}a:hover{color:#FFFFFF}
         </sc-if>
         <sc-if value="{{t.seal}}" hint-placeholder-val="{{ false }}">
           <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #ECE8E0">
-            <div style="width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 4px #4A080E; display: flex; align-items: center; justify-content: center"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 40px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
+            <div style="width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 4px #4A080E; display: flex; align-items: center; justify-content: center"><img src="/_blob/b32370270824e6d9e6cf14fa76c22b5c" alt="" style="height: 40px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
           </div>
         </sc-if>
         <sc-if value="{{t.reel}}" hint-placeholder-val="{{ false }}">
@@ -99,25 +99,25 @@ class Component extends DCLogic {
     const T = (line, reel) => ({ text: true, line, reel: !!reel });
     return {
       highlights: [
-        { label: 'Letters', src: '/_blob/a09ae2ac9485de9ff58200c84800e074' },
-        { label: 'Chains', src: '/_blob/183d945c37b14173fcc8328cb624132a' },
+        { label: 'Letters', src: '/_blob/b32370270824e6d9e6cf14fa76c22b5c' },
+        { label: 'Chains', src: '/_blob/fc0f78851b4e8c43d1011ac25ff8525c' },
         { label: 'Vault', src: '/_blob/3e7babcd3e6ad8ada258d606810cbd9a' },
-        { label: 'Ravens', src: '/_blob/3c98338cb1f83a3b405dd8b05ec313b2' },
-        { label: 'Legend', src: '/_blob/2578323ec89fe0276facd0910cb04bd6' }
+        { label: 'Keys', src: '/_blob/f89c31ebec77e05ac170bd35ec72bd3e' },
+        { label: 'Legend', src: '/_blob/3a3046d200032b97b8fbfbe22b99c063' }
       ],
       tiles: [
         T('Not for one year.', true),
-        P('/_blob/3c98338cb1f83a3b405dd8b05ec313b2', 'Raven chain'),
+        P('/_blob/f89c31ebec77e05ac170bd35ec72bd3e', 'Stone in claws'),
         { seal: true },
         P('/_blob/e2f7c31222cad9ddf396f2e0886b11d2', 'Chain worn on black knit', '50% 15%'),
         T('Three sentences.\nShe has never\ntold anyone.'),
-        P('/_blob/183d945c37b14173fcc8328cb624132a', 'Sealed Chain No. I'),
-        P('/_blob/6428539970859eb4d03210a71badb61d', 'Ravens collar'),
+        P('/_blob/fc0f78851b4e8c43d1011ac25ff8525c', 'Sealed Chain No. I'),
+        P('/_blob/3f2e47272cccab7b7b07e3961e4b1321', 'Cameo'),
         T('TT-0007-K4M9\n\nthis letter opens\nin 94 days', true),
         P('/_blob/3a3046d200032b97b8fbfbe22b99c063', 'Wing detail', '50% 72%'),
-        P('/_blob/b8f04fc565c08ea6069b9b1f9d1812e7', 'Sealed Chain No. II'),
+        P('/_blob/7dc39c62b6daa71f4782aa9489cc8cd3', '18k gold link'),
         T('Revenge, 2011.'),
-        P('/_blob/e679dba79d9a19079386d907f12129fb', 'Sealed Collar No. IV')
+        P('/_blob/3e7babcd3e6ad8ada258d606810cbd9a', 'Toggle and cameo')
       ]
     };
   }
