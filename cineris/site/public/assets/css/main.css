@@ -315,3 +315,14 @@ figure { margin: 0; }
 .plate.photo img[src*="wing-detail"], .gallery img[src*="wing-detail"] { object-position: 50% 74%; }
 .plate.photo img[src*="bone-cameo"] { object-position: 50% 55%; }
 .plate.photo img[src*="pearl-detail"] { object-position: 50% 38%; }
+
+/* ---------- signature ---------- */
+.mark::before { width: 0.62em; height: 0.86em; border-radius: 50%; background: radial-gradient(circle at 50% 50%, var(--gold) 0 18%, #0b0a0a 20% 100%); border: 2px solid var(--silver); box-shadow: none; vertical-align: -0.12em; }
+.sigplate { aspect-ratio: 4 / 5; }
+.sigplate svg { height: 92%; width: auto; }
+.seg.sig { background: linear-gradient(90deg, rgba(201,164,92,0.08), transparent 60%); }
+.seg.sig .name { color: var(--gold); }
+.seg.brutal .n { color: var(--bone); }
+.addbar + .label, .stack > .label + .addbar { margin-top: 2px; }
+.gallery .g-a, .gallery .g-b { grid-row: span 4; }
+@media (max-width: 760px) { .gallery .g-a { grid-column: 1 / 3; grid-row: span 2; } .gallery .g-b { grid-row: span 2; } }

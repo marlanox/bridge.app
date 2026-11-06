@@ -26,7 +26,7 @@ export default function core({ CFG, pieces, codex, journal }) {
     path: 'index.html',
     title: 'Ordo Cineris — Sterling Silver Chains Bound by Hand on Melrose',
     ogTitle: 'Ordo Cineris · The Order of Ash',
-    description: 'Ordo Cineris is a Los Angeles house of handmade 925 sterling silver chains: oxidized Balinese links, micro cameos, rubies, 18k gold rings and reliquary links for hair or a tear. Bound to order on Melrose Avenue.',
+    description: 'Ordo Cineris is a Los Angeles house of handmade 925 sterling silver chains with one signature: fine chain breaking into hand-forged weight at a single black Ash Link with a gold rivet. Bound to order on Melrose Avenue.',
     scripts: [],
     body: `
 <section class="hero">
@@ -35,64 +35,73 @@ export default function core({ CFG, pieces, codex, journal }) {
     <div class="copy">
       <p class="eyebrow">Melrose Avenue · Los Angeles · By appointment</p>
       <h1>Ordo<span class="l2">Cineris</span></h1>
-      <p class="lede">The Order of Ash. Heavy sterling chains, darkened by hand, bound link by link for one person at a time. Some of them carry a lock of hair. Some carry ash. All of them carry a message that opens on a date of the giver’s choosing.</p>
-      <div class="actions"><a class="btn" href="@/build.html">Build a chain</a><a class="btn ghost" href="@/legend.html">Read the legend</a></div>
-      <div class="hero-meta"><span class="label">925 sterling</span><span class="label">Oxidized, never polished bright</span><span class="label">From $${CFG.priceFrom.toLocaleString('en-US')}</span></div>
+      <p class="lede">Silence. Then the Break. Then weight. Sterling silver chains that turn from fine to brutal at a single black link with a gold rivet, bound by hand for one person and worn for life.</p>
+      <div class="actions"><a class="btn" href="@/build.html">Build a chain</a><a class="btn ghost" href="#signature">The signature</a></div>
+      <div class="hero-meta"><span class="label">925 sterling</span><span class="label">One Ash Link per chain</span><span class="label">From $${CFG.priceFrom.toLocaleString('en-US')}</span></div>
     </div>
-    <figure class="hero-photo"><img src="@/assets/img/photos/worn-crewneck.jpg" alt="A heavy oxidized silver chain with a wing, a serpent, a cameo and garnets, worn over a black sweater" fetchpriority="high"><figcaption class="cap">Worn over black wool · 60 cm</figcaption></figure>
+    <div class="chain-drop" aria-hidden="true"><svg id="hero-chain"></svg></div>
   </div>
 </section>
 
 <section class="band manifesto">
   <div class="wrap narrow rise">
-    <p>We do not make pendants. A pendant tells the world what to look at.</p>
-    <p>Our chains are the whole sentence.</p>
-    <p>Ten centimetres of plain cable. Then a cameo the size of a fingernail. Then Balinese links stamped by hand. Then one ring of gold, the only warm thing in the chain.</p>
-    <p>Worn on black cashmere, by men and women who do not explain themselves.</p>
+    <p>Not armour. Not a costume. No crosses, no skulls, no wings.</p>
+    <p>A fine chain that suddenly becomes heavy.</p>
+    <p>Worn with a diamond tennis chain and a navy blazer. With a white T-shirt. With nothing.</p>
+    <p>An amulet you stop taking off.</p>
   </div>
 </section>
 
-
-<section class="band" aria-labelledby="bench">
-  <div class="wrap stack lg">
-    <div class="split" style="align-items:end"><div class="stack"><p class="eyebrow">From the bench</p><h2 id="bench">No two chains read the same.</h2></div><p class="rise">A wing that landed on the collarbone. A relic cast from a bone found in the desert. A rough crystal in eight claws. A baroque pearl that grew wrong. Every chain is a different sentence, written once.</p></div>
-    <div class="gallery rise">
-      <figure class="g-a"><img src="@/assets/img/photos/collar-relics.jpg" alt="Collar of oxidized silver with a wing, claw, bone relic, baroque pearls, cameo and heart" loading="lazy"></figure>
-      <figure class="g-b"><img src="@/assets/img/photos/wing-detail.jpg" alt="Hand-chased silver wing link" loading="lazy"></figure>
-      <figure class="g-c"><img src="@/assets/img/photos/ruby-crystal-detail.jpg" alt="Garnet, 18k gold ring and rough rock crystal in silver claws" loading="lazy"></figure>
-      <figure class="g-d"><img src="@/assets/img/photos/worn-turtleneck.jpg" alt="Silver chain with wing and garnet worn on a black turtleneck" loading="lazy"></figure>
-      <figure class="g-e"><img src="@/assets/img/photos/necklace-heart.jpg" alt="Necklace with wing, garnet, cross, gold links, bone relic, cameo and heart" loading="lazy"></figure>
-      <figure class="g-f"><img src="@/assets/img/photos/toggle-cameo-detail.jpg" alt="Toggle clasp, Bali bead and cameo in gold bezel" loading="lazy"></figure>
+<section class="band" id="signature" aria-labelledby="sig">
+  <div class="wrap split">
+    <figure class="plate sigplate rise"><svg data-chain='[{"t":"cable","cm":5},{"t":"ashlink"},{"t":"forged","cm":6}]' data-shape="line" data-fixed="false" aria-label="The Break: fine chain, the Ash Link, forged links"></svg><figcaption>The Break · actual proportion</figcaption></figure>
+    <div class="stack lg rise">
+      <p class="eyebrow">The signature</p>
+      <h2 id="sig">The Ash Link.</h2>
+      <p>Every Ordo Cineris chain carries exactly one: a matte black oval in a silver rim, pierced by a single rivet of 18k gold. It sits at the Break, the point where 2.4 mm fine chain gives way to hand-forged 11 mm links. There is nothing in between.</p>
+      <p>You will recognise it across a room. A black link with a gold point, and on one side of it, sudden weight. The weight is always worn on the left, over the heart.</p>
+      <div class="actions"><a class="btn ghost" href="@/pieces/ash-link.html">About the Ash Link</a><a class="btn ghost" href="@/journal/the-break.html">The house grammar</a></div>
     </div>
-    <div class="actions"><a class="btn" href="@/build.html">Compose your own</a><a class="btn ghost" href="@/pieces.html">All chains &amp; artifacts</a></div>
   </div>
 </section>
+
 <section class="band" aria-labelledby="anat">
   <div class="wrap">
-    <div class="stack" style="margin-bottom:6vh"><p class="eyebrow">Anatomy of a chain</p><h2 id="anat">Read it from the clasp.</h2></div>
+    <div class="stack" style="margin-bottom:6vh"><p class="eyebrow">The grammar</p><h2 id="anat">Every chain is written the same way.</h2></div>
     <div class="anatomy">
       <div class="steps">
-        <div class="step" data-step="0"><p class="cm">0 cm · The clasp</p><h3>A toggle with a long bar.</h3><p>Cast and hand-chased, the bar half again as long as the ring is wide, so the weight of the chain keeps it closed. The house mark is under the bar.</p></div>
-        <div class="step" data-step="1"><p class="cm">3–13 cm · Plain cable</p><h3>Silence first.</h3><p>Forged oval links from 4.2 mm wire. Every chain opens with plain links, so that what follows reads as an event.</p></div>
-        <div class="step" data-step="2"><p class="cm">13 cm · The cameo</p><h3>A face the size of a fingernail.</h3><p>Carved shell, 14 mm, set in a granulated bezel. She looks away from the wearer, toward whoever is looking.</p></div>
-        <div class="step" data-step="3"><p class="cm">16–23 cm · Balinese links</p><h3>Granulation, the old way.</h3><p>Links stamped and beaded by hand in the manner of the silversmiths of Celuk, then blackened and rubbed back so the high points catch light like wet stone.</p></div>
-        <div class="step" data-step="4"><p class="cm">24 cm · 18k gold</p><h3>One warm link.</h3><p>A single ring of solid 18 karat gold. Only one. It is where you put your thumb when you are nervous.</p></div>
-        <div class="step" data-step="5"><p class="cm">26–31 cm · Byzantine weave</p><h3>Weight.</h3><p>The densest section. It turns the chain from jewelry into something with mass, so it falls straight on a sweater.</p></div>
-        <div class="step" data-step="6"><p class="cm">32 cm · The reliquary</p><h3>A tear, kept.</h3><p>A sealed glass link holding a lock of hair, a tear taken on silk, a line of a letter, or a pinch of earth from a place. We seal it at the bench while you watch.</p></div>
-        <div class="step" data-step="7"><p class="cm">Back of the neck · Hallmark &amp; passport</p><h3>Proof, and a door.</h3><p>The 925 tag and the passport plate. The engraved code is the key to the chain’s cell in the Vault.</p></div>
+        <div class="step" data-step="0"><p class="cm">The clasp</p><h3>Worn at the back, or at the front.</h3><p>A hand-chased toggle with a long bar, heavy enough to stay closed under the chain’s own weight. Some members wear it at the collarbone, deliberately.</p></div>
+        <div class="step" data-step="1"><p class="cm">I · Silence</p><h3>Fine chain first.</h3><p>2.4 mm cable, quiet enough to sit beside a diamond tennis chain or disappear under a collar. It makes everything after it an event.</p></div>
+        <div class="step" data-step="2"><p class="cm">II · The Break</p><h3>One black link. One gold point.</h3><p>The Ash Link: matte black, silver rim, a single 18k rivet. Exactly one per chain. It is how people know what you are wearing.</p></div>
+        <div class="step" data-step="3"><p class="cm">III · Weight</p><h3>Then, without warning, mass.</h3><p>Hand-forged 11 mm ovals, hammered flat on the anvil and blackened. Eight to twelve centimetres of it, always on the left side.</p></div>
+        <div class="step" data-step="4"><p class="cm">IV · One object</p><h3>One thing. Two at most.</h3><p>An old-cut diamond set in black. A ruby. A cameo. A baroque pearl. A capsule with a lock of hair. Never a crowd.</p></div>
+        <div class="step" data-step="5"><p class="cm">Back of the neck · Hallmark &amp; passport</p><h3>Proof, and a door.</h3><p>The 925 tag and the passport plate. Its engraved code opens the chain’s sealed cell in the Vault.</p></div>
       </div>
       <div class="stage" aria-hidden="true"><svg></svg></div>
     </div>
   </div>
 </section>
 
+<section class="band" aria-labelledby="bench">
+  <div class="wrap stack lg">
+    <div class="split" style="align-items:end"><div class="stack"><p class="eyebrow">Objects</p><h2 id="bench">One object, chosen for life.</h2></div><p class="rise">Nothing on our chains is a symbol you have seen before. The objects are old, rare or personal: a stone, a carving, a pearl that grew wrong, a capsule holding someone’s hair.</p></div>
+    <div class="gallery rise">
+      <figure class="g-a"><img src="@/assets/img/photos/ruby-crystal-detail.jpg" alt="Garnet, 18k gold ring and rough rock crystal in silver claws" loading="lazy"></figure>
+      <figure class="g-b"><img src="@/assets/img/photos/pearl-detail.jpg" alt="Baroque pearl on oxidized silver" loading="lazy"></figure>
+      <figure class="g-c"><img src="@/assets/img/photos/gold-ring-detail.jpg" alt="Solid 18k gold ring between silver links" loading="lazy"></figure>
+      <figure class="g-d"><img src="@/assets/img/photos/toggle-cameo-detail.jpg" alt="Toggle clasp and cameo in a gold bezel" loading="lazy"></figure>
+    </div>
+    <div class="actions"><a class="btn" href="@/build.html">Compose your own</a><a class="btn ghost" href="@/pieces.html">Chains &amp; objects</a></div>
+  </div>
+</section>
+
 <section class="band" aria-labelledby="burn">
   <div class="wrap split">
-    ${plate([{ t: 'cable', cm: 8 }, { t: 'ash' }, { t: 'bali', cm: 8 }, { t: 'goldring' }, { t: 'bali', cm: 8 }, { t: 'ruby' }, { t: 'cable', cm: 10 }], `Burning No. ${B.numeral} · ash link`, 'loop', `data-numeral="${B.numeral}"`)}
+    ${plate([{ t: 'cable', cm: 14 }, { t: 'ash' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }], `Burning No. ${B.numeral} · ash link`, 'loop', `data-numeral="${B.numeral}"`)}
     <div class="stack lg rise">
       <p class="eyebrow">The Burning · No. ${B.numeral} · ${B.chains} chains</p>
       <h2 id="burn">Something is destroyed so that ten chains can exist.</h2>
-      <p>For each numbered edition the house acquires one irreplaceable object and burns it in front of witnesses. Its ash is sealed into a single link in each of ${B.chains} chains. Then the edition closes forever.</p>
+      <p>For each numbered edition the house acquires one irreplaceable object and burns it in front of witnesses. Its ash is sealed inside the Ash Link of each of ${B.chains} chains, behind the gold rivet. Then the edition closes forever.</p>
       <p>Burning No. ${B.numeral} is <em>${B.title}</em>: a folded note found inside a Victorian mourning locket, marked <em>not to be opened until I am forgiven</em>. We never opened it.</p>
       <p class="label ruby">${B.status}</p>
       <div class="actions"><a class="btn ghost" href="@/burning.html">The Burning</a></div>
@@ -103,13 +112,13 @@ export default function core({ CFG, pieces, codex, journal }) {
 <section class="band" aria-labelledby="reliq">
   <div class="wrap split">
     <div class="stack lg rise">
-      <p class="eyebrow">The reliquary link</p>
+      <p class="eyebrow">The reliquary capsule</p>
       <h2 id="reliq">Queen Victoria wore Albert’s hair for forty years.</h2>
       <p>When Prince Albert died in December 1861 the Queen went into black and stayed there. She wore lockets and bracelets holding his hair until her own death in 1901, and half of Britain copied her. Mourning jewelry was not morbid. It was a way to keep someone close enough to touch.</p>
       <p>We revive it for the living as well as the dead. Bring a lock of hair, a line from a letter, earth from a place, or a tear. A tear does not keep, so we take it on a thread of silk, let it dry, and seal the silk in glass. It is the only thing on earth that came from that exact moment.</p>
       <div class="actions"><a class="btn ghost" href="@/pieces/reliquary-link.html">The reliquary link</a><a class="btn ghost" href="@/codex/victorian-mourning-jewelry.html">History</a></div>
     </div>
-    ${plate([{ t: 'cable', cm: 10 }, { t: 'reliquary', v: 'hair' }, { t: 'bali', cm: 10 }, { t: 'reliquary', v: 'tear' }, { t: 'cable', cm: 12 }], 'Hair and tear, sealed in glass')}
+    ${plate([{ t: 'cable', cm: 12 }, { t: 'ashlink' }, { t: 'forged', cm: 8 }, { t: 'cable', cm: 10 }, { t: 'reliquary', v: 'hair' }, { t: 'cable', cm: 12 }], 'A lock of hair, sealed in glass')}
   </div>
 </section>
 
@@ -141,7 +150,7 @@ export default function core({ CFG, pieces, codex, journal }) {
 
 <section class="band" aria-labelledby="conc">
   <div class="wrap split">
-    ${plate([{ t: 'cable', cm: 10 }, { t: 'goldring' }, { t: 'byzantine', cm: 6 }, { t: 'goldring' }, { t: 'cable', cm: 10 }], 'Two passports, one key')}
+    ${plate([{ t: 'cable', cm: 14 }, { t: 'ashlink' }, { t: 'byzantine', cm: 8 }, { t: 'cable', cm: 12 }, { t: 'goldring' }, { t: 'cable', cm: 8 }], 'Two passports, one key')}
     <div class="stack lg rise">
       <p class="eyebrow">The Concordance</p>
       <h2 id="conc">Two chains make a key that neither has alone.</h2>
@@ -157,8 +166,9 @@ export default function core({ CFG, pieces, codex, journal }) {
     <div class="table-scroll rise"><table class="price-table">
       <thead><tr><th>Chain</th><th>From</th></tr></thead>
       <tbody>
-        <tr><td>The Vigil<br><span class="muted">Plain cable with one artifact</span></td><td class="num">$1,900</td></tr>
-        <tr><td>The Reliquary<br><span class="muted">Mixed links, cameo, gold ring, reliquary</span></td><td class="num">$2,500</td></tr>
+        <tr><td>The Vigil<br><span class="muted">Silence, the Break, weight. Nothing else</span></td><td class="num">$1,800</td></tr>
+        <tr><td>The Amulet<br><span class="muted">The Vigil with one object: ruby, cameo, pearl, crystal</span></td><td class="num">$2,400</td></tr>
+        <tr><td>The Old Diamond<br><span class="muted">An antique old-cut diamond set in black</span></td><td class="num">$2,800</td></tr>
         <tr><td>The Concordance pair<br><span class="muted">Two chains, one shared key</span></td><td class="num">$4,600</td></tr>
         <tr><td>Burning No. ${B.numeral}<br><span class="muted">Numbered, with ash link. ${B.chains} only</span></td><td class="num">On application</td></tr>
       </tbody>
@@ -171,7 +181,7 @@ export default function core({ CFG, pieces, codex, journal }) {
     <div class="stack lg">
       <p class="eyebrow">The atelier</p>
       <h2 id="visit">A black door on Melrose.</h2>
-      <p>We bind chains at the bench in front of you. Bring the hair, the letter, the earth. Bring the person, if they are allowed to know. ${CFG.hours}</p>
+      <p>We bind chains at the bench in front of you. Bring the hair, the letter, the diamond you already wear. Bring the person, if they are allowed to know. ${CFG.hours}</p>
       <div class="actions"><a class="btn" href="@/apply.html">Request an audience</a><a class="btn ghost" href="${CFG.mapsUrl}" rel="noopener" target="_blank">Find us on Google Maps</a></div>
     </div>
     <div class="stack rise"><p class="label">House</p><p class="display" style="font-size:var(--step-2)">${CFG.address.street}<br>${CFG.address.city}, ${CFG.address.region} ${CFG.address.zip}</p><p class="mono muted">${CFG.email} · ${CFG.instagram}</p></div>
@@ -193,12 +203,12 @@ export default function core({ CFG, pieces, codex, journal }) {
 <blockquote>Not to be opened until I am forgiven.</blockquote>
 <p>Nobody knows who wrote it, who was meant to forgive, or whether they ever did. The founder carried the locket for a year without opening the note. People asked about it. Everyone, without exception, wanted it opened. Nobody, without exception, wanted to be the one to do it.</p>
 <h2>The first Burning</h2>
-<p>At the end of that year the founder did the only thing that kept the promise and ended the temptation. The note was burned, unread, in a silver dish, in front of nine witnesses. The ash was divided into ten parts and sealed into ten links of glass and blackened silver. Ten chains were built around them. Those were the first chains of the Order.</p>
+<p>At the end of that year the founder did the only thing that kept the promise and ended the temptation. The note was burned, unread, in a silver dish, in front of nine witnesses. The ash was divided into ten parts and sealed behind the gold rivets of ten black links. Ten chains were built around them. Those were the first chains of the Order, and that black link, the Ash Link, has been in every chain the house has made since.</p>
 <p>What was written on the note is now inside ten people, scattered across Los Angeles, none of whom will ever know what it said. That is the whole idea of the house. Some things are worth more sealed.</p>
 <h2>Why silver, and why dark</h2>
 <p>Polished silver shines like a surgical instrument. We wanted the opposite: metal that looks like it has been held. Every chain is oxidized black and then rubbed back by hand so that the high points glow and the hollows stay dark, the way old church silver looks under candlelight. It is massive, it is quiet, and it gets better as it wears.</p>
 <h2>Why chains, and no pendants</h2>
-<p>A pendant is a full stop. Our chains are sentences: plain links, then an event, then texture, then a single ring of gold, then weight. You read them with your fingers. Men wear them over black cashmere. Women wear them doubled. Nobody asks what they mean, because it is obvious that you would not say.</p>
+<p>A pendant is a full stop. Our chains are sentences, and every one is written in the same grammar: silence, then the Break, then weight, then one object. Fine chain, a single black link with a gold rivet, and then sudden mass, always on the left, over the heart. People wear them with diamonds and a blazer, with a T-shirt, with nothing. Nobody asks what they mean, because it is obvious that you would not say.</p>
 <h2>The Order</h2>
 <p>The people who wear the first ten chains began, without being asked, to recognise one another. That is how the Order started: not as a club anyone joined, but as a fact. Today each new chain is bound with a passport, a sealed cell in the Vault, and a role drawn from a deck of twelve. There are suppers. There are missions. Most of it is never posted anywhere.</p>
 <p>If you are reading this, you have been told about us by someone. That is the only way in.</p>
@@ -238,21 +248,21 @@ ${plate([{ t: 'cable', cm: 10 }, { t: 'ash' }, { t: 'bali', cm: 9 }, { t: 'goldr
   pages.push({
     path: 'build.html',
     title: 'The Atelier: Build a Sterling Silver Chain',
-    description: 'Design your own handmade 925 silver chain link by link: heavy cable, Balinese embossed links, Byzantine weave, micro cameo, ruby, 18k gold ring, reliquary link for hair or a tear. Live price and length.',
+    description: 'Design your own handmade 925 silver chain: fine cable breaking into hand-forged weight at the signature Ash Link, with one object such as an old-cut diamond, ruby, cameo or baroque pearl. Live price and length.',
     crumbs: [['Atelier', 'build.html']],
     scripts: ['atelier.js'],
-    head: `<p class="eyebrow">The atelier</p><h1 style="font-size:var(--step-3)">Build a chain.</h1><p class="lede">Read from the clasp. Add lengths of chain and artifacts in the order you want them to fall. The drawing is to scale; the price is real.</p>`,
+    head: `<p class="eyebrow">The atelier</p><h1 style="font-size:var(--step-3)">Build a chain.</h1><p class="lede">Read from the clasp. Silence, the Break, weight, one object. The Ash Link is already in place; move it, but you cannot remove it. The drawing is to scale and the price is real.</p>`,
     body: `<section class="band" style="padding-top:0"><div class="wrap" id="atelier">
 <div class="atelier">
   <div class="stack lg" style="min-width:0">
     <ol class="seglist" id="seglist"></ol>
-    <div class="stack"><p class="label">Chain</p>
+    <div class="stack"><p class="label">I · Silence</p>
+      <div class="addbar"><button type="button" data-add="cable">+ Fine cable</button><button type="button" data-add="paperclip">+ Long fine link</button></div>
+      <p class="label">III · Weight <span class="muted">(twice at most)</span></p>
+      <div class="addbar"><button type="button" data-add="forged">+ Forged</button><button type="button" data-add="bali">+ Balinese</button><button type="button" data-add="byzantine">+ Byzantine</button></div>
+      <p class="label">IV · Objects <span class="muted">(two at most)</span></p>
       <div class="addbar">
-        <button type="button" data-add="cable">+ Cable</button><button type="button" data-add="bali">+ Balinese</button><button type="button" data-add="byzantine">+ Byzantine</button><button type="button" data-add="paperclip">+ Long link</button>
-        </div><p class="label">Artifacts</p><div class="addbar">
-        <button type="button" data-add="cameo">+ Cameo</button><button type="button" data-add="ruby">+ Ruby</button><button type="button" data-add="goldring">+ 18k ring</button><button type="button" data-add="reliquary">+ Reliquary</button>
-        <button type="button" data-add="wing">+ Wing</button><button type="button" data-add="serpent">+ Serpent</button><button type="button" data-add="relic">+ Bone relic</button><button type="button" data-add="crystal">+ Rock crystal</button>
-        <button type="button" data-add="pearl">+ Baroque pearl</button><button type="button" data-add="cross">+ Cross</button><button type="button" data-add="heart">+ Heart</button><button type="button" data-add="bead">+ Bali bead</button><button type="button" data-add="drop">+ Garnet drop</button>
+        <button type="button" data-add="diamond">+ Old-cut diamond</button><button type="button" data-add="ruby">+ Ruby</button><button type="button" data-add="cameo">+ Cameo</button><button type="button" data-add="pearl">+ Baroque pearl</button><button type="button" data-add="crystal">+ Rock crystal</button><button type="button" data-add="goldring">+ 18k ring</button><button type="button" data-add="reliquary">+ Reliquary</button><button type="button" data-add="relic">+ Found relic</button><button type="button" data-add="drop">+ Garnet drop</button>
       </div>
       <p class="muted" id="add-msg" aria-live="polite"></p>
       <div class="actions"><button type="button" class="btn small ghost" data-reset>Start again</button></div>
@@ -400,9 +410,9 @@ ${plate([{ t: 'cable', cm: 10 }, { t: 'ash' }, { t: 'bali', cm: 9 }, { t: 'goldr
   pages.push({
     path: 'pieces.html',
     title: 'Handmade Sterling Silver Chains and Links',
-    description: 'The chains and artifacts of Ordo Cineris: The Vigil, The Reliquary, Burning editions, Concordance pairs, micro cameo, ruby bezel, 18k gold ring and reliquary links. 925 silver, made in Los Angeles.',
+    description: 'The chains and objects of Ordo Cineris: The Vigil, The Amulet, Burning editions, Concordance pairs, the Ash Link, old-cut diamond, ruby, cameo, baroque pearl and reliquary capsule. 925 silver, made in Los Angeles.',
     crumbs: [['Chains', 'pieces.html']],
-    head: `<p class="eyebrow">The chains</p><h1 style="font-size:var(--step-3)">Chains &amp; artifacts</h1><p class="lede">Four chains, and the artifacts you can set into them. Every one is built to order in the atelier.</p>`,
+    head: `<p class="eyebrow">The chains</p><h1 style="font-size:var(--step-3)">Chains &amp; objects</h1><p class="lede">Every chain follows one grammar: silence, the Break, weight, one object. Every one is built to order in the atelier.</p>`,
     body: `<section class="band" style="padding-top:0"><div class="wrap"><div class="grid c4">
 ${pieces.map(x => `<a class="cell" href="@/pieces/${x.slug}.html"><figure class="plate" style="aspect-ratio:1/1">${x.photo ? `<img src="@/assets/img/photos/${x.photo}.jpg" alt="" loading="lazy">` : `<svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-hidden="true"></svg>`}</figure><span class="label">${x.kind}</span><h3>${x.name}</h3><p>${x.short}</p><p class="mono num">${x.priceLabel}</p></a>`).join('')}
 </div></div></section>`
@@ -481,9 +491,10 @@ ${pieces.map(x => `<a class="cell" href="@/pieces/${x.slug}.html"><figure class=
 
   /* ======================= FAQ ======================= */
   const FAQ = [
-    ['Is it real silver?', 'Yes. Every chain is 925 sterling silver, stamped and tagged with a hallmark. Gold rings are solid 18 karat gold. Rubies are natural. Cameos are carved shell.'],
-    ['Can men wear these chains?', 'They were designed first for men: heavy, dark, without a pendant, made to lie on a black sweater. Women wear them too, often doubled. They are unisex by construction.'],
-    ['How much does a chain cost?', `From $${CFG.priceFrom.toLocaleString('en-US')}. Most chains are between $2,400 and $4,500 depending on length, links and artifacts. Burning editions are priced on application.`],
+    ['Is it real silver?', 'Yes. Every chain is 925 sterling silver, stamped and tagged with a hallmark. Gold rings and the rivet of the Ash Link are solid 18 karat gold. Rubies and diamonds are natural. Cameos are carved shell.'],
+    ['Who wears these chains?', 'Anyone who wears things for life. Men and women, with a blazer, a T-shirt, a black sweater, or layered next to a diamond tennis chain. There are no crosses, skulls or wings on them; the only symbol is the Ash Link.'],
+    ['How do I recognise an Ordo Cineris chain?', 'By the Break: fine chain that turns abruptly into hand-forged weight at a single matte black link with one 18k gold rivet. Every chain has exactly one.'],
+    ['How much does a chain cost?', `From $${CFG.priceFrom.toLocaleString('en-US')}. Most chains are between $2,400 and $3,500 depending on length, links and artifacts. Burning editions are priced on application.`],
     ['How long does it take?', 'Nine to twenty-one days at the bench, depending on how many artifacts the chain carries.'],
     ['Why are there no returns?', 'Every chain is made for one person to a specification they chose, and many hold personal material. It cannot be sold to anyone else, so all sales are final. We repair workmanship for life.'],
     ['Can I put my own hair, or a loved one’s, in the chain?', 'Yes. The reliquary link is a sealed glass capsule for a lock of hair, a tear taken on silk, a line of a letter, or earth from a place. We seal it in front of you.'],

@@ -31,8 +31,7 @@
   const heroSvg = $('#hero-chain');
   if (heroSvg && C) {
     C.render(heroSvg, [
-      { t: 'cable', cm: 5 }, { t: 'cameo' }, { t: 'bali', cm: 4 }, { t: 'goldring' },
-      { t: 'byzantine', cm: 3 }, { t: 'ruby' }, { t: 'cable', cm: 4 }, { t: 'reliquary', v: 'hair' }, { t: 'bali', cm: 3 }, { t: 'ash' }
+      { t: 'cable', cm: 9 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 7 }, { t: 'diamond' }, { t: 'cable', cm: 5 }
     ], { shape: 'line', code: 'OC·I·07·K4M9', numeral: 'I' });
     if (!reduce) {
       let t0 = performance.now();
@@ -73,7 +72,7 @@
   const spine = $('.spine svg');
   if (spine && C) {
     const segs = [];
-    for (let i = 0; i < 6; i++) segs.push({ t: i % 2 ? 'bali' : 'cable', cm: 14 }, { t: ['cameo', 'goldring', 'ruby', 'reliquary', 'goldring', 'cameo'][i] });
+    for (let i = 0; i < 5; i++) segs.push({ t: 'cable', cm: 26 }, { t: 'ashlink' }, { t: 'forged', cm: 10 });
     C.render(spine, segs, { shape: 'line', fixed: false });
     spine.setAttribute('preserveAspectRatio', 'xMidYMin slice');
     const links = $$('.oc-link', spine);
@@ -90,11 +89,11 @@
   const stage = $('.anatomy .stage svg');
   if (stage && C) {
     const plan = [
-      { t: 'cable', cm: 4 }, { t: 'cameo' }, { t: 'bali', cm: 4 }, { t: 'goldring' }, { t: 'byzantine', cm: 3 }, { t: 'reliquary', v: 'tear' }, { t: 'cable', cm: 3 }
+      { t: 'cable', cm: 5 }, { t: 'ashlink' }, { t: 'forged', cm: 7 }, { t: 'cable', cm: 4 }, { t: 'pearl' }, { t: 'cable', cm: 3 }
     ];
     C.render(stage, plan, { shape: 'line', code: 'OC·I·07·K4M9' });
     const box = stage.parentElement;
-    const kinds = { 0: ['clasp'], 1: ['cable'], 2: ['cameo'], 3: ['bali'], 4: ['goldring'], 5: ['byzantine'], 6: ['reliquary'], 7: ['hallmark', 'passport'] };
+    const kinds = { 0: ['clasp'], 1: ['cable'], 2: ['ashlink'], 3: ['forged'], 4: ['pearl'], 5: ['hallmark', 'passport'] };
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (!e.isIntersecting) return;
       const k = kinds[e.target.dataset.step] || [];

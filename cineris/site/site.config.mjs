@@ -31,5 +31,5 @@ export default {
     chains: 10,
     status: 'Applications open' // change to e.g. '3 of 10 remain' — keep it true
   },
-  priceFrom: 1900
+  priceFrom: 1800
 };

@@ -114,13 +114,13 @@ export default [
   },
   {
     slug: 'mixing-gold-and-silver', short: 'Mixing gold and silver', kicker: 'Style',
-    title: 'Mixing Gold and Silver: The Rule of One Warm Link',
+    title: 'Mixing Gold and Silver: The Rule of Two Warm Points',
     description: 'Can you mix gold and silver jewelry? Yes, if one metal clearly leads. Why one 18k gold link in a dark silver chain works, and how men can wear mixed metals.',
     dek: 'One warm thing in a cold composition.',
     related: ['gold-ring-link', 'how-men-wear-silver-chains', 'ruby-in-silver'],
     body: `<p>The old rule said never mix gold and silver. It was a rule for matching sets, and matching sets are dead. Mixing works perfectly well when one metal clearly leads and the other is an accent with a reason to be there.</p>
 <h2>The rule of one</h2>
-<p>In our chains silver leads absolutely: forty or fifty centimetres of it, darkened. Gold appears once, as a single ring of solid 18k. One warm link draws the eye and the thumb. Two begin to compete. Three make a pattern, and a pattern is decoration rather than an event.</p>
+<p>In our chains silver leads absolutely: fifty centimetres of it, darkened. Gold appears in every chain exactly once, as the rivet at the centre of the black <a href="@/pieces/ash-link.html">Ash Link</a>, and at most once more, as a single ring of solid 18k. Two warm points draw the eye and the thumb. Three make a pattern, and a pattern is decoration rather than an event.</p>
 <h2>Why 18 karat</h2>
 <p>18k is 75% gold. It is richer in colour than 14k and next to dark silver it looks almost orange, which is the contrast we want. It is also soft enough to show wear honestly over the years.</p>
 <h2>Wearing it with other pieces</h2>

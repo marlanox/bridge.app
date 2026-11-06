@@ -18,22 +18,24 @@ site/src/assets/img/pieces/<slug>.jpg          — фото каждой мод�
 7. **Дверь ателье на Melrose** ночью.
 8. **Двое с двумя цепями** (Конкорданс): руки переплетены, цепи рядом.
 
-## Промпты для генерации (Midjourney / Flux / любой генератор)
+## Промпты для генерации (по канону дома)
+
+Главное в каждом кадре: **тонкая цепь → чёрное овальное звено с золотой точкой → резко массивные кованые овалы**, вес на левой стороне тела. Без крестов, черепов, крыльев, змей.
 
 ```
-Editorial jewelry photograph, heavy oxidized sterling silver chain with mixed links — plain cable, Balinese granulated links, a tiny carved shell cameo, one 18k gold ring link, byzantine weave section — lying on a black cashmere crew-neck sweater worn by a man, face cropped at the jaw, single warm candle light from the left, deep shadows, dark silver with bright burnished high points, not shiny chrome, 85mm, f/2.8, film grain, luxury, mysterious --ar 4:5
+Editorial luxury jewelry photograph: a sterling silver necklace that is a very fine delicate 2mm cable chain on one side and abruptly becomes massive hand-forged hammered oval links (11mm) on the wearer's left side; exactly at the transition, one matte black oval link with a polished silver rim and a single small 18k gold rivet in its centre; worn by a man in a navy tailored blazer over a plain white T-shirt, face cropped at the jaw, soft window light, dark background, oxidized silver with burnished highlights, not shiny chrome, no pendant, no crosses, no skulls, 85mm, f/2.8, film grain --ar 4:5
 ```
 ```
-Macro photograph of a sealed glass reliquary link with silver caps holding a lock of brown hair, part of an oxidized silver chain, black velvet background, rim light, extreme detail, antique Victorian mourning jewelry mood --ar 1:1
+Same necklace layered with a thin diamond tennis necklace on a woman's bare collarbone, black silk top, chiaroscuro light, quiet luxury, editorial, Vogue, --ar 4:5
 ```
 ```
-A Victorian black enamel mourning locket open on a dark wooden jeweler's bench, a folded handwritten note burning in a small silver dish beside it, ash and embers, candlelight, cinematic, secret society atmosphere --ar 16:9
+Macro photograph of a single matte black oval chain link with a polished silver rim and one tiny 18k gold rivet at its centre, between fine silver cable chain and a heavy hammered silver oval link, on black velvet, rim light, extreme detail --ar 1:1
 ```
 ```
-Overhead flat lay of a handmade oxidized silver necklace arranged in a teardrop shape on black felt, box clasp at the top, a tiny ruby in a silver bezel, one gold ring link, jeweler's tools at the edge, moody studio light --ar 4:5
+Overhead flat lay on black felt: an oxidized sterling silver necklace in a teardrop shape, fine chain on one side, three massive hammered oval links on the other, one matte black link with a gold dot at the transition, one antique old-mine cut diamond in a blackened bezel opposite, toggle clasp at top, museum lighting --ar 4:5
 ```
 ```
-Long candlelit dinner table for twelve in a dark Los Angeles room, black tablecloth, silver candelabra, twelve sealed black envelopes on the plates, nobody present, cinematic, secret society --ar 16:9
+A Victorian black enamel mourning locket open on a dark wooden jeweler's bench, a folded handwritten note burning in a small silver dish beside it, ash and embers, candlelight, cinematic --ar 16:9
 ```
 
 > ⚠️ Сгенерированные картинки годятся для настроения (Сожжение, ужин, атмосфера). **Конкретные изделия на продажу показывайте только на реальных фото**: ИИ-картинка, выданная за фото товара, вводит покупателя в заблуждение и даёт повод для претензий.

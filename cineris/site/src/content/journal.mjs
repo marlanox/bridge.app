@@ -1,20 +1,51 @@
 // Journal: guides and stories. Each answers something people actually search for.
 export default [
   {
-    slug: 'how-men-wear-silver-chains', short: 'How men wear a silver chain', kicker: 'Style',
-    title: 'How Men Wear a Heavy Silver Chain (Over Cashmere, Not Under It)',
-    description: 'How to wear a heavy silver chain as a man: over a black crew-neck sweater, with an open shirt, with a T-shirt, how long it should be, and what not to pair it with.',
-    dek: 'The chain goes on the outside. That is the whole decision.',
-    related: ['chain-lengths-for-men', 'unisex-chains', 'mixing-gold-and-silver'],
-    body: `<p>For a long time men wore chains hidden, under the shirt, as if apologising. A heavy oxidized chain is not meant to hide. It is meant to lie on top of good fabric, where its weight and texture can be seen.</p>
-<h2>Over a black crew-neck</h2>
-<p>This is the combination the house was built around. A fine black cashmere or merino crew-neck is a dark, matte, soft surface; dark silver with bright high points sits on it like something on velvet in a case. Choose a length of about 55 cm so the chain clears the collar and lies flat on the knit.</p>
-<h2>With an open shirt</h2>
-<p>Two buttons open, chain at 50 cm on the collarbone. A white or black shirt both work. Avoid busy prints; the chain is the pattern.</p>
-<h2>With a T-shirt</h2>
-<p>Heavy cotton, plain, dark or white. Inside or outside the neckline, both are fine; outside is braver.</p>
+    slug: 'the-break', short: 'The Break: our signature', kicker: 'The house',
+    title: 'The Break: How to Recognise an Ordo Cineris Chain',
+    description: 'The house grammar of Ordo Cineris: fine chain, the black Ash Link with one gold rivet, hand-forged weight on the left, and one object. Why a jewelry house needs a signature, not a logo.',
+    dek: 'Great houses are recognised without a logo. This is how ours is.',
+    related: ['silver-with-diamonds', 'how-men-wear-silver-chains', 'mixing-gold-and-silver'],
+    body: `<p>The jewelry that lasts is the jewelry you can identify from across a room with no logo in sight: a screw head on a bangle, an anchor link, a woven panther. We wanted one idea that strong, and we wanted it to come from how a chain is built, not from a symbol stamped on it.</p>
+<h2>The grammar</h2>
+<ol><li><b>Silence.</b> Fine 2.4 mm cable.</li><li><b>The Break.</b> The Ash Link: a matte black oval, a silver rim, a single rivet of 18k gold. Exactly one in every chain.</li><li><b>Weight.</b> Without transition, hand-forged 11 mm ovals. Eight to twelve centimetres, worn on the left, over the heart.</li><li><b>Silence again,</b> and then <b>one object,</b> two at most: an old-cut diamond, a ruby, a cameo, a baroque pearl, a capsule of hair.</li></ol>
+<h2>What we will never make</h2>
+<p>No crosses. No skulls. No wings, daggers, serpents or fleurs-de-lis. These are borrowed symbols, and borrowed symbols make jewelry look like a costume. Our objects are either rare or personal, and the only symbol on the chain is the Ash Link itself.</p>
+<h2>Why the weight sits on the left</h2>
+<p>Symmetry is decoration. Asymmetry is a decision. A chain whose mass falls to one side looks like it was made for one body and one way of standing, which it was.</p>
+<p>See it in the <a href="@/build.html">atelier</a>, where the Ash Link is already in place.</p>`
+  },
+  {
+    slug: 'silver-with-diamonds', short: 'Wearing silver with diamonds', kicker: 'Style',
+    title: 'Wearing Dark Silver With Diamonds',
+    description: 'How to layer an oxidized sterling silver chain with diamonds: a tennis necklace, diamond studs, a watch. Why blackened silver makes diamonds look brighter, and how to balance the two.',
+    dek: 'Dark metal makes white light look whiter.',
+    related: ['the-break', 'how-men-wear-silver-chains', 'mixing-gold-and-silver'],
+    body: `<p>The old rule kept silver for day and diamonds for night. It never made much sense, and it makes none now that people wear a tennis chain with a T-shirt.</p>
+<h2>Why it works</h2>
+<p>Blackened silver absorbs light; a diamond throws it back. Next to oxidized metal, a diamond reads brighter and whiter than it does next to polished platinum. The contrast flatters both.</p>
+<h2>How to layer</h2>
+<ul><li><b>With a diamond tennis chain:</b> wear the tennis chain short, at 40–45 cm, and the silver chain longer, at 50–55 cm, so the fine section of ours runs beside the diamonds and the weight falls below them.</li><li><b>With studs or a watch:</b> nothing to do. The gold rivet of the Ash Link answers a gold watch; the black answers steel.</li><li><b>With a blazer:</b> let the chain sit inside the lapel, over a T-shirt or a fine knit. The weight shows; the fine chain disappears.</li></ul>
+<h2>Or put the diamond on the chain</h2>
+<p>Our <a href="@/pieces/old-diamond-chain.html">Old Diamond</a> sets an antique old-cut stone in blackened silver, on the house chain.</p>`
+  },
+  {
+    slug: 'how-men-wear-silver-chains', short: 'How to wear a silver chain', kicker: 'Style',
+    title: 'How to Wear a Heavy Silver Chain: Blazer, T-Shirt, Knit, Diamonds',
+    description: 'How to wear a heavy silver chain, for men and women: with a blazer, a white T-shirt, a black sweater or next to diamonds. Length, layering, and what not to pair it with.',
+    dek: 'It goes on the outside. That is the whole decision.',
+    related: ['silver-with-diamonds', 'chain-lengths-for-men', 'the-break'],
+    body: `<p>For a long time men wore chains hidden, as if apologising. A chain with real weight is not meant to hide. It is meant to be seen, and then forgotten about, because you never take it off.</p>
+<h2>With a blazer</h2>
+<p>A navy or black jacket over a T-shirt or a fine knit. The chain at 55 cm sits inside the lapels; the forged section shows on the left, the fine chain almost disappears. This is the most expensive-looking way to wear it.</p>
+<h2>With a white T-shirt</h2>
+<p>Heavy cotton, plain. The chain at 50 cm, outside the neckline. Nothing else.</p>
+<h2>Over a black sweater</h2>
+<p>Fine cashmere or merino crew-neck, chain at 55–60 cm lying on the knit. Dark on dark, with one gold point.</p>
+<h2>With diamonds</h2>
+<p>See <a href="@/journal/silver-with-diamonds.html">wearing dark silver with diamonds</a>.</p>
 <h2>What not to do</h2>
-<ul><li>Do not stack three heavy chains. One is a statement, three is a costume.</li><li>Do not add a pendant. These chains are complete.</li><li>Do not polish it bright. See <a href="@/journal/silver-that-is-not-shiny.html">why our silver is dark</a>.</li></ul>`
+<ul><li>Do not add a pendant. These chains are complete.</li><li>Do not stack three heavy chains. One weight per neck.</li><li>Do not polish it bright. See <a href="@/journal/silver-that-is-not-shiny.html">why our silver is dark</a>.</li></ul>`
   },
   {
     slug: 'custom-jewelry-melrose-los-angeles', short: 'Custom jewelry on Melrose', kicker: 'Los Angeles',

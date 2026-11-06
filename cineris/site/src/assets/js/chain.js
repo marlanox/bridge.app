@@ -16,30 +16,33 @@
 
   /* ---------- catalogue: what can go into a chain ---------- */
   const CATALOG = {
-    cable:     { label: 'Heavy cable',        kind: 'chain',    perCm: 24, pitch: 1.25, note: 'Hand-forged oval links, 4.2 mm wire.' },
-    bali:      { label: 'Balinese embossed',  kind: 'chain',    perCm: 28, pitch: 1.35, note: 'Granulated, hand-stamped links in the Celuk tradition.' },
-    byzantine: { label: 'Byzantine weave',    kind: 'chain',    perCm: 40, pitch: 0.85, note: 'Dense woven section. Heaviest per centimetre.' },
-    paperclip: { label: 'Long link',          kind: 'chain',    perCm: 22, pitch: 2.1,  note: 'Elongated forged links. Quiet, architectural.' },
-    cameo:     { label: 'Micro cameo',        kind: 'artifact', price: 420, len: 2.6, note: 'Hand-carved shell cameo, 14 mm, set in a granulated bezel.' },
-    ruby:      { label: 'Ruby in bezel',      kind: 'artifact', price: 600, len: 1.7, note: 'Natural ruby, ~0.4 ct, closed silver bezel.' },
-    goldring:  { label: '18k gold ring',      kind: 'artifact', price: 290, len: 1.7, note: 'One solid 18k yellow-gold link. The only warm metal in the chain.' },
-    reliquary: { label: 'Reliquary link',     kind: 'artifact', price: 560, len: 3.0, note: 'Sealed glass capsule for a lock of hair, a tear on silk, a line of a letter, or earth.',
+    // QUIET — the silence between events
+    cable:     { label: 'Fine cable',          kind: 'chain', weight: 'quiet',  perCm: 18, pitch: 0.62, note: 'Fine 2.4 mm cable. Quiet enough to sit under a diamond tennis chain.' },
+    paperclip: { label: 'Long fine link',      kind: 'chain', weight: 'quiet',  perCm: 20, pitch: 1.5,  note: 'Elongated fine links. Architectural, almost invisible.' },
+    // BRUTAL — the weight
+    forged:    { label: 'Forged link',         kind: 'chain', weight: 'brutal', perCm: 70, pitch: 2.0,  note: 'Hand-forged 11 mm ovals, hammered flat on the anvil. The weight.' },
+    bali:      { label: 'Balinese granulated', kind: 'chain', weight: 'brutal', perCm: 60, pitch: 1.75, note: 'Massive granulated links stamped by hand in the Celuk tradition.' },
+    byzantine: { label: 'Byzantine column',    kind: 'chain', weight: 'brutal', perCm: 60, pitch: 1.2,  note: 'A dense woven column. Falls dead straight.' },
+    // THE SIGNATURE
+    ashlink:   { label: 'The Ash Link',        kind: 'signature', price: 0, len: 3.0, note: 'The house signature: matte black oval, silver rim, one 18k gold rivet. Exactly one per chain, at the Break.' },
+    // OBJECTS — one, two at most
+    cameo:     { label: 'Micro cameo',         kind: 'artifact', price: 420, len: 2.6, note: 'Hand-carved shell cameo, 14 mm, in a plain bezel.' },
+    ruby:      { label: 'Ruby in bezel',       kind: 'artifact', price: 600, len: 1.7, note: 'Natural ruby, ~0.4 ct, closed silver bezel. The only red thing on you.' },
+    diamond:   { label: 'Old-cut diamond',     kind: 'artifact', price: 980, len: 1.7, note: 'An antique old-mine diamond, ~0.3 ct, set in blackened silver.' },
+    goldring:  { label: '18k gold ring',       kind: 'artifact', price: 290, len: 1.7, note: 'One solid 18k link. The warm point.' },
+    pearl:     { label: 'Baroque pearl',       kind: 'artifact', price: 320, len: 1.8, note: 'An irregular freshwater pearl in a gold-rimmed cup.' },
+    crystal:   { label: 'Rock crystal',        kind: 'artifact', price: 420, len: 2.8, note: 'A rough quartz point held in eight silver claws.' },
+    reliquary: { label: 'Reliquary capsule',   kind: 'artifact', price: 560, len: 3.0, note: 'Sealed glass for a lock of hair, a tear on silk, a line of a letter, or earth.',
                  variants: { hair: 'Lock of hair', tear: 'A tear on silk', letter: 'A line of a letter', earth: 'Earth from a place' } },
-    wing:      { label: 'Wing',               kind: 'artifact', price: 380, len: 3.6, note: 'A single cast wing, every feather chased by hand.' },
-    serpent:   { label: 'Serpent',            kind: 'artifact', price: 340, len: 3.0, note: 'A scaled snake that bites the next link.' },
-    relic:     { label: 'Bone relic',         kind: 'artifact', price: 420, len: 3.2, note: 'Cast from a found bone or horn, pitted and raw.' },
-    crystal:   { label: 'Rock crystal',       kind: 'artifact', price: 420, len: 2.8, note: 'A rough quartz point held in eight silver claws.' },
-    pearl:     { label: 'Baroque pearl',      kind: 'artifact', price: 320, len: 1.8, note: 'An irregular freshwater pearl in a gold-rimmed cup.' },
-    cross:     { label: 'Fleury cross',       kind: 'artifact', price: 220, len: 1.9, note: 'A small cross with lily ends. Faith optional.' },
-    heart:     { label: 'Sacred heart',       kind: 'artifact', price: 200, len: 1.6, note: 'A beaded silver heart, worn low at the centre.' },
-    bead:      { label: 'Bali bead',          kind: 'artifact', price: 110, len: 1.3, note: 'A granulated Balinese bead between links.' },
-    drop:      { label: 'Garnet drop',        kind: 'artifact', price: 280, len: 1.6, note: 'A blood-red garnet briolette that hangs to one side.' },
-    ash:       { label: 'Ash link',           kind: 'artifact', price: 0,   len: 2.2, restricted: true, note: 'Only in numbered Burning editions.' },
-    hallmark:  { label: 'Hallmark tag',       kind: 'fixed',    len: 1.3 },
-    passport:  { label: 'Passport plate',     kind: 'fixed',    len: 2.0 },
-    clasp:     { label: 'Toggle clasp',       kind: 'fixed',    len: 2.8 }
+    relic:     { label: 'Found relic',         kind: 'artifact', price: 420, len: 3.2, note: 'Cast in silver from an object you bring: a key, a stone, a shell.' },
+    drop:      { label: 'Garnet drop',         kind: 'artifact', price: 280, len: 1.6, note: 'A garnet briolette that hangs to one side.' },
+    // FIXED / RESTRICTED
+    ash:       { label: 'Burning ash link',    kind: 'signature', price: 0, len: 2.6, restricted: true, note: 'Numbered Burning editions only: the Ash Link holds real ash.' },
+    hallmark:  { label: 'Hallmark tag',        kind: 'fixed', len: 1.3 },
+    passport:  { label: 'Passport plate',      kind: 'fixed', len: 2.0 },
+    clasp:     { label: 'Toggle clasp',        kind: 'fixed', len: 2.8 }
   };
-  const BINDING = 380; // clasp, hallmark, passport plate, vault cell, hand assembly
+  const BINDING = 480; // clasp, hallmark, passport, Ash Link, Vault cell, assembly // clasp, hallmark, passport plate, vault cell, hand assembly
 
   /* ---------- pricing & length ---------- */
   function price(segments) {
@@ -120,6 +123,10 @@
     [[0, '#ff6b7c'], [0.25, '#c8102e'], [0.7, '#6a0515'], [1, '#2a0107']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, r));
     const cb = el('radialGradient', { id: p + 'cameo', cx: 0.5, cy: 0.42, r: 0.7 }, d);
     [[0, '#8a3a26'], [0.7, '#5a1f12'], [1, '#2e0e07']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, cb));
+    const bk = el('radialGradient', { id: p + 'black', cx: 0.4, cy: 0.35, r: 0.8 }, d);
+    [[0, '#2a2726'], [0.6, '#0e0d0d'], [1, '#050505']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, bk));
+    const di = el('radialGradient', { id: p + 'dia', cx: 0.35, cy: 0.3, r: 0.8 }, d);
+    [[0, '#ffffff'], [0.4, '#dfe6ec'], [0.75, '#8d969e'], [1, '#3b4045']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, di));
     const pr = el('radialGradient', { id: p + 'pearl', cx: 0.4, cy: 0.35, r: 0.8 }, d);
     [[0, '#ffffff'], [0.45, '#e9e4dc'], [0.8, '#a9a39a'], [1, '#6d6862']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, pr));
     const ash = el('radialGradient', { id: p + 'ash', cx: 0.5, cy: 0.5, r: 0.6 }, d);
@@ -136,7 +143,8 @@
   function jump(g, p, y) { el('rect', { x: -0.09, y: y - 0.26, width: 0.18, height: 0.52, rx: 0.09, fill: `url(#${p}agS)` }, g); }
 
   const DRAW = {
-    cable(g, p, it) {
+    cable(g0, p, it) {
+      const g = el('g', { transform: 'scale(0.5)' }, g0);
       if (!it.alt) {
         el('ellipse', { rx: 0.5, ry: 0.84, fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.27 }, g);
         el('ellipse', { rx: 0.42, ry: 0.76, fill: 'none', stroke: '#f4efe6', 'stroke-opacity': 0.16, 'stroke-width': 0.03 }, g);
@@ -144,7 +152,8 @@
         el('rect', { x: -0.15, y: -0.9, width: 0.3, height: 1.8, rx: 0.15, fill: `url(#${p}agS)` }, g);
       }
     },
-    bali(g, p, it) {
+    bali(g0, p, it) {
+      const g = el('g', { transform: 'scale(1.3)' }, g0);
       if (!it.alt) {
         el('ellipse', { rx: 0.55, ry: 0.82, fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.32 }, g);
         for (let i = 0; i < 14; i++) {
@@ -156,15 +165,16 @@
         for (let k = -2; k <= 2; k++) el('line', { x1: -0.15, x2: 0.15, y1: k * 0.3, y2: k * 0.3 + 0.06, stroke: '#0c0c0c', 'stroke-width': 0.035, 'stroke-opacity': 0.8 }, g);
       }
     },
-    byzantine(g, p) {
+    byzantine(g0, p) {
+      const g = el('g', { transform: 'scale(1.45)' }, g0);
       el('ellipse', { rx: 0.44, ry: 0.27, transform: 'rotate(38)', fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.15 }, g);
       el('ellipse', { rx: 0.44, ry: 0.27, transform: 'rotate(-38)', fill: 'none', stroke: `url(#${p}agS)`, 'stroke-width': 0.15 }, g);
       el('rect', { x: -0.42, y: -0.36, width: 0.13, height: 0.72, rx: 0.06, fill: `url(#${p}agS)` }, g);
       el('rect', { x: 0.29, y: -0.36, width: 0.13, height: 0.72, rx: 0.06, fill: `url(#${p}agS)` }, g);
     },
     paperclip(g, p, it) {
-      if (!it.alt) el('rect', { x: -0.45, y: -1.32, width: 0.9, height: 2.64, rx: 0.45, fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.22 }, g);
-      else el('rect', { x: -0.11, y: -1.32, width: 0.22, height: 2.64, rx: 0.11, fill: `url(#${p}agS)` }, g);
+      if (!it.alt) el('rect', { x: -0.22, y: -0.95, width: 0.44, height: 1.9, rx: 0.22, fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.09 }, g);
+      else el('rect', { x: -0.05, y: -0.95, width: 0.1, height: 1.9, rx: 0.05, fill: `url(#${p}agS)` }, g);
     },
     cameo(g, p) {
       jump(g, p, -1.15); jump(g, p, 1.15);
@@ -211,6 +221,31 @@
       }
       jump(g, p, 1.4);
     },
+    forged(g, p, it) {
+      if (!it.alt) {
+        el('ellipse', { rx: 0.82, ry: 1.3, fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.52 }, g);
+        for (let k = 0; k < 9; k++) { const a = (k / 9) * Math.PI * 2 + 0.3; el('ellipse', { cx: Math.cos(a) * 0.82, cy: Math.sin(a) * 1.3, rx: 0.13, ry: 0.07, transform: `rotate(${(a * 180) / Math.PI} ${Math.cos(a) * 0.82} ${Math.sin(a) * 1.3})`, fill: k % 2 ? '#efe9de' : '#0d0d0d', 'fill-opacity': k % 2 ? 0.22 : 0.45 }, g); }
+      } else {
+        el('rect', { x: -0.27, y: -1.42, width: 0.54, height: 2.84, rx: 0.27, fill: `url(#${p}agS)` }, g);
+        el('rect', { x: -0.06, y: -1.2, width: 0.12, height: 2.4, rx: 0.06, fill: '#f1ece2', 'fill-opacity': 0.18 }, g);
+      }
+    },
+    ashlink(g0, p, it) {
+      const g = el('g', { transform: 'scale(1.3)' }, g0);
+      el('ellipse', { rx: 0.86, ry: 1.18, fill: `url(#${p}agS)` }, g);
+      el('ellipse', { rx: 0.72, ry: 1.04, fill: `url(#${p}black)` }, g);
+      el('ellipse', { rx: 0.3, ry: 0.5, fill: '#0a0909' }, g);
+      el('circle', { r: 0.15, fill: `url(#${p}au)` }, g);
+      el('circle', { cx: -0.04, cy: -0.04, r: 0.05, fill: '#fff6d8', 'fill-opacity': 0.7 }, g);
+    },
+    diamond(g, p) {
+      jump(g, p, -0.72); jump(g, p, 0.72);
+      el('circle', { r: 0.5, fill: '#151414', stroke: `url(#${p}agS)`, 'stroke-width': 0.08 }, g);
+      const pts = []; for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + Math.PI / 8; pts.push((Math.cos(a) * 0.36).toFixed(3) + ',' + (Math.sin(a) * 0.36).toFixed(3)); }
+      el('polygon', { points: pts.join(' '), fill: `url(#${p}dia)` }, g);
+      for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + Math.PI / 8; el('line', { x1: 0, y1: 0, x2: (Math.cos(a) * 0.36).toFixed(3), y2: (Math.sin(a) * 0.36).toFixed(3), stroke: '#ffffff', 'stroke-opacity': 0.35, 'stroke-width': 0.015 }, g); }
+      el('circle', { cx: -0.1, cy: -0.12, r: 0.05, fill: '#fff' }, g);
+    },
     ash(g, p, it) {
       jump(g, p, -0.95); jump(g, p, 0.95);
       el('rect', { x: -0.42, y: -0.8, width: 0.84, height: 1.6, rx: 0.42, fill: `url(#${p}ag)` }, g);
@@ -239,23 +274,6 @@
       for (let k = -3; k <= 3; k++) el('line', { x1: k * 0.22, x2: k * 0.22 + 0.08, y1: -0.6, y2: -0.36, stroke: '#0e0e0e', 'stroke-opacity': 0.5, 'stroke-width': 0.025 }, g);
       jump(g, p, 1.1);
     },
-    wing(g0, p) {
-      jump(g0, p, -1.6);
-      const g = el('g', { transform: 'scale(1.7 1)' }, g0);
-      el('path', { d: 'M-0.1,-1.35C0.5,-1.3,0.65,-0.6,0.55,0.2C0.45,0.9,0.15,1.4,-0.05,1.6C-0.2,1.1,-0.35,0.3,-0.4,-0.4C-0.42,-0.9,-0.35,-1.3,-0.1,-1.35Z', fill: `url(#${p}ag)` }, g);
-      for (let k = 0; k < 9; k++) {
-        const y = -1.0 + k * 0.28;
-        el('path', { d: `M${-0.32 + k * 0.02},${y}Q0.1,${y + 0.12},${0.5 - k * 0.03},${y + 0.3}`, fill: 'none', stroke: '#0e0e0e', 'stroke-opacity': 0.55, 'stroke-width': 0.035 }, g);
-        el('line', { x1: -0.05, y1: y + 0.1, x2: 0.3 - k * 0.02, y2: y + 0.22, stroke: '#efe9de', 'stroke-opacity': 0.25, 'stroke-width': 0.02 }, g);
-      }
-      jump(g0, p, 1.65);
-    },
-    serpent(g, p) {
-      el('path', { d: 'M0,-1.45C0.6,-1.2,0.6,-0.6,0,-0.4S-0.65,0.4,0,0.6S0.6,1.2,0,1.45', fill: 'none', stroke: `url(#${p}ag)`, 'stroke-width': 0.26, 'stroke-linecap': 'round' }, g);
-      for (let k = 0; k < 14; k++) { const t = -1.3 + k * 0.2; el('circle', { cx: Math.sin(t * 2.6) * 0.32, cy: t, r: 0.035, fill: '#121212', 'fill-opacity': 0.6 }, g); }
-      el('ellipse', { cx: 0.05, cy: -1.45, rx: 0.2, ry: 0.15, fill: `url(#${p}ag)` }, g);
-      el('circle', { cx: 0.12, cy: -1.47, r: 0.03, fill: '#a3172b' }, g);
-    },
     relic(g0, p) {
       jump(g0, p, -1.45);
       const g = el('g', { transform: 'scale(1.4 1)' }, g0);
@@ -276,19 +294,6 @@
       jump(g, p, -0.8); jump(g, p, 0.8);
       el('path', { d: 'M-0.05,-0.6C0.4,-0.62,0.5,-0.25,0.45,0.05C0.52,0.35,0.3,0.62,0,0.58C-0.35,0.62,-0.52,0.3,-0.45,0C-0.55,-0.35,-0.35,-0.6,-0.05,-0.6Z', fill: `url(#${p}pearl)`, stroke: `url(#${p}au)`, 'stroke-width': 0.06 }, g);
       el('ellipse', { cx: -0.12, cy: -0.2, rx: 0.12, ry: 0.07, fill: '#fff', 'fill-opacity': 0.6 }, g);
-    },
-    cross(g, p) {
-      jump(g, p, -0.85); jump(g, p, 0.85);
-      el('rect', { x: -0.09, y: -0.7, width: 0.18, height: 1.4, rx: 0.05, fill: `url(#${p}ag)` }, g);
-      el('rect', { x: -0.48, y: -0.24, width: 0.96, height: 0.18, rx: 0.05, fill: `url(#${p}ag)` }, g);
-      for (const [x, y] of [[0, -0.72], [0, 0.72], [-0.5, -0.15], [0.5, -0.15]]) el('circle', { cx: x, cy: y, r: 0.13, fill: `url(#${p}ag)` }, g);
-      el('circle', { cy: -0.15, r: 0.08, fill: '#121212', 'fill-opacity': 0.6 }, g);
-    },
-    heart(g, p) {
-      jump(g, p, -0.75);
-      el('path', { d: 'M0,0.65C-0.3,0.35,-0.6,0.05,-0.55,-0.25C-0.5,-0.55,-0.15,-0.6,0,-0.35C0.15,-0.6,0.5,-0.55,0.55,-0.25C0.6,0.05,0.3,0.35,0,0.65Z', fill: `url(#${p}ag)` }, g);
-      for (let i = 0; i < 14; i++) { const a = (i / 14) * Math.PI * 2; el('circle', { cx: Math.cos(a) * 0.62, cy: Math.sin(a) * 0.62 - 0.02, r: 0.045, fill: '#d6d0c5', 'fill-opacity': 0.7 }, g); }
-      jump(g, p, 0.78);
     },
     bead(g, p) {
       el('circle', { r: 0.42, fill: `url(#${p}ag)` }, g);
