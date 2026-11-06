@@ -61,6 +61,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <header class="site-head">
   <div class="wrap">
     <a class="mark" href="${R}index.html" aria-label="${CFG.name} ${CFG.line}"><img class="mark-img" src="${R}assets/img/three.png" alt=""></a>
+    <button class="sound-btn cap" type="button" aria-pressed="false" title="Sound">Sound · off</button>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">${NAV.map(([u, n]) => `<a href="${R}${u}"${u === p.path ? ' aria-current="page"' : ''}>${n}</a>`).join('')}</nav>
   </div>
@@ -71,14 +72,14 @@ ${fix(p.body)}
 <footer class="site-foot">
   <nav class="cap" aria-label="Footer"><a href="${R}build.html">Compose your key</a><a href="${R}vault.html">Open a cell</a><a href="${R}seal.html">Seal your cell</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
   <img src="${R}assets/img/three.png" alt="" style="height:30px;width:auto;margin:0 auto;opacity:.8">
-  <p class="type dim">fine jewelry · los angeles</p>
+  <p class="cap dim">Fine Jewelry · Los Angeles</p>
   ${CFG.clothingUrl ? `<p class="cap"><a href="${CFG.clothingUrl}" target="_blank" rel="noopener">${CFG.clothingName} →</a></p>` : `<p class="cap dim">${CFG.clothingName}</p>`}
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
   <p class="cap">© <span data-year>2026</span> ${CFG.name} · Final sale</p>
 </footer>
 <script src="${GSAP}gsap.min.js" defer></script>
 <script src="${GSAP}ScrollTrigger.min.js" defer></script>
-${['config.js', 'main.js', ...(p.scripts || [])].map(s => `<script src="${R}assets/js/${s}" defer></script>`).join('\n')}
+${['config.js', 'main.js', 'sound.js', ...(p.scripts || [])].map(s => `<script src="${R}assets/js/${s}" defer></script>`).join('\n')}
 </body>
 </html>
 `;

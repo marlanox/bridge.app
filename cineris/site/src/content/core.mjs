@@ -46,13 +46,15 @@ export default function core({ CFG, codex, journal }) {
     description: `The Three Fine Jewelry, Los Angeles: a private vault cell for one year, and the sterling silver chain that is its only key. Seal a letter, a film, a proposal or a secret; it opens for the one you love when the timer ends. ${money(BASE)}.`,
     body: `
 <section class="threshold" aria-label="${CFG.name}">
+  <div class="glow"></div>
   <div class="faint" style="background-image:url(${img('necklace-wing')})"></div>
+  <div class="shade" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="lit" style="background-image:url(${img('necklace-wing')})"></div>
-  <div class="center"><h1 class="sr">The Three — a private vault, and the chain that is its key</h1><img class="hero3" src="@/assets/img/three.png" alt=""><p class="type dim">fine jewelry<br>los angeles</p></div>
+  <div class="center"><h1 class="sr">The Three — a private vault, and the chain that is its key</h1><img class="hero3" src="@/assets/img/three.png" alt=""><p class="cap dim">Fine Jewelry · Los Angeles</p></div>
   <p class="hint cap dim">Enter</p>
 </section>
 
-<section class="wrap block concept">
+<section class="wrap block concept velvet-light">
   <div class="stack-lg" data-reveal>
     <p class="cap dim">The Vault</p>
     <h2 class="headline">A private vault.<br><span class="it">The key is a chain.</span></h2>
@@ -80,7 +82,18 @@ export default function core({ CFG, codex, journal }) {
   </div>
 </section>
 
-<section class="wrap block key">
+<section class="wrap block" aria-labelledby="cells">
+  <div class="page-head"><p class="cap dim">The cells</p><h2 class="title" id="cells">Four ways to keep a secret.</h2></div>
+  <div class="cells">
+    <article><p class="cap dim">Available</p><h3>The Year Cell</h3><p class="dim">Opens when its timer ends, up to one year. The key is your chain.</p><p class="cap">${money(BASE)} with the key · <a href="@/build.html">Compose</a></p></article>
+    <article><p class="cap dim">By request</p><h3>The Silent Cell</h3><p class="dim">Opens only if you stop answering us for as long as you choose. For what must be said if you no longer can.</p><p class="cap"><a href="@/contact.html">Ask</a></p></article>
+    <article><p class="cap dim">By request</p><h3>The Family Cell</h3><p class="dim">One archive, several keys. A voice, letters, films. It opens only when the keys are brought together.</p><p class="cap"><a href="@/contact.html">Ask</a></p></article>
+    <article><p class="cap dim">Coming</p><h3>Edition: Ash</h3><p class="dim">One hundred numbered keys. In each, a grain of the ash of one thing burned before witnesses. Never repeated.</p><p class="cap"><a href="@/contact.html">Be told</a></p></article>
+  </div>
+  <p class="note" style="margin-top:22px">No cell is a legal will. They keep words, voices and images, never property.</p>
+</section>
+
+<section class="wrap block key velvet-light">
   <figure class="whole" data-reveal><img src="${img('necklace-wing')}" alt="A chain from The Three, whole, on black"></figure>
   <div class="stack-lg" data-reveal>
     <p class="cap dim">The key</p>
@@ -90,7 +103,7 @@ export default function core({ CFG, codex, journal }) {
   </div>
 </section>
 
-<section class="wrap block bead-sec">
+<section class="wrap block bead-sec velvet-light">
   <div class="bead-stage" data-reveal>${bead('tear', 300)}</div>
   <div class="stack-lg" data-reveal>
     <p class="cap dim">Inside one bead</p>

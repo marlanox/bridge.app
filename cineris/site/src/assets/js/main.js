@@ -20,17 +20,17 @@
   /* the threshold: a beam of light finds the piece in the dark */
   const th = $('.threshold');
   if (th) {
-    let tx = 0.5, ty = 0.45, x = tx, y = ty, touched = false, t0 = performance.now();
-    const move = (cx, cy) => { const r = th.getBoundingClientRect(); tx = (cx - r.left) / r.width; ty = (cy - r.top) / r.height; touched = true; };
+    let tx = 0.5, ty = 0.45, x = tx, y = ty, last = -1e9, t0 = performance.now();
+    const move = (cx, cy) => { const r = th.getBoundingClientRect(); tx = (cx - r.left) / r.width; ty = (cy - r.top) / r.height; last = performance.now(); };
     th.addEventListener('pointermove', e => move(e.clientX, e.clientY));
     th.addEventListener('touchmove', e => { const t = e.touches[0]; if (t) move(t.clientX, t.clientY); }, { passive: true });
     const loop = now => {
-      if (!touched || now - t0 > 0) {
-        if (!touched) { const s = (now - t0) / 1000; tx = 0.5 + Math.sin(s * 0.35) * 0.22; ty = 0.48 + Math.sin(s * 0.53) * 0.2; }
-      }
-      x += (tx - x) * (reduce ? 1 : 0.06); y += (ty - y) * (reduce ? 1 : 0.06);
+      if (now - last > 2600) { const s = (now - t0) / 1000; tx = 0.5 + Math.sin(s * 0.31) * 0.26; ty = 0.46 + Math.sin(s * 0.47) * 0.24; }
+      x += (tx - x) * (reduce ? 1 : 0.05); y += (ty - y) * (reduce ? 1 : 0.05);
       th.style.setProperty('--x', (x * 100).toFixed(2) + '%');
       th.style.setProperty('--y', (y * 100).toFixed(2) + '%');
+      th.style.setProperty('--sx', ((0.5 - x) * 46).toFixed(1) + 'px');
+      th.style.setProperty('--sy', ((0.5 - y) * 46 + 14).toFixed(1) + 'px');
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
@@ -53,6 +53,19 @@
     });
     $$('.quiet .line, [data-reveal]').forEach(el => G.from(el, { opacity: 0, duration: 2.4, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 80%' } }));
     $$('.shots img').forEach(img => G.fromTo(img, { filter: 'brightness(0.1)' }, { filter: 'brightness(1)', ease: 'none', scrollTrigger: { trigger: img, start: 'top 95%', end: 'top 45%', scrub: true } }));
+  }
+
+  /* velvet silence: things rise out of the dark and sink back */
+  if (motion) {
+    $$('.whole img, .bead-stage .bead').forEach(el => {
+      G.timeline({ scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.8 } })
+        .fromTo(el, { filter: 'brightness(0.04) blur(10px)', scale: 1.1 }, { filter: 'brightness(1) blur(0px)', scale: 1, ease: 'none', duration: 0.42 })
+        .to(el, { filter: 'brightness(1) blur(0px)', duration: 0.16 })
+        .to(el, { filter: 'brightness(0.15) blur(4px)', scale: 0.97, ease: 'none', duration: 0.42 });
+    });
+    $$('.headline, .title').forEach(h => G.from(h, { y: 60, opacity: 0, filter: 'blur(12px)', duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 88%' } }));
+    $$('.lead, .chips li, .steps li, .plain li, .cells article, .cell-card').forEach((el, i) => G.from(el, { y: 26, opacity: 0, duration: 1.4, ease: 'expo.out', delay: (i % 4) * 0.08, scrollTrigger: { trigger: el, start: 'top 92%' } }));
+    $$('.velvet-light').forEach(sec => G.fromTo(sec, { '--ly': '-10%' }, { '--ly': '110%', ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } }));
   }
 
   /* product options: length, memory; total and 50% deposit */
