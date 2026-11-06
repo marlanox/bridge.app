@@ -1,1 +1,1 @@
-window.CINERIS_CONFIG={"email":"atelier@kept.la","instagram":"@kept.la","formEndpoint":""};
+window.CINERIS_CONFIG={"email":"studio@marlaknox.com","instagram":"@marlaknox","formEndpoint":"","vaultMaxDays":365};

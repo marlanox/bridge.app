@@ -26,7 +26,7 @@ export default [
 <h2>How we do it</h2>
 <p>Each finished section is darkened to near black, then burnished back by hand with steel and fine abrasives so that the surfaces that touch skin and cloth catch light. The result is two-tone silver: deep shadow, soft glow.</p>
 <h2>Does it wear off?</h2>
-<p>On the high points, slowly, and that is intended. The chain becomes brighter where you touch it most. The recesses stay dark for decades. If you ever want the original contrast back, we re-oxidize at the atelier.</p>
+<p>On the high points, slowly, and that is intended. The chain becomes brighter where you touch it most. The recesses stay dark for decades. If you ever want the original contrast back, we re-oxidize at the studio.</p>
 <h2>What to avoid</h2>
 <p>Silver dips and polishing pastes strip the finish. Wipe with a dry cloth only. See <a href="@/care.html">care &amp; repair</a>.</p>`
   },
@@ -38,7 +38,7 @@ export default [
     related: ['how-to-tell-real-silver', 'oxidized-silver', 'buying-a-heavy-silver-chain'],
     body: `<p><b>925</b> means the metal is 925 parts per thousand pure silver, or 92.5%. The other 7.5% is almost always copper. Pure silver is too soft to hold a clasp or keep a link closed; copper gives it strength while keeping silver’s colour.</p>
 <h2>What US law requires</h2>
-<p>In the United States the National Gold and Silver Stamping Act governs quality marks. An item may be marked “sterling” or “925” only if it is at least 92.5% silver, and a maker who stamps a quality mark must also stamp a registered trademark, so that someone is accountable for the claim. That is why every KEPT chain carries both the 925 stamp and the house mark.</p>
+<p>In the United States the National Gold and Silver Stamping Act governs quality marks. An item may be marked “sterling” or “925” only if it is at least 92.5% silver, and a maker who stamps a quality mark must also stamp a registered trademark, so that someone is accountable for the claim. That is why every Marla Knox chain carries both the 925 stamp and the house mark.</p>
 <h2>Hallmarks elsewhere</h2>
 <p>In the United Kingdom, hallmarks are applied by independent assay offices, and sterling is shown with the lion passant. Many European countries have their own symbols. The US has no mandatory assay office; the maker’s mark is the guarantee.</p>
 <h2>Our tag</h2>
@@ -56,7 +56,7 @@ export default [
 <h2>Why it was not morbid</h2>
 <p>To the Victorians, keeping a piece of someone was tenderness, not horror. Photography was new and expensive; hair was the most personal relic available. A locket was something you could touch without anyone knowing what it meant.</p>
 <h2>What we borrow</h2>
-<p>We keep the tenderness and drop the requirement that someone be dead. Our <a href="@/pieces/hair-link.html">hair link</a> holds hair from the living as often as from the lost.</p>`
+<p>We keep the tenderness and drop the requirement that someone be dead. Our <a href="@/faq.html">hair link</a> holds hair from the living as often as from the lost.</p>`
   },
   {
     slug: 'hair-jewelry-history', short: 'Hair jewelry', kicker: 'History',
@@ -70,7 +70,7 @@ export default [
 <h2>How hair keeps</h2>
 <p>Clean, dry hair sealed away from air and light lasts for centuries. Two-hundred-year-old lockets still hold hair that looks cut yesterday. We seal it in borosilicate glass between silver caps, which is about as stable a container as exists.</p>
 <h2>How to give us hair</h2>
-<p>A lock about the thickness of a pencil and five centimetres long is plenty. Tie it with thread at one end before cutting. Keep some back if it is irreplaceable. See the <a href="@/pieces/hair-link.html">hair link</a>.</p>`
+<p>A lock about the thickness of a pencil and five centimetres long is plenty. Tie it with thread at one end before cutting. Keep some back if it is irreplaceable. See the <a href="@/faq.html">hair link</a>.</p>`
   },
   {
     slug: 'lachrymatory-tear-bottles', short: 'Tear bottles', kicker: 'History',
@@ -83,7 +83,7 @@ export default [
 <p>Archaeologists now believe the Roman bottles, properly called <i>unguentaria</i>, held perfumes and oils, not tears. The Victorian bottles were real enough, but they were a romantic revival of a story about the Romans that had never been true.</p>
 <h2>Keeping a tear, honestly</h2>
 <p>A tear is mostly water and will not survive in a sealed bottle without clouding or evaporating. So we do something simpler. We take the tear on a short thread of silk at the bench, let it dry, and seal the silk inside glass. What remains is the salt and the moment, which is all a tear ever was.</p>
-<p>It is the most requested contents of our <a href="@/pieces/hair-link.html">hair link</a> after hair.</p>`
+<p>It is the most requested contents of our <a href="@/faq.html">hair link</a> after hair.</p>`
   },
   {
     slug: 'cameo-history', short: 'Cameos', kicker: 'History',
@@ -96,7 +96,7 @@ export default [
 <p>Most cameos made since the 1800s are carved from seashell, above all helmet shells, whose layers run from white to warm brown or deep orange. The town of <b>Torre del Greco</b>, near Naples, has been the centre of the craft for two centuries. A carver works with gravers under magnification, and a good small cameo takes days.</p>
 <h2>Why so small</h2>
 <p>A large cameo on a man’s chain looks like costume. A cameo of 14 mm, about the size of a fingernail, does the opposite: people have to come close to see that it is a face. That proximity is the effect we want.</p>
-<p>See the <a href="@/pieces/cameo-link.html">micro cameo link</a>.</p>`
+<p>See the <a href="@/collection.html">micro cameo link</a>.</p>`
   },
   {
     slug: 'ruby-in-silver', short: 'Ruby in silver', kicker: 'Stones',
@@ -120,7 +120,7 @@ export default [
     related: ['gold-ring-link', 'how-men-wear-silver-chains', 'ruby-in-silver'],
     body: `<p>The old rule said never mix gold and silver. It was a rule for matching sets, and matching sets are dead. Mixing works perfectly well when one metal clearly leads and the other is an accent with a reason to be there.</p>
 <h2>The rule of one</h2>
-<p>In our chains silver leads absolutely: fifty centimetres of it, darkened. Gold appears in every chain exactly once, as the point at the centre of the black <a href="@/pieces/the-mark.html">Mark</a>, and at most once more, as a single ring of solid 18k. Two warm points draw the eye and the thumb. Three make a pattern, and a pattern is decoration rather than an event.</p>
+<p>In our chains silver leads absolutely: fifty centimetres of it, darkened. Gold appears in every chain exactly once, as the point at the centre of the black <a href="@/collection.html">Mark</a>, and at most once more, as a single ring of solid 18k. Two warm points draw the eye and the thumb. Three make a pattern, and a pattern is decoration rather than an event.</p>
 <h2>Why 18 karat</h2>
 <p>18k is 75% gold. It is richer in colour than 14k and next to dark silver it looks almost orange, which is the contrast we want. It is also soft enough to show wear honestly over the years.</p>
 <h2>Wearing it with other pieces</h2>
@@ -132,7 +132,7 @@ export default [
     description: 'How long should a man’s chain be? A guide to 18, 20, 22 and 24 inch (45–60 cm) chains, where each falls, and which length works over a sweater, an open shirt or a T-shirt.',
     dek: 'Where a chain falls changes what it says.',
     related: ['how-men-wear-silver-chains', 'buying-a-heavy-silver-chain', 'unisex-chains'],
-    body: `<p>A chain’s length decides where it lands on the body, and where it lands decides how it reads. These are guides for an average neck; we measure yours in the atelier.</p>
+    body: `<p>A chain’s length decides where it lands on the body, and where it lands decides how it reads. These are guides for an average neck; we measure yours in the studio.</p>
 <ul><li><b>45 cm / 18 in.</b> Collar. Sits at the base of the neck. Visible with almost any neckline; can feel tight on a large neck.</li><li><b>50 cm / 20 in.</b> Classic. Lies on the collarbone, framed by an open shirt.</li><li><b>55 cm / 22 in.</b> Over the knit. Falls clear of a crew-neck collar and lies on the sweater. Our most requested length.</li><li><b>60 cm / 24 in.</b> Long. On the upper chest. Good over a turtleneck.</li><li><b>70 cm / 28 in.</b> Very long. Can be doubled.</li></ul>
 <h2>Weight changes length</h2>
 <p>A heavy chain hangs straighter and lower than a light chain of the same length. If in doubt with a massive chain, go one size shorter.</p>
@@ -150,7 +150,7 @@ export default [
 <p>A centimetre of Byzantine weave uses several times as much silver as a centimetre of plain cable. That weight is useful. In a mixed chain, a short Byzantine section acts like a keel: it pulls the chain straight, so it falls cleanly on knitwear instead of twisting.</p>
 <h2>Made by hand</h2>
 <p>Each ring is cut, opened, threaded and closed by hand with two pliers. A few centimetres take an hour. Machine Byzantine exists, but its rings are thin and its pattern too perfect.</p>
-<p>In our <a href="@/collection.html">atelier</a> it costs more per centimetre than any other link for exactly this reason.</p>`
+<p>In our <a href="@/collection.html">collection</a> it costs more per centimetre than any other link for exactly this reason.</p>`
   },
   {
     slug: 'clasps-box-lobster-toggle', short: 'Box, lobster or toggle clasp', kicker: 'Construction',
@@ -172,8 +172,8 @@ export default [
     body: `<p><i>Memento mori</i>, Latin for “remember that you must die,” was a familiar idea in European art from the late Middle Ages. In jewelry it appears clearly in the sixteenth and seventeenth centuries: gold rings with enamelled skulls, coffins, skeletons and inscriptions, worn by people who were very much alive.</p>
 <h2>Not gloom</h2>
 <p>The point was urgency. A skull on your finger said: do not waste the day, settle your quarrels, say what you mean. Over time memento mori jewelry merged with mourning jewelry and became more personal, naming a specific person rather than death in general.</p>
-<h2>Edition 01</h2>
-<p>Our <a href="@/edition.html">Edition 01</a> is a kind of memento mori: something irreplaceable is destroyed so that its absence can be carried.</p>`
+
+<p></p>`
   },
   {
     slug: 'how-to-tell-real-silver', short: 'How to tell real silver', kicker: 'Buying',
@@ -184,6 +184,6 @@ export default [
     body: `<ul><li><b>Look for marks.</b> 925, STERLING or STER plus a maker’s mark. A quality mark without a maker’s mark is a warning sign in the US.</li><li><b>Magnet.</b> Silver is not magnetic. If a strong magnet grabs the chain, it is steel or nickel underneath.</li><li><b>Tarnish.</b> Real silver darkens over time. Steel and rhodium-plated chains stay mirror-bright forever.</li><li><b>Weight.</b> Silver is dense. A massive-looking chain that feels light is probably hollow or plated.</li><li><b>Ice.</b> Silver conducts heat extremely well; ice placed on it melts unusually fast.</li><li><b>Acid test.</b> A jeweler can test a hidden spot with silver testing solution. Ask before they do it on oxidized pieces.</li></ul>
 <h2>Red flags</h2>
 <p>“Silver tone,” “silver plated,” “German silver” (which contains no silver) and “stainless” are not sterling. Prices far below the metal value are not bargains.</p>
-<p>Every KEPT chain carries a stamped clasp, a 925 <a href="@/codex/sterling-silver-925-hallmarks.html">hallmark tag</a> and a code you can verify in the <a href="@/message.html">message</a>.</p>`
+<p>Every Marla Knox chain carries a stamped clasp, a 925 <a href="@/codex/sterling-silver-925-hallmarks.html">hallmark tag</a> and a code you can verify in the <a href="@/vault.html">message</a>.</p>`
   }
 ];

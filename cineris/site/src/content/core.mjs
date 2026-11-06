@@ -1,247 +1,119 @@
-// KEPT — core pages. Few words. Objects first.
-const chainSvg = (segs, shape = 'loop', extra = '') => `<svg data-chain='${JSON.stringify(segs)}' data-shape="${shape}" ${extra} aria-hidden="true"></svg>`;
-
-export default function core({ CFG, pieces, codex, journal, has }) {
+// MARLA KNOX — core pages. Silence first.
+export default function core({ CFG, pieces, codex, journal }) {
   const F = CFG.founder;
-  const photo = (name, alt, cls = '') => `<figure class="ph ${cls}"><img src="@/assets/img/${has(name) ? 'gen/' + name : 'photos/' + name}.jpg" alt="${alt}" loading="lazy"></figure>`;
-  const E = CFG.edition;
-  const chains = pieces.filter(x => x.group === 'chain');
-  const memory = pieces.filter(x => x.group === 'memory');
-  const objects = pieces.filter(x => x.group === 'object');
-  const money = n => '$' + n.toLocaleString('en-US');
-  const card = x => `<a class="card" href="@/pieces/${x.slug}.html"><div class="plate" data-parallax>${has(x.slug) ? `<img src="@/assets/img/gen/${x.slug}.jpg" alt="KEPT ${x.name}" loading="lazy">` : chainSvg(x.segs, x.shape || 'loop', x.numeral ? `data-numeral="${x.numeral}"` : '')}</div><div class="row"><h3>${x.name}</h3><span class="mute num">${x.priceLabel}</span></div></a>`;
+  const img = n => `@/assets/img/photos/${n}.jpg`;
   const pages = [];
 
-  /* ---------------- HOME ---------------- */
+  /* ---------------- THRESHOLD + PROCESSION ---------------- */
+  const procession = [
+    ['worn-crewneck', pieces[2]], ['necklace-wing', pieces[0], 'wide'], ['wing-detail', pieces[0]],
+    ['necklace-heart', pieces[1], 'wide'], ['worn-turtleneck', pieces[0]], ['collar-relics', pieces[3], 'wide'],
+    ['ruby-crystal-detail', pieces[2]], ['necklace-serpent', pieces[2], 'wide']
+  ];
   pages.push({
     path: 'index.html',
-    title: 'KEPT — Silver for what you keep · Los Angeles',
-    description: 'KEPT makes sterling silver chains by hand on Melrose Avenue, Los Angeles. Fine chain that breaks into forged weight at one black link with a gold point. A tear, a voice or a lock of hair, kept in silver.',
+    title: 'Marla Knox',
+    description: `Marla Knox. Oxidized sterling silver chains, made by hand to order. Jewelry since ${F.since}. West Hollywood, California.`,
+    bare: true,
     body: `
-<section class="hero">
-  <div class="stage" aria-hidden="true"><svg id="hero-chain"></svg></div>
-  <div class="wrap">
-    <h1 class="word">KEPT</h1>
-    <div class="under">
-      <p class="lede">Silver for what you keep.</p>
-      <div class="actions"><a class="link-arrow" href="@/collection.html">Collection</a><span class="cap">Melrose Ave, Los Angeles</span></div>
-    </div>
-  </div>
+<section class="threshold" aria-label="${CFG.name}">
+  <div class="faint" style="background-image:url(${img('necklace-wing')})"></div>
+  <div class="lit" style="background-image:url(${img('necklace-wing')})"></div>
+  <div class="center"><h1 class="name">Marla Knox</h1></div>
+  <p class="hint cap dim">Enter</p>
 </section>
 
-<section class="break" aria-label="The Break">
-  <div class="wrap grid3">
-    <div class="words"><b>Fine.</b><b>The Mark.</b><b>Weight.</b></div>
-    <svg aria-hidden="true"></svg>
-    <p class="note mute">Every chain turns from 2.4&nbsp;mm to forged 11&nbsp;mm at one black link with a gold point. Always on the left.</p>
-  </div>
+<section class="proc" aria-label="Pieces">
+${procession.map(([p, x, w]) => `<div class="piece${w ? ' ' + w : ''}"><a href="@/pieces/${x.slug}.html"><figure><img src="${img(p)}" alt="${x.name}" loading="lazy"></figure><span class="label"><span class="cap">${x.name}</span><span class="cap dim num">${x.priceLabel}</span></span></a></div>`).join('\n')}
 </section>
 
-<section class="worn" aria-label="Worn">
-  <div class="wrap split">
-    <figure class="ph tall"><img src="@/assets/img/${has('hero') ? 'gen/hero' : 'photos/worn-crewneck'}.jpg" alt="A KEPT chain worn over a black sweater"></figure>
-    <div class="stack" data-reveal><p class="cap">Worn</p><h2>With cashmere.<br>With diamonds.<br>With nothing.</h2></div>
-  </div>
-</section>
-
-<section class="sec" style="padding-bottom:40px">
-  <div class="wrap stack"><p class="cap">Collection</p></div>
-</section>
-<section class="rail-wrap" aria-label="Collection">
-  <div class="rail">${chains.map(card).join('')}</div>
-</section>
-
-<section class="sec">
-  <div class="wrap"><p class="statement" data-reveal>A tear. A voice. A lock of hair. <span class="serif">Kept.</span></p></div>
-</section>
-
-<section aria-label="Memory">
-  <div class="mem">
-    ${memory.map(x => `<a href="@/pieces/${x.slug}.html"><div class="plate">${chainSvg(x.segs, 'line', 'data-fixed="false"')}</div><h3>${x.name}</h3><p class="mute">${x.short}</p></a>`).join('')}
-    <a href="@/message.html"><div class="plate">${chainSvg([{ t: 'cable', cm: 3 }, { t: 'passport' }, { t: 'cable', cm: 3 }], 'line', 'data-fixed="false"')}</div><h3>Message</h3><p class="mute">Sealed until a date you choose.</p></a>
-  </div>
-</section>
-
-<section class="sec" aria-label="From the atelier">
-  <div class="wrap stack" style="gap:40px">
-    <p class="cap">From the atelier</p>
-    <div class="edit">
-      ${photo('necklace-wing', 'Silver necklace laid on black')}
-      ${photo('wing-detail', 'Hand-chased silver detail', 'tall')}
-      ${photo('ruby-crystal-detail', 'Garnet, 18k gold and rock crystal in silver')}
-      ${photo('worn-turtleneck', 'Chain worn on a black turtleneck', 'tall')}
-      ${photo('collar-relics', 'Silver collar with pearls and cameo')}
-      ${photo('toggle-cameo-detail', 'Toggle clasp and cameo', 'tall')}
-    </div>
-  </div>
-</section>
-
-<section class="sec" style="border-top:1px solid var(--line)">
-  <div class="wrap split" style="align-items:end">
-    <p class="statement" data-reveal>Jewelry since ${F.since}.<br><span class="serif">Paris-trained. Ten years of fashion weeks. Now, Melrose.</span></p>
-    <div class="actions" data-reveal><a class="link-arrow" href="@/house.html">The House</a></div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap split">
-    <div class="plate" data-parallax style="aspect-ratio:4/5">${chainSvg([{ t: 'cable', cm: 14 }, { t: 'ash' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }], 'loop', `data-numeral="${E.no}"`)}<span class="tag cap">Edition ${E.no}</span></div>
-    <div class="stack" data-reveal>
-      <p class="cap">Edition ${E.no} · ${E.chains} chains</p>
-      <h2>${E.title}.</h2>
-      <p class="mute">${E.burned ? 'One letter, burned unread. Its ash sealed inside the Mark of ten chains.' : 'One letter will be burned unread. Its ash, sealed inside the Mark of ten chains.'} Never made again.</p>
-      <div class="actions"><a class="link-arrow" href="@/edition.html">Edition ${E.no}</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" style="border-top:1px solid var(--line)">
-  <div class="wrap split">
-    <h2 data-reveal>By appointment<br>on Melrose.</h2>
-    <div class="stack" data-reveal>
-      <p class="mute">Every chain is made by hand for one person. Nine to twenty-one days.</p>
-      <div class="actions"><a class="btn" href="@/atelier.html">Book an appointment</a></div>
-    </div>
-  </div>
-</section>`
+<section class="quiet"><p class="line">Since ${F.since}.</p></section>
+<section class="quiet" style="min-height:50svh"><a class="cap" href="@/collection.html">Collection</a></section>`
   });
 
   /* ---------------- COLLECTION ---------------- */
   pages.push({
     path: 'collection.html', title: 'Collection', crumbs: [['Collection', 'collection.html']],
-    description: 'KEPT sterling silver chains: Break, Ruby, Old Diamond, Pearl, Tear and Voice. Handmade to order in Los Angeles from $1,800.',
-    head: `<h1>Collection</h1>`,
-    body: `<section class="wrap" style="padding-bottom:120px">
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:40px 16px">${chains.map(card).join('')}</div>
-<p class="cap" style="margin:120px 0 24px">Objects</p>
-<ul class="list">${[...objects, ...pieces.filter(x => x.group === 'house')].map(x => `<li><a href="@/pieces/${x.slug}.html"><span><h3>${x.name}</h3><small>${x.short}</small></span><span class="mute num">${x.priceLabel}</span></a></li>`).join('')}</ul>
-</section>`
+    description: 'Marla Knox collection: No. I, No. II, No. III and the No. IV collar. Oxidized sterling silver, made to order, from $2,400.',
+    body: `<section class="wrap page"><div class="grid">${pieces.map(x => `<a href="@/pieces/${x.slug}.html"><figure><img src="${img(x.cover)}" alt="${x.name}" loading="lazy"></figure><span class="row"><span class="cap">${x.name}</span><span class="cap dim num">${x.priceLabel}</span></span></a>`).join('')}</div></section>`
   });
 
-  /* ---------------- MEMORY ---------------- */
+  /* ---------------- VAULT ---------------- */
   pages.push({
-    path: 'memory.html', title: 'Memory links: a tear, a voice, a lock of hair', crumbs: [['Memory', 'memory.html']],
-    description: 'Keep a tear, a voice or a lock of hair inside a sterling silver chain. Tear on paper sealed in resin, a voice engraved as a waveform with NFC, hair sealed in glass. KEPT, Los Angeles.',
-    head: `<h1>Memory</h1><p class="lede" style="margin-top:28px">Some things should not be photographed. They should be worn.</p>`,
-    body: `<section class="mem" style="margin-bottom:120px">
-${memory.map(x => `<a href="@/pieces/${x.slug}.html"><div class="plate">${chainSvg(x.segs, 'line', 'data-fixed="false"')}</div><h3>${x.name} <span class="mute num">· ${x.priceLabel}</span></h3><p class="mute">${x.short}</p></a>`).join('')}
-<a href="@/message.html"><div class="plate">${chainSvg([{ t: 'cable', cm: 3 }, { t: 'passport' }, { t: 'cable', cm: 3 }], 'line', 'data-fixed="false"')}</div><h3>Message <span class="mute">· included</span></h3><p class="mute">Text, a photo or a film, sealed until a date you choose.</p></a>
-</section>`
-  });
-
-  /* ---------------- MESSAGE (vault) ---------------- */
-  pages.push({
-    path: 'message.html', title: 'Message: sealed until the date you choose', crumbs: [['Message', 'message.html']], scripts: ['vault.js'],
-    description: 'Every KEPT chain has a code and a sealed message: text, photo or video that opens only on the date the giver chooses. Enter your code to see how long is left.',
-    head: `<h1>Message</h1><p class="lede" style="margin-top:28px">Every chain carries a code and a sealed message. It opens on the date the giver chose. Not before.</p>`,
-    body: `<section class="wrap split" style="align-items:start;padding-bottom:140px">
-<div class="terminal">
-  <form id="vault-form" class="stack" autocomplete="off">
-    <label class="cap" for="vault-code">Code on the plate</label>
-    <div class="inline-form"><input id="vault-code" placeholder="KP-0007-K4M9" spellcheck="false"><button class="btn" type="submit">Open</button></div>
-  </form>
-  <p class="out" id="vault-out" aria-live="polite">&nbsp;</p>
-  <div class="samples"><button type="button" data-target="vault-code">KP-0001-ASHE</button><button type="button" data-target="vault-code">KP-0007-K4M9</button></div>
-</div>
-<div class="stack mute">
-  <p>A proposal that opens in ninety days. A letter from a father, at eighteen. A note to yourself, in a year.</p>
-  <p>The giver seals it. The wearer sees only how long is left.</p>
-  <p class="cap">Demonstration codes above.</p>
-</div>
-</section>`
-  });
-
-  /* ---------------- EDITION ---------------- */
-  pages.push({
-    path: 'edition.html', title: `Edition ${E.no}: ${E.title}`, crumbs: [[`Edition ${E.no}`, 'edition.html']],
-    description: `KEPT Edition ${E.no}: ten sterling silver chains whose black Mark holds the ash of one letter, burned unread. Numbered 1 to 10. Never repeated.`,
-    head: `<p class="cap">Edition ${E.no} · ${E.chains} chains · ${E.status}</p><h1 style="margin-top:18px">${E.title}</h1>`,
-    body: `<section class="wrap split" style="align-items:start;padding-bottom:140px">
-<div class="plate" style="aspect-ratio:4/5">${chainSvg([{ t: 'cable', cm: 14 }, { t: 'ash' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }], 'loop', `data-numeral="${E.no}"`)}</div>
-<div class="stack">
-  <p class="lede">A letter inside an old locket, marked <span class="serif">not to be opened.</span></p>
-  <p class="mute">${E.burned ? 'We never opened it. We burned it, divided the ash into ten, and sealed it behind the gold point of ten Marks.' : 'It will not be opened. It will be burned at the atelier in front of the ten owners, and its ash sealed behind the gold point of ten Marks.'} Numbered 1 to 10. When the tenth is made, the edition closes.</p>
-  <div class="actions"><a class="btn" href="@/atelier.html">Apply</a></div>
-</div>
-</section>`
-  });
-
-  /* ---------------- ATELIER ---------------- */
-  pages.push({
-    path: 'atelier.html', title: 'Atelier on Melrose Avenue', crumbs: [['Atelier', 'atelier.html']],
-    description: `Book a private appointment at the KEPT atelier on Melrose Avenue, Los Angeles. Custom handmade sterling silver chains. ${CFG.hours}`,
-    head: `<h1>Atelier</h1><p class="lede" style="margin-top:28px">${CFG.address.street}, ${CFG.address.city}. ${CFG.hours}</p>`,
-    body: `<section class="wrap split" style="align-items:start;padding-bottom:140px">
-<div class="stack mute">
-  <p>One hour. We measure, you hold the weight, we choose the object. Bring the tear, the voice, the hair.</p>
-  <p>Nine to twenty-one days at the bench. Insured shipping worldwide.</p>
-  <div class="actions"><a class="link-arrow" href="${CFG.mapsUrl}" target="_blank" rel="noopener">Google Maps</a></div>
-</div>
-<form class="form" data-form="appointment">
-  <div class="row"><div class="field"><label for="a-name">Name</label><input id="a-name" name="name" autocomplete="name" required></div><div class="field"><label for="a-contact">Email or Instagram</label><input id="a-contact" name="contact" required></div></div>
-  <div class="row"><div class="field"><label for="a-kind">For</label><select id="a-kind" name="kind"><option>Appointment on Melrose</option><option>Video appointment</option><option>Edition ${E.no}</option><option>Press and styling</option></select></div><div class="field"><label for="a-when">When</label><input id="a-when" name="when"></div></div>
-  <div class="field"><label for="a-note">Note</label><textarea id="a-note" name="note"></textarea></div>
-  <p class="mute" style="font-size:.85rem">Made to order. Final sale. <a href="@/terms.html">Terms</a>.</p>
-  <div class="actions"><button class="btn" type="submit">Send</button></div>
-  <div class="form-out" aria-live="polite"></div>
-</form>
-</section>`
-  });
-
-
-  /* ---------------- HOUSE ---------------- */
-  const steps = [
-    [String(F.since), 'Revenge', `A first jewelry house${F.country ? ', in ' + F.country : ''}. Where it started.`],
-    [F.school, 'Fashion design', 'Trained as a designer in France.'],
-    ['Ten years', 'Fashion weeks', 'A decade of shows, seasons and ateliers.'],
-    ['', '8 Million People', 'Clothing.'],
-    ['', 'The Three', 'Couture streetwear. Cashmere hoodies with hand-sewn cashmere thickets. Layered lettering, open seams, hand stitches.'],
-    ['2026', 'KEPT', 'Melrose Avenue, Los Angeles. Silver for what you keep.']
-  ];
-  pages.push({
-    path: 'house.html', title: `The House · Jewelry since ${F.since}`, crumbs: [['House', 'house.html']],
-    description: `KEPT is the jewelry house of ${F.name || 'a Paris-trained designer'}, who founded a first jewelry brand, Revenge, in ${F.since}, then spent ten years at fashion weeks with the labels 8 Million People and The Three. Now on Melrose Avenue, Los Angeles.`,
-    head: `<p class="cap">The House</p><h1 style="margin-top:18px">Since ${F.since}.</h1><p class="lede" style="margin-top:28px">Fifteen years of making things by hand for people who notice.</p>`,
-    body: `<section class="wrap" style="padding-bottom:40px"><ol class="timeline">${steps.map(([y, t, d]) => `<li data-reveal><span class="y num">${y}</span><h3>${t}</h3><p class="mute">${d}</p></li>`).join('')}</ol></section>
-<section class="sec"><div class="wrap split">
-  ${photo('worn-turtleneck', 'Chain worn on a black turtleneck', 'tall')}
-  <div class="stack" data-reveal><p class="statement">Everything before was practice for one object.<br><span class="serif">A chain you never take off.</span></p>${F.name ? `<p class="cap">${F.name}, founder</p>` : ''}</div>
+    path: 'vault.html', title: 'The Vault', crumbs: [['Vault', 'vault.html']], scripts: ['vault.js'],
+    description: 'Every Marla Knox piece can carry a sealed message: words, a photograph or a film, kept in our vault for up to one year and opened only on the day the giver chose.',
+    body: `<section class="wrap page"><div class="vault">
+<h1 class="title">The Vault</h1>
+<p class="dim">A message sealed with the piece. Words, a photograph, a film. It opens on the day you choose, up to one year. Not before.</p>
+<form id="vault-form" autocomplete="off" class="field"><label for="vault-code">Code</label><div class="inline"><input id="vault-code" placeholder="MK-0007-K4M9" spellcheck="false"><button class="btn" type="submit">Open</button></div></form>
+<p class="out" id="vault-out" aria-live="polite">&nbsp;</p>
+<div class="samples"><button type="button" data-target="vault-code">MK-0001-ASHE</button><button type="button" data-target="vault-code">MK-0007-K4M9</button></div>
 </div></section>`
   });
 
-  /* ---------------- INDEXES ---------------- */
-  const idx = (path, title, list, section, description) => ({
-    path, title, description, crumbs: [[title, path]], narrow: true, head: `<h1>${title}</h1>`,
-    body: `<section class="wrap narrow" style="padding-bottom:140px"><ul class="list">${list.map(x => `<li><a href="@/${section}/${x.slug}.html"><span><h3>${x.short || x.title}</h3><small>${x.description}</small></span><span class="cap">Read</span></a></li>`).join('')}</ul></section>`
-  });
-  pages.push(idx('journal.html', 'Journal', journal, 'journal', 'Notes from the KEPT atelier in Los Angeles: how to wear a silver chain, silver with diamonds, memory jewelry, gifts and custom chains on Melrose.'));
-  pages.push(idx('codex.html', 'Codex', codex, 'codex', 'Reference on silver and old jewelry: oxidized silver, 925 hallmarks, chain lengths, cameos, rubies, hair jewelry and tear bottles.'));
-
-  /* ---------------- SMALL PAGES ---------------- */
-  const small = (path, title, description, html) => ({ path, title, description, crumbs: [[title, path]], narrow: true, head: `<h1>${title}</h1>`, body: `<article class="wrap narrow prose">${html}</article>` });
-  pages.push(small('care.html', 'Care', 'How to care for oxidized sterling silver: dry cloth only, no silver dip. Lifetime repair of workmanship at the KEPT atelier.',
-    `<p>Wipe with a dry cloth. Never use silver dip or polish; it removes the black. Keep it in its case. The silver brightens where you touch it. That is intended.</p><p>We repair workmanship for life. Re-blackening on request.</p>`));
-  pages.push(small('terms.html', 'Terms', 'KEPT terms of sale: made to order, 50% deposit, final sale with no returns or exchanges, defects repaired, message terms.',
-    `<p><b>All sales are final. Every chain is made to order for one person, so we do not accept returns or exchanges, and payments are not refundable once work has begun.</b></p>
-<p>A 50% deposit begins the work; the balance is due before delivery. You may cancel within 24 hours of the deposit, before work starts, for a full refund.</p>
-<p>Every chain is 925 sterling silver; gold is solid 18k. Defects in materials or workmanship are repaired or remade free of charge. Workmanship is repaired for life. Nothing here limits your rights under the law where you live.</p>
-<p>Tears, hair and recordings are sealed at your request. Keep a copy of anything irreplaceable.</p>
-<p>Messages are stored encrypted and released on the date set by the giver. If KEPT ever closes, we will give 90 days’ notice and release every sealed message to the person who sealed it.</p>
-<p class="mute">${CFG.email}</p>`));
-  pages.push(small('privacy.html', 'Privacy', 'How KEPT handles personal data and sealed messages.',
-    `<p>We keep what we need to make and deliver your chain. We do not sell it. Sealed messages are encrypted and unreadable until their date. California residents may request access or deletion at ${CFG.email}.</p>`));
-  const FAQ = [
-    ['Is it real silver?', '925 sterling silver, hallmarked. Gold is solid 18k. Stones are natural.'],
-    ['How do I recognise a KEPT chain?', 'Fine chain that turns into forged weight at one black link with a gold point. Weight on the left.'],
-    ['How much?', `From ${money(CFG.priceFrom)}. Most chains are $2,150 to $2,800.`],
-    ['How long?', 'Nine to twenty-one days.'],
-    ['Returns?', 'Final sale. Every chain is made for one person. Workmanship repaired for life.'],
-    ['How is a tear kept?', 'You drop it on blotting paper, it stains the paper, and we seal the paper in clear resin inside a silver link.'],
-    ['How does Voice work?', 'You record ten seconds. We engrave the waveform on the link and set an NFC chip; tap a phone to hear it.'],
-    ['Where?', `By appointment on ${CFG.address.street}, ${CFG.address.city}. Video appointments worldwide.`]
+  /* ---------------- HOUSE ---------------- */
+  const steps = [
+    [String(F.since), 'Revenge', 'A first jewelry house.'],
+    ['France', 'Fashion design', 'Trained as a designer.'],
+    ['Ten years', 'Fashion weeks', 'A decade of shows.'],
+    ['', '8 Billion People', 'Clothing.'],
+    ['', 'The Three', 'Couture streetwear. Cashmere, hand stitches, open seams.'],
+    ['Now', 'Marla Knox', 'West Hollywood.']
   ];
-  pages.push({ ...small('faq.html', 'Questions', 'KEPT questions: real silver, prices, timing, final sale, how a tear and a voice are kept, Melrose atelier.', FAQ.map(([q, a]) => `<h2>${q}</h2><p>${a}</p>`).join('')),
+  pages.push({
+    path: 'house.html', title: 'House', crumbs: [['House', 'house.html']],
+    description: `Marla Knox founded her first jewelry house, Revenge, in ${F.since}, trained in fashion design in France, spent ten years at fashion weeks with 8 Billion People and The Three, and now makes jewelry in West Hollywood.`,
+    body: `<section class="wrap page">
+<div class="page-head"><h1 class="title">Since ${F.since}</h1></div>
+<ol class="timeline">${steps.map(([y, t, d]) => `<li data-reveal><span class="cap dim num">${y}</span><div><h3>${t}</h3><p class="dim it">${d}</p></div></li>`).join('')}</ol>
+<figure style="margin:120px 0 0;max-width:560px"><img src="${img('worn-turtleneck')}" alt="" loading="lazy"></figure>
+</section>`
+  });
+
+  /* ---------------- CONTACT ---------------- */
+  pages.push({
+    path: 'contact.html', title: 'Contact', crumbs: [['Contact', 'contact.html']],
+    description: `Contact the Marla Knox studio in ${CFG.city}, California. Online orders, worldwide delivery, private requests.`,
+    body: `<section class="wrap page"><div class="vault">
+<h1 class="title">Contact</h1>
+<p class="dim">Studio in ${CFG.city}. Online, by request. Worldwide delivery.</p>
+<p class="cap">${CFG.email}<br><a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
+<form class="form" data-form="contact">
+  <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
+  <div class="field"><label for="c-contact">Email or Instagram</label><input id="c-contact" name="contact" required></div>
+  <div class="field"><label for="c-note">Message</label><textarea id="c-note" name="note"></textarea></div>
+  <button class="btn" type="submit">Send</button>
+  <div class="form-out" aria-live="polite"></div>
+</form>
+</div></section>`
+  });
+
+  /* ---------------- QUIET PAGES ---------------- */
+  const prose = (path, title, description, html) => ({ path, title, description, crumbs: [[title, path]], body: `<section class="wrap page"><div class="page-head"><h1 class="title">${title}</h1></div><article class="prose">${html}</article></section>` });
+  const list = (path, title, items, dir, description) => ({ path, title, description, crumbs: [[title, path]], body: `<section class="wrap page"><div class="page-head"><h1 class="title">${title}</h1></div><ul class="list">${items.map(x => `<li><a href="@/${dir}/${x.slug}.html"><span class="cap">${x.short || x.title}</span><small>${x.description}</small></a></li>`).join('')}</ul></section>` });
+  pages.push(list('journal.html', 'Journal', journal, 'journal', 'Notes from the Marla Knox studio: how to wear a silver chain, memory jewelry, gifts, care.'));
+  pages.push(list('codex.html', 'Codex', codex, 'codex', 'On silver and old jewelry: oxidized silver, hallmarks, chain lengths, cameos, rubies, hair jewelry, tear bottles.'));
+  pages.push(prose('terms.html', 'Terms', 'Marla Knox terms of sale: made to order, final sale, no returns or exchanges, defects repaired, vault messages up to one year.',
+    `<p><b>All sales are final. Every piece is made to order for one person; we do not accept returns or exchanges, and payments are not refundable once work has begun.</b></p>
+<p>A 50% deposit begins the work; the balance is due before delivery. You may cancel within 24 hours of the deposit, before work starts, for a full refund.</p>
+<p>925 sterling silver; gold is solid 18k; stones are natural. Defects in materials or workmanship are repaired or remade free of charge. Workmanship is repaired for life. Nothing here limits your rights under the law where you live.</p>
+<p>Hair and tears are sealed at your request; keep a portion of anything irreplaceable.</p>
+<p>Vault messages are stored encrypted and released on the date set by the giver, at most one year after delivery. If the house ever closes, sealed messages are released to the person who sealed them with 90 days’ notice.</p>`));
+  pages.push(prose('privacy.html', 'Privacy', 'How Marla Knox handles personal data and sealed messages.',
+    `<p>We keep what we need to make and deliver your piece. We do not sell it. Sealed messages are encrypted and unreadable until their date. California residents may request access or deletion at ${CFG.email}.</p>`));
+  pages.push(prose('care.html', 'Care', 'How to care for oxidized sterling silver: dry cloth only, never silver dip. Lifetime repair of workmanship.',
+    `<p>A dry cloth. Never silver dip or polish. Keep it closed in its box. The silver brightens where it touches you; that is intended. Workmanship is repaired for life.</p>`));
+  const FAQ = [
+    ['Material', '925 sterling silver, oxidized by hand. Solid 18k gold. Natural stones.'],
+    ['Time', 'Three to four weeks. Each piece is made to order.'],
+    ['Length', '45 to 70 cm. Chosen on the piece.'],
+    ['Hair or a tear', 'A lock of hair sealed in glass, or a tear on paper sealed in resin, set as one link.'],
+    ['The Vault', 'A sealed message, opened on the day you choose, up to one year.'],
+    ['Returns', 'Final sale. Workmanship repaired for life.'],
+    ['Where', `Studio in ${CFG.city}, California. Online. Worldwide delivery.`]
+  ];
+  pages.push({ ...prose('faq.html', 'Questions', 'Marla Knox: materials, timing, lengths, hair and tear links, the vault, final sale, delivery.', FAQ.map(([q, a]) => `<h2>${q}</h2><p>${a}</p>`).join('')),
     schema: { '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) } });
-  pages.push({ path: '404.html', noindex: true, title: 'Not here', description: 'Page not found.', head: `<h1>Not here.</h1><div class="actions" style="margin-top:32px"><a class="link-arrow" href="@/index.html">KEPT</a></div>`, body: '<div style="height:30vh"></div>' });
+  pages.push({ path: '404.html', noindex: true, title: 'Nothing here', description: 'Not found.', bare: true, body: `<section class="quiet" style="min-height:100svh"><a class="cap" href="@/index.html">Marla Knox</a></section>` });
   return pages;
 }

@@ -1,81 +1,57 @@
-// KEPT — pieces. Each becomes /pieces/<slug>.html with Product data.
-// Every chain: fine 2.4 mm → the Mark (black link, gold point) → forged 11 mm on the left → one object.
-const base = x => [{ t: 'cable', cm: 14 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 10 }, ...(x ? [x] : []), { t: 'cable', cm: 12 }];
-const SPEC = '<ul><li>925 sterling silver, blackened and hand-burnished</li><li>2.4 mm fine cable, 11 mm hand-forged links</li><li>The Mark: black link, 18k gold point</li><li>Toggle clasp, hallmark, coded plate, sealed message</li><li>45–70 cm, made to your measurement</li></ul>';
-
+// MARLA KNOX — the pieces. Photography only. Each becomes /pieces/<slug>.html.
 const P = [
-  // chains
-  { group: 'chain', slug: 'break', name: 'Break', price: 1800, segs: [{ t: 'cable', cm: 16 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }],
-    short: 'Fine, the Mark, weight. Nothing else.', desc: 'KEPT Break: a handmade sterling silver chain that turns from 2.4 mm fine cable to hand-forged 11 mm links at one black link with an 18k gold point.',
-    body: `<p>The chain with nothing added. Worn alone, or beside a diamond tennis chain.</p>${SPEC}` },
-  { group: 'chain', slug: 'ruby', name: 'Ruby', price: 2400, segs: base({ t: 'ruby' }),
-    short: 'One natural ruby, set flush in silver.', desc: 'KEPT Ruby: handmade sterling silver chain with the black Mark, forged weight and one natural ruby (~0.4 ct) set flush in silver.',
-    body: `<p>One natural ruby, about 0.4 carat, in a closed bezel. The only red thing on you.</p>${SPEC}` },
-  { group: 'chain', slug: 'old-diamond', name: 'Old Diamond', price: 2800, segs: base({ t: 'diamond' }),
-    short: 'An antique old-mine diamond in blackened silver.', desc: 'KEPT Old Diamond: handmade sterling silver chain with an antique old-mine cut diamond (~0.3 ct) set in blackened silver.',
-    body: `<p>A diamond cut by hand more than a century ago. Soft, broken light out of black metal.</p>${SPEC}` },
-  { group: 'chain', slug: 'pearl', name: 'Pearl', price: 2150, segs: base({ t: 'pearl' }),
-    short: 'One baroque pearl that grew wrong.', desc: 'KEPT Pearl: handmade sterling silver chain with forged weight and one freshwater baroque pearl in a gold-rimmed cup.',
-    body: `<p>An irregular freshwater pearl, set plainly. No two the same shape.</p>${SPEC}` },
-  { group: 'chain', slug: 'tear', name: 'Tear', price: 2300, segs: base({ t: 'tear' }),
-    short: 'Your tear on paper, sealed in resin.', desc: 'KEPT Tear: handmade sterling silver chain with a memory link holding a tear dropped on paper and sealed in clear resin.',
-    body: `<p>See <a href="@/pieces/tear-link.html">how a tear is kept</a>.</p>${SPEC}` },
-  { group: 'chain', slug: 'voice', name: 'Voice', price: 2350, segs: base({ t: 'voice' }),
-    short: 'Ten seconds of a voice, engraved.', desc: 'KEPT Voice: handmade sterling silver chain with a link engraved with the waveform of a voice and an NFC chip that plays it.',
-    body: `<p>See <a href="@/pieces/voice-link.html">how a voice is kept</a>.</p>${SPEC}` },
-  // memory links
-  { group: 'memory', slug: 'tear-link', name: 'Tear', price: 450, segs: [{ t: 'cable', cm: 3 }, { t: 'tear' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'A tear on paper changes its colour. We seal it in resin, forever.', desc: 'A memory link for a silver chain: a tear dropped on reactive paper, which changes colour, sealed in clear resin inside a sterling silver frame.',
-    body: `<p>You let one tear fall on a square of reactive paper. Where it lands, the paper changes colour. That stain is the only record of that moment.</p><p>We cut it, seal it in clear resin inside a silver frame, and set it in your chain. Done at the atelier, or with a kit we send you.</p>` },
-  { group: 'memory', slug: 'voice-link', name: 'Voice', price: 520, segs: [{ t: 'cable', cm: 3 }, { t: 'voice' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Ten seconds of a voice, engraved as its waveform. Tap to hear.', desc: 'A memory link for a silver chain: ten seconds of a voice engraved as its waveform, with a hidden NFC chip that plays the recording when a phone touches it.',
-    body: `<p>Record ten seconds: a name, a laugh, a sentence. We engrave its waveform into the silver. A small chip under the gold point plays it back when a phone touches the link.</p>` },
-  { group: 'memory', slug: 'hair-link', name: 'Hair', price: 560, segs: [{ t: 'cable', cm: 3 }, { t: 'reliquary', v: 'hair' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'A lock of hair, sealed in glass.', desc: 'A memory link for a silver chain: a lock of hair sealed in clear glass between silver caps.',
-    body: `<p>A lock of hair, sealed in clear glass between two silver caps, in front of you. Hair keeps for centuries away from air.</p><p><a href="@/codex/hair-jewelry-history.html">A short history of hair jewelry</a>.</p>` },
-  // house
-  { group: 'house', slug: 'the-mark', name: 'The Mark', price: null, priceLabel: 'In every chain', segs: [{ t: 'cable', cm: 3 }, { t: 'ashlink' }, { t: 'forged', cm: 4 }], shape: 'line', fixed: false,
-    short: 'A black link with one gold point. One in every chain.', desc: 'The Mark is the signature of KEPT: a matte black sterling silver link with a polished rim and a single 18k gold point, placed where fine chain becomes forged weight.',
-    body: `<p>Matte black silver, polished rim, one point of 18k gold. One in every chain, exactly where fine becomes heavy. Never sold alone.</p>` },
-  { group: 'house', slug: 'forged', name: 'Forged weight', price: null, priceLabel: '$70 / cm', segs: [{ t: 'forged', cm: 8 }], shape: 'line', fixed: false,
-    short: 'Hand-forged 11 mm links, hammered and blackened.', desc: 'Hand-forged 11 mm sterling silver oval links, hammered on the anvil and blackened: the weight in every KEPT chain.',
-    body: `<p>Each oval forged, soldered and hammered on the anvil, then blackened. Worn on the left.</p>` },
-  // objects
-  { group: 'object', slug: 'old-diamond-link', name: 'Old-mine diamond', price: 980, segs: [{ t: 'cable', cm: 3 }, { t: 'diamond' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Antique, ~0.3 ct, set in black.', desc: 'An antique old-mine cut diamond, about 0.3 ct, set in blackened sterling silver as a chain link.', body: '<p>Sourced from estate jewelry. Its history goes into the sealed message.</p>' },
-  { group: 'object', slug: 'ruby-link', name: 'Ruby', price: 600, segs: [{ t: 'cable', cm: 3 }, { t: 'ruby' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Natural, ~0.4 ct, closed bezel.', desc: 'A natural ruby, about 0.4 ct, in a closed sterling silver bezel, set as a chain link.', body: '<p>Unheated or heat-only, stated in writing. <a href="@/codex/ruby-in-silver.html">Ruby in silver</a>.</p>' },
-  { group: 'object', slug: 'pearl-link', name: 'Baroque pearl', price: 320, segs: [{ t: 'cable', cm: 3 }, { t: 'pearl' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Freshwater, gold-rimmed cup.', desc: 'A freshwater baroque pearl in a gold-rimmed silver cup, set as a chain link.', body: '<p>Every one a different shape.</p>' },
-  { group: 'object', slug: 'cameo-link', name: 'Micro cameo', price: 420, segs: [{ t: 'cable', cm: 3 }, { t: 'cameo' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Carved shell, 14 mm, often antique.', desc: 'A hand-carved shell micro cameo, 14 mm, in a plain silver bezel, set as a chain link.', body: '<p><a href="@/codex/cameo-history.html">On cameos</a>.</p>' },
-  { group: 'object', slug: 'crystal-link', name: 'Rock crystal', price: 420, segs: [{ t: 'cable', cm: 3 }, { t: 'crystal' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'Rough quartz in eight claws.', desc: 'A rough rock crystal quartz point in an eight-claw sterling silver setting, set as a chain link.', body: '<p>Left rough. Light passes straight through.</p>' },
-  { group: 'object', slug: 'gold-link', name: '18k gold link', price: 290, segs: [{ t: 'cable', cm: 3 }, { t: 'goldring' }, { t: 'cable', cm: 3 }], shape: 'line', fixed: false,
-    short: 'One solid gold link. Some add one a year.', desc: 'A single solid 18k gold link set into a sterling silver chain.', body: '<p><a href="@/codex/mixing-gold-and-silver.html">Mixing gold and silver</a>.</p>' }
+  { slug: 'no-i', name: 'No. I', price: 2600, cover: 'necklace-wing', shots: ['necklace-wing', 'worn-turtleneck', 'wing-detail', 'toggle-cameo-detail', 'bone-cameo-detail'],
+    line: 'Wing, garnet, cross, cast relic, cameo in gold.',
+    desc: 'Marla Knox No. I: oxidized 925 sterling silver chain with a hand-chased wing, natural garnet, small cross, cast relic, shell cameo in an 18k gold bezel, Bali bead and two solid 18k gold links. Made to order.' },
+  { slug: 'no-ii', name: 'No. II', price: 2400, cover: 'necklace-heart', shots: ['necklace-heart', 'cameo-detail', 'gold-ring-detail'],
+    line: 'Wing, garnet, heart, relic, cameo in gold.',
+    desc: 'Marla Knox No. II: oxidized 925 sterling silver chain with wing, natural garnet, cross, beaded heart, cast relic and shell cameo in an 18k gold bezel. Made to order.' },
+  { slug: 'no-iii', name: 'No. III', price: 2500, cover: 'necklace-serpent', shots: ['necklace-serpent', 'worn-crewneck', 'ruby-crystal-detail', 'crystal-detail'],
+    line: 'Serpent, garnet drop, horn with gold, cameo.',
+    desc: 'Marla Knox No. III: long oxidized 925 sterling silver chain with serpent, garnet drop, cast horn wrapped in 18k gold, shell cameo and Bali bead. Made to order.' },
+  { slug: 'no-iv', name: 'No. IV', price: 3200, cover: 'collar-relics', shots: ['collar-relics', 'pearl-detail'],
+    line: 'Collar. Wing, claw, baroque pearls, two cameos, heart.',
+    desc: 'Marla Knox No. IV: heavy oxidized 925 sterling silver collar with wing, cast claw and horn, baroque pearls in gold, two shell cameos and a beaded heart. Made to order.' }
 ];
 
-P.forEach(x => { x.priceLabel = x.priceLabel || ('$' + x.price.toLocaleString('en-US') + (x.group === 'chain' ? '' : ' as a link')); });
+const money = n => '$' + n.toLocaleString('en-US');
 export default P.map(x => ({
   ...x,
-  page: ({ CFG, has }) => ({
+  priceLabel: money(x.price),
+  page: ({ CFG }) => ({
     path: `pieces/${x.slug}.html`,
-    title: `${x.name}${x.group === 'chain' ? ' — sterling silver chain' : ''}`,
+    title: `${x.name} — oxidized sterling silver chain`,
     description: x.desc,
-    crumbs: [[x.group === 'memory' ? 'Memory' : 'Collection', x.group === 'memory' ? 'memory.html' : 'collection.html'], [x.name, `pieces/${x.slug}.html`]],
-    schema: { '@type': 'Product', name: `${CFG.name} ${x.name}`, description: x.desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver', image: `${CFG.url}/assets/img/${has(x.slug) ? 'gen/' + x.slug : 'og'}.jpg`,
-      ...(x.price ? { offers: { '@type': 'Offer', price: x.price, priceCurrency: 'USD', availability: 'https://schema.org/MadeToOrder', url: `${CFG.url}/pieces/${x.slug}.html`,
-        hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } } : {}) },
-    body: `<section class="wrap split" style="align-items:start;padding-top:clamp(110px,14vw,170px);padding-bottom:140px">
-<div class="plate" data-parallax style="aspect-ratio:4/5">${has(x.slug) ? `<img src="@/assets/img/gen/${x.slug}.jpg" alt="KEPT ${x.name}">` : `<svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-label="${x.name}"></svg>`}</div>
-<div class="stack" style="position:sticky;top:110px">
-  <p class="cap">${x.group === 'chain' ? 'Chain' : x.group === 'memory' ? 'Memory' : x.group === 'house' ? 'KEPT' : 'Object'}</p>
-  <h1 style="font-size:clamp(2.4rem,1.4rem+4vw,4.8rem);line-height:.95;font-weight:500;letter-spacing:-.02em">${x.name}</h1>
-  <p class="num">${x.priceLabel}</p>
-  <div class="prose" style="padding:0">${x.body}</div>
-  <div class="actions"><a class="btn" href="@/atelier.html">Book an appointment</a></div>
-  <p class="mute" style="font-size:.85rem">Made to order in Los Angeles. Final sale.</p>
+    crumbs: [['Collection', 'collection.html'], [x.name, `pieces/${x.slug}.html`]],
+    schema: { '@type': 'Product', name: `${CFG.name} ${x.name}`, description: x.desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver',
+      image: x.shots.map(s => `${CFG.url}/assets/img/photos/${s}.jpg`),
+      offers: { '@type': 'Offer', price: x.price, priceCurrency: 'USD', availability: 'https://schema.org/MadeToOrder', url: `${CFG.url}/pieces/${x.slug}.html`,
+        hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } },
+    body: `<section class="wrap page"><div class="product">
+<div class="shots">${x.shots.map((s, i) => `<figure><img src="@/assets/img/photos/${s}.jpg" alt="${x.name}${i ? ', detail' : ''}"${i ? ' loading="lazy"' : ''}></figure>`).join('')}</div>
+<div class="buy" data-base="${x.price}" data-name="${x.name}">
+  <div style="display:grid;gap:14px"><p class="crumbs"><a href="@/collection.html">Collection</a></p><h1 class="title">${x.name}</h1><p class="it dim">${x.line}</p><p class="price num">${money(x.price)}</p></div>
+  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Length</legend>
+    <div class="choices">${CFG.lengths.map(([cm, add], i) => `<input type="radio" name="len" id="len-${cm}" value="${cm}" data-add="${add}"${i === 2 ? ' checked' : ''}><label for="len-${cm}">${cm} cm${add ? ' +$' + add : ''}</label>`).join('')}</div></fieldset>
+  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Keep something inside</legend>
+    <div class="choices">${CFG.memory.map(([k, label, add], i) => `<input type="radio" name="mem" id="mem-${k || 'none'}" value="${k}" data-add="${add}"${i === 0 ? ' checked' : ''}><label for="mem-${k || 'none'}">${k ? (k === 'hair' ? 'Hair' : 'Tear') + ' +$' + add : 'Nothing'}</label>`).join('')}</div>
+    <p class="note">A lock of hair sealed in glass, or a tear on paper sealed in resin, set as one link.</p></fieldset>
+  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Sealed message</legend>
+    <div class="choices"><input type="radio" name="seal" id="seal-no" value="no" data-add="0" checked><label for="seal-no">No</label><input type="radio" name="seal" id="seal-yes" value="yes" data-add="0"><label for="seal-yes">Seal one</label></div>
+    <div class="seal-date field" hidden><label for="seal-date">Opens on</label><input type="date" id="seal-date"></div>
+    <p class="note">Words, a photograph or a film, kept in our vault until the day you choose, up to one year. <a href="@/vault.html">The Vault</a>.</p></fieldset>
+  <div class="total"><span class="cap">Total</span><span class="num price">${money(x.price)}</span></div>
+  <button class="btn full req" type="button">Request</button>
+  <form class="form" data-form="order" hidden>
+    <input type="hidden" name="piece">
+    <div class="field"><label for="o-name">Name</label><input id="o-name" name="name" autocomplete="name" required></div>
+    <div class="field"><label for="o-contact">Email or Instagram</label><input id="o-contact" name="contact" required></div>
+    <div class="field"><label for="o-note">Note</label><textarea id="o-note" name="note"></textarea></div>
+    <button class="btn full" type="submit">Send request</button>
+    <div class="form-out" aria-live="polite"></div>
+  </form>
+  <p class="cap dim">Made to order · 3–4 weeks · Final sale</p>
 </div>
-</section>`
+</div></section>`
   })
 }));

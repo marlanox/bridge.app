@@ -1,17 +1,15 @@
-/* KEPT — page behaviour and scroll choreography.
-   Uses GSAP + ScrollTrigger when present; every section is fully readable without them. */
+/* MARLA KNOX — light, darkness, and very little else. */
 (function () {
   'use strict';
   const CFG = window.CINERIS_CONFIG || {};
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-  const C = window.CinerisChain;
   const G = window.gsap, ST = window.ScrollTrigger;
   const motion = !reduce && G && ST;
   if (motion) G.registerPlugin(ST);
 
-  /* ---------- menu ---------- */
+  /* menu */
   const btn = $('.menu-btn'), nav = $('.nav');
   if (btn && nav) {
     const set = open => { nav.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); btn.textContent = open ? 'Close' : 'Menu'; document.body.style.overflow = open ? 'hidden' : ''; };
@@ -19,80 +17,70 @@
     $$('a', nav).forEach(a => a.addEventListener('click', () => set(false)));
   }
 
-  /* ---------- static chain drawings ---------- */
-  $$('svg[data-chain]').forEach(svg => {
-    try { C.render(svg, JSON.parse(svg.dataset.chain), { shape: svg.dataset.shape || 'loop', fixed: svg.dataset.fixed !== 'false', numeral: svg.dataset.numeral }); } catch (e) { /* leave empty */ }
-  });
-
-  /* ---------- hero ---------- */
-  const heroSvg = $('#hero-chain');
-  if (heroSvg && C) {
-    C.render(heroSvg, [{ t: 'cable', cm: 12 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 8 }, { t: 'tear' }, { t: 'cable', cm: 6 }], { shape: 'line', fixed: false });
-    if (!reduce) {
-      const t0 = performance.now();
-      const sway = now => { heroSvg.style.rotate = (Math.sin((now - t0) / 1800) * 1.2).toFixed(3) + 'deg'; requestAnimationFrame(sway); };
-      requestAnimationFrame(sway);
-    }
+  /* the threshold: a beam of light finds the piece in the dark */
+  const th = $('.threshold');
+  if (th) {
+    let tx = 0.5, ty = 0.45, x = tx, y = ty, touched = false, t0 = performance.now();
+    const move = (cx, cy) => { const r = th.getBoundingClientRect(); tx = (cx - r.left) / r.width; ty = (cy - r.top) / r.height; touched = true; };
+    th.addEventListener('pointermove', e => move(e.clientX, e.clientY));
+    th.addEventListener('touchmove', e => { const t = e.touches[0]; if (t) move(t.clientX, t.clientY); }, { passive: true });
+    const loop = now => {
+      if (!touched || now - t0 > 0) {
+        if (!touched) { const s = (now - t0) / 1000; tx = 0.5 + Math.sin(s * 0.35) * 0.22; ty = 0.48 + Math.sin(s * 0.53) * 0.2; }
+      }
+      x += (tx - x) * (reduce ? 1 : 0.06); y += (ty - y) * (reduce ? 1 : 0.06);
+      th.style.setProperty('--x', (x * 100).toFixed(2) + '%');
+      th.style.setProperty('--y', (y * 100).toFixed(2) + '%');
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
     if (motion) {
-      G.from('.hero .word', { yPercent: 40, opacity: 0, duration: 1.6, ease: 'expo.out', delay: 0.1 });
-      G.from('.hero .under > *', { y: 20, opacity: 0, duration: 1.2, ease: 'expo.out', delay: 0.5, stagger: 0.1 });
-      G.from(heroSvg, { yPercent: -30, duration: 2.2, ease: 'expo.out' });
-      G.to('.hero .word', { yPercent: -30, opacity: 0.1, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-      G.to('.hero .stage', { scale: 1.35, yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+      G.from('.threshold .name', { opacity: 0, letterSpacing: '1.2em', duration: 3, ease: 'power3.out' });
+      G.from('.threshold .hint', { opacity: 0, duration: 2, delay: 2 });
+      G.to('.threshold .center', { opacity: 0, ease: 'none', scrollTrigger: { trigger: th, start: 'top top', end: '60% top', scrub: true } });
     }
   }
 
-  /* ---------- the break: chain assembles link by link while pinned ---------- */
-  const brk = $('.break');
-  if (brk && C) {
-    const svg = $('svg', brk);
-    C.render(svg, [{ t: 'cable', cm: 9 }, { t: 'ashlink' }, { t: 'forged', cm: 9 }], { shape: 'line', fixed: false });
-    const links = $$('.oc-link', svg);
-    const words = $$('.words b', brk);
-    const ashIdx = links.findIndex(l => l.classList.contains('oc-ashlink'));
-    if (motion) {
-      words.forEach(w => w.classList.add('dim'));
-      links.forEach(l => { l.style.opacity = 0; });
-      ST.create({
-        trigger: brk, start: 'top top', end: '+=180%', pin: true, scrub: 0.6,
-        onUpdate: self => {
-          const n = Math.round(self.progress * links.length * 1.15);
-          links.forEach((l, i) => { l.style.opacity = i < n ? 1 : 0; });
-          const stage = n <= ashIdx ? 0 : n <= ashIdx + 1 ? 1 : 2;
-          words.forEach((w, i) => w.classList.toggle('dim', i !== stage));
-        }
-      });
-    }
-  }
-
-  /* ---------- collection rail: horizontal on desktop ---------- */
-  const rail = $('.rail');
-  if (rail && motion && window.matchMedia('(min-width: 861px)').matches) {
-    const dist = () => rail.scrollWidth - window.innerWidth + 80;
-    G.to(rail, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.rail-wrap', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true } });
-  }
-
-  /* ---------- reveals ---------- */
+  /* procession: each piece rises out of the dark, then returns to it */
   if (motion) {
-    $$('[data-reveal]').forEach(el => {
-      if (el.getBoundingClientRect().top < window.innerHeight) return;
-      G.from(el, { y: 40, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    $$('.piece').forEach(p => {
+      const img = $('img', p), label = $('.label', p);
+      G.timeline({ scrollTrigger: { trigger: p, start: 'top bottom', end: 'bottom top', scrub: true } })
+        .fromTo(img, { filter: 'brightness(0)', scale: 1.08 }, { filter: 'brightness(1)', scale: 1, ease: 'none', duration: 0.45 })
+        .to(img, { filter: 'brightness(1)', duration: 0.1 })
+        .to(img, { filter: 'brightness(0)', scale: 0.97, ease: 'none', duration: 0.45 });
+      if (label) G.fromTo(label, { opacity: 0 }, { opacity: 1, scrollTrigger: { trigger: p, start: 'center 70%', end: 'center 50%', scrub: true } });
     });
-    $$('.statement').forEach(el => {
-      G.fromTo(el, { opacity: 0.15 }, { opacity: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 35%', scrub: true } });
-    });
-    $$('.plate[data-parallax] > svg, .plate[data-parallax] > img').forEach(el => {
-      G.fromTo(el, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
-    });
-    $$('.ph img').forEach(el => {
-      G.fromTo(el, { scale: 1.12, yPercent: -4 }, { scale: 1, yPercent: 4, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
-    });
-    $$('.mem > *').forEach((el, i) => {
-      G.from(el, { y: 60, opacity: 0, duration: 1.1, delay: i * 0.08, ease: 'expo.out', scrollTrigger: { trigger: '.mem', start: 'top 80%' } });
+    $$('.quiet .line, [data-reveal]').forEach(el => G.from(el, { opacity: 0, duration: 2.4, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 80%' } }));
+    $$('.shots img').forEach(img => G.fromTo(img, { filter: 'brightness(0.1)' }, { filter: 'brightness(1)', ease: 'none', scrollTrigger: { trigger: img, start: 'top 95%', end: 'top 45%', scrub: true } }));
+  }
+
+  /* product options: length, memory, vault message */
+  const buy = $('.buy[data-base]');
+  if (buy) {
+    const base = +buy.dataset.base;
+    const money = n => '$' + n.toLocaleString('en-US');
+    const upd = () => {
+      let t = base;
+      $$('input[type=radio]:checked', buy).forEach(r => { t += +(r.dataset.add || 0); });
+      $('.total .num', buy).textContent = money(t);
+      const seal = $('input[name=seal]:checked', buy);
+      $('.seal-date', buy).hidden = !seal || seal.value !== 'yes';
+      return t;
+    };
+    const d = $('#seal-date', buy);
+    if (d) { const now = new Date(); const max = new Date(now.getTime() + (CFG.vaultMaxDays || 365) * 864e5); d.min = new Date(now.getTime() + 864e5).toISOString().slice(0, 10); d.max = max.toISOString().slice(0, 10); }
+    buy.addEventListener('change', upd);
+    upd();
+    $('.req', buy).addEventListener('click', () => {
+      const f = $('form', buy); f.hidden = false;
+      const sum = [buy.dataset.name, ...$$('input[type=radio]:checked', buy).map(r => r.nextElementSibling.textContent.trim()), d && !$('.seal-date', buy).hidden && d.value ? 'opens ' + d.value : '', money(upd())].filter(Boolean).join(' · ');
+      $('input[name=piece]', f).value = sum;
+      $('input', f).focus();
     });
   }
 
-  /* ---------- forms ---------- */
+  /* forms */
   $$('form[data-form]').forEach(form => {
     form.addEventListener('submit', async ev => {
       ev.preventDefault();
@@ -104,16 +92,12 @@
         try {
           const r = await fetch(CFG.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
           if (!r.ok) throw new Error(r.status);
-          out.innerHTML = '<p class="notice">Received. We reply by hand within three days.</p>';
-          form.reset();
-          return;
-        } catch (e) { /* fall through to manual */ }
+          out.innerHTML = '<p class="notice">Received. We will write to you.</p>'; form.reset(); return;
+        } catch (e) { /* manual fallback */ }
       }
-      out.innerHTML = `<div class="notice"><p>Send this to <b>${CFG.email}</b> or DM <b>${CFG.instagram}</b>.</p><textarea readonly rows="5"></textarea><div class="actions"><button type="button" class="btn ghost">Copy</button></div></div>`;
+      out.innerHTML = `<div class="notice"><p>Send this to <b>${CFG.email}</b> or <b>${CFG.instagram}</b>.</p><textarea readonly rows="5"></textarea><button type="button" class="btn">Copy</button></div>`;
       const ta = $('textarea', out); ta.value = text;
-      $('button', out).addEventListener('click', e => {
-        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => { e.target.textContent = 'Copied'; }, () => ta.select()); else ta.select();
-      });
+      $('button', out).addEventListener('click', e => { if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => { e.target.textContent = 'Copied'; }, () => ta.select()); else ta.select(); });
     });
   });
 

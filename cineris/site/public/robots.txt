@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kept.la/sitemap.xml
+Sitemap: https://marlaknox.com/sitemap.xml
