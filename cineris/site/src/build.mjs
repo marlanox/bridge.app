@@ -48,10 +48,11 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${CFG.url}/assets/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="${R}assets/img/mark.svg" type="image/svg+xml">
+<link rel="icon" href="${R}assets/img/mark.png" type="image/png">
+<link rel="apple-touch-icon" href="${R}assets/img/mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=New+Rocker&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Courier+Prime&display=swap">
 <link rel="stylesheet" href="${R}assets/css/main.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>
 </head>
@@ -59,7 +60,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <a class="sr" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
-    <a class="mark" href="${R}index.html" aria-label="${CFG.name} ${CFG.line}"><span class="g3" aria-hidden="true">3</span></a>
+    <a class="mark" href="${R}index.html" aria-label="${CFG.name} ${CFG.line}"><img class="mark-img" src="${R}assets/img/three.png" alt=""></a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">${NAV.map(([u, n]) => `<a href="${R}${u}"${u === p.path ? ' aria-current="page"' : ''}>${n}</a>`).join('')}</nav>
   </div>
@@ -69,7 +70,7 @@ ${fix(p.body)}
 </main>
 <footer class="site-foot">
   <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Collection</a><a href="${R}vault.html">Vault</a><a href="${R}legend.html">Legend</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
-  <p class="g3" style="font-size:2.4rem;line-height:1" aria-hidden="true">3</p>
+  <img src="${R}assets/img/three.png" alt="" style="height:48px;width:auto;margin:0 auto">
   <p class="cap">${CFG.name} · ${CFG.line}</p>
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
   <p class="cap">© <span data-year>2026</span> ${CFG.name} · Final sale</p>

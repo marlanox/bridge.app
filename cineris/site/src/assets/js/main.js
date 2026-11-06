@@ -66,6 +66,8 @@
       $('.total .num', buy).textContent = money(t);
       const seal = $('input[name=seal]:checked', buy);
       $('.seal-date', buy).hidden = !seal || seal.value !== 'yes';
+      const ini = $('input[name=ini]:checked', buy);
+      if ($('.ini-letter', buy)) $('.ini-letter', buy).hidden = !ini || ini.value !== 'yes';
       return t;
     };
     const d = $('#seal-date', buy);
@@ -74,7 +76,7 @@
     upd();
     $('.req', buy).addEventListener('click', () => {
       const f = $('form', buy); f.hidden = false;
-      const sum = [buy.dataset.name, ...$$('input[type=radio]:checked', buy).map(r => r.nextElementSibling.textContent.trim()), d && !$('.seal-date', buy).hidden && d.value ? 'opens ' + d.value : '', money(upd())].filter(Boolean).join(' · ');
+      const sum = [buy.dataset.name, ...$$('input[type=radio]:checked', buy).map(r => r.nextElementSibling.textContent.trim()), d && !$('.seal-date', buy).hidden && d.value ? 'opens ' + d.value : '', $('#ini-letter', buy) && !$('.ini-letter', buy).hidden && $('#ini-letter', buy).value ? 'initial ' + $('#ini-letter', buy).value.toUpperCase() : '', money(upd())].filter(Boolean).join(' · ');
       $('input[name=piece]', f).value = sum;
       $('input', f).focus();
     });

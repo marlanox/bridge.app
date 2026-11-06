@@ -14,6 +14,18 @@ const P = [
     desc: 'The Three No. IV: heavy oxidized 925 sterling silver collar with wing, cast claw and horn, baroque pearls in gold, two shell cameos and a beaded heart. Made to order.' }
 ];
 
+P.push(
+  { slug: 'no-v', name: 'No. V', price: 2900, cover: 'raven-chain', shots: ['raven-chain'],
+    line: 'Raven, two garnets, pavé disc with carved bone, a gothic initial.',
+    desc: 'The Three No. V: oxidized 925 sterling silver cable chain with a cast raven, two garnet cabochons in raw bezels, a pavé disc set around carved bone, and a gothic initial. Made to order.' },
+  { slug: 'no-vi', name: 'No. VI', price: 3400, cover: 'charm-collar', shots: ['charm-collar'],
+    line: 'Heavy collar. Two cameos, eagle, raven, garnet, a gothic initial.',
+    desc: 'The Three No. VI: heavy sterling silver link collar hung with two cameos, an eagle, a raven, a garnet and a gothic initial. Made to order.' },
+  { slug: 'no-vii', name: 'No. VII', price: 3200, cover: 'bone-charms', shots: ['bone-charms'],
+    line: 'Two carved bone medallions, raven, garnet, a gothic initial.',
+    desc: 'The Three No. VII: sterling silver collar with two carved bone medallions in silver, a raven, a garnet and a gothic initial. Made to order.' }
+);
+
 const money = n => '$' + n.toLocaleString('en-US');
 export default P.map(x => ({
   ...x,
@@ -36,6 +48,9 @@ export default P.map(x => ({
   <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Keep something inside</legend>
     <div class="choices">${CFG.memory.map(([k, label, add], i) => `<input type="radio" name="mem" id="mem-${k || 'none'}" value="${k}" data-add="${add}"${i === 0 ? ' checked' : ''}><label for="mem-${k || 'none'}">${k ? (k === 'hair' ? 'Hair' : 'Tear') + ' +$' + add : 'Nothing'}</label>`).join('')}</div>
     <p class="note">A lock of hair sealed in glass, or a tear on paper sealed in resin, set as one link.</p></fieldset>
+  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Initial</legend>
+    <div class="choices"><input type="radio" name="ini" id="ini-no" value="no" data-add="0" checked><label for="ini-no">None</label><input type="radio" name="ini" id="ini-yes" value="yes" data-add="${CFG.initial}"><label for="ini-yes">Gothic letter +$${CFG.initial}</label></div>
+    <div class="ini-letter field" hidden><label for="ini-letter">Letter</label><input id="ini-letter" maxlength="2" autocomplete="off" style="text-transform:uppercase;max-width:6em"></div></fieldset>
   <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Sealed message</legend>
     <div class="choices"><input type="radio" name="seal" id="seal-no" value="no" data-add="0" checked><label for="seal-no">No</label><input type="radio" name="seal" id="seal-yes" value="yes" data-add="0"><label for="seal-yes">Seal one</label></div>
     <div class="seal-date field" hidden><label for="seal-date">Opens on</label><input type="date" id="seal-date"></div>

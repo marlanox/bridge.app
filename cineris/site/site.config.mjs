@@ -15,5 +15,6 @@ export default {
   // Options offered on every piece
   lengths: [[45, 0], [50, 0], [55, 0], [60, 150], [70, 300]],          // [cm, surcharge $]
   memory: [['', 'None', 0], ['hair', 'A lock of hair, sealed in glass', 560], ['tear', 'A tear on paper, sealed in resin', 450]],
+  initial: 380,                            // gothic letter charm
   vaultMaxDays: 365
 };

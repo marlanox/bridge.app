@@ -6,7 +6,7 @@ export default function core({ CFG, pieces, codex, journal }) {
 
   /* ---------------- THRESHOLD + PROCESSION ---------------- */
   const procession = [
-    ['worn-crewneck', pieces[2]], ['necklace-wing', pieces[0], 'wide'], ['wing-detail', pieces[0]],
+    ['raven-chain', pieces[4], 'wide'], ['charm-collar', pieces[5]], ['worn-crewneck', pieces[2]], ['necklace-wing', pieces[0], 'wide'], ['bone-charms', pieces[6]], ['wing-detail', pieces[0]],
     ['necklace-heart', pieces[1], 'wide'], ['worn-turtleneck', pieces[0]], ['collar-relics', pieces[3], 'wide'],
     ['ruby-crystal-detail', pieces[2]], ['necklace-serpent', pieces[2], 'wide']
   ];
@@ -19,7 +19,7 @@ export default function core({ CFG, pieces, codex, journal }) {
 <section class="threshold" aria-label="${CFG.name}">
   <div class="faint" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="lit" style="background-image:url(${img('necklace-wing')})"></div>
-  <div class="center"><h1 class="sr">The Three Fine Jewelry</h1><span class="g3 hero3" aria-hidden="true">3</span><p class="cap dim">Fine Jewelry</p></div>
+  <div class="center"><h1 class="sr">The Three Fine Jewelry</h1><img class="hero3" src="@/assets/img/three-lace.png" alt=""><p class="type dim">fine jewelry<br>los angeles</p></div>
   <p class="hint cap dim">Enter</p>
 </section>
 
@@ -34,7 +34,7 @@ ${procession.map(([p, x, w]) => `<div class="piece${w ? ' ' + w : ''}"><a href="
   /* ---------------- COLLECTION ---------------- */
   pages.push({
     path: 'collection.html', title: 'Collection', crumbs: [['Collection', 'collection.html']],
-    description: 'The Three collection: No. I, No. II, No. III and the No. IV collar. Oxidized sterling silver, made to order, from $2,400.',
+    description: 'The Three Fine Jewelry collection: No. I to No. VII, chains and collars in oxidized sterling silver with garnets, cameos, ravens and gothic initials. Made to order, from $2,400.',
     body: `<section class="wrap page"><div class="grid">${pieces.map(x => `<a href="@/pieces/${x.slug}.html"><figure><img src="${img(x.cover)}" alt="${x.name}" loading="lazy"></figure><span class="row"><span class="cap">${x.name}</span><span class="cap dim num">${x.priceLabel}</span></span></a>`).join('')}</div></section>`
   });
 
