@@ -16,20 +16,20 @@
     return (h >>> 0).toString(16).padStart(8, '0').repeat(8);
   }
   const norm = s => s.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const valid = s => /^MK[A-Z0-9]{8,14}$/.test(norm(s));
+  const valid = s => /^WH[A-Z0-9]{8,14}$/.test(norm(s));
 
   /* ---------- open a cell ---------- */
   const vf = $('#vault-form');
   if (vf) {
     const out = $('#vault-out');
     const DEMO = {
-      MK0001ASHE: { open: true, from: 'For M., from her father', body: 'You asked me once what I was afraid of. This. That you would be grown and I would not have said it. I am proud of you in a way that has no bottom. Wear this when you are frightened. — D.', sealed: '2026-03-02' },
-      MK0007K4M9: { open: false, opens: '2027-06-21', from: 'Sealed by the giver' }
+      WH0001ASHE: { open: true, from: 'For M., from her father', body: 'You asked me once what I was afraid of. This. That you would be grown and I would not have said it. I am proud of you in a way that has no bottom. Wear this when you are frightened. — D.', sealed: '2026-03-02' },
+      WH0007K4M9: { open: false, opens: '2027-06-21', from: 'Sealed by the giver' }
     };
     vf.addEventListener('submit', async e => {
       e.preventDefault();
       const raw = $('#vault-code').value;
-      if (!valid(raw)) { out.innerHTML = 'That is not a passport code. It is engraved on the plate beside the clasp and begins with MK, for example MK-0007-K4M9.'; return; }
+      if (!valid(raw)) { out.innerHTML = 'That code is not ours. It is engraved beside the clasp and begins with WH, for example WH-0007-K4M9.'; return; }
       const k = norm(raw);
       out.textContent = 'Reading the plate…';
       let cell = DEMO[k];
@@ -70,7 +70,7 @@
       const codes = Array.from(cf.querySelectorAll('input')).map(i => i.value).filter(v => v.trim());
       if (codes.length < 2) { out.textContent = 'A concordance needs at least two passports. Enter both codes.'; return; }
       const bad = codes.find(c => !valid(c));
-      if (bad) { out.textContent = `"${bad}" is not a passport code. Codes begin with MK and are engraved on the plate beside the clasp.`; return; }
+      if (bad) { out.textContent = `"${bad}" is not a passport code. Codes begin with WH and are engraved beside the clasp.`; return; }
       const set = Array.from(new Set(codes.map(norm))).sort();
       if (set.length < 2) { out.textContent = 'Those are the same chain. A concordance needs two different passports.'; return; }
       const h = (await sha(set.join('|'))).toUpperCase();

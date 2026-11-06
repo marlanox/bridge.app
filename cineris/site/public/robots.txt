@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://marlaknox.com/sitemap.xml
+Sitemap: https://withheld.house/sitemap.xml

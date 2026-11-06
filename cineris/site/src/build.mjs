@@ -12,13 +12,13 @@ import journal from './content/journal.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'public');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const NAV = [['collection.html', 'Collection'], ['vault.html', 'Vault'], ['house.html', 'House'], ['contact.html', 'Contact']];
+const NAV = [['collection.html', 'Collection'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['contact.html', 'Contact']];
 const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 
 const ORG = {
   '@type': ['Organization', 'OnlineStore'], '@id': CFG.url + '/#house', name: CFG.name, url: CFG.url + '/', email: CFG.email,
   founder: { '@type': 'Person', name: CFG.founder.name }, foundingDate: String(CFG.founder.since),
-  description: `Oxidized sterling silver chains made by hand to order by Marla Knox. Jewelry since ${CFG.founder.since}.`,
+  description: `Withheld. Oxidized sterling silver chains made by hand to order by ${CFG.founder.name}. Jewelry since ${CFG.founder.since}.`,
   address: { '@type': 'PostalAddress', addressLocality: CFG.city, addressRegion: CFG.region, addressCountry: 'US' },
   areaServed: 'Worldwide', sameAs: [CFG.instagramUrl]
 };
@@ -59,7 +59,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <a class="sr" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
-    <a class="mark" href="${R}index.html">Marla Knox</a>
+    <a class="mark" href="${R}index.html">${CFG.name}</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">${NAV.map(([u, n]) => `<a href="${R}${u}"${u === p.path ? ' aria-current="page"' : ''}>${n}</a>`).join('')}</nav>
   </div>
@@ -68,7 +68,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 ${fix(p.body)}
 </main>
 <footer class="site-foot">
-  <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Collection</a><a href="${R}vault.html">Vault</a><a href="${R}house.html">House</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
+  <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Collection</a><a href="${R}vault.html">Vault</a><a href="${R}legend.html">Legend</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
   <p class="cap">© <span data-year>2026</span> ${CFG.name} · Final sale</p>
 </footer>

@@ -89,7 +89,7 @@ export default [
     description: 'Why handmade, made-to-order jewelry is final sale: what goes into a custom chain, why it cannot be resold, and what protection buyers still have, including repairs and defects.',
     dek: 'It was made for one person. It cannot become someone else’s.',
     related: ['how-a-chain-is-bound', 'buying-a-heavy-silver-chain'],
-    body: `<p>Every Marla Knox chain is final sale, and we say so on every page where you could commission one. Here is why, plainly.</p>
+    body: `<p>Every Withheld chain is final sale, and we say so on every page where you could commission one. Here is why, plainly.</p>
 <h2>It is not stock</h2>
 <p>Nothing is made before you order it. Your chain is cut to your neck, with links in the order you chose, artifacts you selected, a code engraved for you and, often, your own hair or a tear sealed in glass. There is no second buyer for that chain.</p>
 <h2>What you are protected by</h2>
@@ -136,7 +136,7 @@ export default [
   {
     slug: 'silver-that-is-not-shiny', short: 'Why our silver is dark', kicker: 'Finish',
     title: 'Why Our Silver Is Dark: Against the Mirror Finish',
-    description: 'Why Marla Knox chains are oxidized and hand-burnished instead of polished to a mirror shine, and why bright rhodium-plated silver looks like steel.',
+    description: 'Why Withheld chains are oxidized and hand-burnished instead of polished to a mirror shine, and why bright rhodium-plated silver looks like steel.',
     dek: 'Mirror-polished silver looks like hardware. We wanted something that looks held.',
     related: ['oxidized-silver', 'how-to-care-for-oxidized-silver', 'balinese-silver-chains'],
     body: `<p>Much of the silver jewelry sold today is polished to a mirror and often plated with rhodium so that it never tarnishes. It is bright, even and permanent. It also looks almost exactly like stainless steel, which costs a tiny fraction as much.</p>
