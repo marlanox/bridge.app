@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Three — first 12 posts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&amp;family=Courier+Prime&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ECE8E0}a:hover{color:#B7B3AB}
+</style>
+</helmet>
+<div style="width: 1200px; height: 2480px; box-sizing: border-box; background: #000000; color: #ECE8E0; font-family: 'Cormorant Garamond', Garamond, serif; padding: 60px 50px; display: flex; flex-direction: column; gap: 40px">
+  <div style="display: flex; justify-content: space-between; align-items: baseline">
+    <div style="font-size: 26px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 400">The first twelve</div>
+    <div style="font-family: 'Courier Prime', monospace; font-size: 13px; color: #8C8880">post in this order · 1 is the newest · rhythm: word, object, seal</div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 20px">
+    <sc-for list="{{posts}}" as="p" hint-placeholder-count="12">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="aspect-ratio: 3 / 4; position: relative; overflow: hidden; background: #000; border: 1px solid #1A1918">
+          <sc-if value="{{p.photo}}" hint-placeholder-val="{{ true }}">
+            <img src="{{p.src}}" alt="{{p.alt}}" style="width: 100%; height: 100%; object-fit: cover; object-position: {{p.pos}}">
+          </sc-if>
+          <sc-if value="{{p.text}}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 28px; text-align: center; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 22px; line-height: 1.45; color: #ECE8E0; white-space: pre-line">{{p.line}}</div>
+          </sc-if>
+          <sc-if value="{{p.seal}}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; gap: 26px; align-items: center; justify-content: center; background: #ECE8E0">
+              <div style="width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 9px #4A080E, 0 18px 30px rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 92px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
+              <div style="font-family: 'Courier Prime', monospace; font-size: 16px; color: #3A3835">not before.</div>
+            </div>
+          </sc-if>
+          <span style="position: absolute; left: 12px; top: 10px; font-family: 'Courier Prime', monospace; font-size: 13px; color: #ECE8E0; background: rgba(0,0,0,.55); padding: 2px 6px">{{p.n}} · {{p.kind}}</span>
+        </div>
+        <div style="font-size: 17px; font-style: italic; line-height: 1.4; white-space: pre-line">{{p.caption}}</div>
+        <div style="font-family: 'Courier Prime', monospace; font-size: 12px; color: #8C8880; line-height: 1.45">{{p.how}}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":2480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const posts = [
+      { kind: 'Reel', text: true, line: 'Not for one year.', caption: 'He wrote three words on the envelope.\nShe waited.', how: '12 s. Black screen, the words type out, a chain drops into frame. Sound: one pen, one breath.' },
+      { kind: 'Photo', photo: true, src: '/_blob/3c98338cb1f83a3b405dd8b05ec313b2', alt: 'Raven chain', caption: 'Ravens. A separate collection.\nBy request.', how: 'Carousel of 3: whole chain, raven, garnet.' },
+      { kind: 'Photo', seal: true, caption: 'Every chain carries a letter.\nIt opens on the day you choose. Not before.', how: 'Pin this post. The house in one image.' },
+      { kind: 'Photo', photo: true, src: '/_blob/e2f7c31222cad9ddf396f2e0886b11d2', alt: 'Chain worn on black knit', pos: '50% 15%', caption: 'For any neck.', how: 'Worn shot. No face. Wool, skin, silver.' },
+      { kind: 'Carousel', text: true, line: 'Three sentences.\n\nShe has never\ntold anyone.', caption: 'The legend, in six slides.\nLink in bio.', how: '6 slides, one chapter each, typewriter on black.' },
+      { kind: 'Photo', photo: true, src: '/_blob/183d945c37b14173fcc8328cb624132a', alt: 'Sealed Chain No. I', caption: 'Sealed Chain No. I.\nSterling silver, blackened by hand.', how: 'Product, flat on black. Price only on the site.' },
+      { kind: 'Photo', photo: true, src: '/_blob/6428539970859eb4d03210a71badb61d', alt: 'Ravens collar', caption: 'Two cameos. An eagle. A raven.\nA letter that is yours.', how: 'Ravens No. VI. Second appearance of the collection.' },
+      { kind: 'Reel', text: true, line: 'TT-0007-K4M9\n\nthis letter opens\nin 94 days', caption: 'What the one who wears it sees.', how: 'Screen recording of the Vault: a code is typed, the countdown answers.' },
+      { kind: 'Photo', photo: true, src: '/_blob/3a3046d200032b97b8fbfbe22b99c063', alt: 'Wing detail', pos: '50% 72%', caption: 'Hand-chased. Every feather.', how: 'Macro. Let the oxidation read.' },
+      { kind: 'Photo', photo: true, src: '/_blob/b8f04fc565c08ea6069b9b1f9d1812e7', alt: 'Sealed Chain No. II', caption: 'Sealed Chain No. II.', how: 'Product, flat on black.' },
+      { kind: 'Photo', text: true, line: 'Revenge, 2011.', caption: 'Everything after that night is called The Three.', how: 'Type only. The first post ever: post it first.' },
+      { kind: 'Photo', photo: true, src: '/_blob/e679dba79d9a19079386d907f12129fb', alt: 'Sealed Collar No. IV', caption: 'Sealed Collar No. IV.\nThe heaviest thing we make.', how: 'Product, on black velvet.' }
+    ];
+    return { posts: posts.map((p, i) => ({ photo: false, text: false, seal: false, pos: '50% 50%', alt: '', ...p, n: String(i + 1).padStart(2, '0') })) };
+  }
+}
+</script>
+</body>
+</html>

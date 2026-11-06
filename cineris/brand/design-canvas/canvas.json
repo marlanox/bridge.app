@@ -1,0 +1,20 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-06T21:00:00Z" },
+  "title": "The Three — Brand World",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1600, "h": 1100, "title": "Identity" },
+    "Instagram.dc.html": { "x": 1680, "y": 0, "w": 390, "h": 1100, "title": "Instagram — phone" },
+    "Grid.dc.html": { "x": 2150, "y": 0, "w": 1200, "h": 2480, "title": "Instagram — the first 12" },
+    "Site.dc.html": { "x": 0, "y": 3000, "w": 1440, "h": 3400, "title": "Website — home", "expand": "fill" },
+    "Print.dc.html": { "x": 1520, "y": 3000, "w": 1600, "h": 1180, "title": "Cards, letter, box, tag" }
+  },
+  "order": ["Main.dc.html", "Instagram.dc.html", "Grid.dc.html", "Site.dc.html", "Print.dc.html"],
+  "notes": {
+    "t1": { "x": 0, "y": -300, "text": "The Three — Fine Jewelry. A chain that carries a letter.", "kind": "title1", "maxW": 3350 },
+    "t2": { "x": 0, "y": 2700, "text": "The site, and what arrives in the hand", "kind": "title1", "maxW": 3120 }
+  },
+  "designSystems": []
+}

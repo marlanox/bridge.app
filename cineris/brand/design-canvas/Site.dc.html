@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Three — home page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Courier+Prime&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+a{color:#ECE8E0}a:hover{color:#B7B3AB}
+</style>
+</helmet>
+<div style="background: #000000; color: #ECE8E0; font-family: 'Cormorant Garamond', Garamond, serif; font-size: 18px; line-height: 1.6">
+
+  <header style="max-width: 1280px; margin: 0 auto; padding: 28px 24px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between">
+    <a href="#top" aria-label="The Three, home"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 36px; width: auto; display: block"></a>
+    <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 32px; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">
+      <a href="#chains" style="text-decoration: none">Sealed Chains</a>
+      <a href="#vault" style="text-decoration: none">Vault</a>
+      <a href="#legend" style="text-decoration: none">Legend</a>
+      <a href="#ravens" style="text-decoration: none; color: #8C8880">Ravens</a>
+    </nav>
+  </header>
+
+  <section id="top" style="max-width: 1280px; margin: 0 auto; padding: 60px 24px 120px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; align-items: center">
+    <div style="display: flex; flex-direction: column; gap: 28px">
+      <p style="margin: 0; font-family: 'Courier Prime', monospace; font-size: 14px; color: #8C8880">fine jewelry · los angeles · since 2011</p>
+      <h1 style="margin: 0; font-weight: 300; font-style: italic; font-size: 4.4rem; line-height: 1.02">A chain that carries a letter.</h1>
+      <p style="margin: 0; max-width: 32rem; color: #B7B3AB">Sterling silver, blackened by hand, for any neck. A code by the clasp opens a letter you seal. On the day you choose. Not before.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center">
+        <a href="#chains" style="display: inline-flex; padding: 18px 32px; border: 1px solid #ECE8E0; background: #ECE8E0; color: #000; text-decoration: none; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">Choose a chain · from $2,400</a>
+        <a href="#vault" style="font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">Open a letter</a>
+      </div>
+    </div>
+    <div style="position: relative">
+      <img src="/_blob/183d945c37b14173fcc8328cb624132a" alt="Sealed Chain No. I on black" style="width: 100%; height: auto; display: block">
+      <div style="position: absolute; right: 6%; bottom: 8%; width: 132px; height: 132px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 8px #4A080E, 0 18px 34px rgba(0,0,0,.8); display: flex; align-items: center; justify-content: center"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 70px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
+    </div>
+  </section>
+
+  <section style="border-top: 1px solid #1A1918; border-bottom: 1px solid #1A1918; padding: 90px 24px; text-align: center">
+    <p style="margin: 0 auto; font-family: 'Courier Prime', monospace; font-size: 2.4rem; line-height: 1.3; max-width: 46rem">Not for one year.</p>
+    <p style="margin: 18px auto 0; font-style: italic; color: #8C8880; max-width: 36rem">Three words on an envelope, 2011. <a href="#legend">The legend</a>.</p>
+  </section>
+
+  <section id="chains" style="max-width: 1280px; margin: 0 auto; padding: 120px 24px; display: flex; flex-direction: column; gap: 48px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px">
+      <h2 style="margin: 0; font-weight: 300; font-size: 2rem; letter-spacing: 0.24em; text-transform: uppercase">Sealed Chains</h2>
+      <p style="margin: 0; font-family: 'Courier Prime', monospace; font-size: 14px; color: #8C8880">unisex · 925 · made by hand · 3–4 weeks</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px 20px">
+      <sc-for list="{{chains}}" as="c" hint-placeholder-count="4">
+        <a href="#chains" style="display: flex; flex-direction: column; gap: 14px; text-decoration: none">
+          <img src="{{c.src}}" alt="{{c.name}}" style="width: 100%; aspect-ratio: 1; object-fit: cover; display: block">
+          <span style="display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase"><span>{{c.name}}</span><span style="color: #8C8880">{{c.price}}</span></span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="vault" style="max-width: 1280px; margin: 0 auto; padding: 0 24px 120px; display: flex; flex-direction: column; gap: 40px">
+    <h2 style="margin: 0; font-weight: 300; font-size: 2rem; letter-spacing: 0.24em; text-transform: uppercase">How it works</h2>
+    <ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: #1A1918; border: 1px solid #1A1918">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+        <li style="background: #000; padding: 30px 26px; display: flex; flex-direction: column; gap: 10px">
+          <span style="font-family: 'Courier Prime', monospace; font-size: 13px; color: #8C8880">{{s.n}}</span>
+          <span style="font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase">{{s.t}}</span>
+          <span style="color: #B7B3AB">{{s.d}}</span>
+        </li>
+      </sc-for>
+    </ol>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: center; border: 1px solid #1A1918; padding: 36px">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: #8C8880">The Vault</span>
+        <label for="code" style="font-family: 'Courier Prime', monospace; font-size: 14px">Code by the clasp</label>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap"><input id="code" value="TT-0007-K4M9" style="flex: 1 1 200px; background: transparent; border: 0; border-bottom: 1px solid #3A3835; color: #ECE8E0; font-family: 'Courier Prime', monospace; font-size: 18px; padding: 8px 0"><a href="#vault" style="padding: 14px 26px; border: 1px solid #ECE8E0; text-decoration: none; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">Open</a></div>
+      </div>
+      <p style="margin: 0; font-size: 2rem; font-weight: 300; line-height: 1.2">This letter opens in <span style="color: #C23A44">94 days</span>.<br><span style="font-style: italic; font-size: 1.2rem; color: #8C8880">On June 21, 2027. Not before. Not for us either.</span></p>
+    </div>
+  </section>
+
+  <section id="legend" style="background: #ECE8E0; color: #111; padding: 120px 24px">
+    <div style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; align-items: center; text-align: center">
+      <div style="width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 7px #4A080E, 0 16px 26px rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 64px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
+      <p style="margin: 0; font-family: 'Courier Prime', monospace; font-size: 14px; color: #4A4744">The Legend · 2011</p>
+      <p style="margin: 0; font-size: 1.6rem; font-style: italic; line-height: 1.55">The night he left, he wrapped his chain around a sealed envelope and closed her hand over both. On it, three words: not for one year. She waited. Inside were three sentences. She has never told anyone what they were.</p>
+      <a href="#legend" style="color: #111; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">Read the legend</a>
+    </div>
+  </section>
+
+  <section id="ravens" style="max-width: 1280px; margin: 0 auto; padding: 120px 24px; display: flex; flex-direction: column; gap: 40px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px">
+      <h2 style="margin: 0; font-weight: 300; font-size: 2rem; letter-spacing: 0.24em; text-transform: uppercase">Ravens</h2>
+      <p style="margin: 0; font-family: 'Courier Prime', monospace; font-size: 14px; color: #8C8880">a separate collection · by request</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+      <img src="/_blob/3c98338cb1f83a3b405dd8b05ec313b2" alt="Ravens No. V" style="width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block">
+      <img src="/_blob/6428539970859eb4d03210a71badb61d" alt="Ravens No. VI" style="width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block">
+      <img src="/_blob/5c9a3721eb3905e01b32add1f34b783a" alt="Ravens No. VII" style="width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block">
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid #1A1918; padding: 80px 24px; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; color: #8C8880">
+    <img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 40px; width: auto">
+    <p style="margin: 0; font-family: 'Courier Prime', monospace; font-size: 14px">fine jewelry · los angeles</p>
+    <p style="margin: 0; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">Made by hand · 50% deposit · final sale · worldwide</p>
+    <a href="#top" style="font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase">The Three · Raw Couture →</a>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      chains: [
+        { name: 'No. I', price: '$2,600', src: '/_blob/183d945c37b14173fcc8328cb624132a' },
+        { name: 'No. II', price: '$2,400', src: '/_blob/b8f04fc565c08ea6069b9b1f9d1812e7' },
+        { name: 'No. III', price: '$2,500', src: '/_blob/0436d818f12a33f7c97e7a136dec5319' },
+        { name: 'No. IV', price: '$3,200', src: '/_blob/e679dba79d9a19079386d907f12129fb' }
+      ],
+      steps: [
+        { n: '01', t: 'Choose', d: 'The chain and its length. Hair or a tear, if you want.' },
+        { n: '02', t: 'Deposit', d: '50% begins the work.' },
+        { n: '03', t: 'Made by hand', d: 'Forged and blackened in Los Angeles. 3–4 weeks.' },
+        { n: '04', t: 'Seal', d: 'Words, a photograph or a film. The day it opens, up to a year.' },
+        { n: '05', t: 'Delivered', d: 'Insured, anywhere. The code is engraved by the clasp.' },
+        { n: '06', t: 'Opened', d: 'On the day. Not before.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

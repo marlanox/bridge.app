@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Three — Instagram profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Courier+Prime&amp;family=Inter:wght@400;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#E0F1FF}a:hover{color:#FFFFFF}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; background: #000000; color: #F5F5F5; font-family: Inter, -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 17px">thethree.jewelry
+      <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#3897F0"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4"/></svg>
+    </div>
+    <div style="display: flex; gap: 18px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.8" aria-hidden="true"><path d="M18 16V11a6 6 0 10-12 0v5l-2 2h16zM10 20a2 2 0 004 0"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#F5F5F5" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 22px; padding: 6px 16px 12px">
+    <div style="width: 86px; height: 86px; border-radius: 50%; background: #000; border: 1px solid #2E2E2E; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="Profile picture: the gothic 3" style="height: 52px; width: auto">
+    </div>
+    <div style="display: flex; justify-content: space-around; flex: 1; text-align: center">
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 16px">12</span><span style="font-size: 13px">posts</span></div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 16px">[N]</span><span style="font-size: 13px">followers</span></div>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 16px">3</span><span style="font-size: 13px">following</span></div>
+    </div>
+  </div>
+
+  <div style="padding: 0 16px; display: flex; flex-direction: column; gap: 2px; line-height: 1.35">
+    <span style="font-weight: 600">THE THREE — Fine Jewelry</span>
+    <span style="color: #A8A8A8">Jewelry/watches</span>
+    <span>A chain that carries a letter.</span>
+    <span>Opens on the day you choose. Not before.</span>
+    <span>Made by hand · Los Angeles · since 2011</span>
+    <span style="color: #A8A8A8">@thethree.couture</span>
+    <a href="https://thethree.jewelry" style="font-weight: 600; text-decoration: none">thethree.jewelry</a>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 14px 16px 6px">
+    <a href="#" style="height: 34px; border-radius: 8px; background: #0095F6; color: #FFFFFF; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center">Follow</a>
+    <a href="#" style="height: 34px; border-radius: 8px; background: #262626; color: #F5F5F5; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center">Message</a>
+  </div>
+
+  <div style="display: flex; gap: 14px; padding: 12px 16px 14px; overflow: hidden">
+    <sc-for list="{{highlights}}" as="h" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; width: 64px; flex-shrink: 0">
+        <div style="width: 62px; height: 62px; border-radius: 50%; border: 1px solid #3A3A3A; padding: 3px; box-sizing: border-box">
+          <img src="{{h.src}}" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #000">
+        </div>
+        <span style="font-size: 12px">{{h.label}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #262626; height: 44px">
+    <div style="display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #F5F5F5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></div>
+    <div style="display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8E8E8E" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></div>
+    <div style="display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8E8E8E" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px">
+    <sc-for list="{{tiles}}" as="t" hint-placeholder-count="12">
+      <div style="aspect-ratio: 3 / 4; position: relative; overflow: hidden; background: #000">
+        <sc-if value="{{t.photo}}" hint-placeholder-val="{{ true }}">
+          <img src="{{t.src}}" alt="{{t.alt}}" style="width: 100%; height: 100%; object-fit: cover; object-position: {{t.pos}}">
+        </sc-if>
+        <sc-if value="{{t.text}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 10px; text-align: center; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 11px; line-height: 1.4; color: #ECE8E0; white-space: pre-line; border: 1px solid #141414">{{t.line}}</div>
+        </sc-if>
+        <sc-if value="{{t.seal}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #ECE8E0">
+            <div style="width: 74px; height: 74px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #8E1A24 0%, #5E0B12 55%, #3A0509 100%); box-shadow: 0 0 0 4px #4A080E; display: flex; align-items: center; justify-content: center"><img src="/_blob/a09ae2ac9485de9ff58200c84800e074" alt="" style="height: 40px; width: auto; filter: invert(1); opacity: .55; mix-blend-mode: multiply"></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{t.reel}}" hint-placeholder-val="{{ false }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" style="position: absolute; top: 8px; right: 8px" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 9l5 3-5 3z" fill="#FFFFFF"/></svg>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = (src, alt, pos) => ({ photo: true, src, alt, pos: pos || '50% 50%' });
+    const T = (line, reel) => ({ text: true, line, reel: !!reel });
+    return {
+      highlights: [
+        { label: 'Letters', src: '/_blob/a09ae2ac9485de9ff58200c84800e074' },
+        { label: 'Chains', src: '/_blob/183d945c37b14173fcc8328cb624132a' },
+        { label: 'Vault', src: '/_blob/3e7babcd3e6ad8ada258d606810cbd9a' },
+        { label: 'Ravens', src: '/_blob/3c98338cb1f83a3b405dd8b05ec313b2' },
+        { label: 'Legend', src: '/_blob/2578323ec89fe0276facd0910cb04bd6' }
+      ],
+      tiles: [
+        T('Not for one year.', true),
+        P('/_blob/3c98338cb1f83a3b405dd8b05ec313b2', 'Raven chain'),
+        { seal: true },
+        P('/_blob/e2f7c31222cad9ddf396f2e0886b11d2', 'Chain worn on black knit', '50% 15%'),
+        T('Three sentences.\nShe has never\ntold anyone.'),
+        P('/_blob/183d945c37b14173fcc8328cb624132a', 'Sealed Chain No. I'),
+        P('/_blob/6428539970859eb4d03210a71badb61d', 'Ravens collar'),
+        T('TT-0007-K4M9\n\nthis letter opens\nin 94 days', true),
+        P('/_blob/3a3046d200032b97b8fbfbe22b99c063', 'Wing detail', '50% 72%'),
+        P('/_blob/b8f04fc565c08ea6069b9b1f9d1812e7', 'Sealed Chain No. II'),
+        T('Revenge, 2011.'),
+        P('/_blob/e679dba79d9a19079386d907f12129fb', 'Sealed Collar No. IV')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
