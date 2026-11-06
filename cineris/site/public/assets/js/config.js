@@ -1,1 +1,1 @@
-window.CINERIS_CONFIG={"email":"atelier@ordocineris.com","instagram":"@ordocineris","formEndpoint":""};
+window.CINERIS_CONFIG={"email":"atelier@kept.la","instagram":"@kept.la","formEndpoint":""};

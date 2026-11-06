@@ -34,6 +34,8 @@
     crystal:   { label: 'Rock crystal',        kind: 'artifact', price: 420, len: 2.8, note: 'A rough quartz point held in eight silver claws.' },
     reliquary: { label: 'Reliquary capsule',   kind: 'artifact', price: 560, len: 3.0, note: 'Sealed glass for a lock of hair, a tear on silk, a line of a letter, or earth.',
                  variants: { hair: 'Lock of hair', tear: 'A tear on silk', letter: 'A line of a letter', earth: 'Earth from a place' } },
+    tear:      { label: 'Tear',                kind: 'artifact', price: 450, len: 2.5, note: 'A tear dropped on paper changes its colour. We seal that paper in clear resin, in silver, forever.' },
+    voice:     { label: 'Voice',               kind: 'artifact', price: 520, len: 2.7, note: 'Ten seconds of a voice, engraved as its waveform. Tap a phone to the link to hear it.' },
     relic:     { label: 'Found relic',         kind: 'artifact', price: 420, len: 3.2, note: 'Cast in silver from an object you bring: a key, a stone, a shell.' },
     drop:      { label: 'Garnet drop',         kind: 'artifact', price: 280, len: 1.6, note: 'A garnet briolette that hangs to one side.' },
     // FIXED / RESTRICTED
@@ -127,6 +129,8 @@
     [[0, '#2a2726'], [0.6, '#0e0d0d'], [1, '#050505']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, bk));
     const di = el('radialGradient', { id: p + 'dia', cx: 0.35, cy: 0.3, r: 0.8 }, d);
     [[0, '#ffffff'], [0.4, '#dfe6ec'], [0.75, '#8d969e'], [1, '#3b4045']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, di));
+    const st = el('radialGradient', { id: p + 'stain', cx: 0.5, cy: 0.5, r: 0.6 }, d);
+    [[0, '#8c7fb0', 0.15], [0.7, '#6b5fa0', 0.55], [1, '#3e3470', 0.85]].forEach(([o, c, op]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': op }, st));
     const pr = el('radialGradient', { id: p + 'pearl', cx: 0.4, cy: 0.35, r: 0.8 }, d);
     [[0, '#ffffff'], [0.45, '#e9e4dc'], [0.8, '#a9a39a'], [1, '#6d6862']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, pr));
     const ash = el('radialGradient', { id: p + 'ash', cx: 0.5, cy: 0.5, r: 0.6 }, d);
@@ -246,12 +250,27 @@
       for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2 + Math.PI / 8; el('line', { x1: 0, y1: 0, x2: (Math.cos(a) * 0.36).toFixed(3), y2: (Math.sin(a) * 0.36).toFixed(3), stroke: '#ffffff', 'stroke-opacity': 0.35, 'stroke-width': 0.015 }, g); }
       el('circle', { cx: -0.1, cy: -0.12, r: 0.05, fill: '#fff' }, g);
     },
+    tear(g, p) {
+      jump(g, p, -1.12); jump(g, p, 1.12);
+      el('ellipse', { rx: 0.62, ry: 0.86, fill: `url(#${p}ag)` }, g);
+      el('ellipse', { rx: 0.5, ry: 0.74, fill: '#e9e3d6' }, g);
+      el('path', { d: 'M-0.05,-0.42C0.22,-0.38,0.34,-0.1,0.26,0.16C0.2,0.4,-0.08,0.5,-0.24,0.32C-0.4,0.12,-0.3,-0.2,-0.05,-0.42Z', fill: `url(#${p}stain)` }, g);
+      el('ellipse', { rx: 0.5, ry: 0.74, fill: '#ffffff', 'fill-opacity': 0.08 }, g);
+      el('ellipse', { cx: -0.18, cy: -0.42, rx: 0.14, ry: 0.07, fill: '#fff', 'fill-opacity': 0.55, transform: 'rotate(-30 -0.18 -0.42)' }, g);
+    },
+    voice(g, p) {
+      jump(g, p, -1.18); jump(g, p, 1.18);
+      el('rect', { x: -0.42, y: -0.95, width: 0.84, height: 1.9, rx: 0.42, fill: `url(#${p}ag)` }, g);
+      const h = [0.1, 0.25, 0.42, 0.3, 0.55, 0.38, 0.2, 0.48, 0.3, 0.15, 0.36, 0.22, 0.1];
+      h.forEach((v, i) => el('rect', { x: -v / 2 * 0.9, y: -0.66 + i * 0.1, width: v * 0.9, height: 0.045, rx: 0.02, fill: '#0e0e0e', 'fill-opacity': 0.75 }, g));
+      el('circle', { cy: 0.72, r: 0.07, fill: `url(#${p}au)` }, g);
+    },
     ash(g, p, it) {
       jump(g, p, -0.95); jump(g, p, 0.95);
       el('rect', { x: -0.42, y: -0.8, width: 0.84, height: 1.6, rx: 0.42, fill: `url(#${p}ag)` }, g);
       el('rect', { x: -0.3, y: -0.66, width: 0.6, height: 1.32, rx: 0.3, fill: `url(#${p}ash)`, filter: `url(#${p}glow)` }, g);
       for (let k = 0; k < 18; k++) el('circle', { cx: (Math.sin(k * 3.1) * 0.18).toFixed(3), cy: (Math.cos(k * 1.7) * 0.5).toFixed(3), r: 0.022, fill: k % 4 ? '#8a8078' : '#c44b2a', 'fill-opacity': 0.8 }, g);
-      el('text', { y: 0.09, 'text-anchor': 'middle', 'font-size': 0.28, 'font-family': 'Bodoni Moda, Didot, serif', fill: '#e8e0d2', 'fill-opacity': 0.85 }, g).textContent = it.numeral || 'I';
+      el('text', { y: 0.09, 'text-anchor': 'middle', 'font-size': 0.28, 'font-family': 'Bodoni Moda, Didot, serif', fill: '#e8e0d2', 'fill-opacity': 0.85 }, g).textContent = it.numeral || '01';
     },
     hallmark(g, p) {
       jump(g, p, -0.55);
@@ -262,7 +281,7 @@
       jump(g, p, -0.95); jump(g, p, 0.95);
       el('rect', { x: -0.3, y: -0.78, width: 0.6, height: 1.56, rx: 0.06, fill: `url(#${p}ag)` }, g);
       el('rect', { x: -0.24, y: -0.72, width: 0.48, height: 1.44, rx: 0.04, fill: 'none', stroke: '#111', 'stroke-opacity': 0.55, 'stroke-width': 0.02 }, g);
-      el('text', { transform: 'rotate(90)', y: 0.06, 'text-anchor': 'middle', 'font-size': 0.15, 'font-family': 'IBM Plex Mono, monospace', fill: '#121212' }, g).textContent = it.code || 'OC·I·07·K4M9';
+      el('text', { transform: 'rotate(90)', y: 0.06, 'text-anchor': 'middle', 'font-size': 0.15, 'font-family': 'IBM Plex Mono, monospace', fill: '#121212' }, g).textContent = it.code || 'KP·0007·K4M9';
     },
     clasp(g, p) {
       // toggle: engraved bar across a granulated ring

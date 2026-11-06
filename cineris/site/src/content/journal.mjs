@@ -2,18 +2,18 @@
 export default [
   {
     slug: 'the-break', short: 'The Break: our signature', kicker: 'The house',
-    title: 'The Break: How to Recognise an Ordo Cineris Chain',
-    description: 'The house grammar of Ordo Cineris: fine chain, the black Ash Link with one gold rivet, hand-forged weight on the left, and one object. Why a jewelry house needs a signature, not a logo.',
+    title: 'The Break: How to Recognise an KEPT Chain',
+    description: 'The signature of KEPT: fine chain, the black Mark with one gold point, hand-forged weight on the left, and one object. Why a jewelry house needs a signature, not a logo.',
     dek: 'Great houses are recognised without a logo. This is how ours is.',
     related: ['silver-with-diamonds', 'how-men-wear-silver-chains', 'mixing-gold-and-silver'],
     body: `<p>The jewelry that lasts is the jewelry you can identify from across a room with no logo in sight: a screw head on a bangle, an anchor link, a woven panther. We wanted one idea that strong, and we wanted it to come from how a chain is built, not from a symbol stamped on it.</p>
 <h2>The grammar</h2>
-<ol><li><b>Silence.</b> Fine 2.4 mm cable.</li><li><b>The Break.</b> The Ash Link: a matte black oval, a silver rim, a single rivet of 18k gold. Exactly one in every chain.</li><li><b>Weight.</b> Without transition, hand-forged 11 mm ovals. Eight to twelve centimetres, worn on the left, over the heart.</li><li><b>Silence again,</b> and then <b>one object,</b> two at most: an old-cut diamond, a ruby, a cameo, a baroque pearl, a capsule of hair.</li></ol>
+<ol><li><b>Silence.</b> Fine 2.4 mm cable.</li><li><b>The Break.</b> The Mark: a matte black oval, a silver rim, a single point of 18k gold. Exactly one in every chain.</li><li><b>Weight.</b> Without transition, hand-forged 11 mm ovals. Eight to twelve centimetres, worn on the left, over the heart.</li><li><b>Silence again,</b> and then <b>one object,</b> two at most: an old-cut diamond, a ruby, a cameo, a baroque pearl, a capsule of hair.</li></ol>
 <h2>What we will never make</h2>
-<p>No crosses. No skulls. No wings, daggers, serpents or fleurs-de-lis. These are borrowed symbols, and borrowed symbols make jewelry look like a costume. Our objects are either rare or personal, and the only symbol on the chain is the Ash Link itself.</p>
+<p>No crosses. No skulls. No wings, daggers, serpents or fleurs-de-lis. These are borrowed symbols, and borrowed symbols make jewelry look like a costume. Our objects are either rare or personal, and the only symbol on the chain is the Mark itself.</p>
 <h2>Why the weight sits on the left</h2>
 <p>Symmetry is decoration. Asymmetry is a decision. A chain whose mass falls to one side looks like it was made for one body and one way of standing, which it was.</p>
-<p>See it in the <a href="@/build.html">atelier</a>, where the Ash Link is already in place.</p>`
+<p>See it in the <a href="@/collection.html">atelier</a>, where the Mark is already in place.</p>`
   },
   {
     slug: 'silver-with-diamonds', short: 'Wearing silver with diamonds', kicker: 'Style',
@@ -25,9 +25,9 @@ export default [
 <h2>Why it works</h2>
 <p>Blackened silver absorbs light; a diamond throws it back. Next to oxidized metal, a diamond reads brighter and whiter than it does next to polished platinum. The contrast flatters both.</p>
 <h2>How to layer</h2>
-<ul><li><b>With a diamond tennis chain:</b> wear the tennis chain short, at 40–45 cm, and the silver chain longer, at 50–55 cm, so the fine section of ours runs beside the diamonds and the weight falls below them.</li><li><b>With studs or a watch:</b> nothing to do. The gold rivet of the Ash Link answers a gold watch; the black answers steel.</li><li><b>With a blazer:</b> let the chain sit inside the lapel, over a T-shirt or a fine knit. The weight shows; the fine chain disappears.</li></ul>
+<ul><li><b>With a diamond tennis chain:</b> wear the tennis chain short, at 40–45 cm, and the silver chain longer, at 50–55 cm, so the fine section of ours runs beside the diamonds and the weight falls below them.</li><li><b>With studs or a watch:</b> nothing to do. The gold point of the Mark answers a gold watch; the black answers steel.</li><li><b>With a blazer:</b> let the chain sit inside the lapel, over a T-shirt or a fine knit. The weight shows; the fine chain disappears.</li></ul>
 <h2>Or put the diamond on the chain</h2>
-<p>Our <a href="@/pieces/old-diamond-chain.html">Old Diamond</a> sets an antique old-cut stone in blackened silver, on the house chain.</p>`
+<p>Our <a href="@/pieces/old-diamond.html">Old Diamond</a> sets an antique old-cut stone in blackened silver, on the house chain.</p>`
   },
   {
     slug: 'how-men-wear-silver-chains', short: 'How to wear a silver chain', kicker: 'Style',
@@ -50,17 +50,17 @@ export default [
   {
     slug: 'custom-jewelry-melrose-los-angeles', short: 'Custom jewelry on Melrose', kicker: 'Los Angeles',
     title: 'Custom Silver Jewelry in Los Angeles: Inside an Atelier on Melrose Avenue',
-    description: 'Looking for custom handmade jewelry in Los Angeles? What happens at a private appointment at the Ordo Cineris atelier on Melrose Avenue, and how a chain is designed with you.',
+    description: 'Looking for custom handmade jewelry in Los Angeles? What happens at a private appointment at the KEPT atelier on Melrose Avenue, and how a chain is designed with you.',
     dek: 'A bench, black felt, and an hour with no screen.',
     related: ['how-a-chain-is-bound', 'how-men-wear-silver-chains', 'buying-a-heavy-silver-chain'],
     body: `<p>Melrose Avenue has dressed Los Angeles for decades: punk in the 1980s, vintage and streetwear since, the Sunday flea market on Fairfax. It is a street for people who want things nobody else has. That is why the atelier is here.</p>
 <h2>What an appointment is like</h2>
 <p>You sit at the bench. We lay lengths of cable, Balinese and Byzantine chain on black felt and you pick them up, because the decision is about weight, and weight cannot be shown on a website. We measure your neck over the sweater you will wear. We set the order of links together: plain first, then the cameo or the ruby, then texture, then the gold ring.</p>
-<p>If the chain is a gift, we help you write the first message for the <a href="@/vault.html">Vault</a> and choose the date it opens.</p>
+<p>If the chain is a gift, we help you write the first message for the <a href="@/message.html">message</a> and choose the date it opens.</p>
 <h2>How long it takes</h2>
 <p>Nine to twenty-one days at the bench. You can come back to watch the reliquary sealed and the last link closed.</p>
 <h2>How to come</h2>
-<p>By appointment only. <a href="@/apply.html">Request an audience</a> or see <a href="@/visit.html">the atelier</a>.</p>`
+<p>By appointment only. <a href="@/atelier.html">Request an audience</a> or see <a href="@/atelier.html">the atelier</a>.</p>`
   },
   {
     slug: 'meaningful-gift-for-him', short: 'A meaningful gift for him', kicker: 'Gifts',
@@ -70,32 +70,32 @@ export default [
     related: ['proposal-hidden-in-a-chain', 'heirloom-from-father-to-child', 'time-capsule-jewelry'],
     body: `<p>The hardest person to buy for is usually the one who says he wants nothing. What he means is that he does not want more <i>things</i>. A gift lands when it carries something only you could have given.</p>
 <h2>Three ways a chain can carry meaning</h2>
-<ul><li><b>A sealed message.</b> Every chain has a cell in the <a href="@/vault.html">Vault</a>. Write him a letter, record a video, and set it to open in a year, or on your tenth anniversary. He wears the chain knowing something is waiting.</li><li><b>A reliquary.</b> A lock of your hair, earth from the place you met, a line cut from your first letter, sealed in glass in one link.</li><li><b>A ring for each year.</b> Start with one 18k gold link. Add one every anniversary.</li></ul>
+<ul><li><b>A sealed message.</b> Every chain has a cell in the <a href="@/message.html">message</a>. Write him a letter, record a video, and set it to open in a year, or on your tenth anniversary. He wears the chain knowing something is waiting.</li><li><b>A reliquary.</b> A lock of your hair, earth from the place you met, a line cut from your first letter, sealed in glass in one link.</li><li><b>A ring for each year.</b> Start with one 18k gold link. Add one every anniversary.</li></ul>
 <h2>He will actually wear it</h2>
 <p>The chains are heavy, dark and without a pendant, made for men who do not wear jewelry. See <a href="@/journal/how-men-wear-silver-chains.html">how men wear them</a>.</p>`
   },
   {
     slug: 'proposal-hidden-in-a-chain', short: 'A proposal hidden in a chain', kicker: 'Rituals',
     title: 'A Proposal Hidden in a Chain: The Time-Locked Question',
-    description: 'An unusual marriage proposal idea: give a silver chain now with a sealed Vault message that opens on a chosen date and asks the question. How it works and how to plan it.',
+    description: 'An unusual marriage proposal idea: give a silver chain now with a sealed message message that opens on a chosen date and asks the question. How it works and how to plan it.',
     dek: 'Give the chain today. Ask the question in ninety days.',
     related: ['time-capsule-jewelry', 'meaningful-gift-for-him', 'heirloom-from-father-to-child'],
-    body: `<p>Some of our members have proposed without saying a word. They gave a chain on an ordinary evening, said nothing about the passport plate, and sealed a message in the Vault that opened weeks later. The message was the question.</p>
+    body: `<p>Some of our members have proposed without saying a word. They gave a chain on an ordinary evening, said nothing about the coded plate, and sealed a message in the sealed message that opened weeks later. The message was the question.</p>
 <h2>How it works</h2>
-<ol><li>Commission a chain as a gift. You receive a private link to its Vault cell.</li><li>Record the proposal: a letter, a photograph of the ring, a film. Choose the opening date, an anniversary, a birthday, the first day of spring.</li><li>Give the chain. Mention, if you like, that it has a cell and that it opens on that day.</li><li>On that date, the passport code opens the cell.</li></ol>
+<ol><li>Commission a chain as a gift. You receive a private link to its message cell.</li><li>Record the proposal: a letter, a photograph of the ring, a film. Choose the opening date, an anniversary, a birthday, the first day of spring.</li><li>Give the chain. Mention, if you like, that it has a cell and that it opens on that day.</li><li>On that date, the code code opens the cell.</li></ol>
 <h2>What people say about it</h2>
 <p>The wait is the best part. A wearer knows something is sealed and cannot know what. Couples tell us those weeks felt like a long held breath.</p>
-<p>Pair it with a <a href="@/pieces/concordance-pair.html">Concordance pair</a> if you want the answer to be sealed too.</p>`
+`
   },
   {
     slug: 'heirloom-from-father-to-child', short: 'An heirloom for a child', kicker: 'Heirlooms',
     title: 'An Heirloom From Father to Child, With a Letter That Opens at Eighteen',
-    description: 'How to create a modern heirloom: a handmade silver chain for your child with a sealed letter or video in the Vault that opens on their eighteenth or thirtieth birthday.',
+    description: 'How to create a modern heirloom: a handmade silver chain for your child with a sealed letter or video in the sealed message that opens on their eighteenth or thirtieth birthday.',
     dek: 'Say the thing now. Let them hear it when they are ready.',
     related: ['time-capsule-jewelry', 'proposal-hidden-in-a-chain', 'memorial-jewelry-with-hair'],
     body: `<p>Parents rarely say the important things at the right time. They say them too early, when a child cannot understand, or too late. A sealed message solves both problems.</p>
 <h2>How families use it</h2>
-<ul><li>A father commissions a chain, wears it for years, and seals a letter to open on his daughter’s eighteenth birthday, when the chain becomes hers.</li><li>A mother seals a video for her son’s wedding day.</li><li>Parents commission a <a href="@/pieces/concordance-pair.html">Concordance pair</a>: one chain for themselves, one for the child, and a shared cell that opens when both are presented together.</li></ul>
+<ul><li>A father commissions a chain, wears it for years, and seals a letter to open on his daughter’s eighteenth birthday, when the chain becomes hers.</li><li>A mother seals a video for her son’s wedding day.</li><li>Parents commission two chains on the same day: one for themselves, one for the child.</li></ul>
 <h2>Silver that lasts generations</h2>
 <p>Sterling silver, repaired for life, does not wear out in a lifetime. The oxidized finish ages honestly, so a chain worn by a father arrives in the child’s hands already looking like an heirloom.</p>`
   },
@@ -106,12 +106,12 @@ export default [
     dek: 'Keeping someone close enough to touch.',
     related: ['hair-jewelry-history', 'victorian-mourning-jewelry', 'heirloom-from-father-to-child'],
     body: `<p>Memorial jewelry is one of the oldest uses of jewelry. Victorian mourners wore hair under crystal; earlier generations wore skulls and inscriptions. Today, people ask for the same thing in a form they will actually wear every day.</p>
-<h2>What can go in the reliquary link</h2>
+<h2>What can go in the hair link</h2>
 <ul><li>A lock of hair, sealed as it is or tied with thread.</li><li>A small pinch of cremation ash.</li><li>A line cut from a letter in their handwriting.</li><li>Earth or sand from a place that belonged to them.</li></ul>
 <h2>How it is sealed</h2>
 <p>The material goes into a capsule of borosilicate glass between silver caps, sealed at the bench, if you wish while you watch. The glass is clear so it can be seen; the seal is permanent.</p>
 <h2>A message, too</h2>
-<p>Some families seal a message in the <a href="@/vault.html">Vault</a> that opens on the anniversary, written by the whole family. It is a way to say goodbye on a schedule you choose. See the <a href="@/pieces/reliquary-link.html">reliquary link</a>.</p>`
+<p>Some families seal a message in the <a href="@/message.html">message</a> that opens on the anniversary, written by the whole family. It is a way to say goodbye on a schedule you choose. See the <a href="@/pieces/hair-link.html">hair link</a>.</p>`
   },
   {
     slug: 'why-custom-jewelry-has-no-returns', short: 'Why custom jewelry has no returns', kicker: 'Buying',
@@ -119,31 +119,31 @@ export default [
     description: 'Why handmade, made-to-order jewelry is final sale: what goes into a custom chain, why it cannot be resold, and what protection buyers still have, including repairs and defects.',
     dek: 'It was made for one person. It cannot become someone else’s.',
     related: ['how-a-chain-is-bound', 'buying-a-heavy-silver-chain', 'custom-jewelry-melrose-los-angeles'],
-    body: `<p>Every Ordo Cineris chain is final sale, and we say so on every page where you could commission one. Here is why, plainly.</p>
+    body: `<p>Every KEPT chain is final sale, and we say so on every page where you could commission one. Here is why, plainly.</p>
 <h2>It is not stock</h2>
-<p>Nothing is made before you order it. Your chain is cut to your neck, with links in the order you chose, artifacts you selected, a passport engraved for you and, often, your own hair or a tear sealed in glass. There is no second buyer for that chain.</p>
+<p>Nothing is made before you order it. Your chain is cut to your neck, with links in the order you chose, artifacts you selected, a code engraved for you and, often, your own hair or a tear sealed in glass. There is no second buyer for that chain.</p>
 <h2>What you are protected by</h2>
 <ul><li>A 24-hour window to cancel after the deposit, before work begins, for a full refund.</li><li>Repair or remake of any defect in materials or workmanship.</li><li>Lifetime repair of workmanship.</li><li>A written description of materials, including stone treatments.</li></ul>
-<p>Those promises, and your legal rights, are in the <a href="@/policies.html">terms</a>.</p>`
+<p>Those promises, and your legal rights, are in the <a href="@/terms.html">terms</a>.</p>`
   },
   {
     slug: 'how-a-chain-is-bound', short: 'How a chain is bound', kicker: 'At the bench',
     title: 'Nine to Twenty-One Days: How a Handmade Silver Chain Is Bound',
-    description: 'How a handmade sterling silver chain is made at the bench: forging links, granulation, assembly, setting artifacts, oxidizing, burnishing, sealing the reliquary and engraving the passport.',
-    dek: 'From wire to a sealed passport, step by step.',
+    description: 'How a handmade sterling silver chain is made at the bench: forging links, granulation, assembly, setting artifacts, oxidizing, burnishing, sealing the reliquary and engraving the code.',
+    dek: 'From wire to a sealed code, step by step.',
     related: ['custom-jewelry-melrose-los-angeles', 'oxidized-silver', 'byzantine-chain'],
-    body: `<ol><li><b>Measuring.</b> Neck, sweater, preferred fall. The chain is planned link by link on paper.</li><li><b>Links.</b> Cable links are formed from sterling wire, closed and soldered. Balinese sections are stamped and granulated. Byzantine sections are woven ring by ring.</li><li><b>Artifacts.</b> The cameo is set in its bezel, the ruby closed in silver, the 18k ring forged to match.</li><li><b>Assembly.</b> Sections are joined in your order, with jump rings either side of every artifact so the chain moves freely.</li><li><b>Darkening.</b> The chain is oxidized to near black.</li><li><b>Burnishing.</b> Every high point is rubbed back by hand until it glows.</li><li><b>Sealing.</b> The reliquary link is filled and sealed, often with you present.</li><li><b>Passport.</b> The plate is engraved with the chain’s code and the Vault cell is opened for the giver.</li><li><b>The draw.</b> You draw your role in <a href="@/order.html">the Order</a>.</li></ol>
+    body: `<ol><li><b>Measuring.</b> Neck, sweater, preferred fall. The chain is planned link by link on paper.</li><li><b>Links.</b> Cable links are formed from sterling wire, closed and soldered. Balinese sections are stamped and granulated. Byzantine sections are woven ring by ring.</li><li><b>Artifacts.</b> The cameo is set in its bezel, the ruby closed in silver, the 18k ring forged to match.</li><li><b>Assembly.</b> Sections are joined in your order, with jump rings either side of every artifact so the chain moves freely.</li><li><b>Darkening.</b> The chain is oxidized to near black.</li><li><b>Burnishing.</b> Every high point is rubbed back by hand until it glows.</li><li><b>Sealing.</b> The hair link is filled and sealed, often with you present.</li><li><b>Passport.</b> The plate is engraved with the chain’s code and the sealed message cell is opened for the giver.</li></ol>
 <p>Most chains take nine days. Chains with several artifacts, or long Byzantine sections, take up to twenty-one.</p>`
   },
   {
-    slug: 'time-capsule-jewelry', short: 'Time-capsule jewelry', kicker: 'The Vault',
+    slug: 'time-capsule-jewelry', short: 'Time-capsule jewelry', kicker: 'The message',
     title: 'Time-Capsule Jewelry: Messages That Open on a Date You Choose',
-    description: 'What time-capsule jewelry is and how a sealed digital message linked to a physical piece works: passport codes, opening dates, what to seal and how to keep it private.',
+    description: 'What time-capsule jewelry is and how a sealed digital message linked to a physical piece works: code codes, opening dates, what to seal and how to keep it private.',
     dek: 'A physical key to a sealed digital letter.',
     related: ['proposal-hidden-in-a-chain', 'heirloom-from-father-to-child', 'meaningful-gift-for-him'],
     body: `<p>A time capsule is a promise to the future. Most are buried and forgotten. Ours is worn every day, so it is never forgotten, and it cannot be opened early.</p>
 <h2>How it works</h2>
-<p>Each chain carries a passport plate engraved with a unique code. That code is the key to one cell in the <a href="@/vault.html">Vault</a>. The person who commissions the chain seals text, photographs, audio or video inside and sets the opening date. Until then the wearer sees only a countdown.</p>
+<p>Each chain carries a coded plate engraved with a unique code. That code is the key to one cell in the <a href="@/message.html">message</a>. The person who commissions the chain seals text, photographs, audio or video inside and sets the opening date. Until then the wearer sees only a countdown.</p>
 <h2>Ideas for what to seal</h2>
 <ul><li>A letter to yourself, to open in exactly one year.</li><li>A recording of a grandparent telling a story, to open at a grandchild’s wedding.</li><li>Photographs of the day you gave the chain, to open on its tenth anniversary.</li><li>A confession.</li></ul>
 <h2>Privacy</h2>
@@ -161,12 +161,12 @@ export default [
 <h2>How women wear them</h2>
 <p>Often longer, at 70 cm, doubled into two strands; or a short 45 cm chain worn with a long one. The cameo is often moved to sit at the front.</p>
 <h2>Couples</h2>
-<p>Couples sometimes commission the same chain twice at different lengths, or a <a href="@/pieces/concordance-pair.html">Concordance pair</a> with passports that open a shared cell.</p>`
+<p>Couples sometimes commission the same chain twice, at different lengths.</p>`
   },
   {
     slug: 'silver-that-is-not-shiny', short: 'Why our silver is dark', kicker: 'Finish',
     title: 'Why Our Silver Is Dark: Against the Mirror Finish',
-    description: 'Why Ordo Cineris chains are oxidized and hand-burnished instead of polished to a mirror shine, and why bright rhodium-plated silver looks like steel.',
+    description: 'Why KEPT chains are oxidized and hand-burnished instead of polished to a mirror shine, and why bright rhodium-plated silver looks like steel.',
     dek: 'Mirror-polished silver looks like hardware. We wanted something that looks held.',
     related: ['oxidized-silver', 'how-to-care-for-oxidized-silver', 'balinese-silver-chains'],
     body: `<p>Much of the silver jewelry sold today is polished to a mirror and often plated with rhodium so that it never tarnishes. It is bright, even and permanent. It also looks almost exactly like stainless steel, which costs a tiny fraction as much.</p>

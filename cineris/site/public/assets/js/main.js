@@ -1,147 +1,119 @@
-/* ORDO CINERIS — page behaviour. No dependencies. */
+/* KEPT — page behaviour and scroll choreography.
+   Uses GSAP + ScrollTrigger when present; every section is fully readable without them. */
 (function () {
   'use strict';
   const CFG = window.CINERIS_CONFIG || {};
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const C = window.CinerisChain;
+  const G = window.gsap, ST = window.ScrollTrigger;
+  const motion = !reduce && G && ST;
+  if (motion) G.registerPlugin(ST);
 
   /* ---------- menu ---------- */
   const btn = $('.menu-btn'), nav = $('.nav');
   if (btn && nav) {
-    btn.addEventListener('click', () => {
-      const open = !nav.classList.contains('open');
-      nav.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Close' : 'Menu';
-      document.body.style.overflow = open ? 'hidden' : '';
-    });
-    $$('a', nav).forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); btn.textContent = 'Menu'; document.body.style.overflow = ''; }));
+    const set = open => { nav.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); btn.textContent = open ? 'Close' : 'Menu'; document.body.style.overflow = open ? 'hidden' : ''; };
+    btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+    $$('a', nav).forEach(a => a.addEventListener('click', () => set(false)));
   }
 
-  /* ---------- reveal: only things below the fold start lowered ---------- */
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
-    $$('.rise').forEach(n => { if (n.getBoundingClientRect().top > window.innerHeight) { n.classList.add('pre'); io.observe(n); } });
-  }
+  /* ---------- static chain drawings ---------- */
+  $$('svg[data-chain]').forEach(svg => {
+    try { C.render(svg, JSON.parse(svg.dataset.chain), { shape: svg.dataset.shape || 'loop', fixed: svg.dataset.fixed !== 'false', numeral: svg.dataset.numeral }); } catch (e) { /* leave empty */ }
+  });
 
-  const C = window.CinerisChain;
-
-  /* ---------- hero chain: hangs, sways, lengthens with scroll ---------- */
+  /* ---------- hero ---------- */
   const heroSvg = $('#hero-chain');
   if (heroSvg && C) {
-    C.render(heroSvg, [
-      { t: 'cable', cm: 9 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 7 }, { t: 'diamond' }, { t: 'cable', cm: 5 }
-    ], { shape: 'line', code: 'OC·I·07·K4M9', numeral: 'I' });
+    C.render(heroSvg, [{ t: 'cable', cm: 12 }, { t: 'ashlink' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 8 }, { t: 'tear' }, { t: 'cable', cm: 6 }], { shape: 'line', fixed: false });
     if (!reduce) {
-      let t0 = performance.now();
-      const tick = now => {
-        const t = (now - t0) / 1000;
-        const sc = Math.min(1, window.scrollY / 900);
-        heroSvg.style.transform = `rotate(${(Math.sin(t * 0.55) * 1.4 + sc * 4).toFixed(3)}deg)`;
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+      const t0 = performance.now();
+      const sway = now => { heroSvg.style.rotate = (Math.sin((now - t0) / 1800) * 1.2).toFixed(3) + 'deg'; requestAnimationFrame(sway); };
+      requestAnimationFrame(sway);
+    }
+    if (motion) {
+      G.from('.hero .word', { yPercent: 40, opacity: 0, duration: 1.6, ease: 'expo.out', delay: 0.1 });
+      G.from('.hero .under > *', { y: 20, opacity: 0, duration: 1.2, ease: 'expo.out', delay: 0.5, stagger: 0.1 });
+      G.from(heroSvg, { yPercent: -30, duration: 2.2, ease: 'expo.out' });
+      G.to('.hero .word', { yPercent: -30, opacity: 0.1, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+      G.to('.hero .stage', { scale: 1.35, yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     }
   }
 
-  /* ---------- ash: slow embers in the hero ---------- */
-  const cv = $('canvas.ash');
-  if (cv && !reduce) {
-    const ctx = cv.getContext('2d');
-    let W, H, parts = [];
-    const size = () => { const r = cv.getBoundingClientRect(); W = cv.width = r.width * devicePixelRatio; H = cv.height = r.height * devicePixelRatio; };
-    size(); window.addEventListener('resize', size);
-    for (let i = 0; i < 70; i++) parts.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.6 + 0.3, v: Math.random() * 0.00035 + 0.00008, d: Math.random() * Math.PI * 2, ember: Math.random() < 0.12 });
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-      for (const p of parts) {
-        p.y -= p.v; p.d += 0.004; p.x += Math.sin(p.d) * 0.00025;
-        if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-        ctx.beginPath();
-        ctx.arc(p.x * W, p.y * H, p.r * devicePixelRatio, 0, Math.PI * 2);
-        ctx.fillStyle = p.ember ? `rgba(208,37,63,${0.35 + 0.3 * Math.sin(p.d * 3)})` : 'rgba(196,190,179,0.18)';
-        ctx.fill();
-      }
-      requestAnimationFrame(draw);
-    };
-    requestAnimationFrame(draw);
+  /* ---------- the break: chain assembles link by link while pinned ---------- */
+  const brk = $('.break');
+  if (brk && C) {
+    const svg = $('svg', brk);
+    C.render(svg, [{ t: 'cable', cm: 9 }, { t: 'ashlink' }, { t: 'forged', cm: 9 }], { shape: 'line', fixed: false });
+    const links = $$('.oc-link', svg);
+    const words = $$('.words b', brk);
+    const ashIdx = links.findIndex(l => l.classList.contains('oc-ashlink'));
+    if (motion) {
+      words.forEach(w => w.classList.add('dim'));
+      links.forEach(l => { l.style.opacity = 0; });
+      ST.create({
+        trigger: brk, start: 'top top', end: '+=180%', pin: true, scrub: 0.6,
+        onUpdate: self => {
+          const n = Math.round(self.progress * links.length * 1.15);
+          links.forEach((l, i) => { l.style.opacity = i < n ? 1 : 0; });
+          const stage = n <= ashIdx ? 0 : n <= ashIdx + 1 ? 1 : 2;
+          words.forEach((w, i) => w.classList.toggle('dim', i !== stage));
+        }
+      });
+    }
   }
 
-  /* ---------- spine: a chain down the left edge that grows as you read ---------- */
-  const spine = $('.spine svg');
-  if (spine && C) {
-    const segs = [];
-    for (let i = 0; i < 5; i++) segs.push({ t: 'cable', cm: 26 }, { t: 'ashlink' }, { t: 'forged', cm: 10 });
-    C.render(spine, segs, { shape: 'line', fixed: false });
-    spine.setAttribute('preserveAspectRatio', 'xMidYMin slice');
-    const links = $$('.oc-link', spine);
-    const upd = () => {
-      const h = document.documentElement.scrollHeight - innerHeight;
-      const f = h > 0 ? scrollY / h : 0;
-      const n = Math.round(f * links.length);
-      links.forEach((l, i) => { l.style.opacity = i <= n ? 1 : 0.08; });
-    };
-    upd(); addEventListener('scroll', upd, { passive: true });
+  /* ---------- collection rail: horizontal on desktop ---------- */
+  const rail = $('.rail');
+  if (rail && motion && window.matchMedia('(min-width: 861px)').matches) {
+    const dist = () => rail.scrollWidth - window.innerWidth + 80;
+    G.to(rail, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.rail-wrap', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true } });
   }
 
-  /* ---------- anatomy: each step lights its part of the chain ---------- */
-  const stage = $('.anatomy .stage svg');
-  if (stage && C) {
-    const plan = [
-      { t: 'cable', cm: 5 }, { t: 'ashlink' }, { t: 'forged', cm: 7 }, { t: 'cable', cm: 4 }, { t: 'pearl' }, { t: 'cable', cm: 3 }
-    ];
-    C.render(stage, plan, { shape: 'line', code: 'OC·I·07·K4M9' });
-    const box = stage.parentElement;
-    const kinds = { 0: ['clasp'], 1: ['cable'], 2: ['ashlink'], 3: ['forged'], 4: ['pearl'], 5: ['hallmark', 'passport'] };
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return;
-      const k = kinds[e.target.dataset.step] || [];
-      box.classList.add('focusing');
-      $$('.oc-link', stage).forEach(l => l.classList.toggle('on', k.some(x => l.classList.contains('oc-' + x))));
-    }), { rootMargin: '-45% 0px -45% 0px' });
-    $$('.anatomy .step').forEach(s => io.observe(s));
+  /* ---------- reveals ---------- */
+  if (motion) {
+    $$('[data-reveal]').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight) return;
+      G.from(el, { y: 40, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    });
+    $$('.statement').forEach(el => {
+      G.fromTo(el, { opacity: 0.15 }, { opacity: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 35%', scrub: true } });
+    });
+    $$('.plate[data-parallax] > svg, .plate[data-parallax] > img').forEach(el => {
+      G.fromTo(el, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+    $$('.mem > *').forEach((el, i) => {
+      G.from(el, { y: 60, opacity: 0, duration: 1.1, delay: i * 0.08, ease: 'expo.out', scrollTrigger: { trigger: '.mem', start: 'top 80%' } });
+    });
   }
 
-  /* ---------- small decorative chains in plates ---------- */
-  $$('svg[data-chain]').forEach(svg => {
-    try { C.render(svg, JSON.parse(svg.dataset.chain), { shape: svg.dataset.shape || 'loop', code: svg.dataset.code, numeral: svg.dataset.numeral, fixed: svg.dataset.fixed !== 'false' }); } catch (e) { /* leave empty */ }
-  });
-
-  /* ---------- forms: send to endpoint if configured, else draft a message ---------- */
+  /* ---------- forms ---------- */
   $$('form[data-form]').forEach(form => {
     form.addEventListener('submit', async ev => {
       ev.preventDefault();
-      const out = $('.form-out', form) || form.appendChild(Object.assign(document.createElement('div'), { className: 'form-out' }));
+      const out = $('.form-out', form);
       const data = Object.fromEntries(new FormData(form).entries());
       data.form = form.dataset.form;
-      if (window.CinerisAtelier && form.dataset.form === 'commission') data.chain = window.CinerisAtelier.summary();
       const text = Object.entries(data).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join('\n');
       if (CFG.formEndpoint) {
         try {
           const r = await fetch(CFG.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
           if (!r.ok) throw new Error(r.status);
-          out.innerHTML = '<p class="notice ok">Received. The atelier answers every request by hand, usually within three days. If you are chosen, you will hear from us by the channel you gave.</p>';
+          out.innerHTML = '<p class="notice">Received. We reply by hand within three days.</p>';
           form.reset();
           return;
-        } catch (e) {
-          out.innerHTML = '<p class="notice err">The request could not be delivered just now. Please send the text below to the atelier instead.</p>';
-        }
-      } else out.innerHTML = '';
-      const note = document.createElement('div');
-      note.className = 'notice';
-      note.innerHTML = `<p>Copy this request and send it to <b class="mono">${CFG.email || 'atelier@ordocineris.com'}</b> or by direct message to <b class="mono">${CFG.instagram || '@ordocineris'}</b>.</p><textarea readonly rows="6" id="draft-${form.dataset.form}"></textarea><div class="actions"><button type="button" class="btn small ghost">Copy request</button></div>`;
-      $('textarea', note).value = text;
-      $('button', note).addEventListener('click', e => {
-        const ta = $('textarea', note);
-        const done = () => { e.target.textContent = 'Copied'; };
-        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); });
-        else ta.select();
+        } catch (e) { /* fall through to manual */ }
+      }
+      out.innerHTML = `<div class="notice"><p>Send this to <b>${CFG.email}</b> or DM <b>${CFG.instagram}</b>.</p><textarea readonly rows="5"></textarea><div class="actions"><button type="button" class="btn ghost">Copy</button></div></div>`;
+      const ta = $('textarea', out); ta.value = text;
+      $('button', out).addEventListener('click', e => {
+        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => { e.target.textContent = 'Copied'; }, () => ta.select()); else ta.select();
       });
-      out.appendChild(note);
     });
   });
 
-  /* ---------- year ---------- */
   $$('[data-year]').forEach(n => { n.textContent = new Date().getFullYear(); });
+  if (motion) window.addEventListener('load', () => ST.refresh());
 })();
