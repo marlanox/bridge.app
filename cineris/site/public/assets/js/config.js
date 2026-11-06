@@ -1,1 +1,1 @@
-window.CINERIS_CONFIG={"email":"studio@withheld.house","instagram":"@withheld.house","formEndpoint":"","vaultMaxDays":365};
+window.CINERIS_CONFIG={"email":"studio@thethree.jewelry","instagram":"@thethree.jewelry","formEndpoint":"","vaultMaxDays":365};

@@ -150,3 +150,8 @@ fieldset { min-width: 0; }
 .opt .choices label { white-space: nowrap; }
 @media (max-width: 900px) { .shots figure:nth-child(n+3) { display: none; } }
 .opt .choices { position: relative; } .opt input[type=radio] { left: 0; top: 0; width: 1px; height: 1px; margin: 0; }
+
+/* the sign of the three (placeholder blackletter until the house logo file arrives) */
+.g3 { font-family: 'New Rocker', 'Old English Text MT', serif; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.mark .g3 { font-size: 1.9rem; line-height: 1; display: block; }
+.hero3 { display: block; font-size: clamp(7rem, 4rem + 14vw, 15rem); line-height: .9; }

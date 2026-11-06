@@ -38,7 +38,7 @@ export default [
     related: ['how-to-tell-real-silver', 'oxidized-silver', 'buying-a-heavy-silver-chain'],
     body: `<p><b>925</b> means the metal is 925 parts per thousand pure silver, or 92.5%. The other 7.5% is almost always copper. Pure silver is too soft to hold a clasp or keep a link closed; copper gives it strength while keeping silver’s colour.</p>
 <h2>What US law requires</h2>
-<p>In the United States the National Gold and Silver Stamping Act governs quality marks. An item may be marked “sterling” or “925” only if it is at least 92.5% silver, and a maker who stamps a quality mark must also stamp a registered trademark, so that someone is accountable for the claim. That is why every Withheld chain carries both the 925 stamp and the house mark.</p>
+<p>In the United States the National Gold and Silver Stamping Act governs quality marks. An item may be marked “sterling” or “925” only if it is at least 92.5% silver, and a maker who stamps a quality mark must also stamp a registered trademark, so that someone is accountable for the claim. That is why every The Three chain carries both the 925 stamp and the house mark.</p>
 <h2>Hallmarks elsewhere</h2>
 <p>In the United Kingdom, hallmarks are applied by independent assay offices, and sterling is shown with the lion passant. Many European countries have their own symbols. The US has no mandatory assay office; the maker’s mark is the guarantee.</p>
 <h2>Our tag</h2>
@@ -184,6 +184,6 @@ export default [
     body: `<ul><li><b>Look for marks.</b> 925, STERLING or STER plus a maker’s mark. A quality mark without a maker’s mark is a warning sign in the US.</li><li><b>Magnet.</b> Silver is not magnetic. If a strong magnet grabs the chain, it is steel or nickel underneath.</li><li><b>Tarnish.</b> Real silver darkens over time. Steel and rhodium-plated chains stay mirror-bright forever.</li><li><b>Weight.</b> Silver is dense. A massive-looking chain that feels light is probably hollow or plated.</li><li><b>Ice.</b> Silver conducts heat extremely well; ice placed on it melts unusually fast.</li><li><b>Acid test.</b> A jeweler can test a hidden spot with silver testing solution. Ask before they do it on oxidized pieces.</li></ul>
 <h2>Red flags</h2>
 <p>“Silver tone,” “silver plated,” “German silver” (which contains no silver) and “stainless” are not sterling. Prices far below the metal value are not bargains.</p>
-<p>Every Withheld chain carries a stamped clasp, a 925 <a href="@/codex/sterling-silver-925-hallmarks.html">hallmark tag</a> and a code you can verify in the <a href="@/vault.html">message</a>.</p>`
+<p>Every The Three chain carries a stamped clasp, a 925 <a href="@/codex/sterling-silver-925-hallmarks.html">hallmark tag</a> and a code you can verify in the <a href="@/vault.html">message</a>.</p>`
   }
 ];

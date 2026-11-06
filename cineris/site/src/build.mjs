@@ -18,7 +18,7 @@ const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 const ORG = {
   '@type': ['Organization', 'OnlineStore'], '@id': CFG.url + '/#house', name: CFG.name, url: CFG.url + '/', email: CFG.email,
   founder: { '@type': 'Person', name: CFG.founder.name }, foundingDate: String(CFG.founder.since),
-  description: `Withheld. Oxidized sterling silver chains made by hand to order by ${CFG.founder.name}. Jewelry since ${CFG.founder.since}.`,
+  description: `The Three Fine Jewelry. Oxidized sterling silver chains made by hand to order by ${CFG.founder.name}. Jewelry since ${CFG.founder.since}.`,
   address: { '@type': 'PostalAddress', addressLocality: CFG.city, addressRegion: CFG.region, addressCountry: 'US' },
   areaServed: 'Worldwide', sameAs: [CFG.instagramUrl]
 };
@@ -27,7 +27,7 @@ function layout(p) {
   const R = '../'.repeat(p.path.split('/').length - 1);
   const fix = s => (s || '').replace(/(href|src)="@\//g, `$1="${R}`).replace(/url\(@\//g, `url(${R}`);
   const canonical = CFG.url + '/' + (p.path === 'index.html' ? '' : p.path);
-  const title = p.path === 'index.html' ? CFG.name : `${p.title} — ${CFG.name}`;
+  const title = p.path === 'index.html' ? `${CFG.name} — ${CFG.line}` : `${p.title} — ${CFG.name}`;
   const graph = [ORG, { '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description: p.description }];
   if (p.crumbs) graph.push({ '@type': 'BreadcrumbList', itemListElement: [{ name: CFG.name, url: CFG.url + '/' }, ...p.crumbs.map(([n, u]) => ({ name: n, url: CFG.url + '/' + u }))].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })) });
   if (p.schema) graph.push(...[].concat(p.schema));
@@ -51,7 +51,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <link rel="icon" href="${R}assets/img/mark.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=New+Rocker&display=swap">
 <link rel="stylesheet" href="${R}assets/css/main.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>
 </head>
@@ -59,7 +59,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <a class="sr" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
-    <a class="mark" href="${R}index.html">${CFG.name}</a>
+    <a class="mark" href="${R}index.html" aria-label="${CFG.name} ${CFG.line}"><span class="g3" aria-hidden="true">3</span></a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">${NAV.map(([u, n]) => `<a href="${R}${u}"${u === p.path ? ' aria-current="page"' : ''}>${n}</a>`).join('')}</nav>
   </div>
@@ -69,6 +69,8 @@ ${fix(p.body)}
 </main>
 <footer class="site-foot">
   <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Collection</a><a href="${R}vault.html">Vault</a><a href="${R}legend.html">Legend</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
+  <p class="g3" style="font-size:2.4rem;line-height:1" aria-hidden="true">3</p>
+  <p class="cap">${CFG.name} · ${CFG.line}</p>
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
   <p class="cap">© <span data-year>2026</span> ${CFG.name} · Final sale</p>
 </footer>

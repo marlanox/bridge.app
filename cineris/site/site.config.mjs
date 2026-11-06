@@ -1,11 +1,12 @@
 // MARLA KNOX — everything that changes per launch lives here.
 // Edit, then run:  node src/build.mjs
 export default {
-  name: 'Withheld',
-  url: 'https://withheld.house',          // check availability: withheld.house / withheldhouse.com
-  email: 'studio@withheld.house',
-  instagram: '@withheld.house',
-  instagramUrl: 'https://www.instagram.com/withheld.house/',
+  name: 'The Three',
+  line: 'Fine Jewelry',
+  url: 'https://thethree.jewelry',        // check availability: thethree.jewelry / thethreejewelry.com
+  email: 'studio@thethree.jewelry',
+  instagram: '@thethree.jewelry',
+  instagramUrl: 'https://www.instagram.com/thethree.jewelry/',
   city: 'West Hollywood',
   region: 'CA',
   // Studio is online-only for now: no public address, worldwide delivery.

@@ -1,4 +1,4 @@
-# WITHHELD
+# THE THREE — Fine Jewelry
 
 Сайт и бренд-документы ювелирного дома с Melrose Avenue, Лос-Анджелес.
 

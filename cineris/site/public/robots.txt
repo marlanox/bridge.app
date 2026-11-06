@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://withheld.house/sitemap.xml
+Sitemap: https://thethree.jewelry/sitemap.xml

@@ -2,16 +2,16 @@
 const P = [
   { slug: 'no-i', name: 'No. I', price: 2600, cover: 'necklace-wing', shots: ['necklace-wing', 'worn-turtleneck', 'wing-detail', 'toggle-cameo-detail', 'bone-cameo-detail'],
     line: 'Wing, garnet, cross, cast relic, cameo in gold.',
-    desc: 'Withheld No. I: oxidized 925 sterling silver chain with a hand-chased wing, natural garnet, small cross, cast relic, shell cameo in an 18k gold bezel, Bali bead and two solid 18k gold links. Made to order.' },
+    desc: 'The Three No. I: oxidized 925 sterling silver chain with a hand-chased wing, natural garnet, small cross, cast relic, shell cameo in an 18k gold bezel, Bali bead and two solid 18k gold links. Made to order.' },
   { slug: 'no-ii', name: 'No. II', price: 2400, cover: 'necklace-heart', shots: ['necklace-heart', 'cameo-detail', 'gold-ring-detail'],
     line: 'Wing, garnet, heart, relic, cameo in gold.',
-    desc: 'Withheld No. II: oxidized 925 sterling silver chain with wing, natural garnet, cross, beaded heart, cast relic and shell cameo in an 18k gold bezel. Made to order.' },
+    desc: 'The Three No. II: oxidized 925 sterling silver chain with wing, natural garnet, cross, beaded heart, cast relic and shell cameo in an 18k gold bezel. Made to order.' },
   { slug: 'no-iii', name: 'No. III', price: 2500, cover: 'necklace-serpent', shots: ['necklace-serpent', 'worn-crewneck', 'ruby-crystal-detail', 'crystal-detail'],
     line: 'Serpent, garnet drop, horn with gold, cameo.',
-    desc: 'Withheld No. III: long oxidized 925 sterling silver chain with serpent, garnet drop, cast horn wrapped in 18k gold, shell cameo and Bali bead. Made to order.' },
+    desc: 'The Three No. III: long oxidized 925 sterling silver chain with serpent, garnet drop, cast horn wrapped in 18k gold, shell cameo and Bali bead. Made to order.' },
   { slug: 'no-iv', name: 'No. IV', price: 3200, cover: 'collar-relics', shots: ['collar-relics', 'pearl-detail'],
     line: 'Collar. Wing, claw, baroque pearls, two cameos, heart.',
-    desc: 'Withheld No. IV: heavy oxidized 925 sterling silver collar with wing, cast claw and horn, baroque pearls in gold, two shell cameos and a beaded heart. Made to order.' }
+    desc: 'The Three No. IV: heavy oxidized 925 sterling silver collar with wing, cast claw and horn, baroque pearls in gold, two shell cameos and a beaded heart. Made to order.' }
 ];
 
 const money = n => '$' + n.toLocaleString('en-US');
