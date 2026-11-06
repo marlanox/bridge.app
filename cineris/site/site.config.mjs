@@ -14,6 +14,14 @@ export default {
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Melrose+Avenue+Los+Angeles+CA+90046',
   // Formspree / Basin endpoint so requests arrive by email. Empty = visitor copies the request.
   formEndpoint: '',
-  edition: { no: '01', title: 'Ash', chains: 10, status: 'Applications open' },
-  priceFrom: 1800
+  edition: { no: '01', title: 'Ash', chains: 10, status: 'Applications open', burned: false }, // set burned: true only after the letter has actually been burned
+  priceFrom: 1800,
+  // The founder's real history. Fill in name and country; leave '' to omit from the site.
+  founder: {
+    name: '',            // e.g. 'Anna Ivanova'
+    country: '',         // where Revenge was founded in 2011
+    since: 2011,
+    school: 'Paris',     // fashion design studies in France
+    labels: ['Revenge', '8 Million People', 'The Three']
+  }
 };

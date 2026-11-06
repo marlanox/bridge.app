@@ -84,6 +84,9 @@
     $$('.plate[data-parallax] > svg, .plate[data-parallax] > img').forEach(el => {
       G.fromTo(el, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
+    $$('.ph img').forEach(el => {
+      G.fromTo(el, { scale: 1.12, yPercent: -4 }, { scale: 1, yPercent: 4, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
     $$('.mem > *').forEach((el, i) => {
       G.from(el, { y: 60, opacity: 0, duration: 1.1, delay: i * 0.08, ease: 'expo.out', scrollTrigger: { trigger: '.mem', start: 'top 80%' } });
     });

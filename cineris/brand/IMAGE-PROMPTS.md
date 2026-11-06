@@ -1,41 +1,33 @@
-# Съёмка и генерация изображений
+# KEPT — картинки для сайта
 
-Сейчас вся графика цепей на сайте нарисована кодом (SVG, `site/src/assets/js/chain.js`), поэтому сайт выглядит законченным без фото. Когда появятся фото, кладите их сюда:
+Генерируй в любом чате с картинками (ChatGPT, Gemini, Midjourney) и присылай мне. Если файл назван как в первой колонке (`hero.jpg`, `ruby.jpg` и т.д.), сайт сам поставит его вместо рисованной цепи: файлы кладутся в `site/src/assets/img/gen/`.
 
+**Общий стиль: добавляй в конец каждого промпта**
 ```
-site/src/assets/img/og.jpg                     — 1200×630, превью для соцсетей и Google
-site/src/assets/img/pieces/<slug>.jpg          — фото каждой модели (имена = slug в pieces.mjs)
-```
-
-## Список кадров (реальная съёмка)
-
-1. **Hero:** мужчина в чёрном кашемировом свитере, лицо обрезано по подбородок, цепь 55 см лежит на свитере. Один тёплый источник света слева.
-2. **Макро звеньев:** балийская грануляция, камея, рубин, золотое кольцо. Чёрный бархат, глубина резкости 2–3 мм.
-3. **Цепь целиком в форме капли** на чёрном войлоке, вид сверху (как в конструкторе).
-4. **Руки за верстаком:** клещи, горелка, плетение.
-5. **Реликварий:** прядь волос в стекле на просвет.
-6. **Сожжение:** медальон, записка, огонь, пепел в серебряной чаше.
-7. **Дверь ателье на Melrose** ночью.
-8. **Двое с двумя цепями** (Конкорданс): руки переплетены, цепи рядом.
-
-## Промпты для генерации (по канону дома)
-
-Главное в каждом кадре: **тонкая цепь → чёрное овальное звено с золотой точкой → резко массивные кованые овалы**, вес на левой стороне тела. Без крестов, черепов, крыльев, змей.
-
-```
-Editorial luxury jewelry photograph: a sterling silver necklace that is a very fine delicate 2mm cable chain on one side and abruptly becomes massive hand-forged hammered oval links (11mm) on the wearer's left side; exactly at the transition, one matte black oval link with a polished silver rim and a single small 18k gold rivet in its centre; worn by a man in a navy tailored blazer over a plain white T-shirt, face cropped at the jaw, soft window light, dark background, oxidized silver with burnished highlights, not shiny chrome, no pendant, no crosses, no skulls, 85mm, f/2.8, film grain --ar 4:5
-```
-```
-Same necklace layered with a thin diamond tennis necklace on a woman's bare collarbone, black silk top, chiaroscuro light, quiet luxury, editorial, Vogue, --ar 4:5
-```
-```
-Macro photograph of a single matte black oval chain link with a polished silver rim and one tiny 18k gold rivet at its centre, between fine silver cable chain and a heavy hammered silver oval link, on black velvet, rim light, extreme detail --ar 1:1
-```
-```
-Overhead flat lay on black felt: an oxidized sterling silver necklace in a teardrop shape, fine chain on one side, three massive hammered oval links on the other, one matte black link with a gold dot at the transition, one antique old-mine cut diamond in a blackened bezel opposite, toggle clasp at top, museum lighting --ar 4:5
-```
-```
-A Victorian black enamel mourning locket open on a dark wooden jeweler's bench, a folded handwritten note burning in a small silver dish beside it, ash and embers, candlelight, cinematic --ar 16:9
+Editorial luxury jewelry photograph, oxidized sterling silver with burnished highlights, not shiny chrome, deep black background, one soft side light, shallow depth of field, film grain, quiet luxury, Vogue Italia, no text, no logo, no crosses, no skulls, no wings
 ```
 
-> ⚠️ Сгенерированные картинки годятся для настроения (Сожжение, ужин, атмосфера). **Конкретные изделия на продажу показывайте только на реальных фото**: ИИ-картинка, выданная за фото товара, вводит покупателя в заблуждение и даёт повод для претензий.
+**Сама цепь (вставляй вместо слов CHAIN):**
+```
+a sterling silver necklace: a very fine delicate 2mm cable chain that abruptly becomes three massive hand-forged hammered oval links (11mm) on the wearer's left side; exactly at the transition one matte black oval link with a polished silver rim and a tiny 18k gold dot in its centre
+```
+
+| Файл | Формат | Промпт |
+|---|---|---|
+| `hero.jpg` | 4:5 | CHAIN, worn by a man in a black tailored blazer over a plain white T-shirt, face cropped at the jaw |
+| `break.jpg` | 4:5 | overhead flat lay on black felt, CHAIN, arranged in a teardrop shape, toggle clasp at top |
+| `ruby.jpg` | 4:5 | flat lay on black felt, CHAIN, with one small natural ruby in a closed silver bezel on the fine side |
+| `old-diamond.jpg` | 4:5 | flat lay on black felt, CHAIN, with one antique old-mine cut diamond set in blackened silver on the fine side |
+| `pearl.jpg` | 4:5 | flat lay on black felt, CHAIN, with one irregular baroque pearl in a small gold-rimmed cup on the fine side |
+| `tear.jpg` | 4:5 | flat lay on black felt, CHAIN, with one small silver oval frame of clear resin holding white paper with a faint violet tear stain |
+| `voice.jpg` | 4:5 | flat lay on black felt, CHAIN, with one polished silver oval link engraved with a sound waveform |
+| `the-mark.jpg` | 1:1 | extreme macro of a single matte black oval chain link with a polished silver rim and one tiny 18k gold dot at its centre, between fine cable chain and a heavy hammered oval link, black velvet |
+| `tear-link.jpg` | 1:1 | macro of a tear falling onto white blotting paper, the paper turning violet where it lands, next to a small silver oval frame of clear resin |
+| `voice-link.jpg` | 1:1 | macro of a silver oval link engraved with a sound waveform, a phone touching it, black background |
+| `hair-link.jpg` | 1:1 | macro of a lock of brown hair sealed in a clear glass capsule with silver caps on a fine silver chain |
+| `diamonds.jpg` | 4:5 | CHAIN, layered with a thin diamond tennis necklace on a woman's bare collarbone, black silk top |
+| `tee.jpg` | 4:5 | CHAIN, worn over a heavy white T-shirt by a woman with short hair, cropped at the lips, daylight |
+| `atelier.jpg` | 16:9 | a jeweler's hands hammering a silver oval link on an anvil, dark workshop on Melrose Avenue Los Angeles, one lamp |
+| `edition.jpg` | 4:5 | an old black enamel locket open on a dark bench, a folded handwritten letter burning in a small silver dish beside it, ash and embers |
+
+> ⚠️ Сгенерированные картинки подходят для настроения и как временные. Перед продажами изделия должны быть на настоящих фото: продавать вещь по картинке, которая на неё не похожа, рискованно.

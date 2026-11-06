@@ -58,16 +58,16 @@ const P = [
 P.forEach(x => { x.priceLabel = x.priceLabel || ('$' + x.price.toLocaleString('en-US') + (x.group === 'chain' ? '' : ' as a link')); });
 export default P.map(x => ({
   ...x,
-  page: ({ CFG }) => ({
+  page: ({ CFG, has }) => ({
     path: `pieces/${x.slug}.html`,
     title: `${x.name}${x.group === 'chain' ? ' — sterling silver chain' : ''}`,
     description: x.desc,
     crumbs: [[x.group === 'memory' ? 'Memory' : 'Collection', x.group === 'memory' ? 'memory.html' : 'collection.html'], [x.name, `pieces/${x.slug}.html`]],
-    schema: { '@type': 'Product', name: `${CFG.name} ${x.name}`, description: x.desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver', image: `${CFG.url}/assets/img/og.jpg`,
+    schema: { '@type': 'Product', name: `${CFG.name} ${x.name}`, description: x.desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver', image: `${CFG.url}/assets/img/${has(x.slug) ? 'gen/' + x.slug : 'og'}.jpg`,
       ...(x.price ? { offers: { '@type': 'Offer', price: x.price, priceCurrency: 'USD', availability: 'https://schema.org/MadeToOrder', url: `${CFG.url}/pieces/${x.slug}.html`,
         hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } } : {}) },
     body: `<section class="wrap split" style="align-items:start;padding-top:clamp(110px,14vw,170px);padding-bottom:140px">
-<div class="plate" data-parallax style="aspect-ratio:4/5"><svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-label="${x.name}"></svg></div>
+<div class="plate" data-parallax style="aspect-ratio:4/5">${has(x.slug) ? `<img src="@/assets/img/gen/${x.slug}.jpg" alt="KEPT ${x.name}">` : `<svg data-chain='${JSON.stringify(x.segs)}' data-shape="${x.shape || 'loop'}" data-fixed="${x.fixed === false ? 'false' : 'true'}" aria-label="${x.name}"></svg>`}</div>
 <div class="stack" style="position:sticky;top:110px">
   <p class="cap">${x.group === 'chain' ? 'Chain' : x.group === 'memory' ? 'Memory' : x.group === 'house' ? 'KEPT' : 'Object'}</p>
   <h1 style="font-size:clamp(2.4rem,1.4rem+4vw,4.8rem);line-height:.95;font-weight:500;letter-spacing:-.02em">${x.name}</h1>

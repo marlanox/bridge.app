@@ -12,12 +12,12 @@ import journal from './content/journal.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'public');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const NAV = [['collection.html', 'Collection'], ['memory.html', 'Memory'], ['message.html', 'Message'], ['atelier.html', 'Atelier']];
+const NAV = [['collection.html', 'Collection'], ['memory.html', 'Memory'], ['house.html', 'House'], ['atelier.html', 'Atelier']];
 const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 
 const STORE = {
   '@type': 'JewelryStore', '@id': CFG.url + '/#store', name: CFG.name, url: CFG.url + '/', email: CFG.email,
-  description: 'Handmade 925 sterling silver chains made to order on Melrose Avenue, Los Angeles. Fine chain that breaks into hand-forged weight at one black link with a gold rivet. Memory links for a tear, a voice or a lock of hair.',
+  foundingDate: String(CFG.founder.since), description: 'Handmade 925 sterling silver chains made to order on Melrose Avenue, Los Angeles. Jewelry by the founder since 2011. Fine chain that breaks into hand-forged weight at one black link with a gold rivet. Memory links for a tear, a voice or a lock of hair.',
   priceRange: '$$$$',
   address: { '@type': 'PostalAddress', streetAddress: CFG.address.street, addressLocality: CFG.address.city, addressRegion: CFG.address.region, postalCode: CFG.address.zip, addressCountry: CFG.address.country },
   geo: { '@type': 'GeoCoordinates', latitude: CFG.address.lat, longitude: CFG.address.lng },
@@ -78,12 +78,12 @@ ${fix(p.body)}
   <div class="wrap">
     <div class="cols">
       <div class="stack"><p>${CFG.address.street}, ${CFG.address.city}<br><span class="mute">${CFG.hours}</span></p><p class="mute">${CFG.email}<br><a href="${CFG.instagramUrl}" rel="noopener" target="_blank">${CFG.instagram}</a></p></div>
-      <ul><li><a href="${R}collection.html">Collection</a></li><li><a href="${R}memory.html">Memory</a></li><li><a href="${R}message.html">Message</a></li><li><a href="${R}edition.html">Edition 01</a></li></ul>
+      <ul><li><a href="${R}collection.html">Collection</a></li><li><a href="${R}memory.html">Memory</a></li><li><a href="${R}message.html">Message</a></li><li><a href="${R}edition.html">Edition 01</a></li><li><a href="${R}house.html">House</a></li></ul>
       <ul><li><a href="${R}atelier.html">Atelier</a></li><li><a href="${R}journal.html">Journal</a></li><li><a href="${R}codex.html">Codex</a></li><li><a href="${R}faq.html">Questions</a></li></ul>
       <ul><li><a href="${R}care.html">Care</a></li><li><a href="${R}terms.html">Terms</a></li><li><a href="${R}privacy.html">Privacy</a></li></ul>
     </div>
     <p class="big" aria-hidden="true">KEPT</p>
-    <div class="legal cap"><span>© <span data-year>2026</span> ${CFG.name}</span><span>925 sterling · Los Angeles</span><span>Made to order. Final sale.</span></div>
+    <div class="legal cap"><span>© <span data-year>2026</span> ${CFG.name}</span><span>Jewelry since ${CFG.founder.since}</span><span>925 sterling · Los Angeles</span><span>Made to order. Final sale.</span></div>
   </div>
 </footer>
 <script src="${GSAP}gsap.min.js" defer></script>
@@ -114,7 +114,8 @@ const copyDir = (src, dst) => { mkdirSync(dst, { recursive: true }); for (const 
 copyDir(join(HERE, 'assets'), join(OUT, 'assets'));
 writeFileSync(join(OUT, 'assets/js/config.js'), `window.CINERIS_CONFIG=${JSON.stringify({ email: CFG.email, instagram: CFG.instagram, formEndpoint: CFG.formEndpoint })};\n`);
 
-const pages = [...core({ CFG, pieces, codex, journal, esc }), ...pieces.map(x => x.page({ CFG })), ...codex.map(a => articlePage(a, 'codex')), ...journal.map(a => articlePage(a, 'journal'))];
+const has = n => existsSync(join(HERE, 'assets/img/gen', n + '.jpg'));
+const pages = [...core({ CFG, pieces, codex, journal, esc, has }), ...pieces.map(x => x.page({ CFG, has })), ...codex.map(a => articlePage(a, 'codex')), ...journal.map(a => articlePage(a, 'journal'))];
 for (const p of pages) { const f = join(OUT, p.path); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, layout(p)); }
 
 // internal link check: every relative href/src must exist

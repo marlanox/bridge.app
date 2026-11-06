@@ -1,13 +1,15 @@
 // KEPT — core pages. Few words. Objects first.
 const chainSvg = (segs, shape = 'loop', extra = '') => `<svg data-chain='${JSON.stringify(segs)}' data-shape="${shape}" ${extra} aria-hidden="true"></svg>`;
 
-export default function core({ CFG, pieces, codex, journal }) {
+export default function core({ CFG, pieces, codex, journal, has }) {
+  const F = CFG.founder;
+  const photo = (name, alt, cls = '') => `<figure class="ph ${cls}"><img src="@/assets/img/${has(name) ? 'gen/' + name : 'photos/' + name}.jpg" alt="${alt}" loading="lazy"></figure>`;
   const E = CFG.edition;
   const chains = pieces.filter(x => x.group === 'chain');
   const memory = pieces.filter(x => x.group === 'memory');
   const objects = pieces.filter(x => x.group === 'object');
   const money = n => '$' + n.toLocaleString('en-US');
-  const card = x => `<a class="card" href="@/pieces/${x.slug}.html"><div class="plate" data-parallax>${chainSvg(x.segs, x.shape || 'loop', x.numeral ? `data-numeral="${x.numeral}"` : '')}</div><div class="row"><h3>${x.name}</h3><span class="mute num">${x.priceLabel}</span></div></a>`;
+  const card = x => `<a class="card" href="@/pieces/${x.slug}.html"><div class="plate" data-parallax>${has(x.slug) ? `<img src="@/assets/img/gen/${x.slug}.jpg" alt="KEPT ${x.name}" loading="lazy">` : chainSvg(x.segs, x.shape || 'loop', x.numeral ? `data-numeral="${x.numeral}"` : '')}</div><div class="row"><h3>${x.name}</h3><span class="mute num">${x.priceLabel}</span></div></a>`;
   const pages = [];
 
   /* ---------------- HOME ---------------- */
@@ -35,6 +37,13 @@ export default function core({ CFG, pieces, codex, journal }) {
   </div>
 </section>
 
+<section class="worn" aria-label="Worn">
+  <div class="wrap split">
+    <figure class="ph tall"><img src="@/assets/img/${has('hero') ? 'gen/hero' : 'photos/worn-crewneck'}.jpg" alt="A KEPT chain worn over a black sweater"></figure>
+    <div class="stack" data-reveal><p class="cap">Worn</p><h2>With cashmere.<br>With diamonds.<br>With nothing.</h2></div>
+  </div>
+</section>
+
 <section class="sec" style="padding-bottom:40px">
   <div class="wrap stack"><p class="cap">Collection</p></div>
 </section>
@@ -53,13 +62,34 @@ export default function core({ CFG, pieces, codex, journal }) {
   </div>
 </section>
 
+<section class="sec" aria-label="From the atelier">
+  <div class="wrap stack" style="gap:40px">
+    <p class="cap">From the atelier</p>
+    <div class="edit">
+      ${photo('necklace-wing', 'Silver necklace laid on black')}
+      ${photo('wing-detail', 'Hand-chased silver detail', 'tall')}
+      ${photo('ruby-crystal-detail', 'Garnet, 18k gold and rock crystal in silver')}
+      ${photo('worn-turtleneck', 'Chain worn on a black turtleneck', 'tall')}
+      ${photo('collar-relics', 'Silver collar with pearls and cameo')}
+      ${photo('toggle-cameo-detail', 'Toggle clasp and cameo', 'tall')}
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="border-top:1px solid var(--line)">
+  <div class="wrap split" style="align-items:end">
+    <p class="statement" data-reveal>Jewelry since ${F.since}.<br><span class="serif">Paris-trained. Ten years of fashion weeks. Now, Melrose.</span></p>
+    <div class="actions" data-reveal><a class="link-arrow" href="@/house.html">The House</a></div>
+  </div>
+</section>
+
 <section class="sec">
   <div class="wrap split">
     <div class="plate" data-parallax style="aspect-ratio:4/5">${chainSvg([{ t: 'cable', cm: 14 }, { t: 'ash' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }], 'loop', `data-numeral="${E.no}"`)}<span class="tag cap">Edition ${E.no}</span></div>
     <div class="stack" data-reveal>
       <p class="cap">Edition ${E.no} · ${E.chains} chains</p>
       <h2>${E.title}.</h2>
-      <p class="mute">One letter, burned unread. Its ash sealed inside the Mark of ten chains. Never made again.</p>
+      <p class="mute">${E.burned ? 'One letter, burned unread. Its ash sealed inside the Mark of ten chains.' : 'One letter will be burned unread. Its ash, sealed inside the Mark of ten chains.'} Never made again.</p>
       <div class="actions"><a class="link-arrow" href="@/edition.html">Edition ${E.no}</a></div>
     </div>
   </div>
@@ -130,7 +160,7 @@ ${memory.map(x => `<a href="@/pieces/${x.slug}.html"><div class="plate">${chainS
 <div class="plate" style="aspect-ratio:4/5">${chainSvg([{ t: 'cable', cm: 14 }, { t: 'ash' }, { t: 'forged', cm: 10 }, { t: 'cable', cm: 16 }], 'loop', `data-numeral="${E.no}"`)}</div>
 <div class="stack">
   <p class="lede">A letter inside an old locket, marked <span class="serif">not to be opened.</span></p>
-  <p class="mute">We never opened it. We burned it, divided the ash into ten, and sealed it behind the gold point of ten Marks. Numbered 1 to 10. When the tenth is made, the edition closes.</p>
+  <p class="mute">${E.burned ? 'We never opened it. We burned it, divided the ash into ten, and sealed it behind the gold point of ten Marks.' : 'It will not be opened. It will be burned at the atelier in front of the ten owners, and its ash sealed behind the gold point of ten Marks.'} Numbered 1 to 10. When the tenth is made, the edition closes.</p>
   <div class="actions"><a class="btn" href="@/atelier.html">Apply</a></div>
 </div>
 </section>`
@@ -156,6 +186,27 @@ ${memory.map(x => `<a href="@/pieces/${x.slug}.html"><div class="plate">${chainS
   <div class="form-out" aria-live="polite"></div>
 </form>
 </section>`
+  });
+
+
+  /* ---------------- HOUSE ---------------- */
+  const steps = [
+    [String(F.since), 'Revenge', `A first jewelry house${F.country ? ', in ' + F.country : ''}. Where it started.`],
+    [F.school, 'Fashion design', 'Trained as a designer in France.'],
+    ['Ten years', 'Fashion weeks', 'A decade of shows, seasons and ateliers.'],
+    ['', '8 Million People', 'Clothing.'],
+    ['', 'The Three', 'Couture streetwear. Cashmere hoodies with hand-sewn cashmere thickets. Layered lettering, open seams, hand stitches.'],
+    ['2026', 'KEPT', 'Melrose Avenue, Los Angeles. Silver for what you keep.']
+  ];
+  pages.push({
+    path: 'house.html', title: `The House · Jewelry since ${F.since}`, crumbs: [['House', 'house.html']],
+    description: `KEPT is the jewelry house of ${F.name || 'a Paris-trained designer'}, who founded a first jewelry brand, Revenge, in ${F.since}, then spent ten years at fashion weeks with the labels 8 Million People and The Three. Now on Melrose Avenue, Los Angeles.`,
+    head: `<p class="cap">The House</p><h1 style="margin-top:18px">Since ${F.since}.</h1><p class="lede" style="margin-top:28px">Fifteen years of making things by hand for people who notice.</p>`,
+    body: `<section class="wrap" style="padding-bottom:40px"><ol class="timeline">${steps.map(([y, t, d]) => `<li data-reveal><span class="y num">${y}</span><h3>${t}</h3><p class="mute">${d}</p></li>`).join('')}</ol></section>
+<section class="sec"><div class="wrap split">
+  ${photo('worn-turtleneck', 'Chain worn on a black turtleneck', 'tall')}
+  <div class="stack" data-reveal><p class="statement">Everything before was practice for one object.<br><span class="serif">A chain you never take off.</span></p>${F.name ? `<p class="cap">${F.name}, founder</p>` : ''}</div>
+</div></section>`
   });
 
   /* ---------------- INDEXES ---------------- */
