@@ -51,19 +51,19 @@ export default function core({ CFG, codex, journal }) {
   <div class="shade" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="lit" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="center"><h1 class="sr">The Three — a private vault, and the chain that is its key</h1><img class="hero3" src="@/assets/img/three.png" alt=""><p class="cap dim">Fine Jewelry · Los Angeles</p></div>
-  <p class="hint cap dim">Enter</p>
+  <div class="hint"><a class="cap dim" href="#vault-how">Enter</a><button class="cap enter-sound" type="button" data-scroll="#vault-how">Enter with sound</button></div>
 </section>
 
-<section class="wrap block concept velvet-light">
-  <div class="stack-lg" data-reveal>
-    <p class="cap dim">The Vault</p>
-    <h2 class="headline">A private vault.<br><span class="it">The key is a chain.</span></h2>
-  </div>
-  <div class="stack-lg" data-reveal>
-    <p class="lead">We keep one sealed cell for you, for one year. You put inside it whatever you cannot say yet. You give the one you love the only key: a chain, made by hand.</p>
-    <p class="lead dim">When the timer ends, the chain opens the cell. Before that, no one can. Not them, not you, not us.</p>
-    <p class="price-line"><span class="cap">Cell for one year + the key</span><span class="num">${money(BASE)}</span></p>
-    <div class="actions"><a class="btn" href="@/build.html">Compose your key</a><a class="cap" href="@/vault.html">Open a cell</a></div>
+<section class="wrap block velvet-light" id="vault-how">
+  <div class="page-head"><p class="cap dim">The Vault</p><h2 class="headline">Buy a cell.<br>Give the key.</h2></div>
+  <ol class="thesis">
+    <li data-reveal><span class="cap dim">01</span><h3>You fill a cell</h3><p class="dim">A letter, a film, a photograph, a proposal, a confession, a secret. Online, after your order. Confidential.</p></li>
+    <li data-reveal><span class="cap dim">02</span><h3>You give the key</h3><p class="dim">A chain made by hand for them. The cell's code is engraved by its clasp. Without the chain, the cell does not open.</p></li>
+    <li data-reveal><span class="cap dim">03</span><h3>They open it on the day</h3><p class="dim">When the timer ends, up to a year later, they enter the code and the cell opens. Not one day before. Not for us.</p></li>
+  </ol>
+  <div class="thesis-foot">
+    <p class="price-line"><span class="cap">One cell for a year + its key, the chain</span><span class="num">${money(BASE)}</span></p>
+    <div class="actions"><a class="btn" href="@/build.html">Customize your key</a><a class="cap" href="@/vault.html">How the Vault works</a></div>
   </div>
 </section>
 
@@ -75,7 +75,7 @@ export default function core({ CFG, codex, journal }) {
 
 <section class="wrap block timer-wrap">
   <div class="cell-card" data-reveal>
-    <div class="row"><span class="cap dim">Cell</span><span class="type">TT-0007-K4M9</span></div>
+    <div class="row"><span class="cap dim">Cell</span><span class="num">TT-0007-K4M9</span></div>
     <div class="row"><span class="cap dim">Status</span><span class="cap" style="color:#C23A44">Sealed</span></div>
     <p class="countdown num" data-countdown="${opensDemo}">94 d 11 h 00 m 00 s</p>
     <p class="note">Every cell has a timer. When it reaches zero, the chain opens it.</p>
@@ -99,7 +99,7 @@ export default function core({ CFG, codex, journal }) {
     <p class="cap dim">The key</p>
     <h2 class="headline">Sterling silver,<br><span class="it">blackened by hand.</span></h2>
     <p class="lead dim">You compose it: the length, up to four kinds of links, up to three artifacts. A wing, a cameo, a stone in claws, a baroque pearl. We string the rest to your length. Unisex, for any neck.</p>
-    <a class="cap" href="@/build.html">Compose the key</a>
+    <a class="cap" href="@/build.html">Customize your key</a>
   </div>
 </section>
 
@@ -110,6 +110,7 @@ export default function core({ CFG, codex, journal }) {
     <h2 class="headline">Your tear.<br><span class="it">Or their hair.</span></h2>
     <p class="lead dim">A tear on paper, changed colour where it fell, sealed in clear resin. Or a lock of the hair of the one you love, sealed in glass. One bead of the chain. It stays there for life.</p>
     <p class="price-line"><span class="cap">A tear · a lock of hair</span><span class="num">+${money(450)} · +${money(560)}</span></p>
+    <a class="cap" href="@/tear-hair.html">How a tear and hair are kept</a>
   </div>
 </section>
 
@@ -120,7 +121,7 @@ export default function core({ CFG, codex, journal }) {
 
 <section class="wrap block two">
   <div><p class="cap dim">You receive</p><ul class="plain">${['A cell in the Vault for one year, with a timer', 'Its code, engraved by the clasp of your chain', 'The chain, made by hand in the length you chose', 'A black box, a wax-sealed envelope, a card with the code', 'Repairs of workmanship, for life'].map(r => `<li data-reveal>${r}</li>`).join('')}</ul></div>
-  <div><p class="cap dim">The terms</p><ul class="plain">${[`${money(BASE)} for the cell and the key`, '50% deposit to begin, balance before shipping', `Made by hand · ${CFG.leadTime}`, 'Final sale · no returns', 'Cells and codes are issued only by us, only with a chain'].map(r => `<li data-reveal>${r}</li>`).join('')}</ul><p style="margin-top:36px"><a class="btn" href="@/build.html">Compose your key · ${money(BASE)}</a></p></div>
+  <div><p class="cap dim">The terms</p><ul class="plain">${[`${money(BASE)} for the cell and the key`, '50% deposit to begin, balance before shipping', `Made by hand · ${CFG.leadTime}`, 'Final sale · no returns', 'Cells and codes are issued only by us, only with a chain'].map(r => `<li data-reveal>${r}</li>`).join('')}</ul><p style="margin-top:36px"><a class="btn" href="@/build.html">Customize your key · ${money(BASE)}</a></p></div>
 </section>
 
 <section class="quiet"><div class="intro" data-reveal>
@@ -132,10 +133,10 @@ export default function core({ CFG, codex, journal }) {
 
   /* ---------------- CONSTRUCTOR ---------------- */
   pages.push({
-    path: 'build.html', title: 'Compose Your Key — Vault Cell and Sterling Silver Chain', crumbs: [['Compose', 'build.html']], scripts: ['chain.js', 'build.js'],
+    path: 'build.html', title: 'Customize Your Key — Vault Cell and Sterling Silver Chain', crumbs: [['Customize', 'build.html']], scripts: ['chain.js', 'build.js'],
     description: `Compose your key at The Three: choose the length, up to four kinds of links and up to three artifacts, add your tear or a lock of hair, and get a private Vault cell for one year. From ${money(BASE)}. Made by hand in Los Angeles.`,
     body: `<section class="wrap page" id="bld" data-base="${BASE}">
-<div class="page-head"><h1 class="title">Compose your key</h1><p class="dim">A cell in the Vault for one year, and the chain that opens it. ${money(BASE)} includes the cell, the chain in your length, one artifact and the clasp. We string the rest ourselves.</p></div>
+<div class="page-head"><h1 class="title">Customize your key</h1><p class="dim">A cell in the Vault for one year, and the chain that opens it. ${money(BASE)} includes the cell, the chain in your length, one artifact and the clasp. We string the rest ourselves.</p></div>
 <div class="builder">
   <div class="tray">
     <div class="tray-arts" id="tray-arts" aria-live="polite"></div>
@@ -156,7 +157,7 @@ export default function core({ CFG, codex, journal }) {
       <div class="choices">${CLASPS.map((c, i) => `<input type="radio" name="clasp" id="cl-${c.id}" value="${c.id}" data-add="${c.price}"${i === 0 ? ' checked' : ''}><label for="cl-${c.id}">${c.name}${c.price ? ' +$' + c.price : ''}</label>`).join('')}</div></fieldset>
     <fieldset class="opt"><legend class="cap">05 · Inside one bead</legend>
       <div class="choices">${KEEP.map((k, i) => `<input type="radio" name="keep" id="kp-${k.id || 'none'}" value="${k.id}" data-add="${k.price}"${i === 0 ? ' checked' : ''}><label for="kp-${k.id || 'none'}">${k.name}${k.price ? ' +$' + k.price : ''}</label>`).join('')}</div>
-      <p class="note">Here will be your tear, or the hair of the one you love. Sealed into one bead of the chain.</p></fieldset>
+      <p class="note">Here will be your tear, or the hair of the one you love. Sealed into one bead of the chain. <a href="@/tear-hair.html">How it is done</a>.</p></fieldset>
     <fieldset class="opt"><legend class="cap">06 · The cell</legend>
       <p>One sealed cell in the Vault for one year, with a timer. You seal it after the deposit, with the code we send you. <a href="@/vault.html">How the Vault works</a>.</p></fieldset>
     <div class="total"><span class="cap">Total</span><span class="num price" id="b-total">${money(BASE)}</span></div>
@@ -180,6 +181,41 @@ export default function core({ CFG, codex, journal }) {
 </section>`
   });
 
+
+  /* ---------------- TEAR & HAIR ---------------- */
+  pages.push({
+    path: 'tear-hair.html', title: 'Tear and Hair — Kept in a Silver Bead', crumbs: [['Tear & Hair', 'tear-hair.html']],
+    description: 'How The Three keeps a tear or a lock of hair inside a sterling silver chain: a tear on blotting paper sealed in clear resin, or a lock of hair sealed in glass, set as one bead. Step by step.',
+    body: `<section class="wrap page">
+<div class="page-head"><h1 class="title">Tear &amp; Hair</h1><p class="lead">One bead of your chain can hold a tear, or the hair of the one you love. It stays there for life.</p></div>
+<div class="keep-two">
+  <article class="keep">
+    <div class="bead-stage">${bead('tear', 260)}</div>
+    <p class="cap dim">A tear · +${money(450)}</p>
+    <ol class="plain num-list">
+      <li>We send you a small black envelope with a square of blotting paper.</li>
+      <li>You let one tear fall on it. Where it lands, the paper changes colour.</li>
+      <li>You send it back in the envelope we included.</li>
+      <li>We cut the stained paper and seal it in clear resin inside a silver bead.</li>
+      <li>The bead becomes one link of your chain.</li>
+    </ol>
+  </article>
+  <article class="keep">
+    <div class="bead-stage">${bead('hair', 260)}</div>
+    <p class="cap dim">A lock of hair · +${money(560)}</p>
+    <ol class="plain num-list">
+      <li>Cut a lock about 5 cm long and as thick as a pencil. Tie one end with thread first.</li>
+      <li>Put it in the envelope we send you, or bring it to us.</li>
+      <li>We seal it in clear glass between two silver caps.</li>
+      <li>The bead becomes one link of your chain.</li>
+    </ol>
+    <p class="note">Keep a portion of anything irreplaceable.</p>
+  </article>
+</div>
+<p style="margin-top:60px"><a class="btn" href="@/build.html">Customize your key</a></p>
+</section>`
+  });
+
   /* ---------------- LEGEND ---------------- */
   const chapters = [
     ['I', 'The letter', `In the winter of ${F.since}, ${F.name} had a jewelry house called Revenge, and a man who wore the first chain she ever made. The night he left, he took the chain off, wrapped it around a sealed envelope and closed her hand over both. On the envelope he had written three words. <em>Not for one year.</em>`],
@@ -195,7 +231,7 @@ export default function core({ CFG, codex, journal }) {
     body: `<section class="wrap page">
 <div class="page-head"><h1 class="title">The Legend</h1></div>
 <ol class="timeline">${chapters.map(([n, t, d]) => `<li data-reveal><span class="cap dim">${n}</span><div style="display:grid;gap:12px"><h3>${t}</h3><p class="it">${d}</p></div></li>`).join('')}</ol>
-<div class="quiet" style="min-height:50svh"><div class="intro" data-reveal><p class="it big">You will understand the three sentences when your own cell opens.</p><a class="btn" href="@/build.html">Compose your key</a></div></div>
+<div class="quiet" style="min-height:50svh"><div class="intro" data-reveal><p class="it big">You will understand the three sentences when your own cell opens.</p><a class="btn" href="@/build.html">Customize your key</a></div></div>
 </section>`
   });
 
@@ -205,7 +241,14 @@ export default function core({ CFG, codex, journal }) {
     description: 'The Vault of The Three: every cell has a timer and one key, a chain engraved with its code. Enter the code to open the cell when its time has come.',
     body: `<section class="wrap page"><div class="vault">
 <h1 class="title">The Vault</h1>
-<p class="dim">Every cell holds what someone could not say yet: a letter, a film, a photograph, a proposal, a confession, a last wish. Every cell has a timer and one key, a chain with the code engraved by its clasp. When the timer ends, the key opens it.</p>
+<p class="lead">Buy a cell. Give the key.</p>
+<ol class="thesis compact">
+    <li data-reveal><span class="cap dim">01</span><h3>You fill a cell</h3><p class="dim">A letter, a film, a photograph, a proposal, a confession, a secret. Online, after your order. Confidential.</p></li>
+    <li data-reveal><span class="cap dim">02</span><h3>You give the key</h3><p class="dim">A chain made by hand for them. The cell's code is engraved by its clasp. Without the chain, the cell does not open.</p></li>
+    <li data-reveal><span class="cap dim">03</span><h3>They open it on the day</h3><p class="dim">When the timer ends, up to a year later, they enter the code and the cell opens. Not one day before. Not for us.</p></li>
+  </ol>
+<p class="dim">A cell holds up to 5,000 words and one photograph or film of up to 50 MB. It is sold only with its key, and only by us: ${money(BASE)} for the cell for one year and the chain.</p>
+<h2 class="title" style="margin-top:40px">Open with your key</h2>
 <form id="vault-form" autocomplete="off" class="field"><label for="vault-code">The code by the clasp</label><div class="inline"><input id="vault-code" placeholder="TT-0007-K4M9" spellcheck="false"><button class="btn" type="submit">Open</button></div></form>
 <div class="out" id="vault-out" aria-live="polite">&nbsp;</div>
 <div class="samples"><span class="cap dim">Try</span><button type="button" data-target="vault-code">TT-0001-ASHE</button><button type="button" data-target="vault-code">TT-0007-K4M9</button></div>

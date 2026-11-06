@@ -272,3 +272,40 @@ html::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 @media (max-width: 760px) { .sound-btn { margin-right: 16px; } }
 .whole { background: transparent; }
 .whole img { -webkit-mask-image: radial-gradient(75% 70% at 50% 50%, #000 70%, transparent 100%); mask-image: radial-gradient(75% 70% at 50% 50%, #000 70%, transparent 100%); }
+
+/* ===== cleaner: serif only for headlines; everything else a quiet sans. No typewriter. ===== */
+:root { --f-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; }
+body, p, li, input, select, textarea, .note, .lead, .dim, small { font-family: var(--f-sans); }
+body { font-size: .98rem; line-height: 1.65; }
+.lead { font-family: var(--f-sans); font-weight: 400; letter-spacing: 0; }
+.cap, .nav a, .btn, label, .crumbs, .sound-btn, .enter-sound { font-family: var(--f-sans); font-weight: 500; letter-spacing: .24em; }
+.headline, .title, h1, h2, h3, .it.big, .threshold .name { font-family: var(--f); }
+.timeline h3, .steps h3, .cells h3, .thesis h3 { font-family: var(--f-sans); }
+.type, .countdown, .letter, .num, .price-line .num { font-family: var(--f-sans); font-style: normal; font-variant-numeric: tabular-nums; }
+.countdown { font-weight: 300; letter-spacing: .04em; }
+.it { font-family: var(--f); }
+.note { font-style: normal; color: var(--dim); }
+.chips li { font-family: var(--f-sans); font-style: normal; font-size: .95rem; }
+body::after { opacity: .045; }
+
+/* the thesis: buy a cell, give the key */
+.thesis { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--hair); border: 1px solid var(--hair); }
+.thesis li { background: var(--void); padding: clamp(26px, 3vw, 44px); display: grid; gap: 12px; align-content: start; min-width: 0; }
+.thesis h3 { font-size: 1.05rem; letter-spacing: .02em; text-transform: none; font-weight: 500; }
+.thesis.compact li { padding: 22px; }
+@media (max-width: 760px) { .thesis { grid-template-columns: 1fr; } }
+.thesis-foot { display: flex; flex-wrap: wrap; gap: 28px 48px; align-items: center; justify-content: space-between; margin-top: 40px; }
+.thesis-foot .price-line { flex: 1 1 360px; margin: 0; }
+
+/* tear & hair */
+.keep-two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); }
+@media (max-width: 760px) { .keep-two { grid-template-columns: 1fr; } }
+.keep { display: grid; gap: 18px; align-content: start; }
+.num-list { counter-reset: n; }
+.num-list li { counter-increment: n; display: grid; grid-template-columns: 34px minmax(0, 1fr); }
+.num-list li::before { content: counter(n, decimal-leading-zero); color: var(--dim); font-size: .8rem; padding-top: .2em; }
+
+/* entering */
+.threshold .hint { display: flex; gap: 34px; justify-content: center; align-items: center; }
+.enter-sound { background: none; border: 1px solid rgba(236,232,224,.4); color: var(--bone); padding: .9em 1.4em; cursor: pointer; font-size: var(--t-cap); text-transform: uppercase; }
+.enter-sound:hover { background: var(--bone); color: var(--void); }

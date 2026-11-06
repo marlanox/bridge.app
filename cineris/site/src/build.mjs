@@ -12,7 +12,7 @@ import journal from './content/journal.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'public');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const NAV = [['build.html', 'Compose'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['faq.html', 'Questions']];
+const NAV = [['build.html', 'Customize'], ['vault.html', 'The Vault'], ['tear-hair.html', 'Tear & Hair'], ['legend.html', 'Legend']];
 const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 
 const ORG = {
@@ -52,7 +52,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <link rel="apple-touch-icon" href="${R}assets/img/mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Courier+Prime&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:wght@400;500&display=swap">
 <link rel="stylesheet" href="${R}assets/css/main.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>
 </head>
@@ -70,7 +70,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 ${fix(p.body)}
 </main>
 <footer class="site-foot">
-  <nav class="cap" aria-label="Footer"><a href="${R}build.html">Compose your key</a><a href="${R}vault.html">Open a cell</a><a href="${R}seal.html">Seal your cell</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
+  <nav class="cap" aria-label="Footer"><a href="${R}build.html">Customize your key</a><a href="${R}tear-hair.html">Tear &amp; Hair</a><a href="${R}faq.html">Questions</a><a href="${R}vault.html">Open a cell</a><a href="${R}seal.html">Seal your cell</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
   <img src="${R}assets/img/three.png" alt="" style="height:30px;width:auto;margin:0 auto;opacity:.8">
   <p class="cap dim">Fine Jewelry · Los Angeles</p>
   ${CFG.clothingUrl ? `<p class="cap"><a href="${CFG.clothingUrl}" target="_blank" rel="noopener">${CFG.clothingName} →</a></p>` : `<p class="cap dim">${CFG.clothingName}</p>`}

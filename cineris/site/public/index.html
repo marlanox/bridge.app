@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" href="assets/img/mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Courier+Prime&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/css/main.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","OnlineStore"],"@id":"https://thethree.jewelry/#house","name":"The Three","url":"https://thethree.jewelry/","email":"studio@thethree.jewelry","founder":{"@type":"Person","name":"Marla Nox"},"foundingDate":"2011","description":"The Three Fine Jewelry, Los Angeles: a private Vault cell for one year, and the sterling silver chain made by hand by Marla Nox that is its only key. Jewelry since 2011.","address":{"@type":"PostalAddress","addressLocality":"West Hollywood","addressRegion":"CA","addressCountry":"US"},"areaServed":"Worldwide","sameAs":["https://www.instagram.com/thethree.jewelry/"]},{"@type":"WebPage","@id":"https://thethree.jewelry/","url":"https://thethree.jewelry/","name":"The Three — Fine Jewelry","description":"The Three Fine Jewelry, Los Angeles: a private vault cell for one year, and the sterling silver chain that is its only key. Seal a letter, a film, a proposal or a secret; it opens for the one you love when the timer ends. $2,500."}]}</script>
 </head>
@@ -30,7 +30,7 @@
     <a class="mark" href="index.html" aria-label="The Three Fine Jewelry"><img class="mark-img" src="assets/img/three.png" alt=""></a>
     <button class="sound-btn cap" type="button" aria-pressed="false" title="Sound">Sound · off</button>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Main"><a href="build.html">Compose</a><a href="vault.html">Vault</a><a href="legend.html">Legend</a><a href="faq.html">Questions</a></nav>
+    <nav class="nav" id="nav" aria-label="Main"><a href="build.html">Customize</a><a href="vault.html">The Vault</a><a href="tear-hair.html">Tear & Hair</a><a href="legend.html">Legend</a></nav>
   </div>
 </header>
 <main id="main">
@@ -41,19 +41,19 @@
   <div class="shade" style="background-image:url(assets/img/photos/necklace-wing.jpg)"></div>
   <div class="lit" style="background-image:url(assets/img/photos/necklace-wing.jpg)"></div>
   <div class="center"><h1 class="sr">The Three — a private vault, and the chain that is its key</h1><img class="hero3" src="assets/img/three.png" alt=""><p class="cap dim">Fine Jewelry · Los Angeles</p></div>
-  <p class="hint cap dim">Enter</p>
+  <div class="hint"><a class="cap dim" href="#vault-how">Enter</a><button class="cap enter-sound" type="button" data-scroll="#vault-how">Enter with sound</button></div>
 </section>
 
-<section class="wrap block concept velvet-light">
-  <div class="stack-lg" data-reveal>
-    <p class="cap dim">The Vault</p>
-    <h2 class="headline">A private vault.<br><span class="it">The key is a chain.</span></h2>
-  </div>
-  <div class="stack-lg" data-reveal>
-    <p class="lead">We keep one sealed cell for you, for one year. You put inside it whatever you cannot say yet. You give the one you love the only key: a chain, made by hand.</p>
-    <p class="lead dim">When the timer ends, the chain opens the cell. Before that, no one can. Not them, not you, not us.</p>
-    <p class="price-line"><span class="cap">Cell for one year + the key</span><span class="num">$2,500</span></p>
-    <div class="actions"><a class="btn" href="build.html">Compose your key</a><a class="cap" href="vault.html">Open a cell</a></div>
+<section class="wrap block velvet-light" id="vault-how">
+  <div class="page-head"><p class="cap dim">The Vault</p><h2 class="headline">Buy a cell.<br>Give the key.</h2></div>
+  <ol class="thesis">
+    <li data-reveal><span class="cap dim">01</span><h3>You fill a cell</h3><p class="dim">A letter, a film, a photograph, a proposal, a confession, a secret. Online, after your order. Confidential.</p></li>
+    <li data-reveal><span class="cap dim">02</span><h3>You give the key</h3><p class="dim">A chain made by hand for them. The cell's code is engraved by its clasp. Without the chain, the cell does not open.</p></li>
+    <li data-reveal><span class="cap dim">03</span><h3>They open it on the day</h3><p class="dim">When the timer ends, up to a year later, they enter the code and the cell opens. Not one day before. Not for us.</p></li>
+  </ol>
+  <div class="thesis-foot">
+    <p class="price-line"><span class="cap">One cell for a year + its key, the chain</span><span class="num">$2,500</span></p>
+    <div class="actions"><a class="btn" href="build.html">Customize your key</a><a class="cap" href="vault.html">How the Vault works</a></div>
   </div>
 </section>
 
@@ -65,9 +65,9 @@
 
 <section class="wrap block timer-wrap">
   <div class="cell-card" data-reveal>
-    <div class="row"><span class="cap dim">Cell</span><span class="type">TT-0007-K4M9</span></div>
+    <div class="row"><span class="cap dim">Cell</span><span class="num">TT-0007-K4M9</span></div>
     <div class="row"><span class="cap dim">Status</span><span class="cap" style="color:#C23A44">Sealed</span></div>
-    <p class="countdown num" data-countdown="2027-02-09T09:21:25.853Z">94 d 11 h 00 m 00 s</p>
+    <p class="countdown num" data-countdown="2027-02-09T09:48:53.890Z">94 d 11 h 00 m 00 s</p>
     <p class="note">Every cell has a timer. When it reaches zero, the chain opens it.</p>
   </div>
 </section>
@@ -89,7 +89,7 @@
     <p class="cap dim">The key</p>
     <h2 class="headline">Sterling silver,<br><span class="it">blackened by hand.</span></h2>
     <p class="lead dim">You compose it: the length, up to four kinds of links, up to three artifacts. A wing, a cameo, a stone in claws, a baroque pearl. We string the rest to your length. Unisex, for any neck.</p>
-    <a class="cap" href="build.html">Compose the key</a>
+    <a class="cap" href="build.html">Customize your key</a>
   </div>
 </section>
 
@@ -119,6 +119,7 @@
     <h2 class="headline">Your tear.<br><span class="it">Or their hair.</span></h2>
     <p class="lead dim">A tear on paper, changed colour where it fell, sealed in clear resin. Or a lock of the hair of the one you love, sealed in glass. One bead of the chain. It stays there for life.</p>
     <p class="price-line"><span class="cap">A tear · a lock of hair</span><span class="num">+$450 · +$560</span></p>
+    <a class="cap" href="tear-hair.html">How a tear and hair are kept</a>
   </div>
 </section>
 
@@ -129,7 +130,7 @@
 
 <section class="wrap block two">
   <div><p class="cap dim">You receive</p><ul class="plain"><li data-reveal>A cell in the Vault for one year, with a timer</li><li data-reveal>Its code, engraved by the clasp of your chain</li><li data-reveal>The chain, made by hand in the length you chose</li><li data-reveal>A black box, a wax-sealed envelope, a card with the code</li><li data-reveal>Repairs of workmanship, for life</li></ul></div>
-  <div><p class="cap dim">The terms</p><ul class="plain"><li data-reveal>$2,500 for the cell and the key</li><li data-reveal>50% deposit to begin, balance before shipping</li><li data-reveal>Made by hand · 3–4 weeks</li><li data-reveal>Final sale · no returns</li><li data-reveal>Cells and codes are issued only by us, only with a chain</li></ul><p style="margin-top:36px"><a class="btn" href="build.html">Compose your key · $2,500</a></p></div>
+  <div><p class="cap dim">The terms</p><ul class="plain"><li data-reveal>$2,500 for the cell and the key</li><li data-reveal>50% deposit to begin, balance before shipping</li><li data-reveal>Made by hand · 3–4 weeks</li><li data-reveal>Final sale · no returns</li><li data-reveal>Cells and codes are issued only by us, only with a chain</li></ul><p style="margin-top:36px"><a class="btn" href="build.html">Customize your key · $2,500</a></p></div>
 </section>
 
 <section class="quiet"><div class="intro" data-reveal>
@@ -139,7 +140,7 @@
 </div></section>
 </main>
 <footer class="site-foot">
-  <nav class="cap" aria-label="Footer"><a href="build.html">Compose your key</a><a href="vault.html">Open a cell</a><a href="seal.html">Seal your cell</a><a href="legend.html">Legend</a><a href="contact.html">Contact</a><a href="journal.html">Journal</a><a href="codex.html">Codex</a><a href="faq.html">Questions</a><a href="care.html">Care</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
+  <nav class="cap" aria-label="Footer"><a href="build.html">Customize your key</a><a href="tear-hair.html">Tear &amp; Hair</a><a href="faq.html">Questions</a><a href="vault.html">Open a cell</a><a href="seal.html">Seal your cell</a><a href="legend.html">Legend</a><a href="contact.html">Contact</a><a href="journal.html">Journal</a><a href="codex.html">Codex</a><a href="faq.html">Questions</a><a href="care.html">Care</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
   <img src="assets/img/three.png" alt="" style="height:30px;width:auto;margin:0 auto;opacity:.8">
   <p class="cap dim">Fine Jewelry · Los Angeles</p>
   <p class="cap dim">The Three · Raw Couture</p>
