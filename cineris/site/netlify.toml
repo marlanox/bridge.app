@@ -1,0 +1,8 @@
+[build]
+  command = "node src/build.mjs"
+  publish = "public"
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
