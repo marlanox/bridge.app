@@ -12,7 +12,7 @@ export default [
 <h2>How to layer</h2>
 <ul><li><b>With a diamond tennis chain:</b> wear the tennis chain short, at 40–45 cm, and the silver chain longer, at 50–55 cm, so the fine section of ours runs beside the diamonds and the weight falls below them.</li><li><b>With studs or a watch:</b> nothing to do. The gold in the chain answers a gold watch; the blackened silver answers steel.</li><li><b>With a blazer:</b> let the chain sit inside the lapel, over a T-shirt or a fine knit. The weight shows; the fine chain disappears.</li></ul>
 <h2>Or put the diamond on the chain</h2>
-<p>See the <a href="@/collection.html">collection</a>.</p>`
+<p>See the <a href="@/build.html">collection</a>.</p>`
   },
   {
     slug: 'how-men-wear-silver-chains', short: 'How to wear a silver chain', kicker: 'Style',

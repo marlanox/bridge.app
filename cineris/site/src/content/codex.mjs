@@ -96,7 +96,7 @@ export default [
 <p>Most cameos made since the 1800s are carved from seashell, above all helmet shells, whose layers run from white to warm brown or deep orange. The town of <b>Torre del Greco</b>, near Naples, has been the centre of the craft for two centuries. A carver works with gravers under magnification, and a good small cameo takes days.</p>
 <h2>Why so small</h2>
 <p>A large cameo on a man’s chain looks like costume. A cameo of 14 mm, about the size of a fingernail, does the opposite: people have to come close to see that it is a face. That proximity is the effect we want.</p>
-<p>See the <a href="@/collection.html">micro cameo link</a>.</p>`
+<p>See the <a href="@/build.html">micro cameo link</a>.</p>`
   },
   {
     slug: 'ruby-in-silver', short: 'Ruby in silver', kicker: 'Stones',
@@ -120,7 +120,7 @@ export default [
     related: ['gold-ring-link', 'how-men-wear-silver-chains', 'ruby-in-silver'],
     body: `<p>The old rule said never mix gold and silver. It was a rule for matching sets, and matching sets are dead. Mixing works perfectly well when one metal clearly leads and the other is an accent with a reason to be there.</p>
 <h2>The rule of one</h2>
-<p>In our chains silver leads absolutely: fifty centimetres of it, darkened. Gold appears in every chain exactly once, as the point at the centre of the black <a href="@/collection.html">Mark</a>, and at most once more, as a single ring of solid 18k. Two warm points draw the eye and the thumb. Three make a pattern, and a pattern is decoration rather than an event.</p>
+<p>In our chains silver leads absolutely: fifty centimetres of it, darkened. Gold appears in every chain exactly once, as the point at the centre of the black <a href="@/build.html">Mark</a>, and at most once more, as a single ring of solid 18k. Two warm points draw the eye and the thumb. Three make a pattern, and a pattern is decoration rather than an event.</p>
 <h2>Why 18 karat</h2>
 <p>18k is 75% gold. It is richer in colour than 14k and next to dark silver it looks almost orange, which is the contrast we want. It is also soft enough to show wear honestly over the years.</p>
 <h2>Wearing it with other pieces</h2>
@@ -137,7 +137,7 @@ export default [
 <h2>Weight changes length</h2>
 <p>A heavy chain hangs straighter and lower than a light chain of the same length. If in doubt with a massive chain, go one size shorter.</p>
 <h2>Measure yourself</h2>
-<p>Lay a piece of string around your neck over the sweater you will wear the chain with, mark where you want it to fall, and measure the string. Then <a href="@/collection.html">build to that length</a>.</p>`
+<p>Lay a piece of string around your neck over the sweater you will wear the chain with, mark where you want it to fall, and measure the string. Then <a href="@/build.html">build to that length</a>.</p>`
   },
   {
     slug: 'byzantine-chain', short: 'Byzantine chain', kicker: 'Technique',
@@ -150,7 +150,7 @@ export default [
 <p>A centimetre of Byzantine weave uses several times as much silver as a centimetre of plain cable. That weight is useful. In a mixed chain, a short Byzantine section acts like a keel: it pulls the chain straight, so it falls cleanly on knitwear instead of twisting.</p>
 <h2>Made by hand</h2>
 <p>Each ring is cut, opened, threaded and closed by hand with two pliers. A few centimetres take an hour. Machine Byzantine exists, but its rings are thin and its pattern too perfect.</p>
-<p>In our <a href="@/collection.html">collection</a> it costs more per centimetre than any other link for exactly this reason.</p>`
+<p>In our <a href="@/build.html">collection</a> it costs more per centimetre than any other link for exactly this reason.</p>`
   },
   {
     slug: 'clasps-box-lobster-toggle', short: 'Box, lobster or toggle clasp', kicker: 'Construction',

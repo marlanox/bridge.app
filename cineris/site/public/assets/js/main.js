@@ -101,5 +101,19 @@
   });
 
   $$('[data-year]').forEach(n => { n.textContent = new Date().getFullYear(); });
+
+  /* cell timers */
+  const timers = $$('[data-countdown]');
+  if (timers.length) {
+    const pad = n => String(n).padStart(2, '0');
+    const tick = () => timers.forEach(el => {
+      let s = Math.max(0, Math.floor((new Date(el.dataset.countdown) - Date.now()) / 1000));
+      const d = Math.floor(s / 86400); s -= d * 86400;
+      const h = Math.floor(s / 3600); s -= h * 3600;
+      const m = Math.floor(s / 60); s -= m * 60;
+      el.textContent = `${d} d ${pad(h)} h ${pad(m)} m ${pad(s)} s`;
+    });
+    tick(); setInterval(tick, 1000);
+  }
   if (motion) window.addEventListener('load', () => ST.refresh());
 })();

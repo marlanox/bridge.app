@@ -12,13 +12,13 @@ import journal from './content/journal.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'public');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const NAV = [['collection.html', 'Sealed Chains'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['ravens.html', 'Ravens']];
+const NAV = [['build.html', 'Compose'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['faq.html', 'Questions']];
 const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 
 const ORG = {
   '@type': ['Organization', 'OnlineStore'], '@id': CFG.url + '/#house', name: CFG.name, url: CFG.url + '/', email: CFG.email,
   founder: { '@type': 'Person', name: CFG.founder.name }, foundingDate: String(CFG.founder.since),
-  description: `The Three Fine Jewelry, Los Angeles: unisex sterling silver chains made by hand by ${CFG.founder.name}, each carrying a letter sealed in our Vault for up to one year. Jewelry since ${CFG.founder.since}.`,
+  description: `The Three Fine Jewelry, Los Angeles: a private Vault cell for one year, and the sterling silver chain made by hand by ${CFG.founder.name} that is its only key. Jewelry since ${CFG.founder.since}.`,
   address: { '@type': 'PostalAddress', addressLocality: CFG.city, addressRegion: CFG.region, addressCountry: 'US' },
   areaServed: 'Worldwide', sameAs: [CFG.instagramUrl]
 };
@@ -69,8 +69,8 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 ${fix(p.body)}
 </main>
 <footer class="site-foot">
-  <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Sealed Chains</a><a href="${R}ravens.html">Ravens</a><a href="${R}vault.html">Open a letter</a><a href="${R}seal.html">Seal a letter</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
-  <img src="${R}assets/img/three.png" alt="" style="height:40px;width:auto;margin:0 auto">
+  <nav class="cap" aria-label="Footer"><a href="${R}build.html">Compose your key</a><a href="${R}vault.html">Open a cell</a><a href="${R}seal.html">Seal your cell</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
+  <img src="${R}assets/img/three.png" alt="" style="height:30px;width:auto;margin:0 auto;opacity:.8">
   <p class="type dim">fine jewelry · los angeles</p>
   ${CFG.clothingUrl ? `<p class="cap"><a href="${CFG.clothingUrl}" target="_blank" rel="noopener">${CFG.clothingName} →</a></p>` : `<p class="cap dim">${CFG.clothingName}</p>`}
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
