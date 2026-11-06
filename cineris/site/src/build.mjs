@@ -12,13 +12,13 @@ import journal from './content/journal.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'public');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const NAV = [['collection.html', 'Collection'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['contact.html', 'Contact']];
+const NAV = [['collection.html', 'Sealed Chains'], ['vault.html', 'Vault'], ['legend.html', 'Legend'], ['ravens.html', 'Ravens']];
 const GSAP = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
 
 const ORG = {
   '@type': ['Organization', 'OnlineStore'], '@id': CFG.url + '/#house', name: CFG.name, url: CFG.url + '/', email: CFG.email,
   founder: { '@type': 'Person', name: CFG.founder.name }, foundingDate: String(CFG.founder.since),
-  description: `The Three Fine Jewelry. Oxidized sterling silver chains made by hand to order by ${CFG.founder.name}. Jewelry since ${CFG.founder.since}.`,
+  description: `The Three Fine Jewelry, Los Angeles: unisex sterling silver chains made by hand by ${CFG.founder.name}, each carrying a letter sealed in our Vault for up to one year. Jewelry since ${CFG.founder.since}.`,
   address: { '@type': 'PostalAddress', addressLocality: CFG.city, addressRegion: CFG.region, addressCountry: 'US' },
   areaServed: 'Worldwide', sameAs: [CFG.instagramUrl]
 };
@@ -69,9 +69,10 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 ${fix(p.body)}
 </main>
 <footer class="site-foot">
-  <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Collection</a><a href="${R}vault.html">Vault</a><a href="${R}legend.html">Legend</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
-  <img src="${R}assets/img/three.png" alt="" style="height:48px;width:auto;margin:0 auto">
-  <p class="cap">${CFG.name} · ${CFG.line}</p>
+  <nav class="cap" aria-label="Footer"><a href="${R}collection.html">Sealed Chains</a><a href="${R}ravens.html">Ravens</a><a href="${R}vault.html">Open a letter</a><a href="${R}seal.html">Seal a letter</a><a href="${R}legend.html">Legend</a><a href="${R}contact.html">Contact</a><a href="${R}journal.html">Journal</a><a href="${R}codex.html">Codex</a><a href="${R}faq.html">Questions</a><a href="${R}care.html">Care</a><a href="${R}terms.html">Terms</a><a href="${R}privacy.html">Privacy</a></nav>
+  <img src="${R}assets/img/three.png" alt="" style="height:40px;width:auto;margin:0 auto">
+  <p class="type dim">fine jewelry · los angeles</p>
+  ${CFG.clothingUrl ? `<p class="cap"><a href="${CFG.clothingUrl}" target="_blank" rel="noopener">${CFG.clothingName} →</a></p>` : `<p class="cap dim">${CFG.clothingName}</p>`}
   <p class="cap">${CFG.city} · Since ${CFG.founder.since} · <a href="${CFG.instagramUrl}" target="_blank" rel="noopener">${CFG.instagram}</a></p>
   <p class="cap">© <span data-year>2026</span> ${CFG.name} · Final sale</p>
 </footer>
@@ -101,7 +102,7 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 const copyDir = (src, dst) => { mkdirSync(dst, { recursive: true }); for (const f of readdirSync(src)) { const s = join(src, f), d = join(dst, f); statSync(s).isDirectory() ? copyDir(s, d) : copyFileSync(s, d); } };
 copyDir(join(HERE, 'assets'), join(OUT, 'assets'));
-writeFileSync(join(OUT, 'assets/js/config.js'), `window.CINERIS_CONFIG=${JSON.stringify({ email: CFG.email, instagram: CFG.instagram, formEndpoint: CFG.formEndpoint, vaultMaxDays: CFG.vaultMaxDays })};\n`);
+writeFileSync(join(OUT, 'assets/js/config.js'), `window.CINERIS_CONFIG=${JSON.stringify({ email: CFG.email, instagram: CFG.instagram, formEndpoint: CFG.formEndpoint, vaultMaxDays: CFG.vaultMaxDays, vaultApi: CFG.vaultApi })};\n`);
 
 const pages = [...core({ CFG, pieces, codex, journal, esc }), ...pieces.map(x => x.page({ CFG })), ...codex.map(a => articlePage(a, 'codex')), ...journal.map(a => articlePage(a, 'journal'))];
 for (const p of pages) { const f = join(OUT, p.path); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, layout(p)); }

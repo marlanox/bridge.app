@@ -55,30 +55,27 @@
     $$('.shots img').forEach(img => G.fromTo(img, { filter: 'brightness(0.1)' }, { filter: 'brightness(1)', ease: 'none', scrollTrigger: { trigger: img, start: 'top 95%', end: 'top 45%', scrub: true } }));
   }
 
-  /* product options: length, memory, vault message */
+  /* product options: length, memory; total and 50% deposit */
   const buy = $('.buy[data-base]');
   if (buy) {
     const base = +buy.dataset.base;
-    const money = n => '$' + n.toLocaleString('en-US');
+    const money = n => '$' + Math.round(n).toLocaleString('en-US');
     const upd = () => {
       let t = base;
       $$('input[type=radio]:checked', buy).forEach(r => { t += +(r.dataset.add || 0); });
-      $('.total .num', buy).textContent = money(t);
-      const seal = $('input[name=seal]:checked', buy);
-      $('.seal-date', buy).hidden = !seal || seal.value !== 'yes';
-      const ini = $('input[name=ini]:checked', buy);
-      if ($('.ini-letter', buy)) $('.ini-letter', buy).hidden = !ini || ini.value !== 'yes';
+      const tot = $('.total .price', buy), dep = $('.deposit', buy);
+      if (tot) tot.textContent = money(t);
+      if (dep) dep.textContent = money(t / 2);
       return t;
     };
-    const d = $('#seal-date', buy);
-    if (d) { const now = new Date(); const max = new Date(now.getTime() + (CFG.vaultMaxDays || 365) * 864e5); d.min = new Date(now.getTime() + 864e5).toISOString().slice(0, 10); d.max = max.toISOString().slice(0, 10); }
     buy.addEventListener('change', upd);
     upd();
     $('.req', buy).addEventListener('click', () => {
       const f = $('form', buy); f.hidden = false;
-      const sum = [buy.dataset.name, ...$$('input[type=radio]:checked', buy).map(r => r.nextElementSibling.textContent.trim()), d && !$('.seal-date', buy).hidden && d.value ? 'opens ' + d.value : '', $('#ini-letter', buy) && !$('.ini-letter', buy).hidden && $('#ini-letter', buy).value ? 'initial ' + $('#ini-letter', buy).value.toUpperCase() : '', money(upd())].filter(Boolean).join(' · ');
+      const t = upd();
+      const sum = [buy.dataset.name, ...$$('input[type=radio]:checked', buy).map(r => r.nextElementSibling.textContent.trim()), base ? money(t) + ' (deposit ' + money(t / 2) + ')' : 'by request'].join(' · ');
       $('input[name=piece]', f).value = sum;
-      $('input', f).focus();
+      $('input:not([type=hidden])', f).focus();
     });
   }
 

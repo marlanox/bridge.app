@@ -1,83 +1,107 @@
-/* ORDO CINERIS — the Vault and the Concordance.
-   FRONT-END DEMONSTRATION. Real cells live on the server (see README: "Vault backend").
-   Here, codes resolve deterministically so the ritual can be shown and tested. */
+/* THE THREE — the Vault. Seal a letter; open a letter on its day.
+   With CINERIS_CONFIG.vaultApi set, everything goes to the server (see /vault/README.md).
+   Without it, a clearly labelled demonstration keeps letters only in this browser. */
 (function () {
   'use strict';
+  const CFG = window.CINERIS_CONFIG || {};
+  const API = (CFG.vaultApi || '').replace(/\/$/, '');
+  const DAY = 864e5;
   const $ = s => document.querySelector(s);
-  const DAY = 86400000;
-
-  async function sha(text) {
-    if (window.crypto && crypto.subtle) {
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    let h = 2166136261; // FNV fallback
-    for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return (h >>> 0).toString(16).padStart(8, '0').repeat(8);
-  }
-  const norm = s => s.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const norm = s => String(s).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const pretty = c => c.replace(/^TT/, 'TT-').replace(/^(TT-.{4})/, '$1-');
   const valid = s => /^TT[A-Z0-9]{8,14}$/.test(norm(s));
+  const fmt = d => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const KEY = 'tt-vault-demo';
+  const store = { get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }, set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); return true; } catch (e) { return false; } } };
+  const BUILT_IN = {
+    TT0001ASHE: { from: 'D.', text: 'You asked me once what I was afraid of. This. That you would be grown and I would not have said it.\n\nI am proud of you in a way that has no bottom. Wear this when you are frightened.', sealed: '2026-03-02', opens: '2026-09-02' },
+    TT0007K4M9: { from: '', text: '', sealed: '2026-10-01', opens: '2027-06-21' }
+  };
 
-  /* ---------- open a cell ---------- */
+  document.querySelectorAll('.mode-note').forEach(n => {
+    n.textContent = API ? '' : 'Demonstration: until the Vault is connected, letters sealed here are kept only in this browser, on this device.';
+  });
+
+  /* ---------- open ---------- */
   const vf = $('#vault-form');
   if (vf) {
     const out = $('#vault-out');
-    const DEMO = {
-      TT0001ASHE: { open: true, from: 'For M., from her father', body: 'You asked me once what I was afraid of. This. That you would be grown and I would not have said it. I am proud of you in a way that has no bottom. Wear this when you are frightened. — D.', sealed: '2026-03-02' },
-      TT0007K4M9: { open: false, opens: '2027-06-21', from: 'Sealed by the giver' }
+    const show = cell => {
+      if (!cell) { out.innerHTML = 'There is no letter behind this code yet.'; return; }
+      const opens = new Date(cell.opens || cell.opens_at);
+      if (opens > new Date()) {
+        const d = Math.ceil((opens - Date.now()) / DAY);
+        out.innerHTML = `<span class="big">This letter opens in ${d} day${d === 1 ? '' : 's'}.</span>On ${fmt(opens)}. Not before. Not for us either.`;
+        return;
+      }
+      const media = cell.media_url || cell.media;
+      const mtype = cell.media_type || (media && media.startsWith('data:video') ? 'video' : 'image');
+      out.innerHTML = `<span class="cap dim">Sealed ${fmt(cell.sealed || cell.sealed_at)} · opened ${fmt(opens)}</span>
+<div class="letter">${esc(cell.text || '').replace(/\n/g, '<br>')}</div>
+${media ? (mtype === 'video' ? `<video src="${media}" controls playsinline style="width:100%"></video>` : `<img src="${media}" alt="">`) : ''}
+${cell.from ? `<p class="it">— ${esc(cell.from)}</p>` : ''}`;
     };
     vf.addEventListener('submit', async e => {
       e.preventDefault();
       const raw = $('#vault-code').value;
-      if (!valid(raw)) { out.innerHTML = 'That code is not ours. It is engraved beside the clasp and begins with TT, for example TT-0007-K4M9.'; return; }
+      if (!valid(raw)) { out.textContent = 'That code is not ours. It is engraved by the clasp and begins with TT, for example TT-0007-K4M9.'; return; }
       const k = norm(raw);
-      out.textContent = 'Reading the plate…';
-      let cell = DEMO[k];
-      if (!cell) {
-        const h = await sha(k);
-        const days = (parseInt(h.slice(0, 6), 16) % 540) + 3;
-        cell = { open: false, opens: new Date(Date.now() + days * DAY).toISOString().slice(0, 10), from: 'Sealed' };
+      out.textContent = 'Reading…';
+      if (API) {
+        try {
+          const r = await fetch(`${API}/open?code=${k}`);
+          if (r.status === 404) return show(null);
+          if (!r.ok) throw new Error(r.status);
+          return show(await r.json());
+        } catch (err) { out.textContent = 'The Vault did not answer. Try again in a minute.'; return; }
       }
-      if (cell.open) {
-        out.innerHTML = `CELL ${raw.toUpperCase()} · SEALED ${cell.sealed} · OPEN\n<span class="big">${cell.from}</span>${cell.body}`;
-      } else {
-        const d = Math.ceil((new Date(cell.opens) - Date.now()) / DAY);
-        out.innerHTML = `CELL ${raw.toUpperCase()} · ${cell.from.toUpperCase()}\n<span class="big">This cell opens in ${d} days.</span>On ${new Date(cell.opens).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}. Not before. Not for us either.`;
-      }
+      show(BUILT_IN[k] || store.get()[k]);
     });
   }
 
-  /* ---------- concordance: two or more chains make a key ---------- */
-  const cf = $('#conc-form');
-  if (cf) {
-    const out = $('#conc-out');
-    const SAYINGS = [
-      'One of you is owed an apology. The other already knows.',
-      'Return to the place where you first lied to each other. Tell the truth there.',
-      'Something you buried in 2019 wants to be dug up. Bring a witness.',
-      'The next stranger who asks you for directions is part of this. Walk them there.',
-      'Exchange chains for seven days. Do not explain why to anyone.',
-      'Write the name you were almost given. Burn it. Keep the ash.',
-      'One of you will be invited to a table. Only one chair is set.',
-      'Call the person you have not called. Say only: the Order remembers.',
-      'Your next argument ends the moment one of you touches the gold link.',
-      'Plant something you will not live long enough to see grown.',
-      'Pay a debt that is not yours. Do not let it be traced.',
-      'Ask your oldest living relative what they never forgave. Listen to the end.'
-    ];
-    cf.addEventListener('submit', async e => {
+  /* ---------- seal ---------- */
+  const sf = $('#seal-form');
+  if (sf) {
+    const out = $('#seal-out');
+    const date = $('#s-date');
+    const now = new Date();
+    date.min = new Date(now.getTime() + DAY).toISOString().slice(0, 10);
+    date.max = new Date(now.getTime() + (CFG.vaultMaxDays || 365) * DAY).toISOString().slice(0, 10);
+    sf.addEventListener('submit', async e => {
       e.preventDefault();
-      const codes = Array.from(cf.querySelectorAll('input')).map(i => i.value).filter(v => v.trim());
-      if (codes.length < 2) { out.textContent = 'A concordance needs at least two passports. Enter both codes.'; return; }
-      const bad = codes.find(c => !valid(c));
-      if (bad) { out.textContent = `"${bad}" is not a passport code. Codes begin with TT and are engraved beside the clasp.`; return; }
-      const set = Array.from(new Set(codes.map(norm))).sort();
-      if (set.length < 2) { out.textContent = 'Those are the same chain. A concordance needs two different passports.'; return; }
-      const h = (await sha(set.join('|'))).toUpperCase();
-      const key = h.slice(0, 32).match(/.{4}/g).join('·');
-      const cellNo = 'CXL-' + (parseInt(h.slice(32, 36), 16) % 999 + 1);
-      const saying = SAYINGS[parseInt(h.slice(36, 40), 16) % SAYINGS.length];
-      out.innerHTML = `CONCORDANCE OF ${set.length} · CELL ${cellNo}\n<span class="key">${key}</span>\n<span class="big">“${saying}”</span>This key exists only for these ${set.length} chains together. Lose one, and the cell does not answer.`;
+      const code = $('#s-code').value;
+      if (!valid(code)) { out.textContent = 'Enter the code from your order. It begins with TT.'; return; }
+      const k = norm(code);
+      const opens = date.value;
+      if (!opens || opens < date.min || opens > date.max) { out.textContent = `Choose a day between ${fmt(date.min)} and ${fmt(date.max)}.`; return; }
+      const file = $('#s-file').files[0];
+      if (file && file.size > 50 * 1024 * 1024) { out.textContent = 'The file is larger than 50 MB.'; return; }
+      out.textContent = 'Sealing…';
+      if (API) {
+        const fd = new FormData(sf);
+        fd.set('code', k);
+        try {
+          const r = await fetch(`${API}/seal`, { method: 'POST', body: fd });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok) { out.textContent = j.error || 'The Vault refused this letter.'; return; }
+          sf.reset();
+          out.innerHTML = `<span class="big">Sealed.</span>It opens on ${fmt(opens)} for whoever holds ${pretty(k)}.`;
+        } catch (err) { out.textContent = 'The Vault did not answer. Nothing was sealed. Try again in a minute.'; }
+        return;
+      }
+      // demonstration mode
+      if (BUILT_IN[k] || store.get()[k]) { out.textContent = 'A letter is already sealed behind this code.'; return; }
+      let media = '';
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) { out.textContent = 'In the demonstration, files up to 2 MB only. The real Vault takes up to 50 MB.'; return; }
+        media = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => res(''); fr.readAsDataURL(file); });
+      }
+      const all = store.get();
+      all[k] = { from: $('#s-from').value.trim(), text: $('#s-text').value, media, sealed: new Date().toISOString().slice(0, 10), opens };
+      if (!store.set(all)) { out.textContent = 'This browser will not keep the letter (private mode or storage blocked).'; return; }
+      sf.reset();
+      out.innerHTML = `<span class="big">Sealed.</span>It opens on ${fmt(opens)} for whoever holds ${pretty(k)}. <a href="vault.html">The Vault</a>.`;
     });
   }
 

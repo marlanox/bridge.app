@@ -1,72 +1,79 @@
-// MARLA KNOX — the pieces. Photography only. Each becomes /pieces/<slug>.html.
+// THE THREE — pieces. Photography only. Each becomes /pieces/<slug>.html.
+// line 'sealed' = the unisex chains that carry a letter in the Vault (the house's main line).
+// line 'ravens' = a separate collection, by request.
 const P = [
-  { slug: 'no-i', name: 'No. I', price: 2600, cover: 'necklace-wing', shots: ['necklace-wing', 'worn-turtleneck', 'wing-detail', 'toggle-cameo-detail', 'bone-cameo-detail'],
-    line: 'Wing, garnet, cross, cast relic, cameo in gold.',
-    desc: 'The Three No. I: oxidized 925 sterling silver chain with a hand-chased wing, natural garnet, small cross, cast relic, shell cameo in an 18k gold bezel, Bali bead and two solid 18k gold links. Made to order.' },
-  { slug: 'no-ii', name: 'No. II', price: 2400, cover: 'necklace-heart', shots: ['necklace-heart', 'cameo-detail', 'gold-ring-detail'],
-    line: 'Wing, garnet, heart, relic, cameo in gold.',
-    desc: 'The Three No. II: oxidized 925 sterling silver chain with wing, natural garnet, cross, beaded heart, cast relic and shell cameo in an 18k gold bezel. Made to order.' },
-  { slug: 'no-iii', name: 'No. III', price: 2500, cover: 'necklace-serpent', shots: ['necklace-serpent', 'worn-crewneck', 'ruby-crystal-detail', 'crystal-detail'],
-    line: 'Serpent, garnet drop, horn with gold, cameo.',
-    desc: 'The Three No. III: long oxidized 925 sterling silver chain with serpent, garnet drop, cast horn wrapped in 18k gold, shell cameo and Bali bead. Made to order.' },
-  { slug: 'no-iv', name: 'No. IV', price: 3200, cover: 'collar-relics', shots: ['collar-relics', 'pearl-detail'],
-    line: 'Collar. Wing, claw, baroque pearls, two cameos, heart.',
-    desc: 'The Three No. IV: heavy oxidized 925 sterling silver collar with wing, cast claw and horn, baroque pearls in gold, two shell cameos and a beaded heart. Made to order.' }
+  { line: 'sealed', slug: 'no-i', name: 'Sealed Chain No. I', short: 'No. I', price: 2600, cover: 'necklace-wing', shots: ['necklace-wing', 'worn-turtleneck', 'wing-detail', 'toggle-cameo-detail', 'bone-cameo-detail'],
+    what: 'Wing, garnet, small cross, cast relic, shell cameo in 18k gold, Bali bead, two solid 18k gold links, toggle clasp.' },
+  { line: 'sealed', slug: 'no-ii', name: 'Sealed Chain No. II', short: 'No. II', price: 2400, cover: 'necklace-heart', shots: ['necklace-heart', 'cameo-detail', 'gold-ring-detail'],
+    what: 'Wing, garnet, cross, beaded heart, cast relic, shell cameo in 18k gold, toggle clasp.' },
+  { line: 'sealed', slug: 'no-iii', name: 'Sealed Chain No. III', short: 'No. III', price: 2500, cover: 'necklace-serpent', shots: ['necklace-serpent', 'worn-crewneck', 'ruby-crystal-detail', 'crystal-detail'],
+    what: 'Long chain. Serpent, garnet drop, cast horn wrapped in 18k gold, shell cameo, Bali bead.' },
+  { line: 'sealed', slug: 'no-iv', name: 'Sealed Collar No. IV', short: 'No. IV', price: 3200, cover: 'collar-relics', shots: ['collar-relics', 'pearl-detail'],
+    what: 'Heavy collar. Wing, cast claw and horn, baroque pearls in gold, two shell cameos, beaded heart.' },
+  { line: 'ravens', slug: 'no-v', name: 'Ravens No. V', short: 'No. V', price: null, cover: 'raven-chain', shots: ['raven-chain'],
+    what: 'Raven, two garnets in raw bezels, pavé disc around carved bone, gothic initial.' },
+  { line: 'ravens', slug: 'no-vi', name: 'Ravens No. VI', short: 'No. VI', price: null, cover: 'charm-collar', shots: ['charm-collar'],
+    what: 'Heavy link collar hung with two cameos, an eagle, a raven, a garnet and a gothic initial.' },
+  { line: 'ravens', slug: 'no-vii', name: 'Ravens No. VII', short: 'No. VII', price: null, cover: 'bone-charms', shots: ['bone-charms'],
+    what: 'Two carved bone medallions in silver, a raven, a garnet, a gothic initial.' }
 ];
 
-P.push(
-  { slug: 'no-v', name: 'No. V', price: 2900, cover: 'raven-chain', shots: ['raven-chain'],
-    line: 'Raven, two garnets, pavé disc with carved bone, a gothic initial.',
-    desc: 'The Three No. V: oxidized 925 sterling silver cable chain with a cast raven, two garnet cabochons in raw bezels, a pavé disc set around carved bone, and a gothic initial. Made to order.' },
-  { slug: 'no-vi', name: 'No. VI', price: 3400, cover: 'charm-collar', shots: ['charm-collar'],
-    line: 'Heavy collar. Two cameos, eagle, raven, garnet, a gothic initial.',
-    desc: 'The Three No. VI: heavy sterling silver link collar hung with two cameos, an eagle, a raven, a garnet and a gothic initial. Made to order.' },
-  { slug: 'no-vii', name: 'No. VII', price: 3200, cover: 'bone-charms', shots: ['bone-charms'],
-    line: 'Two carved bone medallions, raven, garnet, a gothic initial.',
-    desc: 'The Three No. VII: sterling silver collar with two carved bone medallions in silver, a raven, a garnet and a gothic initial. Made to order.' }
-);
-
 const money = n => '$' + n.toLocaleString('en-US');
+
+const STEPS = lead => [
+  ['Choose', 'Choose the chain and its length. Add a lock of hair or a tear if you want one.'],
+  ['Deposit', 'Pay a 50% deposit. The work begins the day it arrives.'],
+  ['Made by hand', `Your chain is forged, set and blackened by hand in Los Angeles. ${lead}.`],
+  ['Seal', 'You receive a code. In the Vault you seal a letter: words, a photograph or a film, and the day it opens, up to one year.'],
+  ['Delivered', 'The balance is paid and the chain ships, insured, anywhere in the world. The code is engraved by the clasp.'],
+  ['Opened', 'On the day you chose, the code opens your letter. Not one day before. Not for the wearer, not for you, not for us.']
+];
+
+export { STEPS, money };
 export default P.map(x => ({
   ...x,
-  priceLabel: money(x.price),
-  page: ({ CFG }) => ({
-    path: `pieces/${x.slug}.html`,
-    title: `${x.name} — oxidized sterling silver chain`,
-    description: x.desc,
-    crumbs: [['Collection', 'collection.html'], [x.name, `pieces/${x.slug}.html`]],
-    schema: { '@type': 'Product', name: `${CFG.name} ${x.name}`, description: x.desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver',
-      image: x.shots.map(s => `${CFG.url}/assets/img/photos/${s}.jpg`),
-      offers: { '@type': 'Offer', price: x.price, priceCurrency: 'USD', availability: 'https://schema.org/MadeToOrder', url: `${CFG.url}/pieces/${x.slug}.html`,
-        hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } },
-    body: `<section class="wrap page"><div class="product">
-<div class="shots">${x.shots.map((s, i) => `<figure><img src="@/assets/img/photos/${s}.jpg" alt="${x.name}${i ? ', detail' : ''}"${i ? ' loading="lazy"' : ''}></figure>`).join('')}</div>
-<div class="buy" data-base="${x.price}" data-name="${x.name}">
-  <div style="display:grid;gap:14px"><p class="crumbs"><a href="@/collection.html">Collection</a></p><h1 class="title">${x.name}</h1><p class="it dim">${x.line}</p><p class="price num">${money(x.price)}</p></div>
-  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Length</legend>
-    <div class="choices">${CFG.lengths.map(([cm, add], i) => `<input type="radio" name="len" id="len-${cm}" value="${cm}" data-add="${add}"${i === 2 ? ' checked' : ''}><label for="len-${cm}">${cm} cm${add ? ' +$' + add : ''}</label>`).join('')}</div></fieldset>
-  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Keep something inside</legend>
-    <div class="choices">${CFG.memory.map(([k, label, add], i) => `<input type="radio" name="mem" id="mem-${k || 'none'}" value="${k}" data-add="${add}"${i === 0 ? ' checked' : ''}><label for="mem-${k || 'none'}">${k ? (k === 'hair' ? 'Hair' : 'Tear') + ' +$' + add : 'Nothing'}</label>`).join('')}</div>
+  priceLabel: x.price ? money(x.price) : 'By request',
+  page: ({ CFG }) => {
+    const sealed = x.line === 'sealed';
+    const title = sealed ? `${x.name} — Sterling Silver Chain with a Sealed Message` : `${x.name} — Sterling Silver Collar`;
+    const desc = sealed
+      ? `${x.name} by The Three: unisex oxidized 925 sterling silver chain, made by hand in Los Angeles, engraved with a code that opens a message you seal in our Vault for up to one year. ${x.what} ${money(x.price)}.`
+      : `${x.name} from the Ravens collection by The Three: oxidized 925 sterling silver. ${x.what} Made by hand in Los Angeles. By request.`;
+    const dep = CFG.deposit[x.slug];
+    return {
+      path: `pieces/${x.slug}.html`, title, description: desc,
+      crumbs: [[sealed ? 'Sealed Chains' : 'Ravens', sealed ? 'collection.html' : 'ravens.html'], [x.name, `pieces/${x.slug}.html`]],
+      schema: { '@type': 'Product', name: `The Three ${x.name}`, description: desc, brand: { '@type': 'Brand', name: CFG.name }, material: '925 sterling silver', category: 'Necklaces',
+        image: x.shots.map(s => `${CFG.url}/assets/img/photos/${s}.jpg`),
+        ...(x.price ? { offers: { '@type': 'Offer', price: x.price, priceCurrency: 'USD', availability: 'https://schema.org/MadeToOrder', url: `${CFG.url}/pieces/${x.slug}.html`,
+          hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'US', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } } : {}) },
+      body: `<section class="wrap page"><div class="product">
+<div class="shots">${x.shots.map((s, i) => `<figure><img src="@/assets/img/photos/${s}.jpg" alt="${x.name}, oxidized sterling silver${i ? ', detail' : ''}"${i ? ' loading="lazy"' : ''}></figure>`).join('')}</div>
+<div class="buy" data-base="${x.price || 0}" data-name="${x.name}">
+  <div style="display:grid;gap:14px"><p class="crumbs"><a href="@/${sealed ? 'collection' : 'ravens'}.html">${sealed ? 'Sealed Chains' : 'Ravens'}</a></p><h1 class="title">${x.name}</h1><p class="it dim">${x.what}</p>${x.price ? `<p class="price num">${money(x.price)}</p>` : '<p class="cap dim">By request</p>'}</div>
+  ${sealed ? `<p class="dim">Unisex. Sterling silver, blackened by hand. Engraved with a code that opens <a href="@/vault.html">your sealed letter</a>, on the day you choose, up to one year.</p>` : ''}
+  <fieldset class="opt"><legend class="cap">Length</legend>
+    <div class="choices">${CFG.lengths.map(([cm, add], i) => `<input type="radio" name="len" id="len-${cm}" value="${cm}" data-add="${add}"${i === 2 ? ' checked' : ''}><label for="len-${cm}">${cm} cm${add && x.price ? ' +$' + add : ''}</label>`).join('')}</div></fieldset>
+  <fieldset class="opt"><legend class="cap">Keep something inside</legend>
+    <div class="choices">${CFG.memory.map(([k, , add], i) => `<input type="radio" name="mem" id="mem-${k || 'none'}" value="${k}" data-add="${x.price ? add : 0}"${i === 0 ? ' checked' : ''}><label for="mem-${k || 'none'}">${k ? (k === 'hair' ? 'Hair' : 'Tear') + (x.price ? ' +$' + add : '') : 'Nothing'}</label>`).join('')}</div>
     <p class="note">A lock of hair sealed in glass, or a tear on paper sealed in resin, set as one link.</p></fieldset>
-  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Initial</legend>
-    <div class="choices"><input type="radio" name="ini" id="ini-no" value="no" data-add="0" checked><label for="ini-no">None</label><input type="radio" name="ini" id="ini-yes" value="yes" data-add="${CFG.initial}"><label for="ini-yes">Gothic letter +$${CFG.initial}</label></div>
-    <div class="ini-letter field" hidden><label for="ini-letter">Letter</label><input id="ini-letter" maxlength="2" autocomplete="off" style="text-transform:uppercase;max-width:6em"></div></fieldset>
-  <fieldset class="opt" style="border:0;margin:0;padding:22px 0 0;border-top:1px solid var(--hair)"><legend class="cap" style="padding:0;margin-bottom:12px">Sealed message</legend>
-    <div class="choices"><input type="radio" name="seal" id="seal-no" value="no" data-add="0" checked><label for="seal-no">No</label><input type="radio" name="seal" id="seal-yes" value="yes" data-add="0"><label for="seal-yes">Seal one</label></div>
-    <div class="seal-date field" hidden><label for="seal-date">Opens on</label><input type="date" id="seal-date"></div>
-    <p class="note">Words, a photograph or a film, kept in our vault until the day you choose, up to one year. <a href="@/vault.html">The Vault</a>.</p></fieldset>
-  <div class="total"><span class="cap">Total</span><span class="num price">${money(x.price)}</span></div>
-  <button class="btn full req" type="button">Request</button>
+  ${x.price ? `<div class="total"><span class="cap">Total</span><span class="num price">${money(x.price)}</span></div>
+  <div class="total" style="padding-top:0;border:0"><span class="cap dim">Deposit today, 50%</span><span class="num dim deposit">${money(x.price / 2)}</span></div>` : ''}
+  ${dep ? `<a class="btn full" href="${dep}" target="_blank" rel="noopener">Pay the deposit</a>` : ''}
+  <button class="btn full req" type="button">${x.price ? (dep ? 'Ask a question' : 'Order') : 'Request'}</button>
   <form class="form" data-form="order" hidden>
     <input type="hidden" name="piece">
     <div class="field"><label for="o-name">Name</label><input id="o-name" name="name" autocomplete="name" required></div>
     <div class="field"><label for="o-contact">Email or Instagram</label><input id="o-contact" name="contact" required></div>
+    <div class="field"><label for="o-ship">Ships to (city, country)</label><input id="o-ship" name="ship_to"></div>
     <div class="field"><label for="o-note">Note</label><textarea id="o-note" name="note"></textarea></div>
-    <button class="btn full" type="submit">Send request</button>
+    <button class="btn full" type="submit">Send</button>
+    <p class="note">We reply within two days with the deposit invoice. Nothing is charged until you pay it.</p>
     <div class="form-out" aria-live="polite"></div>
   </form>
-  <p class="cap dim">Made to order · 3–4 weeks · Final sale</p>
+  <ul class="facts cap dim"><li>Made by hand · ${CFG.leadTime}</li><li>50% deposit · balance before shipping</li><li>Final sale · no returns</li><li>Insured worldwide delivery</li></ul>
 </div>
 </div></section>`
-  })
+    };
+  }
 }));
