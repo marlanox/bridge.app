@@ -343,3 +343,9 @@ body::after { opacity: .045; }
 .scene .words { display: grid; gap: 18px; justify-items: center; }
 .scene .tick { font-size: .85rem; letter-spacing: .14em; font-variant-numeric: tabular-nums; }
 .scene.last .words { gap: 22px; }
+
+/* bead photographs */
+.bead-img { display: block; width: min(100%, 420px); height: auto; -webkit-mask-image: radial-gradient(60% 55% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(60% 55% at 50% 50%, #000 55%, transparent 100%); }
+.tray-bead .bead-img { width: min(100%, 300px); }
+.tray-bead .bead-img[hidden] { display: none; }
+.scene .media.bead-photo img { max-height: 70svh; max-width: min(92vw, 680px); -webkit-mask-image: radial-gradient(58% 52% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(58% 52% at 50% 50%, #000 55%, transparent 100%); }

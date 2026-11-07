@@ -69,7 +69,7 @@
 
   /* velvet silence: things rise out of the dark and sink back */
   if (motion) {
-    $$('.whole img, .bead-sec .bead').forEach(el => {
+    $$('.whole img, .bead-sec .bead, .bead-stage .bead-img').forEach(el => {
       G.timeline({ scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.8 } })
         .fromTo(el, { filter: 'brightness(0.04) blur(10px)', scale: 1.1 }, { filter: 'brightness(1) blur(0px)', scale: 1, ease: 'none', duration: 0.42 })
         .to(el, { filter: 'brightness(1) blur(0px)', duration: 0.16 })

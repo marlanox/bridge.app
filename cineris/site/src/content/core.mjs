@@ -80,12 +80,12 @@ ${[
 </section>
 
 <section class="scene">
-  <div class="media bead-media">${bead('tear', 240)}</div>
+  <figure class="media bead-photo"><img src="${img('tear-bead')}" alt="A tear on paper, sealed in clear resin inside a silver bead" loading="lazy"></figure>
   <p class="line">Your tear, kept in resin.</p>
 </section>
 
 <section class="scene">
-  <div class="media bead-media">${bead('hair', 240)}</div>
+  <figure class="media bead-photo"><img src="${img('hair-bead')}" alt="A lock of hair sealed in glass between two silver caps" loading="lazy"></figure>
   <p class="line">Their hair, kept in glass.</p>
 </section>
 
@@ -120,7 +120,7 @@ ${[
 <div class="builder">
   <div class="tray">
     <div class="tray-arts" id="tray-arts" aria-live="polite"></div>
-    <div class="tray-bead" id="tray-bead" hidden>${bead('tear', 260, 'data-kind="tear"')}${bead('hair', 260, 'data-kind="hair" hidden')}<p class="type dim" id="bead-caption"></p></div>
+    <div class="tray-bead" id="tray-bead" hidden><img class="bead-img" data-kind="tear" src="${img('tear-bead')}" alt="Tear bead"><img class="bead-img" data-kind="hair" src="${img('hair-bead')}" alt="Hair bead" hidden><p class="type dim" id="bead-caption"></p></div>
     <div class="tray-links" id="tray-links"></div>
     <p class="type dim" id="tray-sum"></p>
   </div>
@@ -170,7 +170,7 @@ ${[
 <div class="page-head"><h1 class="title">Tear &amp; Hair</h1><p class="lead">One bead of your chain can hold a tear, or the hair of the one you love. It stays there for life.</p></div>
 <div class="keep-two">
   <article class="keep">
-    <div class="bead-stage">${bead('tear', 260)}</div>
+    <div class="bead-stage"><img class="bead-img" src="${img('tear-bead')}" alt="A tear sealed in resin, in a silver bead" loading="lazy"></div>
     <p class="cap dim">A tear · +${money(450)}</p>
     <ol class="plain num-list">
       <li>We send you a small black envelope with a square of blotting paper.</li>
@@ -181,7 +181,7 @@ ${[
     </ol>
   </article>
   <article class="keep">
-    <div class="bead-stage">${bead('hair', 260)}</div>
+    <div class="bead-stage"><img class="bead-img" src="${img('hair-bead')}" alt="A lock of hair sealed in glass, in a silver bead" loading="lazy"></div>
     <p class="cap dim">A lock of hair · +${money(560)}</p>
     <ol class="plain num-list">
       <li>Cut a lock about 5 cm long and as thick as a pencil. Tie one end with thread first.</li>

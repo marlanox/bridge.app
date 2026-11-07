@@ -55,7 +55,7 @@
     // the bead
     const kind = s.keep.value;
     $('#tray-bead').hidden = !kind;
-    $$('#tray-bead svg').forEach(svg => { svg.hidden = svg.dataset.kind !== kind; });
+    $$('#tray-bead [data-kind]').forEach(svg => { svg.hidden = svg.dataset.kind !== kind; });
     $('#bead-caption').textContent = kind === 'tear' ? 'here: your tear, sealed in resin' : kind === 'hair' ? 'here: the hair of the one you love, sealed in glass' : '';
 
     // the chain, drawn to your length with your links
