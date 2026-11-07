@@ -80,13 +80,13 @@ ${[
 </section>
 
 <section class="scene">
-  <figure class="media bead-photo"><img src="${img('tear-bead')}" alt="A tear on paper, sealed in clear resin inside a silver bead" loading="lazy"></figure>
-  <p class="line">Your tear, kept in resin.</p>
+  <figure class="media bead-photo"><img src="${img('tear-bead')}" alt="A tear on paper, sealed in clear crystal set in silver prongs" loading="lazy"></figure>
+  <p class="line">Your tear, kept forever.</p>
 </section>
 
 <section class="scene">
-  <figure class="media bead-photo"><img src="${img('hair-bead')}" alt="A lock of hair sealed in glass between two silver caps" loading="lazy"></figure>
-  <p class="line">Their hair, kept in glass.</p>
+  <figure class="media bead-photo"><img src="${img('hair-bead')}" alt="A lock of hair sealed in clear crystal set in silver prongs" loading="lazy"></figure>
+  <p class="line">Their hair, kept forever.</p>
 </section>
 
 <section class="scene">

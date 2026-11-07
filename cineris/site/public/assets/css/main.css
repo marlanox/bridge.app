@@ -349,3 +349,8 @@ body::after { opacity: .045; }
 .tray-bead .bead-img { width: min(100%, 300px); }
 .tray-bead .bead-img[hidden] { display: none; }
 .scene .media.bead-photo img { max-height: 70svh; max-width: min(92vw, 680px); -webkit-mask-image: radial-gradient(58% 52% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(58% 52% at 50% 50%, #000 55%, transparent 100%); }
+
+/* tall bead photographs: crystal in a pronged setting */
+.bead-img { width: auto; max-width: 100%; height: min(72svh, 620px); object-fit: contain; -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(70% 60% at 50% 50%, #000 60%, transparent 100%); }
+.tray-bead .bead-img { width: auto; height: 380px; }
+.scene .media.bead-photo img { height: 80svh; width: auto; max-width: 92vw; -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(70% 60% at 50% 50%, #000 60%, transparent 100%); }
