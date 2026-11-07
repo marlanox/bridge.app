@@ -50,85 +50,65 @@ export default function core({ CFG, codex, journal }) {
   <div class="faint" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="shade" style="background-image:url(${img('necklace-wing')})"></div>
   <div class="lit" style="background-image:url(${img('necklace-wing')})"></div>
-  <div class="center"><h1 class="sr">The Three — a private vault, and the chain that is its key</h1><img class="hero3" src="@/assets/img/three.png" alt=""><p class="cap dim">Fine Jewelry · Los Angeles</p></div>
-  <div class="hint"><a class="cap dim" href="#vault-how">Enter</a><button class="cap enter-sound" type="button" data-scroll="#vault-how">Enter with sound</button></div>
+  <div class="center"><h1 class="sr">The Three — fine jewelry that keeps a tear, a lock of hair and a sealed secret</h1><img class="hero3" src="@/assets/img/three.png" alt=""><p class="cap dim">Fine Jewelry · Los Angeles</p></div>
+  <div class="hint"><a class="cap dim" href="#s-legend">Enter</a><button class="cap enter-sound" type="button" data-scroll="#s-legend">Enter with sound</button></div>
 </section>
 
-<section class="wrap block velvet-light" id="vault-how">
-  <div class="page-head"><p class="cap dim">The Vault</p><h2 class="headline">Buy a cell.<br>Give the key.</h2></div>
-  <ol class="thesis">
-    <li data-reveal><span class="cap dim">01</span><h3>You fill a cell</h3><p class="dim">A letter, a film, a photograph, a proposal, a confession, a secret. Online, after your order. Confidential.</p></li>
-    <li data-reveal><span class="cap dim">02</span><h3>You give the key</h3><p class="dim">A chain made by hand for them. The cell's code is engraved by its clasp. Without the chain, the cell does not open.</p></li>
-    <li data-reveal><span class="cap dim">03</span><h3>They open it on the day</h3><p class="dim">When the timer ends, up to a year later, they enter the code and the cell opens. Not one day before. Not for us.</p></li>
-  </ol>
-  <div class="thesis-foot">
-    <p class="price-line"><span class="cap">One cell for a year + its key, the chain</span><span class="num">${money(BASE)}</span></p>
-    <div class="actions"><a class="btn" href="@/build.html">Customize your key</a><a class="cap" href="@/vault.html">How the Vault works</a></div>
+<section class="scene" id="s-legend">
+  <div class="words">
+    <p class="cap dim">${F.since}</p>
+    <p class="line">He left her a chain and a sealed letter.<br>Three words on it: <em>not for one year.</em></p>
   </div>
 </section>
 
-<section class="wrap block">
-  <p class="cap dim" style="margin-bottom:28px">What people seal</p>
-  <ul class="chips">${IN_CELL.map(x => `<li data-reveal>${x}</li>`).join('')}</ul>
-  <p class="note" style="margin-top:22px">Confidential. We cannot read it, we cannot share it, we cannot open it early.</p>
+${[
+  ['wing-detail', 'A wing', '50% 74%'],
+  ['cameo-detail', 'A cameo', '50% 50%'],
+  ['ruby-crystal-detail', 'Garnet and rock crystal', '50% 40%'],
+  ['pearl-detail', 'A pearl that grew wrong', '50% 40%'],
+  ['bone-cameo-detail', 'Horn, wrapped in gold', '50% 55%'],
+  ['gold-ring-detail', 'One link of gold', '50% 40%'],
+  ['toggle-cameo-detail', 'The clasp', '50% 20%']
+].map(([ph, name, pos], i) => `<section class="scene jewel ${i % 2 ? 'r' : 'l'}">
+  <figure class="media"><img src="${img(ph)}" alt="${name}, oxidized sterling silver" loading="lazy" style="object-position:${pos}"></figure>
+  <p class="line small">${name}</p>
+</section>`).join('\n')}
+
+<section class="scene">
+  <figure class="media worn"><img src="${img('worn-crewneck')}" alt="A chain from The Three worn over black wool" loading="lazy"></figure>
+  <p class="line small">For any neck.</p>
 </section>
 
-<section class="wrap block timer-wrap">
-  <div class="cell-card" data-reveal>
-    <div class="row"><span class="cap dim">Cell</span><span class="num">TT-0007-K4M9</span></div>
-    <div class="row"><span class="cap dim">Status</span><span class="cap" style="color:#C23A44">Sealed</span></div>
-    <p class="countdown num" data-countdown="${opensDemo}">94 d 11 h 00 m 00 s</p>
-    <p class="note">Every cell has a timer. When it reaches zero, the chain opens it.</p>
+<section class="scene">
+  <div class="media bead-media">${bead('tear', 240)}</div>
+  <p class="line">Your tear, kept in resin.</p>
+</section>
+
+<section class="scene">
+  <div class="media bead-media">${bead('hair', 240)}</div>
+  <p class="line">Their hair, kept in glass.</p>
+</section>
+
+<section class="scene">
+  <div class="words">
+    <p class="line">And a secret, sealed for a year.</p>
+    <p class="small dim">A letter. A film. A proposal. A confession.</p>
+    <p class="tick num dim" data-countdown="${opensDemo}">94 d 11 h 00 m 00 s</p>
   </div>
 </section>
 
-<section class="wrap block" aria-labelledby="cells">
-  <div class="page-head"><p class="cap dim">The cells</p><h2 class="title" id="cells">Four ways to keep a secret.</h2></div>
-  <div class="cells">
-    <article><p class="cap dim">Available</p><h3>The Year Cell</h3><p class="dim">Opens when its timer ends, up to one year. The key is your chain.</p><p class="cap">${money(BASE)} with the key · <a href="@/build.html">Compose</a></p></article>
-    <article><p class="cap dim">By request</p><h3>The Silent Cell</h3><p class="dim">Opens only if you stop answering us for as long as you choose. For what must be said if you no longer can.</p><p class="cap"><a href="@/contact.html">Ask</a></p></article>
-    <article><p class="cap dim">By request</p><h3>The Family Cell</h3><p class="dim">One archive, several keys. A voice, letters, films. It opens only when the keys are brought together.</p><p class="cap"><a href="@/contact.html">Ask</a></p></article>
-    <article><p class="cap dim">Coming</p><h3>Edition: Ash</h3><p class="dim">One hundred numbered keys. In each, a grain of the ash of one thing burned before witnesses. Never repeated.</p><p class="cap"><a href="@/contact.html">Be told</a></p></article>
+<section class="scene">
+  <figure class="media whole-key"><img src="${img('necklace-wing')}" alt="The chain, whole" loading="lazy"></figure>
+  <p class="line">The chain is the only key.</p>
+</section>
+
+<section class="scene last">
+  <div class="words">
+    <a class="cap" href="@/build.html">Your key · ${money(BASE)}</a>
+    <a class="cap dim" href="@/legend.html">The legend</a>
+    <a class="cap dim" href="@/tear-hair.html">Tear &amp; hair</a>
   </div>
-  <p class="note" style="margin-top:22px">No cell is a legal will. They keep words, voices and images, never property.</p>
-</section>
-
-<section class="wrap block key velvet-light">
-  <figure class="whole" data-reveal><img src="${img('necklace-wing')}" alt="A chain from The Three, whole, on black"></figure>
-  <div class="stack-lg" data-reveal>
-    <p class="cap dim">The key</p>
-    <h2 class="headline">Sterling silver,<br><span class="it">blackened by hand.</span></h2>
-    <p class="lead dim">You compose it: the length, up to four kinds of links, up to three artifacts. A wing, a cameo, a stone in claws, a baroque pearl. We string the rest to your length. Unisex, for any neck.</p>
-    <a class="cap" href="@/build.html">Customize your key</a>
-  </div>
-</section>
-
-<section class="wrap block bead-sec velvet-light">
-  <div class="bead-stage" data-reveal>${bead('tear', 300)}</div>
-  <div class="stack-lg" data-reveal>
-    <p class="cap dim">Inside one bead</p>
-    <h2 class="headline">Your tear.<br><span class="it">Or their hair.</span></h2>
-    <p class="lead dim">A tear on paper, changed colour where it fell, sealed in clear resin. Or a lock of the hair of the one you love, sealed in glass. One bead of the chain. It stays there for life.</p>
-    <p class="price-line"><span class="cap">A tear · a lock of hair</span><span class="num">+${money(450)} · +${money(560)}</span></p>
-    <a class="cap" href="@/tear-hair.html">How a tear and hair are kept</a>
-  </div>
-</section>
-
-<section class="wrap block" aria-labelledby="how">
-  <div class="page-head"><p class="cap dim">How it works</p><h2 class="title" id="how">Six steps. One year at most.</h2></div>
-  ${stepsHtml}
-</section>
-
-<section class="wrap block two">
-  <div><p class="cap dim">You receive</p><ul class="plain">${['A cell in the Vault for one year, with a timer', 'Its code, engraved by the clasp of your chain', 'The chain, made by hand in the length you chose', 'A black box, a wax-sealed envelope, a card with the code', 'Repairs of workmanship, for life'].map(r => `<li data-reveal>${r}</li>`).join('')}</ul></div>
-  <div><p class="cap dim">The terms</p><ul class="plain">${[`${money(BASE)} for the cell and the key`, '50% deposit to begin, balance before shipping', `Made by hand · ${CFG.leadTime}`, 'Final sale · no returns', 'Cells and codes are issued only by us, only with a chain'].map(r => `<li data-reveal>${r}</li>`).join('')}</ul><p style="margin-top:36px"><a class="btn" href="@/build.html">Customize your key · ${money(BASE)}</a></p></div>
-</section>
-
-<section class="quiet"><div class="intro" data-reveal>
-  <p class="cap dim">The Legend</p>
-  <p class="it big">In ${F.since} a man left her a chain and a sealed letter. On it, three words: <span class="nobr">not for one year.</span> She waited. Inside were three sentences.</p>
-  <a class="cap" href="@/legend.html">Read the legend</a>
-</div></section>`
+</section>`
   });
 
   /* ---------------- CONSTRUCTOR ---------------- */

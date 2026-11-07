@@ -85,7 +85,7 @@
 
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) chime(); }), { threshold: 0.55 });
-    document.querySelectorAll('.whole, .bead-stage, .cell-card, .headline').forEach(el => io.observe(el));
+    document.querySelectorAll('.scene .media, .whole, .bead-stage, .headline').forEach(el => io.observe(el));
   }
   document.addEventListener('change', e => { if (e.target.matches('input[type=radio], input[type=checkbox], select')) click(); });
   document.addEventListener('submit', () => chime(), true);

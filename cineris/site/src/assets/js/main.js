@@ -55,6 +55,18 @@
     $$('.shots img').forEach(img => G.fromTo(img, { filter: 'brightness(0.1)' }, { filter: 'brightness(1)', ease: 'none', scrollTrigger: { trigger: img, start: 'top 95%', end: 'top 45%', scrub: true } }));
   }
 
+  /* scenes: each object rises out of the dark, holds, and sinks back; its words breathe with it */
+  if (motion) {
+    $$('.scene').forEach(sc => {
+      const media = $('.media', sc), words = $$('.line, .words, .small', sc);
+      const tl = G.timeline({ scrollTrigger: { trigger: sc, start: 'top bottom', end: 'bottom top', scrub: 1 } });
+      if (media) tl.fromTo(media, { filter: 'brightness(0) blur(16px)', scale: 1.14, y: 60 }, { filter: 'brightness(1) blur(0px)', scale: 1, y: 0, ease: 'power1.out', duration: 0.45 }, 0)
+        .to(media, { filter: 'brightness(0) blur(10px)', scale: 0.94, y: -50, ease: 'power1.in', duration: 0.4 }, 0.6);
+      if (words.length) tl.fromTo(words, { opacity: 0, y: 30, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.3, stagger: 0.04 }, 0.2)
+        .to(words, { opacity: 0, y: -24, duration: 0.25 }, 0.72);
+    });
+  }
+
   /* velvet silence: things rise out of the dark and sink back */
   if (motion) {
     $$('.whole img, .bead-sec .bead').forEach(el => {
