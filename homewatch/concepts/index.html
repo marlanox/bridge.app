@@ -1,0 +1,549 @@
+<title>Home Watch Brand Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap">
+<style>
+/* Board layout: a working brief — name shortlist, then three full homepage concepts framed as browser windows. */
+:root{
+  --bg:#F3F4F2; --panel:#FFFFFF; --fg:#16191A; --muted:#5B6462; --line:#D9DDDA; --accent:#2D5B4F; --warn:#9A5B12; --warnbg:#FBF1E3;
+  --f-head:"Archivo",system-ui,sans-serif; --f-body:"Manrope",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121615;--panel:#1A1F1E;--fg:#E9ECEA;--muted:#9AA4A1;--line:#2C3432;--accent:#7FC0AD;--warn:#E7B66F;--warnbg:#2A2216;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121615;--panel:#1A1F1E;--fg:#E9ECEA;--muted:#9AA4A1;--line:#2C3432;--accent:#7FC0AD;--warn:#E7B66F;--warnbg:#2A2216;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 80px;display:grid;gap:56px}
+h1,h2,h3{font-family:var(--f-head);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,5vw,52px);font-variation-settings:"wdth" 112;font-weight:750;letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,30px);font-variation-settings:"wdth" 108;font-weight:700}
+p{margin:0}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.intro{display:grid;gap:14px;max-width:760px}
+.intro p{color:var(--muted);font-size:17px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.jump a{font:500 13px/1 var(--f-mono);color:var(--fg);text-decoration:none;padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.jump a:hover,.jump a:focus-visible{border-color:var(--accent);outline:none}
+section.block{display:grid;gap:22px}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.name{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:8px;align-content:start;min-width:0}
+.name .rank{font:500 12px/1 var(--f-mono);color:var(--muted)}
+.name h3{font-size:24px;font-variation-settings:"wdth" 100}
+.name .tag{font-style:italic;color:var(--accent)}
+.name p.d{color:var(--muted);font-size:14px}
+.name .grow{font:400 12px/1.5 var(--f-mono);color:var(--fg);border-top:1px dashed var(--line);padding-top:8px}
+.name.top{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.pill{display:inline-block;font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:var(--accent);color:var(--panel);justify-self:start}
+.rules{background:var(--warnbg);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:10px}
+.rules h3{font-size:18px;color:var(--warn)}
+.rules ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+.chrome{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font:400 12px/1 var(--f-mono);color:var(--muted);min-width:0}
+.chrome i{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.chrome span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cnote{display:grid;gap:6px;max-width:760px}
+.cnote p{color:var(--muted)}
+.sample{font:500 10px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.next{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:10px}
+.next ol{margin:0;padding-left:20px;display:grid;gap:6px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ============ CONCEPT A — "Private Office" (Homeward) — committed dark look ============ */
+.ca{--ink:#0D1B1E;--ink2:#132529;--ivory:#EFEAE0;--dim:#9FAAA7;--brass:#C8AE78;--rule:#27393D;background:var(--ink);color:var(--ivory);font:16px/1.65 "Manrope",system-ui,sans-serif;container-type:inline-size}
+.ca .in{padding:0 clamp(18px,4cqi,56px)}
+.ca nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.ca .logo{display:flex;align-items:center;gap:10px;font:600 22px/1 "Bodoni Moda",Georgia,serif;letter-spacing:.02em}
+.ca .logo svg{width:28px;height:28px}
+.ca .links{display:flex;gap:22px;font-size:13px;color:var(--dim);flex-wrap:wrap}
+.ca .cta{background:var(--brass);color:var(--ink);font-weight:700;font-size:13px;padding:11px 16px;border-radius:2px;letter-spacing:.04em;border:0}
+.ca .lang{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--dim);border:1px solid var(--rule);padding:7px 9px;border-radius:2px}
+.ca .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5cqi,64px);align-items:center;padding-block:clamp(40px,7cqi,96px)}
+@container (max-width:760px){.ca .hero{grid-template-columns:1fr}}
+.ca .kick{font:500 12px/1 "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+.ca h2.big{font:500 clamp(40px,6.4cqi,82px)/1.02 "Bodoni Moda",Georgia,serif;letter-spacing:-.015em;margin:18px 0 20px}
+.ca h2.big em{font-style:italic;color:var(--brass)}
+.ca .lead{color:var(--dim);max-width:46ch;font-size:17px}
+.ca .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;align-items:center}
+.ca .ghost{color:var(--ivory);border:1px solid var(--rule);padding:11px 16px;font-size:13px;border-radius:2px}
+.ca .phone{font:500 14px/1 "IBM Plex Mono",monospace;color:var(--ivory)}
+.ca .report{background:var(--ink2);border:1px solid var(--rule);border-radius:4px;padding:20px;display:grid;gap:14px;box-shadow:0 40px 80px -30px #000}
+.ca .rhead{display:flex;justify-content:space-between;gap:10px;font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.ca .photo{aspect-ratio:16/9;max-width:100%;border-radius:2px;position:relative;overflow:hidden;background:linear-gradient(180deg,#2E4A55 0%,#5E7F86 55%,#8E9E8A 56%,#5B6E54 100%)}
+.ca .photo .house{position:absolute;left:12%;right:12%;bottom:22%;height:42%;background:#E6E0D2}
+.ca .photo .house::before{content:"";position:absolute;left:-6%;right:-6%;top:-18%;height:20%;background:#1E2A2C}
+.ca .photo .house::after{content:"";position:absolute;left:40%;width:14%;bottom:0;height:62%;background:#3A2E22}
+.ca .photo .win{position:absolute;bottom:38%;width:12%;height:16%;background:#F2D79A;opacity:.85}
+.ca .photo .stamp{position:absolute;left:10px;bottom:8px;font:500 10px/1 "IBM Plex Mono",monospace;color:#fff;background:#0009;padding:5px 7px}
+.ca ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px}
+.ca ul.checks li{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;opacity:0;animation:caTick .5s ease forwards}
+.ca ul.checks li b{font-weight:500}
+.ca ul.checks li span{font:400 11px/1 "IBM Plex Mono",monospace;color:var(--dim)}
+.ca ul.checks li i{width:16px;height:16px;border:1px solid var(--brass);border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:10px;color:var(--brass)}
+.ca ul.checks li:nth-child(1){animation-delay:.3s}.ca ul.checks li:nth-child(2){animation-delay:.6s}.ca ul.checks li:nth-child(3){animation-delay:.9s}.ca ul.checks li:nth-child(4){animation-delay:1.2s}.ca ul.checks li:nth-child(5){animation-delay:1.5s}
+@keyframes caTick{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.ca ul.checks li{opacity:1}}
+.ca .rfoot{display:flex;justify-content:space-between;border-top:1px solid var(--rule);padding-top:12px;font-size:13px;color:var(--dim);gap:10px;flex-wrap:wrap}
+.ca .rfoot strong{color:var(--brass);font-weight:600}
+.ca .trust{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--rule)}
+@container (max-width:760px){.ca .trust{grid-template-columns:repeat(2,1fr)}}
+.ca .trust div{padding:22px 18px;border-right:1px solid var(--rule);display:grid;gap:4px}
+.ca .trust div:last-child{border-right:0}
+.ca .trust b{font:500 30px/1 "Bodoni Moda",serif;color:var(--ivory)}
+.ca .trust span{font-size:12px;color:var(--dim)}
+.ca .sec{padding-block:clamp(48px,7cqi,88px);display:grid;gap:30px}
+.ca .sec h3{font:500 clamp(28px,4cqi,46px)/1.1 "Bodoni Moda",serif}
+.ca .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+@container (max-width:760px){.ca .tiers{grid-template-columns:1fr}}
+.ca .tier{background:var(--ink);padding:26px;display:grid;gap:12px;align-content:start}
+.ca .tier.on{background:var(--ink2)}
+.ca .tier h4{margin:0;font:600 13px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+.ca .price{font:500 46px/1 "Bodoni Moda",serif}.ca .price small{font:400 14px "Manrope";color:var(--dim)}
+.ca .tier ul{margin:0;padding-left:18px;color:var(--dim);font-size:14px;display:grid;gap:5px}
+.ca .ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.ca .step{border-top:1px solid var(--brass);padding-top:14px;display:grid;gap:6px}
+.ca .step b{font:500 20px/1.2 "Bodoni Moda",serif}
+.ca .step span{font-size:14px;color:var(--dim)}
+.ca .quote{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@container (max-width:760px){.ca .quote{grid-template-columns:1fr}}
+.ca blockquote{margin:0;font:italic 400 clamp(20px,2.4cqi,26px)/1.4 "Bodoni Moda",serif;display:grid;gap:12px}
+.ca blockquote footer{font:400 13px "Manrope";color:var(--dim);font-style:normal}
+.ca form{display:grid;gap:10px;background:var(--ink2);border:1px solid var(--rule);padding:22px}
+.ca label{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:grid;gap:6px}
+.ca input,.ca select{background:var(--ink);border:1px solid var(--rule);color:var(--ivory);padding:12px;font:15px "Manrope";border-radius:2px;width:100%}
+.ca input:focus,.ca select:focus{outline:1px solid var(--brass)}
+.ca footer.f{border-top:1px solid var(--rule);padding-block:28px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--dim)}
+@supports (animation-timeline:view()){
+  .ca .step,.ca .tier{animation:caRise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+@keyframes caRise{from{opacity:.25;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ============ CONCEPT B — "Field Report" (Keyholder) — committed light look ============ */
+.cb{--paper:#EDEFEB;--card:#F8F9F6;--ink:#131617;--mid:#5E6663;--rule:#C9CEC9;--cobalt:#1E3FCB;--ok:#1E7A4F;background:var(--paper);color:var(--ink);font:15px/1.6 "Archivo",system-ui,sans-serif;container-type:inline-size}
+.cb .in{padding:0 clamp(18px,4cqi,56px)}
+.cb nav{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-block:18px;flex-wrap:wrap;border-bottom:2px solid var(--ink)}
+.cb .logo{display:flex;align-items:center;gap:10px;font:800 20px/1 "Archivo";font-variation-settings:"wdth" 125;letter-spacing:.02em;text-transform:uppercase}
+.cb .logo svg{width:26px;height:26px}
+.cb .links{display:flex;gap:18px;font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em;flex-wrap:wrap}
+.cb .cta{background:var(--cobalt);color:#fff;font:600 13px/1 "Archivo";padding:12px 16px;border:0;border-radius:0}
+.cb .hero{padding-block:clamp(36px,6cqi,80px) clamp(28px,4cqi,48px);display:grid;gap:28px}
+.cb .meta{display:flex;gap:18px;flex-wrap:wrap;font:500 12px/1 "IBM Plex Mono",monospace;color:var(--mid);text-transform:uppercase;letter-spacing:.08em}
+.cb .meta b{color:var(--cobalt);font-weight:500}
+.cb h2.big{font:800 clamp(40px,8.4cqi,118px)/.92 "Archivo";font-variation-settings:"wdth" 125;letter-spacing:-.02em;text-transform:uppercase;margin:0}
+.cb h2.big span{color:var(--cobalt)}
+.cb .split{display:grid;grid-template-columns:1fr 1.3fr;gap:32px;align-items:end}
+@container (max-width:760px){.cb .split{grid-template-columns:1fr}}
+.cb .lead{font-size:18px;max-width:42ch;color:var(--ink)}
+.cb .log{background:var(--card);border:1px solid var(--rule);font:400 13px/1.45 "IBM Plex Mono",monospace;overflow:hidden}
+.cb .log .lh{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--ink);color:var(--paper);font-size:11px;letter-spacing:.08em;text-transform:uppercase;gap:10px}
+.cb .log .rows{height:196px;overflow:hidden;position:relative}
+.cb .log .track{animation:cbScroll 18s linear infinite}
+.cb .log .r{display:grid;grid-template-columns:52px 1fr auto;gap:12px;padding:8px 14px;border-bottom:1px dashed var(--rule)}
+.cb .log .r em{font-style:normal;color:var(--ok)}
+.cb .log .r em.flag{color:#B45A00}
+@keyframes cbScroll{to{transform:translateY(-50%)}}
+.cb .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule)}
+@container (max-width:760px){.cb .stats{grid-template-columns:repeat(2,1fr)}}
+.cb .stats div{padding:20px 16px;border-right:1px solid var(--rule)}
+.cb .stats b{display:block;font:800 40px/1 "Archivo";font-variation-settings:"wdth" 125}
+.cb .stats span{font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--mid);text-transform:uppercase;letter-spacing:.06em}
+.cb .sec{padding-block:clamp(44px,6cqi,80px);display:grid;gap:26px}
+.cb .sec h3{font:800 clamp(26px,4cqi,48px)/1 "Archivo";font-variation-settings:"wdth" 118;text-transform:uppercase;margin:0}
+.cb .who{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0;border-top:1px solid var(--ink)}
+.cb .who div{padding:16px 14px 18px 0;border-bottom:1px solid var(--rule);display:grid;gap:4px}
+.cb .who b{font:700 17px/1.2 "Archivo"}
+.cb .who span{font-size:13px;color:var(--mid)}
+.cb .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@container (max-width:760px){.cb .tiers{grid-template-columns:1fr}}
+.cb .tier{background:var(--card);border:1px solid var(--rule);padding:22px;display:grid;gap:10px;align-content:start}
+.cb .tier.on{border:2px solid var(--cobalt)}
+.cb .tier h4{margin:0;font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--cobalt)}
+.cb .price{font:800 44px/1 "Archivo";font-variation-settings:"wdth" 120}.cb .price small{font:400 13px "Archivo";color:var(--mid)}
+.cb .tier ul{margin:0;padding-left:16px;font-size:14px;display:grid;gap:4px}
+.cb .rev{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@container (max-width:760px){.cb .rev{grid-template-columns:1fr}}
+.cb .rev div{border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:8px;font-size:14px}
+.cb .rev b{font:500 12px "IBM Plex Mono",monospace;color:var(--mid)}
+.cb .lead-box{background:var(--ink);color:var(--paper);padding:clamp(22px,4cqi,40px);display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@container (max-width:760px){.cb .lead-box{grid-template-columns:1fr}}
+.cb .lead-box h3{color:var(--paper)}
+.cb .lead-box p{color:#B9C0BC}
+.cb form{display:grid;gap:10px}
+.cb input,.cb select{background:transparent;border:0;border-bottom:1px solid #5E6663;color:var(--paper);padding:12px 0;font:15px "Archivo";width:100%;border-radius:0}
+.cb input::placeholder{color:#8E9692}
+.cb select option{color:#131617}
+.cb form .cta{margin-top:8px;padding:15px}
+.cb footer.f{padding-block:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:400 12px/1.6 "IBM Plex Mono",monospace;color:var(--mid);border-top:2px solid var(--ink)}
+@media (prefers-reduced-motion: reduce){.cb .log .track{animation:none}}
+
+/* ============ CONCEPT C — "Plan & Elevation" (Hearth & Key) — committed light look ============ */
+.cc{--stucco:#F4F3EF;--euc:#1F3A33;--euc2:#2C4C43;--pool:#3E8FB0;--sun:#E3B34B;--txt:#1B2622;--mute:#62706B;--rule:#D6D9D2;background:var(--stucco);color:var(--txt);font:16px/1.65 "Figtree",system-ui,sans-serif;container-type:inline-size}
+.cc .in{padding:0 clamp(18px,4cqi,56px)}
+.cc nav{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-block:20px;flex-wrap:wrap}
+.cc .logo{display:flex;align-items:center;gap:10px;font:700 21px/1 "Syne";letter-spacing:-.01em}
+.cc .logo svg{width:30px;height:30px}
+.cc .links{display:flex;gap:20px;font-size:14px;color:var(--mute);flex-wrap:wrap}
+.cc .cta{background:var(--euc);color:var(--stucco);font:600 14px/1 "Figtree";padding:13px 18px;border-radius:999px;border:0}
+.cc .hero{background:var(--euc);color:var(--stucco);border-radius:22px;padding:clamp(26px,5cqi,60px);display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:center;overflow:hidden}
+@container (max-width:760px){.cc .hero{grid-template-columns:1fr}}
+.cc h2.big{font:700 clamp(38px,6cqi,76px)/1 "Syne";letter-spacing:-.03em;margin:14px 0 18px}
+.cc h2.big span{color:var(--sun)}
+.cc .kick{font:500 13px/1 "Figtree";color:#A9C2B8;letter-spacing:.04em}
+.cc .lead{color:#C9D8D2;max-width:44ch}
+.cc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.cc .hero .cta{background:var(--sun);color:var(--euc)}
+.cc .hero .ghost{border:1px solid #5B7A70;color:var(--stucco);padding:13px 18px;border-radius:999px;font-size:14px}
+.cc .drawing{position:relative;max-width:100%}
+.cc .drawing svg{width:100%;height:auto;display:block}
+.cc .drawing .ln{fill:none;stroke:#CFE0D9;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1400;stroke-dashoffset:0;animation:ccDraw 2.2s ease-out both}
+@keyframes ccDraw{from{stroke-dashoffset:1400}to{stroke-dashoffset:0}}
+.cc .drawing .scan{fill:url(#ccScan);animation:ccScan 3.6s ease-in-out 1.6s infinite}
+@keyframes ccScan{0%{transform:translateX(-120px)}100%{transform:translateX(560px)}}
+.cc .pin circle.dot{fill:var(--sun)}
+.cc .pin circle.halo{fill:var(--sun);opacity:.25;transform-box:fill-box;transform-origin:center;animation:ccPulse 2.4s ease-out infinite}
+@keyframes ccPulse{0%{transform:scale(.6);opacity:.5}100%{transform:scale(2.2);opacity:0}}
+.cc .pin text{font:600 11px "Figtree";fill:#F4F3EF}
+.cc .pin rect{fill:#0F241F;stroke:#3E5F55}
+@media (prefers-reduced-motion: reduce){.cc .drawing .scan{display:none}}
+.cc .sec{padding-block:clamp(44px,6cqi,84px);display:grid;gap:28px}
+.cc .sec h3{font:700 clamp(28px,4cqi,48px)/1.05 "Syne";letter-spacing:-.02em;margin:0}
+.cc .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@container (max-width:860px){.cc .svc{grid-template-columns:1fr 1fr}}
+@container (max-width:560px){.cc .svc{grid-template-columns:1fr}}
+.cc .svc div{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:20px;display:grid;gap:6px;align-content:start}
+.cc .svc b{font:700 18px/1.2 "Syne"}
+.cc .svc span{font-size:14px;color:var(--mute)}
+.cc .svc em{font-style:normal;font:600 12px "Figtree";color:var(--pool)}
+.cc .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@container (max-width:760px){.cc .tiers{grid-template-columns:1fr}}
+.cc .tier{border-radius:18px;padding:24px;display:grid;gap:10px;align-content:start;border:1px solid var(--rule);background:#fff}
+.cc .tier.on{background:var(--euc);color:var(--stucco);border-color:var(--euc)}
+.cc .tier.on ul{color:#C9D8D2}
+.cc .tier h4{margin:0;font:700 15px "Syne"}
+.cc .price{font:700 44px/1 "Syne";letter-spacing:-.03em}.cc .price small{font:400 14px "Figtree";opacity:.7}
+.cc .tier ul{margin:0;padding-left:18px;font-size:14px;color:var(--mute);display:grid;gap:4px}
+.cc .partner{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;background:#fff;border:1px solid var(--rule);border-radius:22px;padding:clamp(22px,4cqi,40px)}
+@container (max-width:760px){.cc .partner{grid-template-columns:1fr}}
+.cc .partner ul{margin:0;padding-left:18px;color:var(--mute);display:grid;gap:4px}
+.cc form{display:grid;gap:10px}
+.cc input,.cc select{border:1px solid var(--rule);background:var(--stucco);border-radius:12px;padding:13px 14px;font:15px "Figtree";color:var(--txt);width:100%}
+.cc .rev{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.cc .rev div{background:#fff;border-radius:16px;padding:20px;border:1px solid var(--rule);display:grid;gap:8px}
+.cc .stars{color:var(--sun);letter-spacing:2px}
+.cc footer.f{background:var(--euc);color:#C9D8D2;border-radius:22px 22px 0 0;padding:28px clamp(18px,4cqi,56px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px}
+@supports (animation-timeline:view()){
+  .cc .svc div,.cc .tier{animation:ccRise linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+@keyframes ccRise{from{opacity:.3;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+
+  <header class="intro">
+    <span class="eyebrow">Brand board · draft 1 · Nov 2026</span>
+    <h1>Home watch brand: 10 names, 3 homepages</h1>
+    <p>Pick one name and one homepage direction. The direction can be paired with any name. Prices are a starting draft based on the national range (about $100–$280/mo for weekly visits) moved up for West Hollywood and a premium photo report.</p>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#names">10 names</a>
+    <a href="#rules">Words to avoid</a>
+    <a href="#a">A · Private Office</a>
+    <a href="#b">B · Field Report</a>
+    <a href="#c">C · Plan &amp; Elevation</a>
+    <a href="#next">Next steps</a>
+  </nav>
+
+  <section class="block" id="names">
+    <h2>The 10 names</h2>
+    <div class="names">
+      <article class="name top"><span class="pill">Top pick</span><span class="rank">01</span><h3>Homeward</h3><p class="tag">Your home, in good hands.</p><p class="d">"Home" + "ward" (a guardian; to ward = to protect). Also means "on the way home". Short, calm, easy to say in English and Spanish.</p><p class="grow">Homeward Watch · Homeward Estates · Homeward Concierge</p></article>
+      <article class="name"><span class="rank">02</span><h3>Keyholder</h3><p class="tag">Trusted with the keys.</p><p class="d">The keyholder is the person you trust most. Says "trust" without the restricted word.</p><p class="grow">Keyholder Home Watch · Keyholder Estates · Keyholder Private Client</p></article>
+      <article class="name"><span class="rank">03</span><h3>Hearth &amp; Key</h3><p class="tag">Kept, as if you never left.</p><p class="d">Hearth is the heart of the home; the key is trust. Sounds like an old family firm. Strong monogram: H&amp;K.</p><p class="grow">Hearth &amp; Key Home Watch · Hearth &amp; Key Estates</p></article>
+      <article class="name"><span class="rank">04</span><h3>Righthand Home</h3><p class="tag">Your right hand at home.</p><p class="d">Your exact idea, said directly. Clear for ads and Google. Less "old money", more friendly.</p><p class="grow">Righthand Home Watch · Righthand Estates</p></article>
+      <article class="name"><span class="rank">05</span><h3>Homekeep</h3><p class="tag">Watched. Kept. Reported.</p><p class="d">"Keep" is the castle's strongest tower and also "to keep safe". One word, a clean logo, a good app name.</p><p class="grow">Homekeep app · Homekeep Estates</p></article>
+      <article class="name"><span class="rank">06</span><h3>Domus &amp; Co.</h3><p class="tag">Private stewardship for your home.</p><p class="d">Latin for "house". Reads like a private bank. Spanish speakers recognize it (domicilio). Needs the tagline to explain what you do.</p><p class="grow">Domus Home Watch · Domus Realty Partners</p></article>
+      <article class="name"><span class="rank">07</span><h3>Porchlight</h3><p class="tag">Someone's always home.</p><p class="d">A light left on means someone is looking after the house. Warm and memorable; common word, so check trademarks first.</p><p class="grow">Porchlight Residence Co. · Porchlight Estates</p></article>
+      <article class="name"><span class="rank">08</span><h3>The Home Steward</h3><p class="tag">Stewardship for absent owners.</p><p class="d">A steward runs an estate for its owner. Fits best with power-of-attorney work, probate and estate clients.</p><p class="grow">Steward Home Watch · Steward Estates</p></article>
+      <article class="name"><span class="rank">09</span><h3>Housewarden</h3><p class="tag">Your house has a warden.</p><p class="d">Warden means caretaker. Strong and unusual; the domain is likely available. Slightly stricter tone.</p><p class="grow">Housewarden Watch · Housewarden Estates</p></article>
+      <article class="name"><span class="rank">10</span><h3>Crescent Home Stewards</h3><p class="tag">West Hollywood's home stewards.</p><p class="d">Named after Crescent Heights. Local, upscale and good for Google Maps ranking; the word "Crescent" works in any city later.</p><p class="grow">Crescent Home Watch · Crescent Estates</p></article>
+    </div>
+  </section>
+
+  <section class="block rules" id="rules">
+    <h3>Words to keep out of the company name</h3>
+    <ul>
+      <li><b>Homewatch</b>: "Homewatch CareGivers" is a national franchise with a registered brand. Using it invites a legal letter and loses you Google searches to them.</li>
+      <li><b>Realty, Real Estate, Brokers, Properties</b>: in California these words in a name imply a licensed brokerage. Your agent works under their broker, and listings are advertised in the broker's name.</li>
+      <li><b>Security, Guard, Patrol, Protection, Sentinel</b>: these suggest guard services licensed by the state (BSIS).</li>
+      <li><b>Trust</b>: restricted in business names in California for anyone who is not a trust company.</li>
+      <li><b>Legal</b>: legal advice must come from partner attorneys; we coordinate, we don't advise.</li>
+      <li>Before paying for a logo: check the name on USPTO (trademarks), the CA Secretary of State (LLC names) and the .com domain.</li>
+    </ul>
+  </section>
+
+  <!-- ================= CONCEPT A ================= -->
+  <section class="block" id="a">
+    <div class="cnote">
+      <span class="eyebrow">Concept A · shown with "Homeward"</span>
+      <h2>Private Office</h2>
+      <p>Feels like a private bank or a five-star hotel concierge. Deep ink, brass and a classic high-contrast serif. The hero shows the real product: this week's visit report filling itself in.</p>
+    </div>
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>homeward.com</span></div>
+      <div class="ca">
+        <div class="in">
+          <nav>
+            <div class="logo"><svg viewBox="0 0 32 32" fill="none" stroke="#C8AE78" stroke-width="1.4"><path d="M4 15 16 5l12 10"/><path d="M8 13v14h16V13"/><path d="M13 27v-7h6v7"/><circle cx="16" cy="16" r="1.4" fill="#C8AE78"/></svg>Homeward</div>
+            <div class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Pricing</span><span>Client Login</span></div>
+            <div class="row" style="margin:0"><span class="lang">EN / ES</span><button class="cta" type="button">Book a walkthrough</button></div>
+          </nav>
+          <div class="hero">
+            <div>
+              <span class="kick">Home watch · West Hollywood &amp; Los Angeles</span>
+              <h2 class="big">Your home,<br><em>kept</em> while<br>you're away.</h2>
+              <p class="lead">Weekly visits, a photo report after every one, your mail handled, and a trusted team for everything else your house will ever need.</p>
+              <div class="row"><button class="cta" type="button">Get my free home risk check</button><span class="phone">(323) 333-3967</span></div>
+            </div>
+            <div class="report" aria-label="Example visit report">
+              <div class="rhead"><span>Visit report · Week 46</span><span>Tue 9:42 AM</span></div>
+              <div class="photo"><div class="house"></div><div class="win" style="left:20%"></div><div class="win" style="right:20%"></div><div class="stamp">FRONT ELEVATION · 1 of 38 photos</div></div>
+              <ul class="checks">
+                <li><i>✓</i><b>Doors, locks &amp; windows secure</b><span>9:44</span></li>
+                <li><i>✓</i><b>No signs of entry or occupancy</b><span>9:47</span></li>
+                <li><i>✓</i><b>Mail collected · 6 items scanned</b><span>9:51</span></li>
+                <li><i>!</i><b>Branch over neighbor's fence: trim advised</b><span>9:58</span></li>
+                <li><i>✓</i><b>Water, HVAC, fridge running normally</b><span>10:06</span></li>
+              </ul>
+              <div class="rfoot"><span>Inspector: Daniel R.</span><strong>All clear · 1 note</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="in"><div class="trust">
+          <div><b>38</b><span>photos per visit</span></div>
+          <div><b>52</b><span>visits a year, Signature plan</span></div>
+          <div><b>24h</b><span>emergency response</span></div>
+          <div><b>$2M</b><span>liability insurance, bonded</span></div>
+        </div></div>
+        <div class="in sec">
+          <h3>Three plans. One standard of care.</h3>
+          <div class="tiers">
+            <div class="tier"><h4>Essential</h4><div class="price">$189<small> /mo</small></div><ul><li>2 visits a month</li><li>Exterior + interior check</li><li>Photo report in your portal</li></ul></div>
+            <div class="tier on"><h4>Signature</h4><div class="price">$349<small> /mo</small></div><ul><li>Weekly visits, 52 a year</li><li>Mail collected, scanned, forwarded</li><li>Squatter &amp; code-violation watch</li><li>Vendor access, 2 hours included</li></ul></div>
+            <div class="tier"><h4>Estate</h4><div class="price">$690<small> /mo</small></div><ul><li>Twice-weekly visits</li><li>Before-arrival preparation</li><li>Dedicated house manager</li><li>Concierge hours included</li></ul></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <h3>When you're ready, we do more.</h3>
+          <div class="ladder">
+            <div class="step"><b>Property care</b><span>Gardeners, pool, cleaners, repairs. We hire, let them in and check the work.</span></div>
+            <div class="step"><b>Pre-sale preparation</b><span>Repairs, staging, furniture, art, flowers, photography. On your budget.</span></div>
+            <div class="step"><b>Selling your home</b><span>Our in-house licensed agent, open houses and showings handled for you.</span></div>
+            <div class="step"><b>On your behalf</b><span>With your power of attorney: permits, inspections, auctions, paperwork.</span></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <div class="quote">
+            <blockquote>"We were in London for five months. Every Tuesday I opened the report and stopped worrying."<footer>Sample review: placeholder until real Google reviews · Signature plan</footer></blockquote>
+            <form onsubmit="event.preventDefault()">
+              <label for="a-name">Name<input id="a-name" value="Alexandra M."></label>
+              <label for="a-phone">Phone<input id="a-phone" value="(310) 555-0142"></label>
+              <label for="a-need">I need<select id="a-need"><option>Weekly home watch</option><option>Pre-sale preparation</option><option>Help with an estate</option></select></label>
+              <button class="cta" type="submit">Request my walkthrough</button>
+            </form>
+          </div>
+        </div>
+        <div class="in"><footer class="f"><span>1351 N Crescent Heights Blvd, West Hollywood, CA 90046</span><span>(323) 333-3967 · 9138282@gmail.com</span></footer></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONCEPT B ================= -->
+  <section class="block" id="b">
+    <div class="cnote">
+      <span class="eyebrow">Concept B · shown with "Keyholder"</span>
+      <h2>Field Report</h2>
+      <p>Built on proof and numbers, like an engineering firm. Wide bold type, cobalt accent and a live inspection log that keeps scrolling. Strongest with realtors, attorneys and business owners who want facts.</p>
+    </div>
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>keyholder.com</span></div>
+      <div class="cb">
+        <div class="in">
+          <nav>
+            <div class="logo"><svg viewBox="0 0 32 32" fill="none" stroke="#131617" stroke-width="2.2"><circle cx="11" cy="16" r="6"/><path d="M17 16h12M25 16v5M29 16v4"/></svg>Keyholder</div>
+            <div class="links"><span>Services</span><span>For Realtors</span><span>For Attorneys</span><span>Pricing</span><span>Login</span><span>ES</span></div>
+            <button class="cta" type="button">Get a quote</button>
+          </nav>
+          <div class="hero">
+            <div class="meta"><span>Los Angeles home watch</span><span><b>●</b> 14 inspectors on route today</span></div>
+            <h2 class="big">34 checkpoints.<br><span>Every week.</span></h2>
+            <div class="split">
+              <p class="lead">We visit your empty home, check it room by room, photograph everything and send you the report before lunch. Insurance-ready, timestamped, kept forever in your account.</p>
+              <div class="log" aria-label="Example inspection log">
+                <div class="lh"><span>Visit #2,184 · Laurel Ave</span><span>Live</span></div>
+                <div class="rows"><div class="track">
+                  <div class="r"><span>09:41</span><span>Perimeter walk, gates latched</span><em>OK</em></div>
+                  <div class="r"><span>09:43</span><span>Front door lock, no tampering</span><em>OK</em></div>
+                  <div class="r"><span>09:46</span><span>Mailbox: 4 letters, 1 package</span><em>SCANNED</em></div>
+                  <div class="r"><span>09:49</span><span>Irrigation timer, no pooling</span><em>OK</em></div>
+                  <div class="r"><span>09:52</span><span>Oak limb over sidewalk (city code)</span><em class="flag">FLAG</em></div>
+                  <div class="r"><span>09:55</span><span>Water heater, no leaks</span><em>OK</em></div>
+                  <div class="r"><span>09:58</span><span>Run taps &amp; flush toilets</span><em>DONE</em></div>
+                  <div class="r"><span>10:02</span><span>Fridge 37°F, freezer 0°F</span><em>OK</em></div>
+                  <div class="r"><span>09:41</span><span>Perimeter walk, gates latched</span><em>OK</em></div>
+                  <div class="r"><span>09:43</span><span>Front door lock, no tampering</span><em>OK</em></div>
+                  <div class="r"><span>09:46</span><span>Mailbox: 4 letters, 1 package</span><em>SCANNED</em></div>
+                  <div class="r"><span>09:49</span><span>Irrigation timer, no pooling</span><em>OK</em></div>
+                  <div class="r"><span>09:52</span><span>Oak limb over sidewalk (city code)</span><em class="flag">FLAG</em></div>
+                  <div class="r"><span>09:55</span><span>Water heater, no leaks</span><em>OK</em></div>
+                  <div class="r"><span>09:58</span><span>Run taps &amp; flush toilets</span><em>DONE</em></div>
+                  <div class="r"><span>10:02</span><span>Fridge 37°F, freezer 0°F</span><em>OK</em></div>
+                </div></div>
+              </div>
+            </div>
+          </div>
+          <div class="stats">
+            <div><b>34</b><span>checkpoints per visit</span></div>
+            <div><b>2 hr</b><span>report delivered after visit</span></div>
+            <div><b>30 days</b><span>when many insurers limit vacant-home cover</span></div>
+            <div><b>$0</b><span>setup fee this month</span></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <h3>Who we work for</h3>
+          <div class="who">
+            <div><b>Second-home owners</b><span>Snowbirds, travelers, film &amp; touring crews</span></div>
+            <div><b>Homes for sale</b><span>Vacant listings kept show-ready for realtors</span></div>
+            <div><b>Estates &amp; probate</b><span>Executors, trustees and their attorneys</span></div>
+            <div><b>Rebuilds &amp; renovations</b><span>We meet contractors and check progress</span></div>
+            <div><b>Families in transition</b><span>Assisted living, hospital stays, divorce</span></div>
+            <div><b>Insurance vacancy</b><span>Documented visits your insurer asks for</span></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <h3>Pricing</h3>
+          <div class="tiers">
+            <div class="tier"><h4>Essential</h4><div class="price">$189<small> /mo</small></div><ul><li>2 visits a month</li><li>34-point check</li><li>Photo report</li></ul></div>
+            <div class="tier on"><h4>Signature · most chosen</h4><div class="price">$349<small> /mo</small></div><ul><li>Weekly visits</li><li>Mail scanned &amp; forwarded</li><li>Squatter &amp; code watch</li><li>Vendor access included</li></ul></div>
+            <div class="tier"><h4>Estate</h4><div class="price">$690<small> /mo</small></div><ul><li>Twice-weekly visits</li><li>Dedicated house manager</li><li>Pre-arrival preparation</li><li>Concierge hours</li></ul></div>
+          </div>
+          <div class="rev">
+            <div><span class="sample">Sample review: placeholder</span><p>"The house sat empty for eight months during probate. Every visit was documented. The court and the heirs had nothing to argue about."</p><b>Estate plan · Beverly Hills</b></div>
+            <div><span class="sample">Sample review: placeholder</span><p>"I list vacant homes. Keyholder keeps them clean, lit and safe between showings. My sellers love the reports."</p><b>Realtor partner · Silver Lake</b></div>
+            <div><span class="sample">Sample review: placeholder</span><p>"They noticed a slow leak under the sink in week two. That saved a floor."</p><b>Signature plan · West Hollywood</b></div>
+          </div>
+        </div>
+        <div class="in" style="padding-bottom:40px">
+          <div class="lead-box">
+            <div style="display:grid;gap:10px;align-content:start"><h3>Free vacant-home risk check</h3><p>Tell us about the house. We send a written risk list within one day: insurance, squatters, code fines, water damage. Yours to keep, even if you don't hire us.</p><p style="font-family:'IBM Plex Mono',monospace;color:#EDEFEB">(323) 333-3967</p></div>
+            <form onsubmit="event.preventDefault()">
+              <input id="b-name" aria-label="Name" placeholder="Your name" value="Michael T.">
+              <input id="b-addr" aria-label="Property address" placeholder="Property address" value="Laurel Ave, West Hollywood">
+              <select id="b-empty" aria-label="How long is the home empty"><option>Empty 1–3 months</option><option>Empty 3–12 months</option><option>For sale</option><option>In probate</option></select>
+              <button class="cta" type="submit">Send my risk check</button>
+            </form>
+          </div>
+        </div>
+        <div class="in"><footer class="f"><span>1351 N Crescent Heights Blvd, West Hollywood, CA 90046</span><span>(323) 333-3967 · 9138282@gmail.com</span></footer></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONCEPT C ================= -->
+  <section class="block" id="c">
+    <div class="cnote">
+      <span class="eyebrow">Concept C · shown with "Hearth &amp; Key"</span>
+      <h2>Plan &amp; Elevation</h2>
+      <p>California modern: eucalyptus green, pool blue and sunlight yellow. An architect's line drawing of the house draws itself, a scan passes over it and the checkpoints light up. Warmest of the three and the best fit for a future app.</p>
+    </div>
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>hearthandkey.com</span></div>
+      <div class="cc">
+        <div class="in">
+          <nav>
+            <div class="logo"><svg viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="8" fill="#1F3A33"/><path d="M9 22V13l7-5 7 5v9" fill="none" stroke="#E3B34B" stroke-width="1.8"/><circle cx="16" cy="16" r="2.2" fill="#E3B34B"/><path d="M16 18v4" stroke="#E3B34B" stroke-width="1.8"/></svg>Hearth &amp; Key</div>
+            <div class="links"><span>Home watch</span><span>Concierge</span><span>Sell with us</span><span>Partners</span><span>Sign in</span><span>Español</span></div>
+            <button class="cta" type="button">Start with a free visit</button>
+          </nav>
+          <div class="hero">
+            <div>
+              <span class="kick">Home watch &amp; concierge · Los Angeles</span>
+              <h2 class="big">Away from home. <span>Never out of touch.</span></h2>
+              <p class="lead">A real person checks your house every week. You see every photo, every letter and every note in your private portal. One call handles everything else.</p>
+              <div class="row"><button class="cta" type="button">Book a free first visit</button><span class="ghost">(323) 333-3967</span></div>
+            </div>
+            <div class="drawing" aria-label="Line drawing of a house with inspection checkpoints">
+              <svg viewBox="0 0 520 330" role="img">
+                <defs><linearGradient id="ccScan" x1="0" x2="1"><stop offset="0" stop-color="#E3B34B" stop-opacity="0"/><stop offset=".5" stop-color="#E3B34B" stop-opacity=".22"/><stop offset="1" stop-color="#E3B34B" stop-opacity="0"/></linearGradient></defs>
+                <path class="ln" d="M20 290H500"/>
+                <path class="ln" d="M60 290V150L250 110L470 150V290"/>
+                <path class="ln" d="M40 152L250 104L490 152"/>
+                <path class="ln" d="M90 290V190H200V290M110 210H180V260H110Z"/>
+                <path class="ln" d="M235 290V200H285V290M276 248h-6"/>
+                <path class="ln" d="M320 180H440V250H320ZM380 180V250M320 215H440"/>
+                <path class="ln" d="M440 290v-40M455 290v-28M470 290v-36"/>
+                <path class="ln" d="M28 290c0-40 6-80 12-110M40 180c-20-10-24-40-4-56 16 10 22 40 4 56Z"/>
+                <path class="ln" d="M300 300H480V318H300Z"/>
+                <rect class="scan" x="0" y="96" width="120" height="200"/>
+                <g class="pin"><circle class="halo" cx="250" cy="106" r="7"/><circle class="dot" cx="250" cy="106" r="4.5"/><rect x="258" y="70" width="104" height="24" rx="12"/><text x="270" y="86">Roof &amp; gutters</text></g>
+                <g class="pin"><circle class="halo" cx="260" cy="240" r="7"/><circle class="dot" cx="260" cy="240" r="4.5"/><rect x="140" y="118" width="96" height="24" rx="12" transform="translate(-20 0)"/><text x="132" y="134">Locks &amp; entry</text></g>
+                <g class="pin"><circle class="halo" cx="390" cy="309" r="7"/><circle class="dot" cx="390" cy="309" r="4.5"/><rect x="404" y="260" width="62" height="24" rx="12" transform="translate(0 -60)"/><text x="415" y="216">Pool</text></g>
+                <g class="pin"><circle class="halo" cx="38" cy="150" r="7"/><circle class="dot" cx="38" cy="150" r="4.5"/><rect x="18" y="60" width="104" height="24" rx="12"/><text x="30" y="76">Trees vs. code</text></g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="in sec">
+          <h3>Everything a house needs while you're gone</h3>
+          <div class="svc">
+            <div><em>Every week</em><b>Home watch visits</b><span>Inside and out: leaks, locks, pests, power, signs of squatters.</span></div>
+            <div><em>Every week</em><b>Mail &amp; packages</b><span>Collected, scanned to your portal, forwarded when you ask.</span></div>
+            <div><em>On request</em><b>Vendors &amp; repairs</b><span>We hire gardeners, pool and cleaning crews, let them in and check the work.</span></div>
+            <div><em>Before you land</em><b>Arrival ready</b><span>Air on, fridge stocked, flowers, house aired out.</span></div>
+            <div><em>When you sell</em><b>Pre-sale &amp; staging</b><span>Light renovation, rented furniture, art, photography, open houses with our licensed agent.</span></div>
+            <div><em>With your POA</em><b>On your behalf</b><span>Permits, inspections, insurance claims, auctions. Attorney partners for legal work.</span></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <h3>Simple monthly plans</h3>
+          <div class="tiers">
+            <div class="tier"><h4>Essential</h4><div class="price">$189<small>/mo</small></div><ul><li>2 visits a month</li><li>Photo report</li><li>Portal access</li></ul></div>
+            <div class="tier on"><h4>Signature</h4><div class="price">$349<small>/mo</small></div><ul><li>Weekly visits</li><li>Mail handling</li><li>Squatter &amp; code watch</li><li>Vendor access</li></ul></div>
+            <div class="tier"><h4>Estate</h4><div class="price">$690<small>/mo</small></div><ul><li>Twice weekly</li><li>House manager</li><li>Arrival preparation</li><li>Concierge hours</li></ul></div>
+          </div>
+          <div class="rev">
+            <div><span class="stars">★★★★★</span><span class="sample">Sample review: placeholder</span><p>"After the fires we couldn't live in the house for months. They met every contractor and sent photos of every step."</p></div>
+            <div><span class="stars">★★★★★</span><span class="sample">Sample review: placeholder</span><p>"Staging, photos and the open house, all while I was in New York. It sold in 11 days."</p></div>
+          </div>
+        </div>
+        <div class="in sec">
+          <div class="partner">
+            <div style="display:grid;gap:12px;align-content:start">
+              <h3>Partner program</h3>
+              <p style="color:var(--mute)">For realtors, probate and family attorneys, insurance agents, property managers and wealth advisors. Refer a client and earn a referral fee, with reports you can share with your client.</p>
+              <ul><li>Give clients one month free</li><li>Shared report access for your files</li><li>Referral fee for every signed client</li></ul>
+            </div>
+            <form onsubmit="event.preventDefault()">
+              <input id="c-name" aria-label="Name" value="Sarah K., Compass agent">
+              <input id="c-email" aria-label="Email" value="sarah@example.com">
+              <select id="c-type" aria-label="I am a"><option>Realtor</option><option>Attorney</option><option>Insurance agent</option><option>Property manager</option></select>
+              <button class="cta" type="submit">Become a partner</button>
+            </form>
+          </div>
+        </div>
+        <footer class="f"><span>Hearth &amp; Key · 1351 N Crescent Heights Blvd, West Hollywood, CA 90046</span><span>(323) 333-3967 · 9138282@gmail.com</span></footer>
+      </div>
+    </div>
+  </section>
+
+  <section class="block next" id="next">
+    <h2>After you choose</h2>
+    <ol>
+      <li>You pick one name and one concept (or mix: for example C's drawing with A's colors).</li>
+      <li>Logo: three versions of the mark in the chosen style, plus app icon and favicon.</li>
+      <li>Full site: about 40 SEO pages (services, neighborhoods, partner pages, guides), English and Spanish.</li>
+      <li>Client portal with login: visit reports, photos, scanned mail. Staff app for inspectors. Online payments for monthly plans.</li>
+      <li>Then Google Business Profile, real reviews and partner outreach.</li>
+    </ol>
+  </section>
+</div>
