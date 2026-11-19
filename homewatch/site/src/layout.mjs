@@ -66,7 +66,7 @@ export const ui = {
   },
 };
 
-export const logoSvg = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 16 5.5l11.5 10" fill="none" stroke="#ECE8E1" stroke-width="1.3"/><path d="M8 13.2V27h16V13.2" fill="none" stroke="#ECE8E1" stroke-width="1.3"/><rect x="13.6" y="17" width="4.8" height="6" fill="#E9C68C"/></svg>`;
+export const logoSvg = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 16 5.5l11.5 10" fill="none" stroke="#ECE4D4" stroke-width="1.3"/><path d="M8 13.2V27h16V13.2" fill="none" stroke="#ECE4D4" stroke-width="1.3"/><rect x="13.6" y="17" width="4.8" height="6" fill="#C9A96E"/></svg>`;
 
 const jsonLd = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 
@@ -100,14 +100,14 @@ export function head({ path, lang, title, description, css, schema = [], noindex
 ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="canonical" href="${canonical(path)}">
 ${hreflang}
-<meta name="theme-color" content="#0E1626">
+<meta name="theme-color" content="#0D131D">
 <meta property="og:type" content="website"><meta property="og:site_name" content="${site.name}">
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical(path)}"><meta property="og:image" content="${site.url}/assets/og.png">
 <meta property="og:locale" content="${lang === 'es' ? 'es_US' : 'en_US'}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
-<link rel="preload" href="${asset('fonts/Cormorant-500.woff2')}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${asset('fonts/EBGaramond-normal.woff2')}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${asset('fonts/Inter.woff2')}" as="font" type="font/woff2" crossorigin>
 <style>${css.replaceAll('url(FONT/', 'url(' + asset('fonts/'))}</style>
 ${[orgSchema(), ...schema].map(jsonLd).join('\n')}`;

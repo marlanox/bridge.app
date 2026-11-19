@@ -167,13 +167,14 @@ export function pricingPage(lang = 'en') {
   const sizes = es ? [['s', 'Hasta 3,000 pies²', 0], ['m', '3,000 – 6,000 pies²', 40], ['l', 'Más de 6,000 pies² o varias construcciones', 90]] : [['s', 'Up to 3,000 sq ft', 0], ['m', '3,000 – 6,000 sq ft', 40], ['l', 'Over 6,000 sq ft or several buildings', 90]];
   const sizeR = sizes.map(([id, l, p], i) => `<label class="opt"><input type="radio" name="size" value="${id}" data-price="${p}"${i === 0 ? ' checked' : ''}><span><b>${l}</b></span><span>+$${p}</span></label>`).join('');
   const monthly = addons.filter((a) => a.unit === '/mo');
-  const addR = monthly.map((a) => `<label class="opt"><input type="checkbox" name="addon" value="${a.id}" data-price="${a.price}"><span><b>${a.name}</b></span><span>+$${a.price}/mo</span></label>`).join('');
-  const per = addons.filter((a) => a.unit !== '/mo').map((a) => `<tr><td>${a.name}</td><td>$${a.price} ${a.unit}</td></tr>`).join('');
+  const addR = monthly.map((a) => `<label class="opt"><input type="checkbox" name="addon" value="${a.id}" data-price="${a.price}"><span><b>${es ? a.es : a.name}</b></span><span>+$${a.price}${es ? '/mes' : '/mo'}</span></label>`).join('');
+  const per = addons.filter((a) => a.unit !== '/mo').map((a) => `<tr><td>${es ? a.es : a.name}</td><td>$${a.price} ${a.unit}</td></tr>`).join('');
   const faqs = es ? generalFaqs.es.slice(2, 5) : [
     ['Is there a setup fee?', 'No. The walkthrough and onboarding are free.'],
     ['Can I change plans?', 'Yes, any time. Changes apply from your next billing date.'],
     ['How do I pay?', 'By card or bank transfer, billed monthly in advance. Vendor costs are passed through at cost with the receipt.'],
     ['What if I come home for a month?', 'Pause visits while you are home and pay only for key holding at $49/mo.'],
+    ['Can I order an extra visit?', 'Yes. An extra visit on request is $99, for example before a storm or after a neighbor calls.'],
   ];
   const body = `${hero(path, { crumbs: es ? null : [['Home', 'index'], ['Pricing', path]], eyebrow: es ? 'Precios' : 'Pricing', h1: es ? 'Precios claros. Mes a mes.' : 'Clear prices. Month to month.', lead: es ? 'Elija la frecuencia, el tamaño de la casa y los extras. Vea el precio exacto.' : 'Choose how often we visit, the size of the home and any extras. See your exact monthly price.', cta: false, lang })}
 <section class="sec"><div class="wrap calc" id="calc">

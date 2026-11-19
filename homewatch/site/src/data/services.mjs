@@ -20,7 +20,7 @@ export const services = [
       'Entry check: every lock tested, signs of forced entry, squatting or occupancy',
       'Interior walk: ceilings and walls for stains, floors for water, pests, odors',
       'Systems: run taps, flush toilets, check water heater, HVAC, fridge and freezer temperatures',
-      'Mail, flyers and packages removed so the house never looks empty',
+      'Flyers, door hangers and packages removed so the house never looks empty (full mail handling is a $49/mo add-on)',
       'Lights, blinds and timers adjusted to look lived-in',
       'Photo report with 30–40 timestamped images, in your portal within 2 hours',
     ],
@@ -43,7 +43,7 @@ export const services = [
     description: 'We collect your mail and packages, scan every envelope to your private portal and forward what you need. No pile-up, no missed bills, no empty-house signal.',
     h1: 'Your mail, read and handled. Wherever you are.',
     lead: 'An overflowing mailbox is the first sign burglars and squatters look for. We collect everything, scan it the same day, and you decide what gets opened, forwarded or shredded.',
-    price: 'Included in Signature · $29/mo add-on',
+    price: '$49/mo add-on to any plan',
     includes: [
       'Mail and packages collected on every visit',
       'Envelope fronts scanned to your portal the same day',
@@ -69,7 +69,7 @@ export const services = [
     description: 'We meet plumbers, cleaners, pool crews and contractors at your home, stay while they work, check the result and send photos. From $85/hour.',
     h1: 'We let them in. We watch the work. We lock up.',
     lead: 'Giving a stranger your keys is how things go missing and jobs go half done. We meet every vendor at your door, stay with them, and send you before-and-after photos.',
-    price: '2 hours/mo in Signature · $85/hour',
+    price: '1 hour/mo in Signature · $85/hour',
     includes: [
       'Meeting vendors at the scheduled time and opening the home',
       'Staying on site or checking in during longer jobs',
@@ -263,7 +263,7 @@ export const services = [
     price: 'Included in Signature and Estate',
     includes: [
       'Weekly lock, window and gate checks',
-      'Lived-in signals: mail removed, lights on timers, bins moved, landscaping kept',
+      'Lived-in signals: flyers removed, lights on timers, bins moved, landscaping kept',
       'No-trespassing signage and police authorization letter kept current',
       'Immediate report and police call if signs of entry are found',
       'Dated photo history that shows when the home was last secure',

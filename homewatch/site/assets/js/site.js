@@ -6,17 +6,23 @@
   // 1. Scroll scene on the home page: one CSS variable, updated once per frame.
   var scene = document.querySelector('.scene');
   if (scene && !reduce) {
-    var ticking = false;
-    var update = function () {
+    // Eased follow: the scene glides toward the scroll position instead of jumping with it.
+    var target = 0, cur = 0, running = false;
+    var read = function () {
       var r = scene.getBoundingClientRect();
       var max = r.height - window.innerHeight;
-      var p = max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
-      scene.style.setProperty('--p', p.toFixed(4));
-      ticking = false;
+      target = max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
     };
-    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    var frame = function () {
+      cur += (target - cur) * 0.09;
+      if (Math.abs(target - cur) < 0.0005) cur = target;
+      scene.style.setProperty('--p', cur.toFixed(4));
+      if (cur !== target) requestAnimationFrame(frame); else running = false;
+    };
+    var kick = function () { read(); if (!running) { running = true; requestAnimationFrame(frame); } };
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    read(); cur = target; scene.style.setProperty('--p', cur.toFixed(4));
   } else if (scene) {
     scene.style.setProperty('--p', '1');
   }

@@ -28,31 +28,33 @@ export const site = {
 export const plans = [
   {
     id: 'essential', name: 'Essential', price: 189, cadence: '2 visits a month',
-    es: { cadence: '2 visitas al mes' },
-    pitch: 'For homes that are lived in part of the year and need a reliable second set of eyes.',
-    features: ['Two scheduled visits a month', '34-point exterior and interior check', 'Photo report within 2 hours', 'Private client portal', 'Key holding included'],
+    es: { cadence: '2 visitas al mes', features: ['2 visitas al mes', 'Revisión completa por dentro y por fuera', 'Informe con fotos el mismo día', 'Control de intrusos y okupas', 'Árboles y código municipal', 'Custodia de llaves y emergencias'] },
+    pitch: 'For homes that are used part of the year and need a reliable second set of eyes.',
+    features: ['2 visits a month', 'Full inside and outside check', 'Photo report the same day', 'Squatter and break-in check', 'Trees and city-code watch', 'Key holding and emergency line'],
   },
   {
     id: 'signature', name: 'Signature', price: 349, cadence: 'Every week', featured: true,
-    es: { cadence: 'Cada semana' },
+    es: { cadence: 'Cada semana', features: ['Visita cada semana', 'Todo lo del plan Essential', 'Revisión tras tormentas e incendios', 'Casa con aspecto habitado', '1 hora de acceso a proveedores al mes', 'Respuesta prioritaria'] },
     pitch: 'Our most chosen plan. A real person in your home every single week.',
-    features: ['Weekly visits, 52 a year', 'Mail collected, scanned and forwarded', 'Squatter, trespass and code-violation watch', 'Vendor access, 2 hours a month included', 'Weather and wildfire event checks', 'Everything in Essential'],
+    features: ['A visit every week', 'Everything in Essential', 'Storm and wildfire event checks', 'Lived-in look: lights, blinds, flyers, bins', '1 hour of vendor access a month', 'Priority emergency response'],
   },
   {
     id: 'estate', name: 'Estate', price: 690, cadence: 'Twice a week',
-    es: { cadence: 'Dos veces por semana' },
-    pitch: 'For large properties, estates in probate and owners who want one person to run everything.',
-    features: ['Two visits every week', 'A dedicated house manager', 'Arrival and departure preparation', '6 concierge hours a month', 'Quarterly home condition review', 'Everything in Signature'],
+    es: { cadence: 'Dos veces por semana', features: ['Dos visitas por semana', 'Gerente personal de la casa', 'Preparación de llegada y salida', 'Revisión trimestral del estado', '3 horas de conserjería al mes', 'Todo lo del plan Signature'] },
+    pitch: 'For estates and large properties that need one person running everything.',
+    features: ['Two visits every week', 'Your own house manager', 'Arrival and departure preparation', 'Quarterly condition review', '3 concierge hours a month', 'Everything in Signature'],
   },
 ];
 
+// Extras: monthly ones appear in the plan builder, the rest are per use.
 export const addons = [
-  { id: 'mail', name: 'Mail scanning for Essential', price: 29, unit: '/mo' },
-  { id: 'pool', name: 'Pool & garden crew coordination', price: 39, unit: '/mo' },
-  { id: 'arrival', name: 'Arrival preparation', price: 175, unit: 'per arrival' },
-  { id: 'event', name: 'Storm, quake or fire event check', price: 95, unit: 'per visit' },
-  { id: 'vendor', name: 'Extra vendor access hour', price: 85, unit: 'per hour' },
-  { id: 'listing', name: 'Vacant listing care (show-ready)', price: 249, unit: '/mo' },
+  { id: 'mail', name: 'Mail collection, scanning & forwarding', es: 'Correo: recogida, escaneo y reenvío', price: 49, unit: '/mo' },
+  { id: 'pool', name: 'Pool & garden crew coordination', es: 'Coordinación de piscina y jardín', price: 39, unit: '/mo' },
+  { id: 'listing', name: 'Vacant listing care (show-ready)', es: 'Casa en venta lista para mostrar', price: 249, unit: '/mo' },
+  { id: 'visit', name: 'Extra visit on request', es: 'Visita extra a pedido', price: 99, unit: 'per visit' },
+  { id: 'vendor', name: 'Let a vendor in', es: 'Abrir a un proveedor', price: 85, unit: 'per hour' },
+  { id: 'event', name: 'After-storm or fire check', es: 'Revisión tras tormenta o incendio', price: 95, unit: 'per visit' },
+  { id: 'arrival', name: 'Arrival preparation', es: 'Preparación de llegada', price: 175, unit: 'per arrival' },
 ];
 
 export const offer = {
