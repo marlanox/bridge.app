@@ -6,23 +6,16 @@
   // 1. Scroll scene on the home page: one CSS variable, updated once per frame.
   var scene = document.querySelector('.scene');
   if (scene && !reduce) {
-    // Eased follow: the scene glides toward the scroll position instead of jumping with it.
-    var target = 0, cur = 0, running = false;
-    var read = function () {
-      var r = scene.getBoundingClientRect();
-      var max = r.height - window.innerHeight;
-      target = max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
+    // The lights come on by themselves, room by room, in about 3.5 seconds. Scrolling is never held.
+    var D = 3600, t0 = 0;
+    var ease = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+    var step = function (ts) {
+      if (!t0) t0 = ts;
+      var x = Math.min(1, (ts - t0) / D);
+      scene.style.setProperty('--p', ease(x).toFixed(4));
+      if (x < 1) requestAnimationFrame(step);
     };
-    var frame = function () {
-      cur += (target - cur) * 0.09;
-      if (Math.abs(target - cur) < 0.0005) cur = target;
-      scene.style.setProperty('--p', cur.toFixed(4));
-      if (cur !== target) requestAnimationFrame(frame); else running = false;
-    };
-    var kick = function () { read(); if (!running) { running = true; requestAnimationFrame(frame); } };
-    window.addEventListener('scroll', kick, { passive: true });
-    window.addEventListener('resize', kick);
-    read(); cur = target; scene.style.setProperty('--p', cur.toFixed(4));
+    setTimeout(function () { requestAnimationFrame(step); }, 500);
   } else if (scene) {
     scene.style.setProperty('--p', '1');
   }
