@@ -1,0 +1,116 @@
+<title>Homeward First Screens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Inter+Tight:wght@300;400;500&family=Jost:wght@300;400;500&family=Noto+Serif+Display:wght@300;400&display=swap">
+<style>
+/* Same layout on every slide, so only color and type change between options. */
+:root{--bg:#F2F2F0;--fg:#1A1A1A;--muted:#6B6B68;--line:#DADAD6;--f:"Inter",system-ui,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141414;--fg:#EDEDEA;--muted:#9A9A96;--line:#2C2C2A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141414;--fg:#EDEDEA;--muted:#9A9A96;--line:#2C2C2A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1200px;margin:0 auto;padding-block:36px 72px;display:grid;gap:44px}
+.top{display:grid;gap:8px;max-width:680px}
+.top h1{font:500 28px/1.2 var(--f);margin:0;letter-spacing:-.01em}
+.top p{margin:0;color:var(--muted)}
+.opt{display:grid;gap:12px}
+.label{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.label b{font:500 18px var(--f)}
+.label span{color:var(--muted);font-size:13px}
+
+/* slide */
+.s{--a:#000;--b:#fff;--c:#888;--d:#ccc;--hf:serif;--hw:400;--bf:sans-serif;--hs:clamp(36px,5.6cqi,76px);--ht:-.01em;--hc:none;
+  container-type:inline-size;position:relative;overflow:hidden;border-radius:6px;background:var(--a);color:var(--b);font-family:var(--bf);
+  min-height:min(640px,78vw);display:grid;grid-template-rows:auto 1fr auto}
+.s::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 85% 10%,color-mix(in srgb,var(--b) 9%,transparent),transparent 60%),linear-gradient(115deg,transparent 55%,color-mix(in srgb,var(--b) 4%,transparent) 55.2%,transparent 72%);pointer-events:none}
+.s>*{position:relative}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px clamp(18px,4cqi,48px);flex-wrap:wrap}
+.mark{font-family:var(--hf);font-weight:var(--hw);font-size:22px;letter-spacing:.14em;text-transform:uppercase}
+.links{display:flex;gap:clamp(14px,2.4cqi,30px);font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;flex-wrap:wrap}
+@container (max-width:700px){.links{display:none}}
+.btn{font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:13px 20px;border:1px solid color-mix(in srgb,var(--b) 40%,transparent);color:var(--b);background:transparent;font-family:var(--bf)}
+.btn.fill{background:var(--c);border-color:var(--c);color:var(--a)}
+.hero{align-self:center;padding:24px clamp(18px,4cqi,48px) 32px;display:grid;gap:22px;max-width:920px}
+.eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;opacity:.7}
+.h{font-family:var(--hf);font-weight:var(--hw);font-size:var(--hs);line-height:1.04;letter-spacing:var(--ht);text-transform:var(--hc);margin:0;text-wrap:balance}
+.sub{font-size:17px;line-height:1.6;max-width:48ch;opacity:.78;margin:0}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.phone{font-size:14px;letter-spacing:.06em;opacity:.85;margin-left:6px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;padding:16px clamp(18px,4cqi,48px);border-top:1px solid color-mix(in srgb,var(--b) 16%,transparent);font-size:12px}
+.sw{display:flex;gap:8px;align-items:center}
+.sw i{width:22px;height:22px;border-radius:50%;border:1px solid color-mix(in srgb,var(--b) 25%,transparent);display:block}
+.sw small{opacity:.7;letter-spacing:.04em;margin-left:6px}
+.fonts{opacity:.7;letter-spacing:.04em}
+.h,.sub,.row,.eyebrow{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.eyebrow{animation-delay:.05s}.h{animation-delay:.12s}.sub{animation-delay:.24s}.row{animation-delay:.34s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.h,.sub,.row,.eyebrow{animation:none}}
+
+/* 1 Midnight & Stone */
+.s1{--a:#0E1626;--b:#ECE8E1;--c:#ECE8E1;--d:#8C96A6;--hf:"EB Garamond",Georgia,serif;--bf:"Inter",system-ui,sans-serif;--hs:clamp(40px,6.4cqi,88px)}
+/* 2 Graphite & Bone */
+.s2{--a:#1B1B1A;--b:#EFECE6;--c:#EFECE6;--d:#7A7873;--hf:"Inter Tight",system-ui,sans-serif;--hw:300;--bf:"Inter Tight",system-ui,sans-serif;--ht:-.035em;--hs:clamp(40px,6.6cqi,92px)}
+.s2 .mark{font-weight:500;letter-spacing:.3em;font-size:16px}
+/* 3 Pure White & Navy */
+.s3{--a:#FAFAF8;--b:#13223A;--c:#13223A;--d:#B8C0CC;--hf:"Jost",system-ui,sans-serif;--hw:300;--bf:"Jost",system-ui,sans-serif;--hc:uppercase;--ht:.06em;--hs:clamp(30px,4.6cqi,64px)}
+.s3 .btn.fill{color:#FAFAF8}
+.s3 .mark{letter-spacing:.32em;font-size:17px;font-weight:400}
+/* 4 Deep Forest & Linen */
+.s4{--a:#14221C;--b:#E9E6DF;--c:#B9A57E;--d:#5E7068;--hf:"Noto Serif Display",Georgia,serif;--hw:300;--bf:"Inter",system-ui,sans-serif;--hs:clamp(40px,6.4cqi,88px)}
+/* 5 Espresso & Porcelain */
+.s5{--a:#F4F3F1;--b:#2B231F;--c:#2B231F;--d:#A39A92;--hf:"Cormorant Garamond",Georgia,serif;--hw:500;--bf:"Inter",system-ui,sans-serif;--hs:clamp(44px,7cqi,96px)}
+.s5 .btn.fill{color:#F4F3F1}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Five first screens, same layout</h1>
+    <p>Only the colors and fonts change, so you can compare them side by side. Real photos or video of a house go behind the text later. The name "Homeward" is a placeholder.</p>
+  </header>
+
+  <section class="opt" id="o1">
+    <div class="label"><b>1 · Midnight &amp; Stone</b><span>Private bank. Calm, expensive, classic.</span></div>
+    <div class="s s1">
+      <div class="nav"><span class="mark">Homeward</span><span class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Client Login</span></span><button class="btn" type="button">EN · ES</button></div>
+      <div class="hero"><span class="eyebrow">Home watch · Los Angeles</span><h2 class="h">Your home, kept while you're away.</h2><p class="sub">Weekly visits, a photo report after every one, and a trusted team for everything else your house needs.</p><div class="row"><button class="btn fill" type="button">Book a free walkthrough</button><span class="phone">(323) 333-3967</span></div></div>
+      <div class="foot"><span class="sw"><i style="background:#0E1626"></i><i style="background:#ECE8E1"></i><i style="background:#8C96A6"></i><small>Midnight · Stone · Slate</small></span><span class="fonts">EB Garamond + Inter</span></div>
+    </div>
+  </section>
+
+  <section class="opt" id="o2">
+    <div class="label"><b>2 · Graphite &amp; Bone</b><span>Modern minimal, like Apple or Aman. No serif at all.</span></div>
+    <div class="s s2">
+      <div class="nav"><span class="mark">Homeward</span><span class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Client Login</span></span><button class="btn" type="button">EN · ES</button></div>
+      <div class="hero"><span class="eyebrow">Home watch · Los Angeles</span><h2 class="h">Your home, kept while you're away.</h2><p class="sub">Weekly visits, a photo report after every one, and a trusted team for everything else your house needs.</p><div class="row"><button class="btn fill" type="button">Book a free walkthrough</button><span class="phone">(323) 333-3967</span></div></div>
+      <div class="foot"><span class="sw"><i style="background:#1B1B1A"></i><i style="background:#EFECE6"></i><i style="background:#7A7873"></i><small>Graphite · Bone · Ash</small></span><span class="fonts">Inter Tight Light</span></div>
+    </div>
+  </section>
+
+  <section class="opt" id="o3">
+    <div class="label"><b>3 · White &amp; Navy</b><span>Light and airy, like luxury real estate brokerages.</span></div>
+    <div class="s s3">
+      <div class="nav"><span class="mark">Homeward</span><span class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Client Login</span></span><button class="btn" type="button">EN · ES</button></div>
+      <div class="hero"><span class="eyebrow">Home watch · Los Angeles</span><h2 class="h">Your home, kept while you're away.</h2><p class="sub">Weekly visits, a photo report after every one, and a trusted team for everything else your house needs.</p><div class="row"><button class="btn fill" type="button">Book a free walkthrough</button><span class="phone">(323) 333-3967</span></div></div>
+      <div class="foot"><span class="sw"><i style="background:#FAFAF8"></i><i style="background:#13223A"></i><i style="background:#B8C0CC"></i><small>White · Navy · Mist</small></span><span class="fonts">Jost Light, all caps</span></div>
+    </div>
+  </section>
+
+  <section class="opt" id="o4">
+    <div class="label"><b>4 · Deep Forest &amp; Linen</b><span>Old-money estate, with a quiet brass accent.</span></div>
+    <div class="s s4">
+      <div class="nav"><span class="mark">Homeward</span><span class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Client Login</span></span><button class="btn" type="button">EN · ES</button></div>
+      <div class="hero"><span class="eyebrow">Home watch · Los Angeles</span><h2 class="h">Your home, kept while you're away.</h2><p class="sub">Weekly visits, a photo report after every one, and a trusted team for everything else your house needs.</p><div class="row"><button class="btn fill" type="button">Book a free walkthrough</button><span class="phone">(323) 333-3967</span></div></div>
+      <div class="foot"><span class="sw"><i style="background:#14221C"></i><i style="background:#E9E6DF"></i><i style="background:#B9A57E"></i><small>Forest · Linen · Brass</small></span><span class="fonts">Noto Serif Display + Inter</span></div>
+    </div>
+  </section>
+
+  <section class="opt" id="o5">
+    <div class="label"><b>5 · Porcelain &amp; Espresso</b><span>Light, warm and editorial, like a design magazine.</span></div>
+    <div class="s s5">
+      <div class="nav"><span class="mark">Homeward</span><span class="links"><span>Home Watch</span><span>Estate Services</span><span>Partners</span><span>Client Login</span></span><button class="btn" type="button">EN · ES</button></div>
+      <div class="hero"><span class="eyebrow">Home watch · Los Angeles</span><h2 class="h">Your home, kept while you're away.</h2><p class="sub">Weekly visits, a photo report after every one, and a trusted team for everything else your house needs.</p><div class="row"><button class="btn fill" type="button">Book a free walkthrough</button><span class="phone">(323) 333-3967</span></div></div>
+      <div class="foot"><span class="sw"><i style="background:#F4F3F1"></i><i style="background:#2B231F"></i><i style="background:#A39A92"></i><small>Porcelain · Espresso · Taupe</small></span><span class="fonts">Cormorant Garamond + Inter</span></div>
+    </div>
+  </section>
+</div>
