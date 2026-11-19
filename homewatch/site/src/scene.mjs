@@ -1,92 +1,80 @@
-// Home page scroll scene: a classical Beverly Hills estate at dusk.
-// As the visitor scrolls, the inspector walks the house: the foyer lights first, then each
-// room, then the lanterns, column uplights and the fountain in the motor court.
+// Home page scroll scene: a modern hillside estate above Beverly Hills at blue hour.
+// White architecture, floor-to-ceiling glass, a cantilevered upper floor and an infinity pool.
+// As the visitor scrolls, rooms light up one by one, then the pool and the garden lights.
 // Lit elements read --t (start point) against --p (scroll progress 0..1) in CSS.
 
-const WALL = '#232A37', WING = '#1E2430', TRIM = '#3A4150', ROOF = '#12161E', DARK = '#10151D', MULL = '#2B3240';
+const WALL = '#D5DDE8', SLAB = '#EEF2F7', SHADE = '#AEBBCC', FRAME = '#8C9BB0';
 
-// Rectangular window with mullions and lit state.
-const rectWin = (x, y, w, h, t) =>
-  `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${DARK}"/>` +
-  `<rect class="lit" style="--t:${t}" x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#warm)"/>` +
-  `<path d="M${x + w / 2} ${y}v${h}M${x} ${y + h / 3}h${w}M${x} ${y + (2 * h) / 3}h${w}" stroke="${MULL}" stroke-width="2"/>` +
-  `<rect x="${x - 3}" y="${y + h}" width="${w + 6}" height="3" fill="${TRIM}"/>`;
-
-// Arched French door / window.
-const archWin = (x, y, w, h, t) => {
-  const r = w / 2;
-  const d = `M${x} ${y + h}V${y + r}A${r} ${r} 0 0 1 ${x + w} ${y + r}V${y + h}Z`;
-  return `<path d="${d}" fill="${DARK}"/><path class="lit" style="--t:${t}" d="${d}" fill="url(#warm)"/>` +
-    `<path d="M${x + r} ${y}v${h}M${x} ${y + r + (h - r) / 3}h${w}M${x} ${y + r + (2 * (h - r)) / 3}h${w}" stroke="${MULL}" stroke-width="2"/>` +
-    `<path d="${d}" fill="none" stroke="${TRIM}" stroke-width="2.5"/>`;
-};
-
-const cypress = (x, base, h, w) => `<path d="M${x} ${base}C${x - w} ${base - h * 0.35} ${x - w * 0.8} ${base - h * 0.75} ${x} ${base - h}C${x + w * 0.8} ${base - h * 0.75} ${x + w} ${base - h * 0.35} ${x} ${base}Z" fill="#0A0E14"/>`;
-
-const lantern = (x, y, t) => `<g class="lit" style="--t:${t}"><circle cx="${x}" cy="${y}" r="22" fill="url(#halo)"/><rect x="${x - 3}" y="${y - 5}" width="6" height="10" fill="#F6E0B0"/></g><rect x="${x - 4}" y="${y - 7}" width="8" height="2" fill="${TRIM}"/>`;
+// A run of glass panes between x0 and x1. Each pane lights in order starting at t0.
+function glass(x0, x1, y, h, n, t0, step, interior = '') {
+  const w = (x1 - x0) / n;
+  let o = `<rect x="${x0}" y="${y}" width="${x1 - x0}" height="${h}" fill="url(#glassDark)"/>`;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * w;
+    o += `<rect class="lit" style="--t:${(t0 + i * step).toFixed(3)}" x="${x.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="${h}" fill="url(#warm)"/>`;
+  }
+  o += interior;
+  for (let i = 1; i < n; i++) o += `<rect x="${(x0 + i * w - 1).toFixed(1)}" y="${y}" width="2" height="${h}" fill="${FRAME}"/>`;
+  o += `<rect x="${x0}" y="${y}" width="${x1 - x0}" height="${h}" fill="url(#sheen)"/>`;
+  return o;
+}
 
 export function landSvg() {
-  return `<svg viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 170C170 128 330 136 520 106 700 78 860 116 1040 90 1220 64 1420 96 1600 70V400H0Z" fill="#171C26"/><path d="M0 250C220 222 420 234 620 228 860 220 1100 232 1320 222 1450 216 1530 220 1600 216V400H0Z" fill="#10141C"/></svg>`;
+  return `<svg viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 200C190 150 360 160 560 120 760 84 940 128 1120 96 1300 66 1460 92 1600 72V400H0Z" fill="#3A5680" opacity=".55"/><path d="M0 268C240 236 430 252 640 244 880 236 1080 248 1320 236 1460 230 1540 234 1600 230V400H0Z" fill="#1E3356"/></svg>`;
 }
 
 export function sceneSvg() {
-  const upperL = [846, 896, 946].map((x, i) => rectWin(x, 372, 30, 46, 0.44 + i * 0.03)).join('');
-  const upperR = [1144, 1194, 1244].map((x, i) => rectWin(x, 372, 30, 46, 0.54 + i * 0.03)).join('');
-  const lowerL = [846, 896, 946].map((x, i) => archWin(x, 458, 30, 76, 0.16 + i * 0.04)).join('');
-  const lowerR = [1144, 1194, 1244].map((x, i) => archWin(x, 458, 30, 76, 0.28 + i * 0.04)).join('');
-  const wingL = [688, 734, 780].map((x, i) => archWin(x, 474, 28, 62, 0.64 + i * 0.02)).join('');
-  const wingR = [1312, 1358, 1404].map((x, i) => archWin(x, 474, 28, 62, 0.7 + i * 0.02)).join('');
-  const balus = (x0, x1) => { let o = ''; for (let x = x0 + 6; x < x1 - 4; x += 12) o += `<rect x="${x}" y="412" width="4" height="12" fill="${TRIM}"/>`; return o; };
-  const cols = [1004, 1034, 1078, 1108].map((x) => `<rect x="${x}" y="424" width="10" height="132" fill="#444C5C"/><rect x="${x - 3}" y="420" width="16" height="5" fill="#4E5666"/><rect x="${x - 3}" y="552" width="16" height="4" fill="#4E5666"/>`).join('');
-  const upl = [1009, 1039, 1083, 1113].map((x) => `<path class="lit" style="--t:.8" d="M${x - 9} 556L${x + 5} 556L${x + 22} 424L${x - 26} 424Z" fill="url(#beam)"/>`).join('');
-  return `<svg viewBox="0 0 1600 640" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+  const lower = glass(842, 1318, 448, 70, 7, 0.08, 0.035,
+    `<g class="lit" style="--t:.12"><path d="M880 518v-16h88v16M900 502v-8h48v8" fill="#B77E45"/><path d="M1010 448v20M1004 468h12" stroke="#B77E45" stroke-width="2"/><circle cx="1010" cy="472" r="5" fill="#FFE3AE"/><path d="M1160 518v-22h70v22M1176 496v-14" fill="none" stroke="#B77E45" stroke-width="3"/><path d="M1268 518v-40l18-12" fill="none" stroke="#9C6A3A" stroke-width="3"/></g>`);
+  const upper = glass(722, 1222, 360, 62, 6, 0.36, 0.04,
+    `<g class="lit" style="--t:.42"><path d="M760 422v-14h96v14" fill="#B77E45"/><path d="M930 360v14M1080 360v14" stroke="#B77E45" stroke-width="2"/><circle cx="930" cy="378" r="4.5" fill="#FFE3AE"/><circle cx="1080" cy="378" r="4.5" fill="#FFE3AE"/><path d="M1130 422v-22h60v22" fill="none" stroke="#B77E45" stroke-width="3"/></g>`);
+  const palm = (x, base, top, lean) => `<path d="M${x} ${base}C${x + lean * 0.2} ${base - (base - top) * 0.5} ${x + lean * 0.6} ${top + 30} ${x + lean} ${top}" stroke="#18294A" stroke-width="5" fill="none" stroke-linecap="round"/><g stroke="#18294A" stroke-width="3.5" fill="none" stroke-linecap="round"><path d="M${x + lean} ${top}c-30-10-62-4-84 16M${x + lean} ${top}c-22-22-56-30-82-22M${x + lean} ${top}c4-30 22-50 46-58M${x + lean} ${top}c26-16 58-18 82-4M${x + lean} ${top}c30 2 54 18 66 40"/></g>`;
+  return `<svg viewBox="600 150 960 450" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
 <defs>
-  <linearGradient id="warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E2B4"/><stop offset=".6" stop-color="#E8BE7C"/><stop offset="1" stop-color="#C99554"/></linearGradient>
-  <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F3D39A" stop-opacity=".55"/><stop offset="1" stop-color="#F3D39A" stop-opacity="0"/></radialGradient>
-  <radialGradient id="glow" cx=".5" cy=".6" r=".5"><stop offset="0" stop-color="#E7C285" stop-opacity=".28"/><stop offset="1" stop-color="#E7C285" stop-opacity="0"/></radialGradient>
-  <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F3D39A" stop-opacity=".38"/><stop offset="1" stop-color="#F3D39A" stop-opacity="0"/></linearGradient>
-  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FD3E3"/><stop offset="1" stop-color="#3E8199"/></linearGradient>
-  <linearGradient id="spill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7C285" stop-opacity=".32"/><stop offset="1" stop-color="#E7C285" stop-opacity="0"/></linearGradient>
+  <linearGradient id="warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF0CF"/><stop offset=".55" stop-color="#F6CF8E"/><stop offset="1" stop-color="#DFA663"/></linearGradient>
+  <linearGradient id="glassDark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B7FAE"/><stop offset=".5" stop-color="#2F4E7C"/><stop offset="1" stop-color="#22406B"/></linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".35" stop-color="#fff" stop-opacity=".10"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD9A0" stop-opacity=".6"/><stop offset="1" stop-color="#FFD9A0" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glow" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#FFD7A0" stop-opacity=".30"/><stop offset="1" stop-color="#FFD7A0" stop-opacity="0"/></radialGradient>
+  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FE3F0"/><stop offset="1" stop-color="#2E9DBB"/></linearGradient>
+  <linearGradient id="waterDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A6C98"/><stop offset="1" stop-color="#2A4670"/></linearGradient>
+  <linearGradient id="refl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD7A0" stop-opacity=".45"/><stop offset="1" stop-color="#FFD7A0" stop-opacity="0"/></linearGradient>
 </defs>
-<ellipse class="lit" style="--t:.24" cx="1060" cy="460" rx="560" ry="190" fill="url(#glow)"/>
-${cypress(612, 572, 250, 22)}${cypress(642, 572, 200, 18)}${cypress(1508, 572, 250, 22)}${cypress(1478, 572, 200, 18)}
-<!-- wings -->
-<rect x="660" y="430" width="160" height="126" fill="${WING}"/><rect x="1300" y="430" width="160" height="126" fill="${WING}"/>
-<rect x="652" y="424" width="176" height="8" fill="${TRIM}"/><rect x="1292" y="424" width="176" height="8" fill="${TRIM}"/>
-${balus(652, 828)}${balus(1292, 1468)}<rect x="652" y="408" width="176" height="5" fill="${TRIM}"/><rect x="1292" y="408" width="176" height="5" fill="${TRIM}"/>
-${wingL}${wingR}
-<!-- main block -->
-<rect x="820" y="352" width="480" height="204" fill="${WALL}"/>
-<rect x="820" y="440" width="480" height="5" fill="${TRIM}"/>
-<path d="M802 352L866 292H1254L1318 352Z" fill="${ROOF}"/>
-<rect x="806" y="346" width="508" height="9" fill="${TRIM}"/>
-<rect x="896" y="258" width="20" height="44" fill="${ROOF}"/><rect x="892" y="254" width="28" height="6" fill="${TRIM}"/>
-<rect x="1204" y="258" width="20" height="44" fill="${ROOF}"/><rect x="1200" y="254" width="28" height="6" fill="${TRIM}"/>
-${upperL}${upperR}${lowerL}${lowerR}
-<!-- portico -->
-<path d="M984 410L1060 370L1136 410Z" fill="#2D3442" stroke="${TRIM}" stroke-width="2"/>
-<circle cx="1060" cy="396" r="9" fill="${DARK}"/><circle class="lit" style="--t:.1" cx="1060" cy="396" r="9" fill="url(#warm)"/>
-<rect x="990" y="410" width="140" height="12" fill="#4E5666"/>
-<path d="M1042 556V492A18 18 0 0 1 1078 492V556Z" fill="${DARK}"/>
-<path class="lit" style="--t:.05" d="M1042 556V492A18 18 0 0 1 1078 492V556Z" fill="url(#warm)"/>
-<path d="M1060 474v82" stroke="${MULL}" stroke-width="2"/>
-${upl}${cols}
-${lantern(1024, 500, 0.78)}${lantern(1096, 500, 0.78)}
-<!-- terrace, steps, light spill -->
-<rect x="640" y="556" width="840" height="14" fill="#2A303D"/>
-<rect x="1010" y="570" width="100" height="6" fill="#2A303D"/><rect x="996" y="576" width="128" height="6" fill="#262C38"/>
-<rect class="lit" style="--t:.3" x="660" y="570" width="800" height="34" fill="url(#spill)"/>
-<!-- hedges -->
-<rect x="664" y="540" width="150" height="18" rx="8" fill="#0C1118"/><rect x="1306" y="540" width="150" height="18" rx="8" fill="#0C1118"/>
-<rect x="830" y="544" width="150" height="14" rx="7" fill="#0C1118"/><rect x="1140" y="544" width="150" height="14" rx="7" fill="#0C1118"/>
-<!-- motor court and fountain -->
-<ellipse cx="1060" cy="606" rx="250" ry="26" fill="#161B24"/>
-<ellipse cx="1060" cy="604" rx="58" ry="11" fill="#2A303D"/>
-<ellipse cx="1060" cy="602" rx="50" ry="8" fill="${DARK}"/>
-<ellipse class="lit" style="--t:.86" cx="1060" cy="602" rx="50" ry="8" fill="url(#water)"/>
-<g class="lit" style="--t:.86"><ellipse cx="1060" cy="592" rx="70" ry="30" fill="url(#halo)"/><path d="M1060 600v-26M1052 600c0-12 4-20 8-26M1068 600c0-12-4-20-8-26" stroke="#CFEAF2" stroke-width="1.6" fill="none" opacity=".8"/></g>
-<!-- gate posts -->
-<rect x="760" y="586" width="14" height="30" fill="#2A303D"/><rect x="1346" y="586" width="14" height="30" fill="#2A303D"/>
-${lantern(767, 580, 0.9)}${lantern(1353, 580, 0.9)}
+${palm(1438, 520, 200, -14)}${palm(1486, 520, 240, 10)}
+<ellipse class="lit" style="--t:.2" cx="1040" cy="430" rx="520" ry="170" fill="url(#glow)"/>
+<!-- the hill -->
+<path d="M520 640C600 600 680 566 760 548 860 528 980 530 1100 528 1260 526 1420 516 1600 506V640Z" fill="#1E3356"/>
+<!-- upper floor, cantilevered to the left -->
+<rect x="684" y="342" width="580" height="12" fill="${SLAB}"/>
+<rect x="690" y="354" width="32" height="68" fill="${WALL}"/>
+${upper}
+<rect x="1222" y="354" width="36" height="68" fill="${WALL}"/>
+<rect x="692" y="422" width="566" height="10" fill="${SLAB}"/>
+<rect x="700" y="432" width="540" height="3" fill="${SHADE}"/>
+<!-- tall side volume with a slot window -->
+<rect x="1258" y="372" width="170" height="146" fill="${WALL}"/>
+<rect x="1250" y="364" width="186" height="10" fill="${SLAB}"/>
+<rect x="1384" y="390" width="16" height="110" fill="url(#glassDark)"/><rect class="lit" style="--t:.66" x="1384" y="390" width="16" height="110" fill="url(#warm)"/>
+<!-- lower floor, set into the hill -->
+<rect x="820" y="440" width="22" height="78" fill="${WALL}"/>
+${lower}
+<rect x="804" y="436" width="530" height="6" fill="${SLAB}"/>
+<!-- stone plinth, terrace, infinity pool -->
+<rect x="780" y="518" width="660" height="14" fill="#B7C3D3"/>
+<rect x="760" y="532" width="560" height="16" fill="url(#waterDark)"/>
+<rect class="lit" style="--t:.78" x="760" y="532" width="560" height="16" fill="url(#water)"/>
+<rect class="lit" style="--t:.3" x="842" y="532" width="476" height="16" fill="url(#refl)"/>
+<rect x="756" y="548" width="568" height="4" fill="#9FB0C6"/>
+<rect class="lit" style="--t:.8" x="756" y="548" width="568" height="3" fill="#BFF3FA"/>
+<path d="M760 552C820 560 900 566 1000 566" stroke="#2A4670" stroke-width="1" fill="none"/>
+<!-- olive trees and planting -->
+<g fill="#16294A"><ellipse cx="1470" cy="508" rx="34" ry="22"/><ellipse cx="1500" cy="498" rx="26" ry="20"/><rect x="1480" y="508" width="4" height="18"/><ellipse cx="740" cy="540" rx="30" ry="14"/><ellipse cx="1356" cy="526" rx="26" ry="10"/></g>
+<!-- garden lights and palm uplights -->
+<g class="lit" style="--t:.86">
+  <circle cx="1440" cy="510" r="26" fill="url(#halo)"/><circle cx="1490" cy="512" r="22" fill="url(#halo)"/>
+  <circle cx="780" cy="560" r="14" fill="url(#halo)"/><circle cx="780" cy="560" r="2" fill="#FFE8BC"/>
+  <circle cx="880" cy="572" r="14" fill="url(#halo)"/><circle cx="880" cy="572" r="2" fill="#FFE8BC"/>
+  <circle cx="980" cy="580" r="14" fill="url(#halo)"/><circle cx="980" cy="580" r="2" fill="#FFE8BC"/>
+</g>
 </svg>`;
 }

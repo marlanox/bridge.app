@@ -56,6 +56,13 @@ const icons = [
   '<path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.4 10.9V16h6.8v-2.1A6 6 0 0 0 12 3z"/>',
 ];
 
+const tIcons = [
+  '<path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/>',
+  '<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6"/>',
+  '<rect x="3" y="7" width="18" height="13" rx="1"/><circle cx="12" cy="13.5" r="3.6"/><path d="M8.5 7l1.6-2.6h3.8L15.5 7"/>',
+  '<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/>',
+];
+
 const T = {
   en: {
     title: 'Home Watch in Beverly Hills & Los Angeles | Weekly Visits & Photo Reports | Homeward',
@@ -63,7 +70,8 @@ const T = {
     eyebrow: 'Home watch · Beverly Hills · West Hollywood · Los Angeles',
     h1: 'While you’re away, we <em>keep watch.</em>',
     lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
-    chips: ['From $189 a month', 'No long contract', 'Free first walkthrough'],
+    chips: ['Bonded & insured', 'Background-checked inspectors', 'Photo proof of every visit', 'From $189/mo · no contract'],
+    tband: [['Bonded & insured', 'Certificate of insurance on request, sent to you or your insurer.'], ['The same vetted inspector', 'Background-checked, trained on our 34-point visit, every single time.'], ['Proof of every visit', '30 to 40 timestamped, location-tagged photos, the same day.'], ['Keys coded, never labeled', 'Kept in a safe, every use logged. Month to month, no markups.']],
     cta1: 'Book a free walkthrough', cta2: 'See plans', scroll: 'Scroll',
     logHead: ['Tuesday visit', '6:42 pm'],
     log: [['6:42', 'Arrived · alarm disarmed'], ['6:44', 'Doors, locks & windows'], ['6:49', 'Main floor, room by room'], ['6:53', 'Water, AC & fridge'], ['6:58', 'Upstairs & bathrooms'], ['7:06', 'Grounds, trees & gates'], ['7:11', 'Report sent · 38 photos']],
@@ -116,7 +124,8 @@ const T = {
     eyebrow: 'Vigilancia de casas · Beverly Hills · Los Ángeles',
     h1: 'Mientras usted no está, <em>nosotros vigilamos.</em>',
     lead: 'Visitas semanales a su casa vacía. Cada habitación, cerradura y sistema revisados, y un informe con fotos en su teléfono el mismo día.',
-    chips: ['Desde $189 al mes', 'Sin contrato largo', 'Primera visita gratis'],
+    chips: ['Afianzados y asegurados', 'Inspectores verificados', 'Prueba de cada visita', 'Desde $189/mes · sin contrato'],
+    tband: [['Afianzados y asegurados', 'Certificado de seguro a pedido, para usted o su aseguradora.'], ['El mismo inspector verificado', 'Con verificación de antecedentes y capacitado en 34 puntos.'], ['Prueba de cada visita', 'De 30 a 40 fotos con fecha, hora y ubicación, el mismo día.'], ['Llaves codificadas', 'En caja fuerte, cada uso registrado. Mes a mes, sin recargos.']],
     cta1: 'Reserve una visita gratis', cta2: 'Ver planes', scroll: 'Desplace',
     logHead: ['Visita del martes', '6:42 pm'],
     log: [['6:42', 'Llegada · alarma desactivada'], ['6:44', 'Puertas, cerraduras y ventanas'], ['6:49', 'Planta baja, cuarto por cuarto'], ['6:53', 'Agua, aire y refrigerador'], ['6:58', 'Planta alta y baños'], ['7:06', 'Jardín, árboles y rejas'], ['7:11', 'Informe enviado · 38 fotos']],
@@ -199,7 +208,7 @@ export function homePage(lang = 'en') {
         <h1 style="margin-top:18px">${t.h1}</h1>
         <p class="lead">${t.lead}</p>
         <div class="row"><a class="btn arrow" href="#start">${t.cta1}</a><a class="btn line" href="#plans">${t.cta2}</a><a class="tel" href="tel:${site.phoneE164}">${site.phone}</a></div>
-        <div class="chips">${t.chips.map((c) => `<span>${c}</span>`).join('')}</div>
+        <div class="hero-trust">${t.chips.map((c) => `<span>${c}</span>`).join('')}</div>
       </div>
       <div class="log" aria-label="${es ? 'Ejemplo de registro de visita' : 'Example visit log'}">
         <div class="log-h"><span>${t.logHead[0]}</span><span>${t.logHead[1]}</span></div>
@@ -210,19 +219,19 @@ export function homePage(lang = 'en') {
     <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>
-<div class="trust"><div class="wrap"><ul>${t.trust.map((x) => `<li>${x}</li>`).join('')}</ul></div></div>
+<section class="tband" aria-label="${es ? 'Por qué confiar en nosotros' : 'Why owners trust us'}"><div class="wrap">${t.tband.map(([b, p], i) => `<div class="ti"><svg viewBox="0 0 24 24" aria-hidden="true">${tIcons[i]}</svg><b>${b}</b><span>${p}</span></div>`).join('')}</div></section>
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.inclEyebrow}</span><h2>${t.inclH}</h2></div>
   <div class="incl">${incl}</div>
 </div></section>
 
-<section class="sec dark"><div class="wrap">
-  <div class="sec-head"><span class="eyebrow" style="color:var(--gold)">${t.factsEyebrow}</span><h2>${t.factsH}</h2></div>
+<section class="sec stone"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">${t.factsEyebrow}</span><h2>${t.factsH}</h2></div>
   <div class="facts">${facts}</div>
 </div></section>
 
-<section class="sec stone" id="plans"><div class="wrap">
+<section class="sec" id="plans"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.plansEyebrow}</span><h2>${t.plansH}</h2><p class="lead">${t.plansP}</p></div>
   <div class="plans rv">${plansHtml}</div>
   <h3 style="margin-top:40px">${t.addH}</h3>
@@ -230,10 +239,7 @@ export function homePage(lang = 'en') {
   <p style="margin-top:22px"><a href="${link(es ? 'es/precios' : 'pricing')}">${t.compare} →</a></p>
 </div></section>
 
-<section class="sec"><div class="wrap">
-  <div class="sec-head"><span class="eyebrow">${t.trustEyebrow}</span><h2>${t.trustH}</h2></div>
-  <div class="trustlist">${trustL}</div>
-</div></section>
+
 
 <section class="sec paper rule"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.revEyebrow}</span><h2>${t.revH}</h2></div>
@@ -260,8 +266,8 @@ export function homePage(lang = 'en') {
   <div class="on-dark"><a class="btn arrow" href="#start">${t.offerCta}</a></div>
 </div></section>
 
-<section class="sec dark rule" style="border-color:var(--line-d)"><div class="wrap">
-  <div class="sec-head"><span class="eyebrow" style="color:var(--gold)">${t.moreEyebrow}</span><h2>${t.moreH}</h2><p class="lead">${t.moreP}</p></div>
+<section class="sec paper rule"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">${t.moreEyebrow}</span><h2>${t.moreH}</h2><p class="lead">${t.moreP}</p></div>
   <div class="more-svcs">${more}</div>
   <p class="eyebrow" style="margin:36px 0 14px">${t.whoLabel}</p>
   <div class="more-svcs">${who}</div>
