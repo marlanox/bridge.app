@@ -66,7 +66,7 @@ export const ui = {
   },
 };
 
-export const logoSvg = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 16 5.5l11.5 10" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><path d="M8 13.2V27h16V13.2" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><rect x="13.6" y="17" width="4.8" height="6" fill="#C9A96E"/></svg>`;
+export const logoSvg = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 16 5.5l11.5 10" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><path d="M8 13.2V27h16V13.2" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><rect x="13.6" y="17" width="4.8" height="6" fill="#BCA683"/></svg>`;
 
 const jsonLd = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 
@@ -75,7 +75,7 @@ export const orgSchema = () => ({
   '@type': 'ProfessionalService',
   '@id': site.url + '/#business',
   name: site.name,
-  description: 'Home watch, concierge and estate services for vacant and second homes in Los Angeles.',
+  description: 'Home watch, concierge and estate services for vacant and second homes across Southern California.',
   url: site.url + '/',
   telephone: site.phoneE164,
   email: site.email,
@@ -178,7 +178,7 @@ export function footer({ path, lang }) {
   <div class="cols">
     <div class="nap">
       <a class="logo" href="${link(lang === 'es' ? 'es/index' : 'index')}">${logoSvg}<span><b>${site.name}</b></span></a>
-      <p style="margin-top:12px;max-width:34ch">${lang === 'es' ? 'Cuidamos su casa mientras usted está lejos. Los Ángeles y alrededores.' : 'We look after your home while you are away. Los Angeles and nearby.'}</p>
+      <p style="margin-top:12px;max-width:34ch">${lang === 'es' ? 'Cuidamos su casa mientras usted está lejos. Todo el Sur de California.' : 'We look after your home while you are away. All of Southern California.'}</p>
       <address class="nap" style="margin-top:8px">
         <span>${site.address.street}<br>${site.address.city}, ${site.address.region} ${site.address.zip}</span>
         <a href="tel:${site.phoneE164}">${site.phone}</a>

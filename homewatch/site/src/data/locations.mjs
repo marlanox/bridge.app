@@ -1,4 +1,8 @@
-// Neighborhood pages. Each has facts specific to that area so pages are genuinely different.
+// Area pages across Southern California. Each has facts specific to that area so pages are genuinely different.
+// region groups the areas hub; far: true means more than 30 miles from the West Hollywood office (travel fee, quoted).
+export const regions = ['Los Angeles', 'South Bay', 'Conejo Valley', 'Orange County', 'Santa Barbara', 'Coachella Valley', 'San Diego'];
+export const travelRule = 'Standard prices within 30 miles of our West Hollywood office. Farther out, we add a travel fee per visit, quoted individually for your home.';
+export const travelRuleEs = 'Precios estándar dentro de 30 millas de nuestra oficina en West Hollywood. Más lejos, agregamos un cargo de traslado por visita, cotizado para su casa.';
 export const locations = [
   { slug: 'west-hollywood', name: 'West Hollywood', zips: '90046, 90048, 90069',
     intro: 'Our office is on Crescent Heights, so West Hollywood is home turf. We look after condos south of Sunset, hillside homes in the Hollywood Hills West and everything in between.',
@@ -64,4 +68,45 @@ export const locations = [
     intro: 'Venice homes sit close to the beach and to some of the busiest sidewalks in Los Angeles. Vacant homes here are noticed fast.',
     risks: ['Trespassing and squatting near the boardwalk', 'Salt air and moisture', 'Package theft and break-ins in walk streets'],
     nearby: ['santa-monica', 'brentwood', 'pacific-palisades'] },
+  // ---- Beyond the city: same plans, travel fee beyond 30 miles of West Hollywood ----
+  { slug: 'manhattan-beach', name: 'Manhattan Beach', region: 'South Bay', zips: '90266',
+    intro: 'Manhattan Beach homes are often brand-new builds on narrow lots, a few blocks from the sand. Salt air and beach traffic make regular checks essential.',
+    risks: ['Salt air on metal railings, HVAC units and garage doors', 'Package theft on walk streets', 'Moisture and mildew in closed-up homes near the beach', 'Smart-home systems in new builds that go offline'],
+    nearby: ['palos-verdes', 'santa-monica', 'venice'] },
+  { slug: 'palos-verdes', name: 'Palos Verdes', region: 'South Bay', zips: '90274, 90275',
+    intro: 'Ocean-view estates on the peninsula, from Palos Verdes Estates to Rancho Palos Verdes. Large lots, long driveways and few neighbors watching.',
+    risks: ['Land movement in parts of Rancho Palos Verdes: cracks and doors that stop closing', 'Salt air and coastal wind', 'Large gardens and irrigation systems', 'Long periods with no one passing by'],
+    nearby: ['manhattan-beach', 'santa-monica', 'venice'] },
+  { slug: 'calabasas-hidden-hills', name: 'Calabasas & Hidden Hills', region: 'Conejo Valley', zips: '91302, 91372',
+    intro: 'Gated communities with guard gates, strict HOAs and large estates. We handle gate lists, HOA rules and vendor access so nothing stalls while you are away.',
+    risks: ['Guard-gate access for every vendor', 'HOA rules on landscaping and exterior work', 'Wildfire risk in the Santa Monica Mountains', 'Large pools and equestrian property'],
+    nearby: ['westlake-village', 'encino', 'malibu'] },
+  { slug: 'westlake-village', name: 'Westlake Village & Thousand Oaks', region: 'Conejo Valley', far: true, zips: '91361, 91362, 91320',
+    intro: 'Lakeside and hillside homes in the Conejo Valley, many owned by families who split the year elsewhere.',
+    risks: ['Summer heat and AC failures', 'Wildfire in surrounding hills', 'HOA notices and architectural rules', 'Lakefront docks and moisture'],
+    nearby: ['calabasas-hidden-hills', 'malibu', 'encino'] },
+  { slug: 'newport-beach', name: 'Newport Beach', region: 'Orange County', far: true, zips: '92625, 92657, 92660, 92661, 92662, 92663',
+    intro: 'Harbor homes, Balboa Island cottages and estates on the bluffs. Newport has one of the highest shares of second homes in Southern California.',
+    risks: ['Salt air and corrosion on every metal surface', 'Docks, boats and seawalls that need eyes', 'Narrow alleys and tight HOA rules', 'King tides and storm surge near the harbor'],
+    nearby: ['laguna-beach', 'palos-verdes', 'la-jolla'] },
+  { slug: 'laguna-beach', name: 'Laguna Beach', region: 'Orange County', far: true, zips: '92651',
+    intro: 'Hillside and oceanfront homes on steep streets above the coast. Beautiful, exposed and often empty for months.',
+    risks: ['Wildfire in the canyons above town', 'Bluff erosion and drainage on steep lots', 'Narrow streets with difficult vendor access', 'Salt air and coastal moisture'],
+    nearby: ['newport-beach', 'la-jolla', 'rancho-santa-fe'] },
+  { slug: 'montecito', name: 'Montecito', region: 'Santa Barbara', far: true, zips: '93108',
+    intro: 'Estates with gardens, staff and long histories. Montecito owners expect discretion, and the land itself needs watching after storms.',
+    risks: ['Debris flow and creek risk during heavy winter rain', 'Wildfire in the foothills', 'Large gardens, groves and staff to coordinate', 'Long absences between seasons'],
+    nearby: ['westlake-village', 'malibu', 'calabasas-hidden-hills'] },
+  { slug: 'palm-springs', name: 'Palm Springs & the Desert', region: 'Coachella Valley', far: true, zips: '92262, 92264, 92270, 92210, 92253',
+    intro: 'Palm Springs, Rancho Mirage, Indian Wells and La Quinta empty out every summer. A failed AC in 115°F heat can destroy a home in days.',
+    risks: ['Summer heat: AC, pool pumps and refrigerators under stress', 'Pools that evaporate or turn green fast', 'Scorpions, rodents and pests in closed homes', 'Summer monsoon storms and dust'],
+    nearby: ['rancho-santa-fe', 'la-jolla', 'newport-beach'] },
+  { slug: 'la-jolla', name: 'La Jolla', region: 'San Diego', far: true, zips: '92037',
+    intro: 'Coastal estates on the bluffs and in the hills above the village, many used as second homes.',
+    risks: ['Salt air and marine-layer moisture', 'Bluff erosion near the coast', 'Package theft and visitors near the village', 'Long gaps between visits'],
+    nearby: ['rancho-santa-fe', 'laguna-beach', 'newport-beach'] },
+  { slug: 'rancho-santa-fe', name: 'Rancho Santa Fe', region: 'San Diego', far: true, zips: '92067, 92091',
+    intro: 'Estates, groves and equestrian properties on large lots. Space and privacy are the point, and they also mean no one notices problems.',
+    risks: ['Wildfire risk in the surrounding hills', 'Groves, irrigation and large landscapes', 'Gates, wells and equestrian facilities', 'Covenant rules on exterior work'],
+    nearby: ['la-jolla', 'laguna-beach', 'palm-springs'] },
 ];

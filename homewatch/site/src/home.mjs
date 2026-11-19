@@ -1,7 +1,7 @@
 import { site, plans, addons, offer } from './config.mjs';
 import { services } from './data/services.mjs';
 import { audiences } from './data/audiences.mjs';
-import { locations } from './data/locations.mjs';
+import { locations, regions, travelRule, travelRuleEs } from './data/locations.mjs';
 import { reviews } from './data/reviews.mjs';
 import { esc, makeLinker, leadForm, faqBlock, faqSchema } from './layout.mjs';
 import { sceneSvg, landSvg } from './scene.mjs';
@@ -34,7 +34,7 @@ export const generalFaqs = {
     ['Are you insured?', 'Yes. Homeward is bonded and insured. We will send a certificate of insurance to you or your insurer.'],
     ['Is there a long contract?', 'No. Plans are month to month. Cancel any time with 30 days’ notice.'],
     ['How do you keep my keys safe?', 'Keys are coded, never labeled with your address, and stored in a locked safe. Every key use is logged in your portal.'],
-    ['Which areas do you cover?', 'Beverly Hills, Bel Air, West Hollywood, the Hollywood Hills, Brentwood, Santa Monica, the Palisades, Malibu, the east side and the Valley. Ask us about anywhere else in Los Angeles County.'],
+    ['Which areas do you cover?', 'All of Southern California: Los Angeles, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of our West Hollywood office; farther out we add a travel fee, quoted for your home.'],
   ],
   es: [
     ['¿Qué es exactamente la vigilancia de casas?', 'Visitas programadas a su casa mientras usted no está. Revisamos el interior y el exterior, enviamos un informe con fotos el mismo día y actuamos rápido si algo anda mal.'],
@@ -44,6 +44,7 @@ export const generalFaqs = {
     ['¿Hay contrato a largo plazo?', 'No. Los planes son mes a mes. Puede cancelar con 30 días de aviso.'],
     ['¿Cómo protegen mis llaves?', 'Las llaves se codifican, nunca llevan su dirección y se guardan en una caja fuerte. Cada uso queda registrado.'],
     ['¿Hablan español?', 'Sí. Nuestro equipo trabaja en inglés y en español, y también nuestros informes.'],
+    ['¿Qué zonas cubren?', 'Todo el Sur de California. Precios estándar dentro de 30 millas de West Hollywood; más lejos se agrega un cargo de traslado.'],
   ],
 };
 
@@ -65,9 +66,9 @@ const tIcons = [
 
 const T = {
   en: {
-    title: 'Home Watch in Beverly Hills & Los Angeles | Weekly Visits & Photo Reports | Homeward',
-    description: 'Premium home watch for empty and second homes in Beverly Hills, Bel Air, West Hollywood and Los Angeles. Weekly visits, same-day photo reports, squatter and city-code watch. From $189/mo.',
-    eyebrow: 'Home watch · Beverly Hills · West Hollywood · Los Angeles',
+    title: 'Home Watch in Los Angeles & Southern California | Weekly Visits & Photo Reports | Homeward',
+    description: 'Premium home watch for empty and second homes across Southern California: Los Angeles, Beverly Hills, Malibu, Orange County, Palm Springs and San Diego. Weekly visits, same-day photo reports. From $189/mo.',
+    eyebrow: 'Home watch · All of Southern California',
     h1: 'While you’re away, we <em>keep watch.</em>',
     lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
     chips: ['Bonded & insured', 'Background-checked inspectors', 'Photo proof of every visit', 'From $189/mo · no contract'],
@@ -76,7 +77,7 @@ const T = {
     logHead: ['Tuesday visit', '6:42 pm'],
     log: [['6:42', 'Arrived · alarm disarmed'], ['6:44', 'Doors, locks & windows'], ['6:49', 'Main floor, room by room'], ['6:53', 'Water, AC & fridge'], ['6:58', 'Upstairs & bathrooms'], ['7:06', 'Grounds, trees & gates'], ['7:11', 'Report sent · 38 photos']],
     logFoot: ['Your inspector', 'All clear'],
-    trust: ['Bonded & insured', 'Same-day photo reports', 'Background-checked inspectors', 'English & Español', 'Office in West Hollywood'],
+    trust: [],
     inclEyebrow: 'Every visit includes', inclH: 'Everything an empty home needs. Every single visit.',
     incl: [
       ['Full walk-through, inside and out', 'Every room, every door, the roof line, gates and fences. The same 34-point route every visit, so nothing is skipped.'],
@@ -114,14 +115,14 @@ const T = {
     portalItems: [['Visit report · all clear', 'Tue, 7:11 pm', ''], ['38 photos added', 'Tue, 7:11 pm', ''], ['Branch over sidewalk', 'Trim booked for Fri', 'warn'], ['Extra visit requested', 'Sat, 10:00 am', '']],
     offerP: 'Refer a friend and you both get one month free.', offerCta: 'Claim a founding spot', referral: 'How referrals work',
     moreEyebrow: 'When you need more', moreH: 'One trusted team for everything else your home needs.', moreP: 'Most clients start with home watch. When they need more, the same people take care of it: vendors, arrivals, mail, preparing and selling the home, and acting on their behalf.', whoLabel: 'Who we work with',
-    areasEyebrow: 'Where we work', areasH: 'Los Angeles, neighborhood by neighborhood.',
+    areasEyebrow: 'Where we work', areasH: 'All of Southern California.',
     faqEyebrow: 'Questions', faqH: 'Straight answers.', allFaq: 'All questions',
     endEyebrow: 'Start here', endH: 'See what we would check at your home.', endP: 'Book a free 30-minute walkthrough. We show you exactly what we look for, and you keep the written risk check even if you do not sign up.',
   },
   es: {
-    title: 'Vigilancia de casas en Beverly Hills y Los Ángeles | Homeward',
+    title: 'Vigilancia de casas en Los Ángeles y el Sur de California | Homeward',
     description: 'Vigilancia de casas vacías y segundas residencias en Beverly Hills, West Hollywood y Los Ángeles. Visitas semanales e informes con fotos el mismo día. Desde $189/mes.',
-    eyebrow: 'Vigilancia de casas · Beverly Hills · Los Ángeles',
+    eyebrow: 'Vigilancia de casas · Todo el Sur de California',
     h1: 'Mientras usted no está, <em>nosotros vigilamos.</em>',
     lead: 'Visitas semanales a su casa vacía. Cada habitación, cerradura y sistema revisados, y un informe con fotos en su teléfono el mismo día.',
     chips: ['Afianzados y asegurados', 'Inspectores verificados', 'Prueba de cada visita', 'Desde $189/mes · sin contrato'],
@@ -168,7 +169,7 @@ const T = {
     portalItems: [['Informe · todo en orden', 'Mar, 7:11 pm', ''], ['38 fotos agregadas', 'Mar, 7:11 pm', ''], ['Rama sobre la acera', 'Poda el viernes', 'warn'], ['Visita extra pedida', 'Sáb, 10:00 am', '']],
     offerP: 'Recomiende a un amigo y ambos reciben un mes gratis.', offerCta: 'Reservar mi lugar', referral: 'Cómo funcionan las referencias',
     moreEyebrow: 'Cuando necesite más', moreH: 'Un solo equipo de confianza para todo lo demás.', moreP: 'La mayoría empieza con la vigilancia. Cuando necesitan más, las mismas personas se encargan: proveedores, llegadas, correo, preparar y vender la casa.', whoLabel: 'Con quién trabajamos',
-    areasEyebrow: 'Dónde trabajamos', areasH: 'Los Ángeles, vecindario por vecindario.',
+    areasEyebrow: 'Dónde trabajamos', areasH: 'Todo el Sur de California.',
     faqEyebrow: 'Preguntas', faqH: 'Respuestas directas.', allFaq: 'Todas las preguntas',
     endEyebrow: 'Empiece aquí', endH: 'Vea lo que revisaríamos en su casa.', endP: 'Reserve una visita gratis de 30 minutos. Se queda con el informe de riesgos aunque no contrate.',
   },
@@ -193,7 +194,7 @@ export function homePage(lang = 'en') {
   const pItems = t.portalItems.map(([a, b, c]) => `<div class="item"><span class="dot ${c}"></span><span>${a}</span><small>${b}</small></div>`).join('');
   const more = services.filter((s) => s.slug !== 'home-watch').map((s) => `<a href="${link(s.slug)}">${esc(s.name)}</a>`).join('');
   const who = audiences.map((a) => `<a href="${link('for/' + a.slug)}">${esc(a.name)}</a>`).join('');
-  const areas = locations.map((l) => `<li><a href="${link('home-watch/' + l.slug)}">${l.name}</a></li>`).join('');
+  const areas = regions.map((r) => { const ls = locations.filter((l) => (l.region || 'Los Angeles') === r); return ls.length ? `<div class="region"><p class="eyebrow">${r}</p><ul class="links">${ls.map((l) => `<li><a href="${link('home-watch/' + l.slug)}">${l.name}</a></li>`).join('')}</ul></div>` : ''; }).join('');
   const faqs = generalFaqs[lang];
 
   const body = `
@@ -274,8 +275,8 @@ export function homePage(lang = 'en') {
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head"><span class="eyebrow">${t.areasEyebrow}</span><h2>${t.areasH}</h2></div>
-  <ul class="links">${areas}</ul>
+  <div class="sec-head"><span class="eyebrow">${t.areasEyebrow}</span><h2>${t.areasH}</h2><p class="lead">${es ? travelRuleEs : travelRule}</p></div>
+  <div class="regions">${areas}</div>
 </div></section>
 
 <section class="sec paper rule"><div class="wrap split">

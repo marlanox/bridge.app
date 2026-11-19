@@ -1,7 +1,7 @@
 import { site, plans, addons, offer } from './config.mjs';
 import { services, serviceGroups } from './data/services.mjs';
 import { audiences } from './data/audiences.mjs';
-import { locations } from './data/locations.mjs';
+import { locations, regions, travelRule } from './data/locations.mjs';
 import { guides } from './data/guides.mjs';
 import { esc, makeLinker, leadForm, faqBlock, faqSchema, crumbSchema, crumbs, canonical } from './layout.mjs';
 import { generalFaqs, checkpoints } from './home.mjs';
@@ -82,10 +82,11 @@ export function locationPage(l) {
   const near = l.nearby.map((n) => locations.find((x) => x.slug === n)).filter(Boolean);
   const faqs = [
     [`How much does home watch cost in ${l.name}?`, `Plans start at $189/mo for two visits a month. Weekly visits are $349/mo. Large estates are usually on our Estate plan at $690/mo.`],
-    [`How fast can you get to a home in ${l.name}?`, `Our office is in West Hollywood. For clients we respond to emergencies in ${l.name} as fast as traffic allows, usually within the hour.`],
+    l.far ? [`Do you charge more for ${l.name}?`, `${l.name} is more than 30 miles from our West Hollywood office, so a travel fee is added per visit. We quote it individually after the free walkthrough, and visits run on fixed route days.`]
+      : [`How fast can you get to a home in ${l.name}?`, `Our office is in West Hollywood. For clients we respond to emergencies in ${l.name} as fast as traffic allows, usually within the hour.`],
     [`Do you serve all of ${l.name}?`, `Yes, including ZIP codes ${l.zips}.`],
   ];
-  const body = `${hero(path, { crumbs: c, eyebrow: `Home watch · ${l.name}, CA`, h1: `Home watch in ${esc(l.name)}.`, lead: l.intro, price: 'From $189/mo · weekly from $349/mo' })}
+  const body = `${hero(path, { crumbs: c, eyebrow: `Home watch · ${l.name} · ${l.region || 'Los Angeles'}`, h1: `Home watch in ${esc(l.name)}.`, lead: l.intro, price: l.far ? 'From $189/mo + travel fee, quoted for your home' : 'From $189/mo · weekly from $349/mo' })}
 <section class="sec"><div class="wrap split">
   <article class="prose">
     <h2 style="margin-top:0">What we watch for in ${esc(l.name)}</h2>
@@ -100,7 +101,7 @@ export function locationPage(l) {
   <aside class="aside" id="lead">${leadForm({ path, title: `Free walkthrough in ${l.name}`, source: 'area:' + l.slug })}</aside>
 </div></section>
 <section class="sec stone"><div class="wrap"><div class="sec-head"><span class="eyebrow">Services in ${esc(l.name)}</span><h2>More than a weekly check</h2></div>${serviceCards(path, ['home-watch', 'mail-package-handling', 'vendor-contractor-access', 'landscape-code-compliance', 'pre-sale-preparation-staging', 'sell-your-home'])}</div></section>`;
-  return { path, lang: 'en', title: `Home Watch in ${l.name}, CA | Weekly Visits & Reports | Homeward`, description: `Home watch services in ${l.name}, CA (${l.zips}). Weekly visits, photo reports, mail and vendor access for vacant and second homes. From $189/mo.`, body, schema: [serviceSchema('Home watch in ' + l.name, path, l.name + ', CA'), faqSchema(faqs), crumbSchema(c)] };
+  return { path, lang: 'en', title: `Home Watch in ${l.name}, CA | Weekly Visits & Reports | Homeward`, description: `Home watch in ${l.name}, CA (${l.zips}). Weekly visits, same-day photo reports and squatter, leak and city-code checks for empty and second homes. From $189/mo.`, body, schema: [serviceSchema('Home watch in ' + l.name, path, l.name + ', CA'), faqSchema(faqs), crumbSchema(c)] };
 }
 
 // ---------- Guides ----------
@@ -135,10 +136,15 @@ export function servicesHub() {
 export function areasHub() {
   const path = 'areas';
   const { link } = makeLinker(path);
-  const body = `${hero(path, { crumbs: [['Home', 'index'], ['Areas', path]], eyebrow: 'Areas we serve', h1: 'Home watch across Los Angeles.', lead: 'From our office in West Hollywood we cover the Westside, the Hills, the coast, the east side and the Valley.' })}
-<section class="sec"><div class="wrap"><div class="grid g3">${locations.map((l) => `<a class="card rv" href="${link('home-watch/' + l.slug)}"><span class="k">${l.zips}</span><h3>${l.name}</h3><p class="muted small">${esc(l.intro.split('. ')[0])}.</p><span class="more arrow"></span></a>`).join('')}</div>
-<p class="muted" style="margin-top:28px">Your neighborhood is not listed? We cover most of Los Angeles County. <a href="${link('contact')}">Ask us</a>.</p></div></section>`;
-  return { path, lang: 'en', title: 'Areas We Serve | Home Watch in Los Angeles Neighborhoods | Homeward', description: 'Homeward home watch covers West Hollywood, Beverly Hills, Hollywood Hills, Bel Air, Brentwood, Santa Monica, Pacific Palisades, Malibu, Los Feliz, Silver Lake, the Valley and Pasadena.', body, schema: [] };
+  const groups = regions.map((r) => {
+    const ls = locations.filter((l) => (l.region || 'Los Angeles') === r);
+    if (!ls.length) return '';
+    return `<div class="sec-head" style="margin:44px 0 18px"><span class="eyebrow">${r}</span></div><div class="grid g3">${ls.map((l) => `<a class="card rv" href="${link('home-watch/' + l.slug)}"><span class="k">${l.far ? 'Travel fee · quoted' : 'Standard pricing'}</span><h3>${l.name}</h3><p class="muted small">${esc(l.intro.split('. ')[0])}.</p><span class="more arrow"></span></a>`).join('')}</div>`;
+  }).join('');
+  const body = `${hero(path, { crumbs: [['Home', 'index'], ['Areas', path]], eyebrow: 'Areas we serve', h1: 'Home watch across Southern California.', lead: site.coverage + '. ' + travelRule })}
+<section class="sec"><div class="wrap">${groups}
+<p class="muted" style="margin-top:32px">Your area is not listed? We work anywhere in Southern California. <a href="${link('contact')}">Ask us for a quote</a>.</p></div></section>`;
+  return { path, lang: 'en', title: 'Areas We Serve | Home Watch Across Southern California | Homeward', description: 'Homeward home watch covers Los Angeles, Beverly Hills, Malibu, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of West Hollywood.', body, schema: [] };
 }
 
 export function audiencesHub() {
@@ -175,6 +181,7 @@ export function pricingPage(lang = 'en') {
     ['How do I pay?', 'By card or bank transfer, billed monthly in advance. Vendor costs are passed through at cost with the receipt.'],
     ['What if I come home for a month?', 'Pause visits while you are home and pay only for key holding at $49/mo.'],
     ['Can I order an extra visit?', 'Yes. An extra visit on request is $99, for example before a storm or after a neighbor calls.'],
+    ['Do you work outside Los Angeles?', 'Yes, anywhere in Southern California. ' + travelRule],
   ];
   const body = `${hero(path, { crumbs: es ? null : [['Home', 'index'], ['Pricing', path]], eyebrow: es ? 'Precios' : 'Pricing', h1: es ? 'Precios claros. Mes a mes.' : 'Clear prices. Month to month.', lead: es ? 'Elija la frecuencia, el tamaño de la casa y los extras. Vea el precio exacto.' : 'Choose how often we visit, the size of the home and any extras. See your exact monthly price.', cta: false, lang })}
 <section class="sec"><div class="wrap calc" id="calc">
@@ -190,6 +197,7 @@ export function pricingPage(lang = 'en') {
     <p class="small" style="color:var(--glow)">${offer.title}: ${es ? 'primer mes a mitad de precio' : 'first month at half price'}</p>
     <a class="btn arrow" id="reserve" href="${link(es ? 'es/contacto' : 'get-started')}">${es ? 'Reservar este plan' : 'Reserve this plan'}</a>
     <p class="small" style="color:var(--slate)">${es ? 'Sin cargo de alta. Cancele con 30 días de aviso.' : 'No setup fee. Cancel with 30 days’ notice.'}</p>
+    <p class="small" style="color:var(--slate)">${es ? 'Más de 30 millas de West Hollywood: cargo de traslado, cotizado.' : 'More than 30 miles from West Hollywood: travel fee, quoted for your home.'}</p>
   </div>
 </div></section>
 <section class="sec stone"><div class="wrap split">

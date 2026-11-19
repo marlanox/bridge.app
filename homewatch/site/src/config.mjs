@@ -17,6 +17,7 @@ export const site = {
   geo: { lat: 34.0956, lng: -118.3657 },
   hours: 'Mo-Sa 08:00-19:00',
   hoursText: 'Mon–Sat, 8 am – 7 pm · 24/7 emergency line for clients',
+  coverage: 'All of Southern California, from Montecito to La Jolla and Palm Springs',
   dreLicense: 'DRE #00000000', // the in-house agent's license number; California requires it on real-estate advertising
   // Integrations. Leave empty until connected; the site falls back safely.
   supabaseUrl: '',
