@@ -217,6 +217,7 @@ export function homePage(lang = 'en') {
         <div class="log-f"><span>${t.logFoot[0]}</span><b>${t.logFoot[1]}</b></div>
       </div>
     </div>
+    <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>
 <section class="tband" aria-label="${es ? 'Por qué confiar en nosotros' : 'Why owners trust us'}"><div class="wrap">${t.tband.map(([b, p], i) => `<div class="ti"><svg viewBox="0 0 24 24" aria-hidden="true">${tIcons[i]}</svg><b>${b}</b><span>${p}</span></div>`).join('')}</div></section>
