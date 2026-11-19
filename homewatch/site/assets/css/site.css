@@ -472,3 +472,37 @@ legend{font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase
   .scene h1{font-size:44px;line-height:1.06}
   .scene .eyebrow{font-size:12px}
 }
+
+/* ===== v7: serious headline, phone stacking, calmer type ===== */
+.scene h1 em{font-style:normal;color:inherit;text-shadow:none;font-weight:inherit}
+@media (max-width:860px){
+  .scene .stage{height:auto;min-height:0;max-height:none;padding-bottom:calc(28px + var(--mb));display:flex;flex-direction:column}
+  .scene .copy{order:1}
+  .scene .house{order:2}
+  .scene .copy{height:auto;padding-top:56px}
+  .scene .house{position:relative;right:auto;bottom:auto;left:50%;width:150vw;transform:translateX(-52%);margin-top:56px}
+  .scene .land{height:auto}
+  .scene .land svg{height:260px;min-height:0}
+}
+@media (max-width:640px){
+  body{font-size:16px;line-height:1.75}
+  .scene h1{font-size:36px;line-height:1.14;letter-spacing:-.01em}
+  .scene .eyebrow{font-size:11px;letter-spacing:.16em}
+  .scene h1{margin-top:20px!important}
+  .scene .lead{font-size:16px;line-height:1.75;margin-top:24px}
+  .scene .row{margin-top:36px;flex-direction:column;align-items:flex-start;gap:20px}
+  .scene .row .tel{margin-left:0}
+  .sec{padding-block:96px}
+  .sec-head{gap:18px;margin-bottom:48px}
+  h2{font-size:28px;line-height:1.2}
+  h3,.incl h3,.trustlist h3,.facts h3,.tband b,.plan h3,.checks h3,.rcard figcaption b{font:600 16px/1.45 var(--sans)}
+  .lead,.muted,.small,.incl p,.facts p,.tband span,.addons span,.checks ul,.plan ul{font-size:16px;line-height:1.75}
+  .rcard blockquote{font-size:16px;line-height:1.75}
+  .faq summary{font-size:16px}
+  .incl>div{padding:30px 0 32px;gap:10px}
+  .tband .ti{padding:26px 0;gap:8px 14px}
+  .facts>div{padding:30px 0 34px;gap:12px}
+  .facts b{font-size:36px}
+  .plan .amt{font-size:42px}
+  .btn{padding:16px 20px}
+}

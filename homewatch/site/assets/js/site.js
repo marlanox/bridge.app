@@ -6,16 +6,18 @@
   // 1. Scroll scene on the home page: one CSS variable, updated once per frame.
   var scene = document.querySelector('.scene');
   if (scene && !reduce) {
-    // The lights come on by themselves, room by room, in about 3.5 seconds. Scrolling is never held.
-    var D = 3600, t0 = 0;
-    var ease = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
-    var step = function (ts) {
-      if (!t0) t0 = ts;
-      var x = Math.min(1, (ts - t0) / D);
-      scene.style.setProperty('--p', ease(x).toFixed(4));
-      if (x < 1) requestAnimationFrame(step);
+    // Lights follow the scroll: the page moves freely, the house lights up as you scroll past it.
+    var house = scene.querySelector('.house'), ticking = false;
+    var update = function () {
+      var vh = window.innerHeight, p;
+      if (window.innerWidth > 860) p = window.scrollY / (vh * 0.45);
+      else { var r = house.getBoundingClientRect(); p = (vh - r.top - r.height * 0.2) / (vh * 0.55); }
+      scene.style.setProperty('--p', Math.min(1, Math.max(0, p)).toFixed(4));
+      ticking = false;
     };
-    setTimeout(function () { requestAnimationFrame(step); }, 500);
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   } else if (scene) {
     scene.style.setProperty('--p', '1');
   }
