@@ -202,7 +202,6 @@ export function homePage(lang = 'en') {
   <div class="stage">
     <div class="sky"></div><div class="night"></div><div class="stars"></div>
     <div class="land">${landSvg()}<div class="ground"></div></div>
-    <div class="house">${sceneSvg()}</div>
     <div class="wrap copy on-dark">
       <div class="hero-in">
         <span class="eyebrow" style="color:var(--gold)">${t.eyebrow}</span>

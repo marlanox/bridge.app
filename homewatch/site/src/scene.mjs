@@ -20,7 +20,29 @@ function glass(x0, x1, y, h, n, t0, step, interior = '') {
 }
 
 export function landSvg() {
-  return `<svg viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 200C190 150 360 160 560 120 760 84 940 128 1120 96 1300 66 1460 92 1600 72V400H0Z" fill="#3A5680" opacity=".55"/><path d="M0 268C240 236 430 252 640 244 880 236 1080 248 1320 236 1460 230 1540 234 1600 230V400H0Z" fill="#1E3356"/></svg>`;
+  // View from the hills over the Los Angeles basin: distant mountains, the city grid, a dark hill in front.
+  // City lights switch on as the visitor scrolls (each light reads --t against --p).
+  let s = 11;
+  const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const dot = (x, y, w, t, c) => `<rect class="lit" style="--t:${t.toFixed(2)}" x="${x.toFixed(0)}" y="${y.toFixed(1)}" width="${w}" height="${(w * 0.8).toFixed(1)}" fill="${c}"/>`;
+  const warm = () => (r() > 0.75 ? '#FFFFFF' : r() > 0.4 ? '#F6DDB0' : '#E9B978');
+  let lights = '';
+  // scattered city: denser and smaller toward the horizon
+  for (let i = 0; i < 520; i++) {
+    const d = Math.pow(r(), 1.6);              // 0 = horizon, 1 = near
+    const y = 196 + d * 120;
+    const x = r() * 1600;
+    const w = d > 0.7 ? 3 : d > 0.35 ? 2 : 1.4;
+    lights += dot(x, y, w, 0.08 + r() * 0.8, warm()).replace('/>', ` opacity="${(0.35 + d * 0.65).toFixed(2)}"/>`);
+  }
+  return `<svg viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+<path d="M0 150C120 128 260 140 380 118 520 92 640 128 780 112 920 96 1040 70 1180 88 1320 106 1460 84 1600 98V210H0Z" fill="#2B4670" opacity=".55"/>
+<defs><linearGradient id="basin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14284A" stop-opacity="0"/><stop offset=".25" stop-color="#14284A" stop-opacity=".85"/><stop offset="1" stop-color="#112340"/></linearGradient></defs>
+<rect x="0" y="170" width="1600" height="230" fill="url(#basin)"/>
+${lights}
+<path d="M0 312C140 300 260 318 420 334 560 348 700 352 860 356 1060 360 1260 340 1420 318 1500 308 1560 302 1600 300V400H0Z" fill="#0D1B33"/>
+<g fill="#F6DDB0">${[[120, 316], [168, 322], [1450, 318], [1500, 312], [1530, 320]].map(([x, y], i) => `<rect class="lit" style="--t:${(0.5 + i * 0.06).toFixed(2)}" x="${x}" y="${y}" width="3" height="2.4"/>`).join('')}</g>
+</svg>`;
 }
 
 export function sceneSvg() {

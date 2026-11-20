@@ -429,3 +429,10 @@ legend{font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase
 .regions .region:first-child .links{columns:3 220px}
 @media (max-width:860px){.scene .row .btn.line,.scene .row .tel{display:none}.scene .copy{padding-top:32px}.scene h1{font-size:38px;line-height:1.08}.scene .lead{font-size:16.5px}}
 @media (max-width:860px) and (max-height:760px){.scene{--hw:104vw}.scene .copy>div>.eyebrow{display:none}.scene h1{margin-top:0!important}}
+
+/* v8: no drawn house. Night view over the city lights; shorter scroll scene. */
+.scene{height:175vh}
+.scene .land svg{height:40vh;min-height:260px}
+.scene .ground{background:#0D1B33}
+@media (max-width:860px){.scene{height:150vh}.scene .land svg{height:38vh;min-height:240px}.scene .row .btn.line,.scene .row .tel{display:none}}
+@media (prefers-reduced-motion:reduce){.scene{height:auto}}
