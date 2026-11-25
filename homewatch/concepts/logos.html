@@ -1,0 +1,130 @@
+<title>Logo Options Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700&display=swap">
+<style>
+/* Board: one section per name, three logo directions each, every logo shown on our navy and on ivory. */
+:root{--bg:#FAF8F4;--card:#FFFFFF;--ink:#0F1E33;--muted:#586275;--line:#E4DED2;--navy:#0F2747;--ivory:#F1ECE2;--gold:#BCA683;--ok:#2F6B4F;--okbg:#E7F1EA;--bad:#9B2C2C;--badbg:#F7E3E3;--mid:#8A5A12;--midbg:#F7EEDC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;--ok:#7CC6A0;--okbg:#14302A;--bad:#F0A0A0;--badbg:#3A1E22;--mid:#E3B96E;--midbg:#33281A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;--ok:#7CC6A0;--okbg:#14302A;--bad:#F0A0A0;--badbg:#3A1E22;--mid:#E3B96E;--midbg:#33281A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 80px;display:grid;gap:56px}
+h1{font:600 clamp(28px,4vw,40px)/1.15 "Cormorant Garamond",Georgia,serif;margin:0;text-wrap:balance}
+h2{font:600 30px/1.1 "Cormorant Garamond",Georgia,serif;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:700px}
+.intro p{color:var(--muted)}
+.name{display:grid;gap:18px}
+.nh{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.chip{font:600 11.5px/1 "Inter",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.mid{background:var(--midbg);color:var(--mid)}.chip.bad{background:var(--badbg);color:var(--bad)}
+.nh p{color:var(--muted);font-size:14px;flex-basis:100%}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tile{display:flex;align-items:center;justify-content:center;padding:20px 18px;height:210px}
+.tile.n{background:#0F2747;color:#F1ECE2;--bgc:#0F2747}
+.tile.i{background:#F1ECE2;color:#0F2747;--bgc:#F1ECE2}
+.tile svg{width:100%;height:100%;display:block}
+.cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:700 15px/1 "Manrope",sans-serif;letter-spacing:.04em}
+.cap span{font-size:13px;color:var(--muted)}
+.foot{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:14px;display:grid;gap:6px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Logo options: pick one by its code</h1>
+    <p>Three directions for each name: classic, crest and modern. Each logo is shown on our navy and on ivory. Tell me the code you like, for example “M2”, and I will put it on the whole site.</p>
+  </header>
+
+  <section class="name">
+    <div class="nh"><h2>Mansionward</h2><span class="chip ok">Looks free · recommended</span><p>Mansion + ward (a guardian). No company, product or trademark found.</p></div>
+    <div class="grid">
+      <div class="card" data-logo="M1"><div class="cap"><b>M1</b><span>Classic</span></div></div>
+      <div class="card" data-logo="M2"><div class="cap"><b>M2</b><span>Crest</span></div></div>
+      <div class="card" data-logo="M3"><div class="cap"><b>M3</b><span>Modern serif</span></div></div>
+    </div>
+  </section>
+
+  <section class="name">
+    <div class="nh"><h2>Keyward</h2><span class="chip mid">Possible · .com likely taken</span><p>Key + ward. Not used in home services, but used by several software products.</p></div>
+    <div class="grid">
+      <div class="card" data-logo="K1"><div class="cap"><b>K1</b><span>Classic</span></div></div>
+      <div class="card" data-logo="K2"><div class="cap"><b>K2</b><span>Keyhole crest</span></div></div>
+      <div class="card" data-logo="K3"><div class="cap"><b>K3</b><span>Modern</span></div></div>
+    </div>
+  </section>
+
+  <section class="name">
+    <div class="nh"><h2>Mansionly</h2><span class="chip bad">Taken in the home space</span><p>Used by a luxury home interiors company (mansionly.com). Shown so you can compare.</p></div>
+    <div class="grid">
+      <div class="card" data-logo="L1"><div class="cap"><b>L1</b><span>Classic</span></div></div>
+      <div class="card" data-logo="L2"><div class="cap"><b>L2</b><span>Italic signature</span></div></div>
+      <div class="card" data-logo="L3"><div class="cap"><b>L3</b><span>Monogram</span></div></div>
+    </div>
+  </section>
+
+  <section class="name">
+    <div class="nh"><h2>Watchwell</h2><span class="chip bad">Taken by a home watch company</span><p>Watchwell Austin already offers home watch. Shown so you can compare.</p></div>
+    <div class="grid">
+      <div class="card" data-logo="W1"><div class="cap"><b>W1</b><span>Classic</span></div></div>
+      <div class="card" data-logo="W2"><div class="cap"><b>W2</b><span>Crest</span></div></div>
+      <div class="card" data-logo="W3"><div class="cap"><b>W3</b><span>Modern</span></div></div>
+    </div>
+  </section>
+
+  <p class="foot">These are first drafts. Once you pick a direction, I refine it: spacing between letters, the symbol, a small version for the phone icon and the browser tab.</p>
+</div>
+
+<script>
+// Each logo is drawn once with currentColor and placed on both the navy and the ivory tile.
+var G = '#BCA683';
+var house = function (x, y) {
+  return '<g transform="translate(' + x + ',' + y + ')" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M0 30 32 6l32 24"/><path d="M8 24v40h48V24"/></g>' +
+    '<path d="M' + (x + 26) + ' ' + (y + 64) + 'v-20a6 6 0 0 1 12 0v20z" fill="' + G + '"/>';
+};
+var tag = function (x, y, txt, anchor) {
+  return '<text x="' + x + '" y="' + y + '"' + (anchor ? ' text-anchor="middle"' : '') + ' font-family="Manrope, sans-serif" font-weight="600" font-size="10.5" letter-spacing="3.2" fill="currentColor" opacity=".72">' + txt + '</text>';
+};
+var cinzel = function (x, y, size, ls, txt, anchor) {
+  return '<text x="' + x + '" y="' + y + '"' + (anchor ? ' text-anchor="middle"' : '') + ' font-family="Cinzel, serif" font-weight="600" font-size="' + size + '" letter-spacing="' + ls + '" fill="currentColor">' + txt + '</text>';
+};
+var arch = function (cx, top, w, h) {
+  var r = w / 2, x0 = cx - r, x1 = cx + r, b = top + h;
+  return '<path d="M' + x0 + ' ' + b + 'V' + (top + r) + 'A' + r + ' ' + r + ' 0 0 1 ' + x1 + ' ' + (top + r) + 'V' + b + 'Z" fill="none" stroke="currentColor" stroke-width="1.8"/>' +
+    '<path d="M' + (x0 + 7) + ' ' + (b - 4) + 'V' + (top + r) + 'A' + (r - 7) + ' ' + (r - 7) + ' 0 0 1 ' + (x1 - 7) + ' ' + (top + r) + 'V' + (b - 4) + 'Z" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>';
+};
+var serifLetter = function (cx, y, size, ch) {
+  return '<text x="' + cx + '" y="' + y + '" text-anchor="middle" font-family="Bodoni Moda, serif" font-weight="500" font-size="' + size + '" fill="currentColor">' + ch + '</text>';
+};
+
+var L = {
+  M1: ['0 0 560 130', house(26, 30) + cinzel(116, 74, 29, 5, 'MANSIONWARD') + tag(118, 98, 'HOME WATCH · ESTATE SERVICES')],
+  M2: ['-40 0 380 230', arch(150, 22, 84, 126) + serifLetter(150, 126, 58, 'M') + '<rect x="138" y="136" width="24" height="2" fill="' + G + '"/>' + cinzel(150, 186, 21, 6, 'MANSIONWARD', 1) + tag(150, 208, 'EST. 2026 · SOUTHERN CALIFORNIA', 1)],
+  M3: ['0 0 470 140', '<path d="M30 46 122 18l92 28" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="122" cy="18" r="3.5" fill="' + G + '"/>' +
+      '<text x="30" y="98" font-family="Cormorant Garamond, serif" font-weight="600" font-size="58" fill="currentColor">Mansion<tspan font-style="italic" font-weight="500">ward</tspan></text>' + tag(32, 124, 'HOME WATCH · CONCIERGE · ESTATES')],
+
+  K1: ['0 0 520 130', '<g fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="58" cy="62" r="24"/><path d="M82 62h50M120 62v14M131 62v10"/></g><circle cx="58" cy="62" r="7" fill="' + G + '"/>' + cinzel(156, 74, 31, 7, 'KEYWARD') + tag(158, 98, 'HOME WATCH · ESTATE SERVICES')],
+  K2: ['-40 0 380 230', '<path d="M139.5 116.3A34 34 0 1 1 160.5 116.3L170 158H130Z" fill="none" stroke="currentColor" stroke-width="1.8"/>' + serifLetter(150, 102, 42, 'K') + '<rect x="141" y="140" width="18" height="2" fill="' + G + '"/>' + cinzel(150, 196, 23, 8, 'KEYWARD', 1) + tag(150, 216, 'TRUSTED WITH THE KEYS', 1)],
+  K3: ['0 0 470 130', '<rect x="28" y="33" width="62" height="62" rx="14" fill="currentColor"/><circle cx="59" cy="58" r="8" style="fill:var(--bgc)"/><path d="M54.5 62 51 80h16l-3.5-18z" style="fill:var(--bgc)"/>' +
+      '<text x="110" y="82" font-family="Manrope, sans-serif" font-weight="700" font-size="50" letter-spacing="-1.5" fill="currentColor">keyward</text><circle cx="309" cy="78" r="5" fill="' + G + '"/>'],
+
+  L1: ['0 0 500 130', house(26, 30) + cinzel(116, 74, 31, 7, 'MANSIONLY') + tag(118, 98, 'HOME WATCH · ESTATE SERVICES')],
+  L2: ['0 0 470 150', '<text x="235" y="86" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="500" font-size="76" fill="currentColor">Mansionly</text><path d="M120 104c70 10 160 10 230 0" fill="none" stroke="' + G + '" stroke-width="1.6"/>' + tag(235, 132, 'HOME WATCH · CONCIERGE', 1)],
+  L3: ['-40 0 380 230', '<rect x="106" y="26" width="88" height="88" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="113" y="33" width="74" height="74" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>' + serifLetter(150, 92, 56, 'M') + '<rect x="141" y="124" width="18" height="2" fill="' + G + '"/>' + cinzel(150, 176, 23, 8, 'MANSIONLY', 1) + tag(150, 198, 'SOUTHERN CALIFORNIA', 1)],
+
+  W1: ['0 0 520 130', '<g fill="none" stroke="currentColor" stroke-width="2.2"><rect x="30" y="30" width="58" height="68"/><path d="M59 30v68M30 64h58"/></g><rect x="32" y="32" width="25" height="30" fill="' + G + '"/>' + cinzel(112, 74, 29, 6, 'WATCHWELL') + tag(114, 98, 'HOME WATCH · ESTATE SERVICES')],
+  W2: ['-40 0 380 230', arch(150, 22, 84, 126) + serifLetter(150, 126, 54, 'W') + '<rect x="138" y="136" width="24" height="2" fill="' + G + '"/>' + cinzel(150, 186, 22, 7, 'WATCHWELL', 1) + tag(150, 208, 'EST. 2026 · SOUTHERN CALIFORNIA', 1)],
+  W3: ['0 0 470 130', '<text x="30" y="82" font-family="Manrope, sans-serif" font-weight="700" font-size="54" letter-spacing="-2" fill="currentColor">watchwell</text><circle cx="290" cy="78" r="5.5" fill="' + G + '"/>' + tag(32, 112, 'HOME WATCH · CONCIERGE')]
+};
+
+document.querySelectorAll('[data-logo]').forEach(function (card) {
+  var d = L[card.dataset.logo];
+  var svg = '<svg viewBox="' + d[0] + '" role="img" aria-label="Logo ' + card.dataset.logo + '">' + d[1] + '</svg>';
+  card.insertAdjacentHTML('afterbegin', '<div class="tile n">' + svg + '</div><div class="tile i">' + svg + '</div>');
+});
+</script>
