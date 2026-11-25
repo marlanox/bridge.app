@@ -1,0 +1,131 @@
+<title>Name Sound Test</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap">
+<style>
+/* Layout: the research in plain words, a scorecard table, then bold geometric logos for each name. */
+:root{--bg:#FAF8F4;--card:#FFFFFF;--ink:#0F1E33;--text:#2A3445;--muted:#586275;--line:#E4DED2;--navy:#0F2747;--ivory:#F1ECE2;--gold:#BCA683;--ok:#2F6B4F;--okbg:#E7F1EA;--mid:#8A5A12;--midbg:#F7EEDC;--bad:#9B2C2C;--badbg:#F7E3E3;--hi:#0F2747}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--text:#C9D1DE;--muted:#93A0B4;--line:#22304A;--ok:#7CC6A0;--okbg:#14302A;--mid:#E3B96E;--midbg:#33281A;--bad:#F0A0A0;--badbg:#3A1E22;--hi:#9DB8E0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--text:#C9D1DE;--muted:#93A0B4;--line:#22304A;--ok:#7CC6A0;--okbg:#14302A;--mid:#E3B96E;--midbg:#33281A;--bad:#F0A0A0;--badbg:#3A1E22;--hi:#9DB8E0;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font:16px/1.65 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:40px 80px;display:grid;gap:52px}
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:balance}
+h1{font:500 clamp(30px,4.4vw,44px)/1.1 "EB Garamond",Georgia,serif}
+h2{font:500 30px/1.15 "EB Garamond",Georgia,serif}
+h3{font:700 16px/1.3 "Inter",sans-serif}
+p{margin:0}
+.intro{display:grid;gap:12px;max-width:740px}
+.intro p{color:var(--muted)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.rules{grid-template-columns:1fr}}
+.rule{background:var(--card);border:1px solid var(--line);padding:20px;display:grid;gap:8px;align-content:start}
+.rule p{font-size:15px}
+.rule small{color:var(--muted);font-size:12.5px}
+.scroll{overflow-x:auto;border:1px solid var(--line);background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td b{color:var(--ink)}
+tr.best td{background:color-mix(in srgb,var(--okbg) 70%,transparent)}
+.score{font:700 18px/1 "Manrope",sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font:600 11px/1 "Inter",sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:6px 8px;white-space:nowrap}
+.ok{background:var(--okbg);color:var(--ok)}.mid{background:var(--midbg);color:var(--mid)}.bad{background:var(--badbg);color:var(--bad)}
+.logos{display:grid;gap:22px}
+.lc{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.lh{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.lh p{flex-basis:100%;color:var(--muted);font-size:14px}
+.lt{display:grid;grid-template-columns:1fr 1fr 220px}
+@media (max-width:900px){.lt{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;height:170px;padding:18px 24px}
+.tile.n{background:#0F2747;color:#F1ECE2;--bgc:#0F2747}
+.tile.i{background:#F1ECE2;color:#0F2747;--bgc:#F1ECE2}
+.tile svg{width:100%;height:100%;display:block}
+.icons{display:flex;align-items:center;justify-content:center;gap:16px;height:170px;background:var(--card)}
+.icons svg{display:block}
+.verdict{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--navy);padding:24px;display:grid;gap:10px}
+.src{font-size:13px;color:var(--muted);display:grid;gap:4px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mansionly vs Keyward: what the sounds say</h1>
+    <p>Brand researchers have measured how single sounds in a name change what people feel about a brand. Below: the four findings that matter for us, how each name scores, and new names that keep the scale of Mansionly with the hard, confident sound of Keyward.</p>
+  </header>
+
+  <section class="rules" aria-label="Research findings">
+    <div class="rule"><h3>Hard consonants feel strong and reliable</h3><p>Stops like K, T, D, P, B, G read as firm, sharp and decisive. Soft sounds like M, N, L, S, SH read as gentle, smooth and feminine. This is the famous “kiki / bouba” effect.</p><small>Klink 2000; Ramachandran &amp; Hubbard 2001</small></div>
+    <div class="rule"><h3>Back vowels feel big and premium</h3><p>“A”, “O”, “AW” (as in hall, mansion) make a brand feel larger, heavier and more luxurious. “EE”, “I” feel small, light and fast.</p><small>Yorkston &amp; Menon 2004; Lowrey &amp; Shrum 2007</small></div>
+    <div class="rule"><h3>A hard first letter is remembered better</h3><p>Names that start with a stop consonant (K, C, B, D, P, T) are recalled more easily, and many top brands start that way.</p><small>Vanden Bergh et al. 1984, 1987</small></div>
+    <div class="rule"><h3>Easy to say = easy to trust</h3><p>Names that are easy to pronounce are judged more positively and more trustworthy. Two syllables is the sweet spot for recall.</p><small>Alter &amp; Oppenheimer 2006</small></div>
+  </section>
+
+  <section style="display:grid;gap:16px">
+    <h2>Scorecard</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Name</th><th>Sounds</th><th>Feels</th><th>Meaning</th><th>Grows into home sales</th><th>Availability</th><th>Score /10</th></tr></thead>
+      <tbody>
+        <tr><td><b>Mansionly</b><br>MAN·shun·lee · 3 syl.</td><td>All soft: M, N, SH, N, L. Ends on light “ee”.</td><td>Big meaning, soft and feminine sound. “-ly” reads like an app.</td><td>Mansion: premium, broad</td><td>Strong</td><td><span class="chip bad">Taken (home interiors)</span></td><td class="score">6.0</td></tr>
+        <tr><td><b>Keyward</b><br>KEE·ward · 2 syl.</td><td>Hard K start, hard D end.</td><td>Firm, reliable, masculine.</td><td>Describes the job (keys + guard), feels like a service category</td><td>Weak</td><td><span class="chip mid">Possible · crowded in software</span></td><td class="score">7.0</td></tr>
+        <tr class="best"><td><b>Keyhall</b><br>KEE·hall · 2 syl.</td><td>Hard K start, big “AW” vowel.</td><td>Solid and grand, like an English estate (Whitehall).</td><td>Key + the great hall of a house: trust plus estate</td><td>Strong</td><td><span class="chip ok">Looks free</span></td><td class="score">8.5</td></tr>
+        <tr><td><b>Mansionward</b><br>MAN·shun·ward · 3 syl.</td><td>Soft start, hard D end.</td><td>Premium and protective, a little long.</td><td>Mansion + guardian</td><td>Strong</td><td><span class="chip ok">Looks free</span></td><td class="score">8.0</td></tr>
+        <tr><td><b>Castward</b><br>KAST·ward · 2 syl.</td><td>Hardest: K, T, D. Big “A”.</td><td>Very strong, almost a fortress.</td><td>Castle + guardian; can sound like security</td><td>Medium</td><td><span class="chip ok">Looks free</span></td><td class="score">7.5</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src">Availability: public web search of companies, products, domain mentions and trademark listings, November 2026. Also checked and dropped: Keymont (property management firm, Virginia), Mansio (second-home concierge, France), Mansard (real estate brokerage, Massachusetts), Keymanor (condo and housing names).</p>
+  </section>
+
+  <section style="display:grid;gap:16px">
+    <h2>Hard logos, in the Airbnb spirit</h2>
+    <p class="src" style="font-size:15px">Bold lowercase wordmark, one simple geometric symbol drawn with a single thick line, and an app icon that works at phone size.</p>
+    <div class="logos">
+      <article class="lc" data-name="keyhall"><div class="lh"><h2>keyhall</h2><span class="chip ok">Recommended</span><p>The house symbol has a keyhole where the door would be: home and trust in one shape.</p></div></article>
+      <article class="lc" data-name="mansionward"><div class="lh"><h2>mansionward</h2><span class="chip ok">Strong second</span><p>Two rooflines form the letter M, like a row of fine homes.</p></div></article>
+      <article class="lc" data-name="keyward"><div class="lh"><h2>keyward</h2><span class="chip mid">The one you liked</span><p>The keyhole tile you liked, for comparison.</p></div></article>
+      <article class="lc" data-name="castward"><div class="lh"><h2>castward</h2><span class="chip mid">Bold option</span><p>A simple tower: strong, but closer to a security look.</p></div></article>
+    </div>
+  </section>
+
+  <section class="verdict">
+    <h2>Recommendation: Keyhall</h2>
+    <p>It keeps what you like in Keyward (the hard K, the key, the strong logo) and adds what you like in Mansionly (a big, estate-sized sound that can carry home sales later). Two syllables, easy to say in English and Spanish, and it reads as a brand rather than a job description.</p>
+    <p><b>Keyhall Home Watch · Keyhall Concierge · Keyhall Open House · Keyhall Estates</b></p>
+    <p class="src">Next: check keyhall.com, search the exact word at tmsearch.uspto.gov (classes 37 and 45), then register the LLC and file the trademark the same week.</p>
+  </section>
+
+  <section class="src" aria-label="Research sources">
+    <b style="color:var(--ink)">Research</b>
+    <span>Klink, R. R. (2000). Creating brand names with meaning: The use of sound symbolism. Marketing Letters.</span>
+    <span>Yorkston, E., &amp; Menon, G. (2004). A sound idea: Phonetic effects of brand names on consumer judgments. Journal of Consumer Research.</span>
+    <span>Lowrey, T. M., &amp; Shrum, L. J. (2007). Phonetic symbolism and brand name preference. Journal of Consumer Research.</span>
+    <span>Vanden Bergh, B., et al. (1984, 1987). Sound advice on brand names. Journalism Quarterly; Journal of Advertising Research.</span>
+    <span>Ramachandran, V. S., &amp; Hubbard, E. M. (2001). Synaesthesia: A window into perception, thought and language. Journal of Consciousness Studies.</span>
+    <span>Alter, A. L., &amp; Oppenheimer, D. M. (2006). Predicting short-term stock fluctuations by using processing fluency. PNAS.</span>
+  </section>
+</div>
+
+<script>
+// Symbols on a 100×100 grid, drawn with one thick rounded line (currentColor) plus one gold accent.
+var G = '#BCA683';
+var S = {
+  keyhall: '<path d="M16 50 50 18l34 32v34H16z" fill="none" stroke="currentColor" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="55" r="8.5" fill="' + G + '"/><path d="M45 60 41.5 75h17L55 60z" fill="' + G + '"/>',
+  mansionward: '<path d="M14 84V42l18-20 18 20 18-20 18 20v42" fill="none" stroke="currentColor" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="66" r="7" fill="' + G + '"/>',
+  keyward: '<rect x="12" y="12" width="76" height="76" rx="20" fill="currentColor"/><circle cx="50" cy="44" r="10" style="fill:var(--bgc)"/><path d="M44.5 50 40 72h20l-4.5-22z" style="fill:var(--bgc)"/>',
+  castward: '<path d="M22 86V34h11V22h11v12h12V22h11v12h11v52z" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><path d="M42 86V68a8 8 0 0 1 16 0v18z" fill="' + G + '"/>'
+};
+var word = function (n) { return n; };
+var horiz = function (n) {
+  var w = 120 + n.length * 31;
+  return '<svg viewBox="0 0 ' + w + ' 110" role="img" aria-label="' + n + ' logo"><g transform="translate(6,8) scale(.94)">' + S[n] + '</g>' +
+    '<text x="112" y="74" font-family="Manrope, sans-serif" font-weight="800" font-size="54" letter-spacing="-2" fill="currentColor">' + word(n) + '</text></svg>';
+};
+var icon = function (n, size, bg, fg) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';--bgc:' + bg + '"><rect width="100" height="100" rx="24" fill="' + bg + '"/><g transform="translate(16,16) scale(.68)">' + S[n] + '</g></svg>';
+};
+document.querySelectorAll('.lc').forEach(function (c) {
+  var n = c.dataset.name;
+  c.insertAdjacentHTML('beforeend', '<div class="lt"><div class="tile n">' + horiz(n) + '</div><div class="tile i">' + horiz(n) + '</div><div class="icons">' +
+    icon(n, 72, '#0F2747', '#F1ECE2') + icon(n, 72, '#F1ECE2', '#0F2747') + icon(n, 36, '#0F2747', '#F1ECE2') + '</div></div>');
+});
+</script>
