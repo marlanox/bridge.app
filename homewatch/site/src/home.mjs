@@ -239,23 +239,23 @@ export function homePage(lang = 'en') {
 
   const M = es ? {
     eye: 'Arme su propio plan', h: 'Elija solo lo que necesita.',
-    p: 'Marque los servicios que quiere. Con 3 o más, 10% de descuento cada mes. Los trabajos de proveedores se pagan a costo, sin recargo.',
+    p: 'Marque los servicios que quiere, a precios del mercado de Los Ángeles. Con 3 o más, 10% de descuento cada mes. La poda y los trabajos puntuales se cotizan, y los proveedores se pagan a costo.',
     sub: 'Subtotal', off: 'Descuento por 3+ servicios', tot: 'Su precio', mo: '/mes', none: 'Elija al menos un servicio', cta: 'Pedir este plan',
     more: 'Agregue {n} más para 10% de descuento', yes: '10% de descuento aplicado',
-    laterH: 'Y cuando lo necesite, agregue más', laterP: 'Los clientes de cualquier plan tienen 10% de descuento en estos servicios.',
-    later: [['sell-your-home', 'Vender con nuestro agente licenciado'], ['vacant-listing-care', 'Open houses mientras usted está lejos'], ['pre-sale-preparation-staging', 'Staging antes de las fotos'], ['pre-sale-preparation-staging', 'Arreglos cosméticos antes de vender'], ['renovation-oversight', 'Supervisión de obras'], ['vendor-contractor-access', 'Nosotros contratamos: jardín, piscina, limpieza, poda']]
+    laterH: 'Y cuando llegue el momento de vender', laterP: 'El mismo equipo prepara, muestra y vende la casa. Presupuesto según su casa; con cualquier plan, 10% de descuento.',
+    later: [['sell-your-home', 'Vender con nuestro agente licenciado'], ['vacant-listing-care', 'Open houses mientras usted está lejos'], ['pre-sale-preparation-staging', 'Staging antes de las fotos'], ['pre-sale-preparation-staging', 'Arreglos cosméticos antes de vender'], ['renovation-oversight', 'Supervisión de obras'], ['pre-sale-preparation-staging', 'Interiorismo con su presupuesto'], ['pre-sale-preparation-staging', 'Staging de un día para las fotos'], ['pre-sale-preparation-staging', 'Sesión de fotos y video']]
   } : {
     eye: 'Build your own', h: 'Pick only what you need.',
-    p: 'Tick the services you want. Choose 3 or more and save 10% every month. Vendor work is billed at cost, never marked up.',
+    p: 'Tick the services you want, at Los Angeles market prices. Choose 3 or more and save 10% every month. Tree trimming and one-off jobs are quoted, vendor work is billed at cost.',
     sub: 'Subtotal', off: '3+ services discount', tot: 'Your price', mo: '/mo', none: 'Pick at least one service', cta: 'Request this plan',
     more: 'Add {n} more to save 10%', yes: '10% discount applied',
-    laterH: 'And when you need it, add more', laterP: 'Clients on any plan save 10% on all of these.',
-    later: [['sell-your-home', 'Sell with our licensed agent'], ['vacant-listing-care', 'Open houses while you are away'], ['pre-sale-preparation-staging', 'Staging before the photos'], ['pre-sale-preparation-staging', 'Cosmetic refresh before a sale'], ['renovation-oversight', 'Oversight of any work on the house'], ['vendor-contractor-access', 'We book it for you: lawn, pool, cleaning, trimming']]
+    laterH: 'And when the time comes to sell', laterP: 'The same team prepares, shows and sells the home. Quoted for your home and budget; clients on any plan save 10%.',
+    later: [['sell-your-home', 'Sell with our licensed agent'], ['vacant-listing-care', 'Open houses while you are away'], ['pre-sale-preparation-staging', 'Staging before the photos'], ['pre-sale-preparation-staging', 'Cosmetic refresh before a sale'], ['renovation-oversight', 'Oversight of any work on the house'], ['pre-sale-preparation-staging', 'Interior design on your budget'], ['pre-sale-preparation-staging', 'One-day photo staging'], ['pre-sale-preparation-staging', 'Photo & video shoot']]
   };
   const mixHtml = `<section class="sec" id="build"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${M.eye}</span><h2>${M.h}</h2><p class="lead">${M.p}</p></div>
   <div class="mix" data-mix data-at="${mix.discountAt}" data-off="${mix.discount}">
-    <div class="mix-opts">${mix.items.map((it) => { const [n, d] = es ? it.es : it.en; return `<label class="mopt"><input type="checkbox" name="mix" value="${it.id}" data-price="${it.price}"><span><b>${n}</b><small>${d}</small></span><em>$${it.price}<small>${M.mo}</small></em></label>`; }).join('')}</div>
+    <div class="mix-opts">${mix.items.map((it) => { const [n, d] = es ? it.es : it.en; return `<label class="mopt"><input type="checkbox" name="mix" value="${it.id}" data-price="${it.price}"${it.group ? ` data-group="${it.group}"` : ''}><span><b>${n}</b><small>${d}</small></span><em>$${it.price}<small>${M.mo}</small></em></label>`; }).join('')}</div>
     <aside class="mix-tot">
       <div class="mrow"><span>${M.sub}</span><span data-sub>$0</span></div>
       <div class="mrow moff"><span>${M.off}</span><span data-off-amt>−$0</span></div>
@@ -264,7 +264,7 @@ export function homePage(lang = 'en') {
       <a class="btn arrow" data-mix-go href="#start">${M.cta}</a>
     </aside>
   </div>
-  <div class="later"><h3>${M.laterH}</h3><p class="muted">${M.laterP}</p><div class="more-svcs">${M.later.map(([sl, n]) => `<a href="${link(sl)}">${n}</a>`).join('')}</div></div>
+  <div class="later"><h3>${M.laterH}</h3><p class="muted">${M.laterP}</p><div class="more-svcs">${M.later.map(([sl, n]) => `<a href="${link(sl)}">${n}</a>`).join('')}</div><p><a href="${link(es ? 'es/vender' : 'sell')}">${es ? 'Todo sobre vender y preparar la casa' : 'Everything about selling and pre-sale'} →</a></p></div>
 </div></section>`;
 
   const body = `

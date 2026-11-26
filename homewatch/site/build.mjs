@@ -13,7 +13,7 @@ import { locations } from './src/data/locations.mjs';
 import { guides } from './src/data/guides.mjs';
 import { head, header, footer, makeLinker, canonical, config, CLEAN } from './src/layout.mjs';
 import { homePage } from './src/home.mjs';
-import { servicePage, audiencePage, locationPage, guidePage, servicesHub, areasHub, audiencesHub, guidesHub, pricingPage, corePages, spanishPages } from './src/pages.mjs';
+import { servicePage, audiencePage, locationPage, guidePage, servicesHub, areasHub, audiencesHub, guidesHub, pricingPage, corePages, spanishPages, sellPages } from './src/pages.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const out = join(root, process.env.OUT || 'dist');
@@ -28,7 +28,7 @@ const pages = [
   homePage('en'), homePage('es'),
   ...services.map(servicePage), ...audiences.map(audiencePage), ...locations.map(locationPage), ...guides.map(guidePage),
   servicesHub(), areasHub(), audiencesHub(), guidesHub(), pricingPage('en'), pricingPage('es'),
-  ...corePages(), ...spanishPages(),
+  ...corePages(), ...spanishPages(), ...sellPages(),
 ];
 
 rmSync(out, { recursive: true, force: true });

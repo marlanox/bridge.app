@@ -106,7 +106,12 @@
       hint.textContent = n === 0 ? hint.dataset.none : n >= at ? hint.dataset.yes : hint.dataset.more.replace('{n}', at - n);
       go.dataset.msg = n ? 'Build your own: ' + names.join(', ') + ' · $' + (sub - d) + '/mo' : '';
     };
-    box.addEventListener('change', run); run();
+    box.addEventListener('change', function (e) {
+      var g = e.target.dataset.group;
+      if (g && e.target.checked) box.querySelectorAll('input[data-group="' + g + '"]').forEach(function (o) { if (o !== e.target) o.checked = false; });
+      run();
+    });
+    run();
     go.addEventListener('click', function () {
       var t = document.querySelector('#start form[data-lead] textarea');
       if (t && go.dataset.msg) t.value = go.dataset.msg;

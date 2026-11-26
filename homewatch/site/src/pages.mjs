@@ -338,3 +338,64 @@ export function spanishPages() {
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">Nuestros estándares</h2><ul><li>Inspectores con verificación de antecedentes y capacitación.</li><li>Cada visita fotografiada y guardada.</li><li>Llaves codificadas, nunca con su dirección.</li><li>Nunca aumentamos las facturas de proveedores.</li></ul><h2>Lo que no somos</h2><p>No somos empresa de seguridad, corredora inmobiliaria ni bufete de abogados. Donde se requiere licencia, el trabajo lo hacen profesionales con licencia.</p></div><div id="lead">${leadForm({ path: 'es/sobre-nosotros', lang: 'es', source: 'es-about' })}</div></div></section>`, [], 'es'));
   return out;
 }
+
+
+// Estates hub: selling and pre-sale preparation, quoted individually.
+export function sellPages() {
+  const make = (lang) => {
+    const es = lang === 'es';
+    const path = es ? 'es/vender' : 'sell';
+    const L = makeLinker(path).link;
+    const T = es ? {
+      title: 'Vender y preparar su casa para la venta | Staging, open houses y agente | Mansionly',
+      desc: 'Preparación para la venta, arreglos cosméticos, staging completo o de un día para las fotos, fotografía, open houses y venta con agente con licencia en Los Ángeles.',
+      eyebrow: 'Mansionly Estates · Vender', h1: 'De cuidada a vendida.', lead: 'El equipo que ya conoce su casa la prepara, la muestra y la vende. Usted puede estar en cualquier parte del mundo.',
+      h2: 'Todo lo que necesita una venta, con un solo equipo.',
+      cards: [
+        ['sell-your-home', 'Venta con nuestro agente con licencia', 'Precio, marketing, ofertas y escrow con nuestro agente interno con licencia.'],
+        ['vacant-listing-care', 'Open houses mientras usted está lejos', 'Abrimos, recibimos a los compradores y cerramos. Informe con fotos después de cada visita.'],
+        ['pre-sale-preparation-staging', 'Preparación para la venta', 'Lista de reparaciones, limpieza profunda, jardín, piscina y detalles que notan los compradores.'],
+        ['renovation-oversight', 'Arreglos cosméticos', 'Pintura, iluminación, accesorios y pisos. Contratistas con licencia, bajo nuestra supervisión.'],
+        ['pre-sale-preparation-staging', 'Interiorismo con su presupuesto', 'Rediseñamos los espacios con lo que tiene y algunas piezas nuevas dentro de un presupuesto fijo.'],
+        ['pre-sale-preparation-staging', 'Staging completo', 'Muebles y decoración durante todo el tiempo que la casa está en venta.'],
+        ['pre-sale-preparation-staging', 'Staging de un día para las fotos', 'Traemos los muebles para la sesión de fotos y video y nos los llevamos esa misma noche. Paga un solo día.'],
+        ['pre-sale-preparation-staging', 'Fotos, video y plano', 'Fotografía profesional, fotos al atardecer, video y plano de la casa.'],
+        ['vacant-listing-care', 'Cuidado de la casa en venta', 'Revisión semanal para que la casa esté siempre lista para mostrar.'],
+      ],
+      priceH: 'Cómo se calcula el precio', priceP: 'Cada venta es distinta. Le damos un presupuesto después de una visita gratis, según los metros, lo que quiere hacer y su presupuesto. Usted aprueba cada punto antes de empezar, y el trabajo de proveedores se cobra a costo.',
+      member: 'Los clientes de Home Watch tienen 10% de descuento en todos los servicios de Estates.',
+      stepsH: 'Cómo trabajamos', steps: [['Visita gratis', 'Recorremos la casa con usted o por video.'], ['Plan y presupuesto', 'Una lista clara con precios. Usted elige.'], ['Preparación', 'Arreglos, staging, fotos y video.'], ['Venta', 'Publicación, open houses, ofertas y cierre.']],
+      formH: 'Cuéntenos sobre la venta', need: 'Preparación para la venta y staging',
+    } : {
+      title: 'Sell & Pre-Sale Preparation | Staging, Open Houses & Licensed Agent | Mansionly',
+      desc: 'Pre-sale preparation, cosmetic refresh, full or one-day photo staging, photography, open houses while you are away and a sale with our licensed agent in Los Angeles.',
+      eyebrow: 'Mansionly Estates · Sell', h1: 'From kept to sold.', lead: 'The team that already knows your home prepares it, shows it and sells it. You can be anywhere in the world.',
+      h2: 'Everything a sale needs, with one team.',
+      cards: [
+        ['sell-your-home', 'Sell with our licensed agent', 'Pricing, marketing, offers and escrow with our in-house licensed agent.'],
+        ['vacant-listing-care', 'Open houses while you are away', 'We open, host the buyers and lock up, with a photo report after every showing.'],
+        ['pre-sale-preparation-staging', 'Pre-sale preparation', 'A repair list, deep clean, garden, pool and the small fixes buyers notice.'],
+        ['renovation-oversight', 'Cosmetic refresh', 'Paint, lighting, fixtures and floors. Licensed contractors, under our supervision.'],
+        ['pre-sale-preparation-staging', 'Interior design on your budget', 'We restyle the rooms with what you have, plus a few new pieces within a set budget.'],
+        ['pre-sale-preparation-staging', 'Full staging', 'Furniture and decor for the whole time the home is listed.'],
+        ['pre-sale-preparation-staging', 'One-day photo staging', 'We bring furniture for the photo and video shoot and take it away the same evening. You pay for one day.'],
+        ['pre-sale-preparation-staging', 'Photo, video & floor plan', 'Professional photography, twilight shots, video and a floor plan.'],
+        ['vacant-listing-care', 'Vacant listing care', 'Weekly checks so the home is always ready to show.'],
+      ],
+      priceH: 'How pricing works', priceP: 'Every sale is different. We quote after a free walkthrough, based on square footage, what you want done and your budget. You approve every item before work starts, and vendor work is billed at cost.',
+      member: 'Home Watch clients save 10% on every Estates service.',
+      stepsH: 'How we work', steps: [['Free walkthrough', 'We walk the home with you, or by video.'], ['Plan & budget', 'A clear list with prices. You choose.'], ['Preparation', 'Refresh, staging, photos and video.'], ['Sale', 'Listing, open houses, offers and closing.']],
+      formH: 'Tell us about the sale', need: 'Pre-sale preparation & staging',
+    };
+    const inner = `<section class="sec"><div class="wrap">
+  <div class="sec-head"><h2>${T.h2}</h2></div>
+  <div class="grid g3">${T.cards.map(([sl, h, d], i) => `<a class="card rv" href="${L(sl)}"><span class="k">${String(i + 1).padStart(2, '0')}</span><h3>${h}</h3><p class="muted small">${d}</p><span class="more arrow"></span></a>`).join('')}</div>
+</div></section>
+<section class="sec stone"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">${T.priceH}</h2><p class="lead">${T.priceP}</p><p class="member">${T.member}</p></div>
+  <div><h3 style="margin-bottom:18px">${T.stepsH}</h3><ol class="steps" style="grid-template-columns:1fr 1fr">${T.steps.map(([h, d]) => `<li><h3>${h}</h3><p class="muted small">${d}</p></li>`).join('')}</ol></div>
+</div></section>
+<section class="sec dark" id="start"><div class="wrap split"><div style="display:grid;gap:16px;align-content:start"><h2>${T.formH}</h2><p class="lead">${T.lead}</p></div>${leadForm({ path, lang, id: 'sell-form', dark: true, source: 'sell', need: 4 })}</div></section>`;
+    return simple(path, T.title, T.desc, { crumbs: [[es ? 'Inicio' : 'Home', es ? 'es/index' : 'index'], [es ? 'Vender' : 'Sell', path]], eyebrow: T.eyebrow, h1: T.h1, lead: T.lead, cta: false }, inner, [], lang);
+  };
+  return [make('en'), make('es')];
+}

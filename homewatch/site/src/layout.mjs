@@ -33,13 +33,13 @@ export const canonical = (path) => {
 // English page <-> Spanish page pairs, for hreflang and the language switch.
 export const esPairs = {
   index: 'es/index', services: 'es/servicios', 'home-watch': 'es/vigilancia-de-casas', pricing: 'es/precios',
-  'get-started': 'es/contacto', faq: 'es/preguntas-frecuentes', partners: 'es/socios', about: 'es/sobre-nosotros',
+  'get-started': 'es/contacto', faq: 'es/preguntas-frecuentes', partners: 'es/socios', about: 'es/sobre-nosotros', sell: 'es/vender',
 };
 const enPairs = Object.fromEntries(Object.entries(esPairs).map(([a, b]) => [b, a]));
 
 export const ui = {
   en: {
-    nav: [['home-watch', 'Home Watch'], ['services', 'Services'], ['pricing', 'Pricing'], ['partners', 'Partners'], ['guides', 'Guides']],
+    nav: [['home-watch', 'Home Watch'], ['services', 'Services'], ['pricing', 'Pricing'], ['sell', 'Sell & Pre-Sale'], ['partners', 'Partners'], ['guides', 'Guides']],
     login: 'Client login', cta: 'Free walkthrough', ctaTarget: 'get-started', skip: 'Skip to content', call: 'Call',
     formTitle: 'Book a free walkthrough', formSub: 'Tell us about the home. We reply within one business hour.',
     name: 'Full name', phone: 'Phone', email: 'Email', area: 'Neighborhood or ZIP', need: 'I need help with', message: 'Anything we should know? (optional)',
@@ -52,7 +52,7 @@ export const ui = {
     privacy: 'Privacy', terms: 'Terms', lang: 'ES', langLabel: 'Ver en español',
   },
   es: {
-    nav: [['es/vigilancia-de-casas', 'Vigilancia'], ['es/servicios', 'Servicios'], ['es/precios', 'Precios'], ['es/socios', 'Socios'], ['es/preguntas-frecuentes', 'Preguntas']],
+    nav: [['es/vigilancia-de-casas', 'Vigilancia'], ['es/servicios', 'Servicios'], ['es/precios', 'Precios'], ['es/vender', 'Vender'], ['es/socios', 'Socios'], ['es/preguntas-frecuentes', 'Preguntas']],
     login: 'Acceso clientes', cta: 'Visita gratis', ctaTarget: 'es/contacto', skip: 'Ir al contenido', call: 'Llamar',
     formTitle: 'Reserve una visita gratis', formSub: 'Cuéntenos sobre la casa. Respondemos en menos de una hora hábil.',
     name: 'Nombre completo', phone: 'Teléfono', email: 'Correo electrónico', area: 'Vecindario o código postal', need: 'Necesito ayuda con', message: '¿Algo más que debamos saber? (opcional)',
