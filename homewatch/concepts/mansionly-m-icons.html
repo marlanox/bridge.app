@@ -20,7 +20,10 @@ p{margin:0}
 .card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
 .icons{display:flex;align-items:center;justify-content:center;gap:18px;padding:26px 14px;flex-wrap:wrap}
 .icons svg{display:block}
-.hd{display:flex;align-items:center;justify-content:center;background:#0F2747;padding:22px 12px;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-around;gap:16px;flex-wrap:wrap;background:#0F2747;padding:22px 12px;overflow:hidden}
+.ph{display:grid;grid-template-columns:repeat(4,46px);gap:10px;padding:12px;border-radius:16px;background:#1C2433;position:relative}
+.ph i{display:block;width:46px;height:46px;border-radius:11px;background:#2E3747}
+.ph span{grid-column:3;font:500 9px/1 Inter,sans-serif;color:#C9D1DE;text-align:center;margin-top:-4px}
 .lk{display:inline-flex;align-items:center;white-space:nowrap;font:800 30px/1 "Manrope",sans-serif;letter-spacing:-.05em;color:#A3B7D6}
 .lk svg{width:1.15em;height:1.15em;margin-right:.3em;flex:none}
 .lk .m{color:#FFFFFF}
@@ -32,11 +35,11 @@ p{margin:0}
 
 <div class="wrap">
   <header class="intro">
-    <h1>The “m.” icon</h1>
-    <p>Ten icons built from the m and its period, each with a keyhole, a shield or a roof. Under each: how it sits next to the name in the site header.</p>
+    <h1>The app icon</h1>
+    <p>The logo stays exactly as chosen: shield + mansionly. Only the app icon and browser-tab icon change. Ten icons built from the m and its period, each with a keyhole, a shield or a roof. Under each: the unchanged logo, and the icon on a phone home screen.</p>
   </header>
   <div class="grid" id="g"></div>
-  <p class="foot">Pick the code you like, for example “I4”. I then put it on the site, the favicon and the brand book.</p>
+  <p class="foot">Pick the code you like, for example “I4”. I then use it as the app icon and browser-tab icon; the logo stays as it is.</p>
 </div>
 
 <script>
@@ -73,8 +76,9 @@ var tile = function (fn, size, navy, round) {
   return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="border-radius:' + round + ';' + (navy ? '' : 'box-shadow:inset 0 0 0 1px #D9D5CD') + '"><rect width="100" height="100" fill="' + bg + '"/>' + fn(fg, bg) + '</svg>';
 };
 document.getElementById('g').innerHTML = I.map(function (x) {
-  var head = '<span class="lk"><svg viewBox="0 0 100 100" aria-hidden="true" style="border-radius:22%"><rect width="100" height="100" fill="#FFFFFF"/>' + x[2]('#0F2747', '#FFFFFF') + '</svg><span class="m">m</span>ansionly<span class="m">.</span></span>';
+  var head = '<span class="lk"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z" fill="#FFFFFF"/><circle cx="50" cy="38" r="12" fill="#0F2747"/><path d="M43.4 44.6 39 69h22l-4.4-24.4z" fill="#0F2747"/></svg><span class="m">m</span>ansionly<span class="m">.</span></span>';
+  var phone = '<div class="ph"><i></i><i></i>' + tile(x[2], 46, 1, '11px') + '<i></i><span>Mansionly</span></div>';
   return '<article class="card"><div class="icons">' + tile(x[2], 104, 1, '22%') + tile(x[2], 104, 0, '22%') + tile(x[2], 40, 1, '22%') + tile(x[2], 20, 1, '4px') + '</div>' +
-    '<div class="hd">' + head + '</div><div class="cap"><b>' + x[0] + '</b><span>' + x[1] + '</span></div></article>';
+    '<div class="hd">' + head + phone + '</div><div class="cap"><b>' + x[0] + '</b><span>' + x[1] + '</span></div></article>';
 }).join('');
 </script>
