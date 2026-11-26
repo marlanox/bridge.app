@@ -198,6 +198,41 @@ export function homePage(lang = 'en') {
   const areas = regions.map((r) => { const ls = locations.filter((l) => (l.region || 'Los Angeles') === r); return ls.length ? `<div class="region"><p class="eyebrow">${r}</p><ul class="links">${ls.map((l) => `<li><a href="${link('home-watch/' + l.slug)}">${l.name}</a></li>`).join('')}</ul></div>` : ''; }).join('');
   const faqs = generalFaqs[lang];
 
+
+  const D = es ? {
+    eye: 'Mansionly · Qué hacemos', h: 'Una empresa para las casas que usted ama y deja.',
+    p: 'Tener una casa fina es un trabajo de tiempo completo. Mientras usted no está, lo hacemos por usted: con el mismo inspector, fotos de cada visita y una sola llamada para todo lo demás.',
+    core: 'Servicio principal', more: 'Ver servicio', price: 'Ver precios',
+    hw: ['Home Watch', 'Cuidada como si nunca se hubiera ido.', 'Visitas programadas a su casa vacía. Recorremos 34 puntos dentro y fuera y le enviamos el informe con fotos el mismo día.', [['34', 'puntos en cada visita'], ['2 h', 'informe con fotos'], ['$189', 'desde, al mes']]],
+    divs: [['Concierge', 'Un mensaje. Hecho, con fotos.', [['vendor-contractor-access', 'Acceso de proveedores'], ['pre-arrival-preparation', 'Preparación de llegada'], ['renovation-oversight', 'Supervisión de obras']], 'concierge'],
+      ['Estates', 'De cuidada a vendida.', [['pre-sale-preparation-staging', 'Preparación y staging'], ['vacant-listing-care', 'Casas en venta vacías'], ['sell-your-home', 'Venta con agente licenciado']], 'sell-your-home'],
+      ['Private Office', 'Sus manos en California.', [['power-of-attorney-services', 'Poder notarial'], ['estate-property-care', 'Sucesiones y herencias'], ['insurance-vacancy-inspections', 'Informes para seguros']], 'power-of-attorney-services']],
+    trust: t.tband.map((x) => x[0])
+  } : {
+    eye: 'Mansionly · What we do', h: 'One company for the homes you love and leave.',
+    p: 'Owning a fine home is a full-time job. While you are away, we do it for you: the same inspector, photo proof of every visit, and one call for everything else the house needs.',
+    core: 'Our core service', more: 'Explore', price: 'See pricing',
+    hw: ['Home Watch', 'Kept as if you never left.', 'Scheduled visits to your empty home. A 34-point check inside and out, and a photo report on your phone the same day.', [['34', 'points every visit'], ['2 hrs', 'to your photo report'], ['$189', 'from, per month']]],
+    divs: [['Concierge', 'One message. Done, with photos.', [['vendor-contractor-access', 'Vendor access'], ['pre-arrival-preparation', 'Arrival preparation'], ['renovation-oversight', 'Renovation oversight']], 'concierge'],
+      ['Estates', 'From kept to sold.', [['pre-sale-preparation-staging', 'Pre-sale prep & staging'], ['vacant-listing-care', 'Vacant listing care'], ['sell-your-home', 'Sell with our licensed agent']], 'sell-your-home'],
+      ['Private Office', 'Your hands in California.', [['power-of-attorney-services', 'Power of attorney'], ['estate-property-care', 'Estate & probate homes'], ['insurance-vacancy-inspections', 'Insurance-ready reports']], 'power-of-attorney-services']],
+    trust: t.tband.map((x) => x[0])
+  };
+  const lock = (sub) => `<span class="dlock"><span class="wm"><span class="wm-m">m</span>ansionly<span class="wm-m">.</span></span><b>${sub}</b></span>`;
+  const divisionsHtml = `<section class="divs" aria-label="${D.eye}"><div class="wrap">
+  <div class="divs-head"><span class="eyebrow">${D.eye}</span><h2>${D.h}</h2><p class="lead">${D.p}</p></div>
+  <div class="divs-grid">
+    <a class="dcore" href="${link('home-watch')}">
+      <span class="dnum">01 · ${D.core}</span>${lock(D.hw[0])}
+      <p class="dtag">${D.hw[1]}</p><p class="ddesc">${D.hw[2]}</p>
+      <div class="dfacts">${D.hw[3].map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join('')}</div>
+      <span class="dgo">${D.more} →</span>
+    </a>
+    ${D.divs.map(([n, tag, subs, main], i) => `<div class="dcard"><span class="dnum">0${i + 2}</span>${lock(n)}<p class="dtag">${tag}</p><ul>${subs.map(([sl, nm]) => `<li><a href="${link(sl)}">${nm}</a></li>`).join('')}</ul><a class="dgo" href="${link(main)}">${D.more} →</a></div>`).join('')}
+  </div>
+  <ul class="dtrust">${D.trust.map((x, i) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${tIcons[i]}</svg>${x}</li>`).join('')}</ul>
+</div></section>`;
+
   const body = `
 <section class="scene" id="top" aria-label="${es ? 'Introducción' : 'Introduction'}">
   <div class="stage">
@@ -221,7 +256,7 @@ export function homePage(lang = 'en') {
     <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>
-<section class="tband" aria-label="${es ? 'Por qué confiar en nosotros' : 'Why owners trust us'}"><div class="wrap">${t.tband.map(([b, p], i) => `<div class="ti"><svg viewBox="0 0 24 24" aria-hidden="true">${tIcons[i]}</svg><b>${b}</b><span>${p}</span></div>`).join('')}</div></section>
+${divisionsHtml}
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.inclEyebrow}</span><h2>${t.inclH}</h2></div>

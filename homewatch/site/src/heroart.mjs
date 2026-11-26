@@ -55,6 +55,16 @@ function pane(x, y, w, h, d, id, inside = '') {
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#132A4C"/><g class="on" style="animation-delay:${d}s"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${id}w)"/>${inside}</g>`;
 }
 
+function skyline(cx, base, n) {
+  const r = rng(41); let t = '', w = '';
+  for (let i = 0; i < n; i++) {
+    const bw = 10 + r() * 14, h = 20 + r() * 90 * (1 - Math.abs(i - n / 2) / (n * .6)), x = cx - n * 6 + i * 12 + r() * 5;
+    t += `M${f(x)} ${base}V${f(base - h)}h${f(bw)}V${base}z`;
+    for (let yy = base - h + 5; yy < base - 3; yy += 6) for (let xx = x + 2; xx < x + bw - 2; xx += 4) if (r() < .5) w += `M${f(xx)} ${f(yy)}h1.5v2h-1.5z`;
+  }
+  return `<path d="${t}" fill="#1B355E"/><path class="on" style="animation-delay:.25s" d="${w}" fill="#FFE2AE"/>`;
+}
+
 export function artA() {
   const id = 'ha';
   const glow = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#132A4C"/>`;
@@ -65,9 +75,9 @@ export function artA() {
     '<path d="M874 384v20" stroke="#7A5E3A"/><circle cx="874" cy="407" r="5" fill="#FFFBF0"/><rect x="852" y="432" width="48" height="10" rx="2" fill="#8A6A40" opacity=".45"/>',
     '<circle cx="944" cy="426" r="8" fill="#5E6B4A" opacity=".55"/><circle cx="938" cy="420" r="6" fill="#5E6B4A" opacity=".5"/><rect x="940" y="430" width="8" height="12" fill="#6F5636" opacity=".6"/>',
     '']
-  const lower = [0.9, 1.5, 1.1, 1.8, 1.3].map((d, i) => { const x = 652 + i * 64; return glow(x, 386, 60, 64) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="386" width="60" height="64" fill="url(#${id}w)"/>${lowIn[i] || ''}</g>`; }).join('');
+  const lower = [0.9, 1.5, 1.1, 1.8, 1.3].map((d, i) => { const x = 652 + i * 64; return glow(x, 386, 60, 64) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="386" width="60" height="64" fill="url(#${id}w)"/><rect x="${x}" y="386" width="60" height="5" fill="#C9A26A" opacity=".35"/>${lowIn[i] || ''}</g>`; }).join('');
   const upIn = ['', '<rect x="918" y="356" width="42" height="12" fill="#8A6A40" opacity=".45"/>', '', '<path d="M1048 320v14" stroke="#7A5E3A"/><circle cx="1048" cy="337" r="4" fill="#FFFBF0"/>', ''];
-  const upper = [1.6, 1.2, 2.0, 1.45, 2.2].map((d, i) => { const x = 854 + i * 59; return glow(x, 320, 56, 56) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="320" width="56" height="56" fill="url(#${id}w)"/>${upIn[i]}</g>`; }).join('');
+  const upper = [1.6, 1.2, 2.0, 1.45, 2.2].map((d, i) => { const x = 854 + i * 59; return glow(x, 320, 56, 56) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="320" width="56" height="56" fill="url(#${id}w)"/><rect x="${x}" y="320" width="56" height="4" fill="#C9A26A" opacity=".35"/>${upIn[i]}</g>`; }).join('');
   const refl = [0, 1, 2, 3, 4].map((i) => `<rect x="${662 + i * 64}" y="457" width="40" height="7" fill="#FFE7B8" opacity=".35"/>`).join('');
   const stone = [392, 400, 408, 416, 424, 432, 440].map((y) => `M974 ${y}h76`).join('');
   const joints = Array.from({ length: 13 }, (_, i) => `M${620 + i * 40} 466v22`).join('');
@@ -76,10 +86,11 @@ ${sky(id)}${stars(7, 70)}
 <path d="M0 372C140 352 250 366 380 344 520 320 610 352 760 336 900 320 1010 300 1150 318 1300 338 1440 312 1600 326V440H0Z" fill="#1D3B66"/>
 <ellipse class="on" style="animation-delay:1.2s" cx="800" cy="430" rx="980" ry="70" fill="url(#${id}g)"/>
 <path d="M0 418C200 404 420 414 640 402 860 392 1100 410 1320 400 1450 394 1540 402 1600 400V640H0Z" fill="url(#${id}b)"/>
-${city({ seed: 11, y0: 408, y1: 570, groups: 7, rows: 18, perRow: 170, start: .3, step: .3 })}
+${skyline(1150, 404, 13)}${city({ seed: 11, y0: 408, y1: 570, groups: 9, rows: 20, perRow: 190, wave: true, cx: 1150, start: .25, step: .26 })}
 <path d="M0 640V566C140 552 300 526 460 500 530 488 572 474 606 466H1092C1150 478 1230 500 1330 524 1450 550 1530 560 1600 562V640Z" fill="#0A1830"/>
 <path d="M0 640V604C200 596 420 606 640 616 900 628 1200 608 1600 616V640Z" fill="#071226"/>
 <g transform="translate(-84 0)">
+<ellipse class="on" style="animation-delay:1.6s" cx="860" cy="400" rx="360" ry="120" fill="url(#${id}g)"/>
 <rect x="600" y="466" width="500" height="22" fill="#152B4E"/><path d="${joints}" stroke="#1F3A63" stroke-width="1.5"/>
 <ellipse cx="616" cy="462" rx="22" ry="12" fill="#091629"/><ellipse cx="1080" cy="460" rx="18" ry="14" fill="#091629"/>
 ${palm(548, 476, 236, -14)}${palm(586, 470, 198, 10, .9)}${palm(1206, 488, 222, 16, .95)}
