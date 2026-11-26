@@ -1,0 +1,91 @@
+<title>Mansionly Lock Marks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Board: ten lock-based symbols instead of the shield. Each shown with the m in contrast colour, and with the m knocked out of a block. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:44px 84px;display:grid;gap:36px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.03em;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:760px}
+.intro p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tiles{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;min-height:120px;padding:18px 10px;overflow:hidden}
+.n{background:#0E2343}
+.w{background:#FFFFFF}
+.lbl{grid-column:1/-1;font:600 10.5px/1 "Inter",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:9px 14px;border-top:1px solid var(--line);background:var(--card)}
+.cap{display:grid;gap:3px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.icons{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.icons small{font-size:12px;color:var(--muted);margin-right:auto}
+.icons svg{display:block}
+.lk{white-space:nowrap;line-height:1;display:inline-flex;align-items:center;font:800 clamp(26px,2.8vw,34px)/1 "Manrope",sans-serif;letter-spacing:-.05em;color:var(--r)}
+.lk>svg{height:1em;width:1em;margin-right:.24em;flex:none;color:var(--s)}
+.fm{color:var(--m)}
+.ko{background:var(--m);color:var(--kb);padding:.02em .07em .13em;margin-right:.03em}
+.dt{color:var(--d)}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>mansionly. lock marks</h1>
+    <p>Ten symbols built around the lock instead of the shield: connected houses, padlocks, keyholes. Each one is shown two ways: the m in a contrast colour, and the m knocked out of a block in the background colour.</p>
+  </header>
+  <div class="grid" id="g"></div>
+  <p class="foot">Tell me the symbol code and the letter style, for example “L1 · knocked out”.</p>
+</div>
+
+<script>
+var NAVY = '#0E2343', IVORY = '#EFE7D6', WHITE = '#FFFFFF', GOLD = '#C6A867', GOLDD = '#A88A4E', SKY = '#9FB7D8', SLATE = '#7D8AA0';
+var kh = function (cx, cy, s, f) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" fill="' + f + '"/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" fill="' + f + '"/>'; };
+var SYM = {
+  L1: ['Three connected houses', 'A row of three homes joined together; the middle one holds the keyhole. One team, many homes.',
+    function (bg, a) { return '<path d="M0 94V40l17-18 17 18 16-30 16 30 17-18 17 18v54z" fill="currentColor"/>' + kh(50, 50, .9, a) + '<rect x="11" y="56" width="11" height="11" fill="' + bg + '"/><rect x="78" y="56" width="11" height="11" fill="' + bg + '"/>'; }],
+  L2: ['Two houses, one lock', 'Two homes overlapping, with a keyhole where they meet.',
+    function (bg, a) { return '<path d="M4 92V46l24-22 24 22v46z" fill="currentColor" opacity=".55"/><path d="M40 92V40l28-26 28 26v52z" fill="currentColor"/>' + kh(68, 52, .75, a); }],
+  L3: ['House padlock', 'A padlock whose shackle is a roof: the home is locked and looked after.',
+    function (bg, a) { return '<path d="M26 44V30L50 12l24 18v14" fill="none" stroke="currentColor" stroke-width="10" stroke-linejoin="miter"/><rect x="14" y="44" width="72" height="50" rx="8" fill="currentColor"/>' + kh(50, 60, .75, a); }],
+  L4: ['Classic padlock', 'The simplest sign of “locked and safe”. Solid and calm.',
+    function (bg, a) { return '<path d="M28 46V32a22 22 0 0 1 44 0v14" fill="none" stroke="currentColor" stroke-width="10"/><rect x="14" y="44" width="72" height="52" rx="10" fill="currentColor"/>' + kh(50, 60, .75, a); }],
+  L5: ['Bold keyhole', 'Just the keyhole, heavy and solid, with a gold centre.',
+    function (bg, a) { return '<circle cx="50" cy="32" r="26" fill="currentColor"/><path d="M36 46 24 98h52L64 46z" fill="currentColor"/><circle cx="50" cy="32" r="9" fill="' + a + '"/>'; }],
+  L6: ['Village in a seal', 'Three houses inside a round seal with a keyhole: a community of protected homes.',
+    function (bg, a) { return '<circle cx="50" cy="50" r="46" fill="currentColor"/><path d="M18 70V50l10-9 10 9 12-13 12 13 10-9 10 9v20z" fill="' + bg + '"/>' + kh(50, 52, .45, a); }],
+  L7: ['House with a lock inside', 'A house outline with a small padlock in its centre.',
+    function (bg, a) { return '<path d="M6 46 50 8l44 38v48H6z" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter"/><path d="M40 56v-6a10 10 0 0 1 20 0v6" fill="none" stroke="' + a + '" stroke-width="5"/><rect x="34" y="56" width="32" height="24" rx="3" fill="' + a + '"/>'; }],
+  L8: ['Hexagon vault', 'A keyhole in a hexagon, like the nut of a vault door: modern and secure.',
+    function (bg, a) { return '<path d="M50 3 92 27v46L50 97 8 73V27z" fill="currentColor"/>' + kh(50, 38, 1, bg) + '<circle cx="50" cy="38" r="5" fill="' + a + '"/>'; }],
+  L9: ['Key with houses', 'A key whose head is a row of houses: we hold the keys to every home.',
+    function (bg, a) { return '<path d="M4 50V30l10-10 10 10 10-12 10 12 10-10 10 10v20z" fill="currentColor"/><path d="M64 40h34M86 40v14M96 40v10" fill="none" stroke="currentColor" stroke-width="8"/><rect x="30" y="34" width="8" height="10" fill="' + a + '"/>'; }],
+  L10: ['Door with a lock', 'A tall front door with a gold lock, in a square frame.',
+    function (bg, a) { return '<rect x="4" y="4" width="92" height="92" rx="10" fill="currentColor"/><rect x="30" y="18" width="40" height="70" fill="' + bg + '"/><rect x="56" y="48" width="8" height="12" rx="2" fill="' + a + '"/>'; }]
+};
+// contrast scheme: m bright, rest quieter; knockout: m in a block, letter = background colour
+var C_N = { s: WHITE, m: WHITE, r: SKY, d: GOLD }, C_W = { s: NAVY, m: NAVY, r: SLATE, d: GOLDD };
+var K_N = { s: IVORY, m: GOLD, r: IVORY, d: GOLD, kb: NAVY }, K_W = { s: NAVY, m: NAVY, r: NAVY, d: GOLDD, kb: WHITE };
+var lock = function (k, c, bg, a, ko) {
+  return '<span class="lk" style="--s:' + c.s + ';--m:' + c.m + ';--r:' + c.r + ';--d:' + c.d + ';--kb:' + (c.kb || bg) + '"><svg viewBox="0 0 100 100" aria-hidden="true">' + SYM[k][2](bg, a) + '</svg><span class="' + (ko ? 'ko' : 'fm') + '">m</span>ansionly<span class="dt">.</span></span>';
+};
+var icon = function (k, size, bg, fg, a) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';border-radius:' + (size > 24 ? 14 : 3) + '%"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(16,16) scale(.68)">' + SYM[k][2](bg, a) + '</g></svg>';
+};
+document.getElementById('g').innerHTML = Object.keys(SYM).map(function (k) {
+  return '<article class="card"><div class="tiles">' +
+    '<div class="tile n">' + lock(k, C_N, NAVY, GOLD) + '</div><div class="tile w">' + lock(k, C_W, WHITE, GOLDD) + '</div><div class="lbl">m in contrast colour</div>' +
+    '<div class="tile n">' + lock(k, K_N, NAVY, GOLD, 1) + '</div><div class="tile w">' + lock(k, K_W, WHITE, GOLDD, 1) + '</div><div class="lbl">m knocked out of a block</div>' +
+    '</div><div class="cap"><b>' + k + ' · ' + SYM[k][0] + '</b><span>' + SYM[k][1] + '</span></div>' +
+    '<div class="icons"><small>App and browser icon</small>' + icon(k, 52, NAVY, IVORY, GOLD) + icon(k, 52, '#F1ECE2', NAVY, GOLDD) + icon(k, 20, NAVY, IVORY, GOLD) + '</div></article>';
+}).join('');
+</script>
