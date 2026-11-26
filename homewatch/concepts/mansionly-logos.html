@@ -1,0 +1,117 @@
+<title>Mansionly Logo Options</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Manrope:wght@800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@800&display=swap">
+<style>
+/* Board: nine Mansionly directions grouped by feel; each logo on navy, on ivory, and as a phone app icon. */
+:root{--bg:#FAF8F4;--card:#FFFFFF;--ink:#0F1E33;--muted:#586275;--line:#E4DED2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 80px;display:grid;gap:44px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font:700 13px/1 "Inter",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:700px}
+.intro p{color:var(--muted)}
+.group{display:grid;gap:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:660px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tile{display:flex;align-items:center;justify-content:center;min-height:150px;padding:22px 18px;overflow:hidden}
+.tile.n{background:#0F2747;color:#F1ECE2;--bgc:#0F2747}
+.tile.i{background:#F1ECE2;color:#0F2747;--bgc:#F1ECE2}
+.icons{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;border-top:1px solid var(--line)}
+.icons svg{display:block;border-radius:22%}
+.cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+/* logo pieces */
+.lg{display:flex;align-items:center;gap:12px;white-space:nowrap;min-width:0}
+.lg svg.mk{width:44px;height:44px;flex:none}
+.lg.stack{flex-direction:column;gap:12px}
+.lg.stack svg.mk{width:58px;height:58px}
+.w-app{font:800 clamp(28px,3.1vw,38px)/1 "Manrope",sans-serif;letter-spacing:-.045em}
+.w-out{font:800 clamp(28px,3.1vw,38px)/1 "Outfit",sans-serif;letter-spacing:-.035em}
+.w-jak{font:800 clamp(28px,3vw,37px)/1 "Plus Jakarta Sans",sans-serif;letter-spacing:-.05em}
+.w-arc{font:900 clamp(24px,2.7vw,33px)/1 "Archivo",sans-serif;letter-spacing:.02em;display:flex;align-items:flex-end}
+.w-arc svg{width:.78em;height:.86em;margin:0 .02em;display:block}
+.w-cin{font:700 clamp(21px,2.3vw,27px)/1 "Cinzel",serif;letter-spacing:.2em}
+.w-bod{font:700 clamp(25px,2.8vw,34px)/1 "Bodoni Moda",serif;letter-spacing:.06em}
+.sub{display:block;font:600 9.5px/1 "Inter",sans-serif;letter-spacing:.28em;text-transform:uppercase;opacity:.7;margin-top:9px}
+.dot{color:#BCA683}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mansionly: nine logo directions</h1>
+    <p>Grouped by feel: app-style, Airbnb-style, luxury. Each is shown on our navy, on ivory and as a phone app icon. Pick one by its code, for example “A2”.</p>
+  </header>
+
+  <section class="group"><h2>App style · bold and short</h2>
+    <div class="grid">
+      <div class="card" data-l="A1"><div class="cap"><b>A1</b><span>House tile</span></div></div>
+      <div class="card" data-l="A2"><div class="cap"><b>A2</b><span>Gold dot</span></div></div>
+      <div class="card" data-l="A3"><div class="cap"><b>A3</b><span>Keyhole house</span></div></div>
+    </div>
+  </section>
+
+  <section class="group"><h2>Airbnb style · one simple symbol</h2>
+    <div class="grid">
+      <div class="card" data-l="B1"><div class="cap"><b>B1</b><span>Two arches = m</span></div></div>
+      <div class="card" data-l="B2"><div class="cap"><b>B2</b><span>Roof M badge</span></div></div>
+      <div class="card" data-l="B3"><div class="cap"><b>B3</b><span>Stacked, for the app store</span></div></div>
+    </div>
+  </section>
+
+  <section class="group"><h2>Luxury · strong, not soft</h2>
+    <div class="grid">
+      <div class="card" data-l="C1"><div class="cap"><b>C1</b><span>Roof instead of A</span></div></div>
+      <div class="card" data-l="C2"><div class="cap"><b>C2</b><span>Engraved caps</span></div></div>
+      <div class="card" data-l="C3"><div class="cap"><b>C3</b><span>Fashion serif</span></div></div>
+    </div>
+  </section>
+
+  <p class="foot">After you pick one, I refine the spacing and the symbol, then make the final files for the site, the phone icon, the browser tab and social media.</p>
+</div>
+
+<script>
+var G = '#BCA683';
+// Symbols on a 100×100 grid. currentColor = main colour of the tile; var(--bgc) = tile background (for cut-outs).
+var S = {
+  tile: '<rect x="6" y="6" width="88" height="88" rx="22" fill="currentColor"/><path d="M28 54 50 34l22 20v18H28z" style="fill:var(--bgc)"/><rect x="45" y="58" width="10" height="14" rx="2" fill="' + G + '"/>',
+  dotm: '<rect x="6" y="6" width="88" height="88" rx="22" fill="currentColor"/><path d="M27 70V48a11 11 0 0 1 22 0v22M49 48a11 11 0 0 1 22 0v22" fill="none" style="stroke:var(--bgc)" stroke-width="8.5" stroke-linecap="round"/><circle cx="80" cy="66" r="5" fill="' + G + '"/>',
+  keyhouse: '<path d="M10 46 50 12l40 34v42H10z" fill="currentColor" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="52" r="9" style="fill:var(--bgc)"/><path d="M45 58 41 76h18l-4-18z" style="fill:var(--bgc)"/>',
+  arches: '<path d="M14 84V50a18 18 0 0 1 36 0v34M50 50a18 18 0 0 1 36 0v34" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40 50 10l42 30" fill="none" stroke="' + G + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+  roofm: '<path d="M8 44 50 10l42 34v46H8z" fill="currentColor" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/><path d="M28 78V50l22 18 22-18v28" fill="none" style="stroke:var(--bgc)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',
+  crest: '<rect x="12" y="12" width="76" height="76" fill="none" stroke="currentColor" stroke-width="4"/><rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><path d="M32 70V36l18 20 18-20v34" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="miter"/><rect x="42" y="74" width="16" height="2.5" fill="' + G + '"/>'
+};
+var mk = function (k) { return '<svg class="mk" viewBox="0 0 100 100" aria-hidden="true">' + S[k] + '</svg>'; };
+var roofA = '<svg viewBox="0 0 80 86" aria-hidden="true"><path d="M6 86 40 8l34 78" fill="none" stroke="currentColor" stroke-width="20" stroke-linejoin="miter"/></svg>';
+
+// Each logo: [html of the logo, symbol key for the app icon]
+var L = {
+  A1: [mk('tile') + '<span class="w-app">mansionly</span>', 'tile'],
+  A2: [mk('dotm') + '<span class="w-jak">mansionly<span class="dot">.</span></span>', 'dotm'],
+  A3: [mk('keyhouse') + '<span class="w-app">mansionly</span>', 'keyhouse'],
+  B1: [mk('arches') + '<span class="w-out">mansionly</span>', 'arches'],
+  B2: [mk('roofm') + '<span class="w-out">mansionly</span>', 'roofm'],
+  B3: ['<div class="lg stack">' + mk('roofm') + '<span class="w-out">mansionly</span></div>', 'roofm'],
+  C1: ['<span><span class="w-arc">M' + roofA + 'NSIONLY</span><span class="sub">Home watch · Estates</span></span>', 'roofm'],
+  C2: [mk('crest') + '<span><span class="w-cin">MANSIONLY</span><span class="sub">Southern California</span></span>', 'crest'],
+  C3: ['<span style="text-align:center"><span class="w-bod">MANSIONLY</span><span class="sub">Home watch &amp; estates</span></span>', 'crest']
+};
+var icon = function (k, size, bg, fg) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';--bgc:' + bg + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(18,18) scale(.64)">' + S[k] + '</g></svg>';
+};
+document.querySelectorAll('[data-l]').forEach(function (c) {
+  var d = L[c.dataset.l];
+  var inner = d[0].indexOf('lg stack') > -1 ? d[0] : '<div class="lg">' + d[0] + '</div>';
+  c.insertAdjacentHTML('afterbegin', '<div class="tile n">' + inner + '</div><div class="tile i">' + inner + '</div><div class="icons">' +
+    icon(d[1], 64, '#0F2747', '#F1ECE2') + icon(d[1], 64, '#F1ECE2', '#0F2747') + icon(d[1], 32, '#0F2747', '#F1ECE2') + '</div>');
+});
+</script>
