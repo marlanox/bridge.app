@@ -1,0 +1,87 @@
+<title>Mansionly Serif Fifteen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,800&family=Gloock&family=Inter:wght@400;500;600&family=Libre+Baskerville:wght@700&family=Libre+Caslon+Text:wght@700&family=Manrope:wght@800&family=Playfair+Display:wght@800;900&family=Rozha+One&family=Young+Serif&display=swap">
+<style>
+/* Board: fifteen serif marks, each with a different symbol and a different layout. Navy + gold and ivory + navy, plus icon. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:44px 84px;display:grid;gap:36px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Playfair Display",serif;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:760px}
+.intro p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tile{display:flex;align-items:center;justify-content:center;min-height:190px;padding:24px 14px;overflow:hidden;text-align:center}
+.tile.n{background:#0E2343;color:#EFE7D6;--acc:#C6A867;--bgc:#0E2343}
+.tile.i{background:#F1ECE2;color:#0F2747;--acc:#A88A4E;--bgc:#F1ECE2}
+.cap{display:grid;gap:3px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.icons{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.icons small{font-size:12px;color:var(--muted);margin-right:auto}
+.icons svg{display:block}
+.row{display:inline-flex;align-items:center;gap:.32em;white-space:nowrap;line-height:1}
+.col{display:inline-flex;flex-direction:column;align-items:center;gap:.28em;line-height:1}
+.mk{height:1em;width:1em;flex:none;overflow:visible}
+.acc{color:var(--acc)}
+.sm{font:600 .26em/1.2 "Inter",sans-serif;letter-spacing:.34em;margin-right:-.34em;text-transform:uppercase;opacity:.8}
+.vr{display:block;width:1px;align-self:stretch;background:var(--acc)}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mansionly: fifteen serif marks</h1>
+    <p>Each one has its own symbol and its own layout, so no two feel alike. All in solid, expensive serifs (newspaper, bank, auction-house weight), nothing thin. Pick by code, for example “X7”.</p>
+  </header>
+  <div class="grid" id="g"></div>
+  <p class="foot">Pick one to three. I then show the finalists on a business card, a car door, the site header and a visit report.</p>
+</div>
+
+<script>
+var A = 'style="fill:var(--acc)"', AS = 'style="stroke:var(--acc)"', BG = 'style="fill:var(--bgc)"';
+var SYM = {
+  lantern: '<path d="M38 18h24l-4-8H42z" fill="currentColor"/><rect x="47" y="2" width="6" height="8" fill="currentColor"/><path d="M34 22h32l-4 58H38z" fill="none" stroke="currentColor" stroke-width="6"/><path d="M42 30h16l-2 42H44z" ' + A + '/><path d="M30 86h40" stroke="currentColor" stroke-width="7"/>',
+  acorn: '<path d="M22 44c0-14 12-22 28-22s28 8 28 22z" fill="currentColor"/><path d="M50 22V8" stroke="currentColor" stroke-width="6"/><path d="M28 48h44c0 26-10 40-22 46-12-6-22-20-22-46z" ' + A + '/>',
+  turret: '<path d="M22 96V36h10V24h12v12h12V24h12v12h10v60H58V74a8 8 0 0 0-16 0v22z" fill="currentColor"/><rect x="45" y="46" width="10" height="14" ' + A + '/>',
+  star: '<path d="M50 4l8 34 34 12-34 12-8 34-8-34L8 50l34-12z" fill="currentColor"/><path d="M50 26l5 19 19 5-19 5-5 19-5-19-19-5 19-5z" ' + A + '/>',
+  crown: '<path d="M10 74 6 30l24 18 20-34 20 34 24-18-4 44z" ' + A + '/><rect x="10" y="80" width="80" height="8" ' + A + '/>',
+  capital: '<path d="M6 30h88v10H6z" fill="currentColor"/><circle cx="20" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="80" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="6"/><path d="M30 44h40" stroke="currentColor" stroke-width="6"/><rect x="34" y="58" width="32" height="36" fill="currentColor"/><path d="M42 62v28M50 62v28M58 62v28" style="stroke:var(--bgc)" stroke-width="3"/><rect x="40" y="18" width="20" height="8" ' + A + '/>',
+  wax: (function () { var o = '<path d="'; for (var i = 0; i < 24; i++) { var a = i / 24 * Math.PI * 2, r = i % 2 ? 44 : 48; o += (i ? 'L' : 'M') + (50 + Math.cos(a) * r).toFixed(1) + ' ' + (50 + Math.sin(a) * r).toFixed(1); } return o + 'z" ' + A + '/><circle cx="50" cy="50" r="34" fill="none" style="stroke:var(--bgc)" stroke-width="2"/><text x="50" y="66" text-anchor="middle" font-family="Playfair Display, serif" font-weight="900" font-size="44" style="fill:var(--bgc)">M</text>'; })(),
+  keyhole: '<circle cx="50" cy="32" r="22" fill="currentColor"/><path d="M38 44 28 96h44L62 44z" fill="currentColor"/><circle cx="50" cy="32" r="8" ' + A + '/>'
+};
+var s = function (k, sz) { return '<svg class="mk" viewBox="0 0 100 100" aria-hidden="true"' + (sz ? ' style="height:' + sz + 'em;width:' + sz + 'em"' : '') + '>' + SYM[k] + '</svg>'; };
+var F = function (fam, w, ls, size) { return 'font-family:\'' + fam + '\',serif;font-weight:' + (w || 400) + ';letter-spacing:' + (ls || '0') + ';font-size:' + size; };
+var L = [
+  ['X1 · The broadsheet block', 'Name reversed out of a solid gold block, the way great newspapers and banks sign.', '<span style="' + F('Libre Baskerville', 700, '-.01em', 'clamp(24px,2.6vw,30px)') + ';display:inline-block;background:var(--acc);color:var(--bgc);padding:.36em .6em .42em">Mansionly</span>', 'wax'],
+  ['X2 · Lantern', 'The estate lantern left burning at the gate. Symbol above, name below.', '<span class="col" style="' + F('Playfair Display', 800, '.02em', 'clamp(28px,3vw,34px)') + '">' + s('lantern', 1.5) + 'Mansionly</span>', 'lantern'],
+  ['X3 · Acorn', 'The oak: strength that lasts generations. An old-money emblem.', '<span class="row" style="' + F('Young Serif', 400, '-.01em', 'clamp(30px,3.2vw,38px)') + '">' + s('acorn') + 'Mansionly</span>', 'acorn'],
+  ['X4 · Turret', 'The tower of the house, with one lit window. Stronghold, not security guard.', '<span class="row" style="' + F('DM Serif Display', 400, '0', 'clamp(32px,3.4vw,40px)') + '">' + s('turret') + 'Mansionly</span>', 'turret'],
+  ['X5 · Compass star', 'Watching every side of the property. Star on the left, wide capitals.', '<span class="row" style="' + F('Libre Caslon Text', 700, '.16em', 'clamp(20px,2.2vw,26px)') + '">' + s('star', 1.3) + 'MANSIONLY</span>', 'star'],
+  ['X6 · Crown', 'A small gold crown over the name: the house is treated as royalty.', '<span class="col" style="' + F('Abril Fatface', 400, '.01em', 'clamp(32px,3.4vw,40px)') + '"><svg class="mk" viewBox="0 0 100 100" style="height:.62em;width:.9em" aria-hidden="true">' + SYM.crown + '</svg>Mansionly</span>', 'crown'],
+  ['X7 · Two-tone', '“Mansion” in ink, “ly.” in gold. No symbol: the name is the mark.', '<span style="' + F('Playfair Display', 900, '-.02em', 'clamp(36px,3.8vw,46px)') + '">Mansion<span class="acc">ly.</span></span>', 'wax'],
+  ['X8 · Drop cap', 'A huge framed M like the first letter of a book, the rest of the name beside it.', '<span class="row" style="gap:.14em;' + F('Gloock', 400, '0', 'clamp(30px,3.2vw,38px)') + '"><span style="display:inline-grid;place-items:center;width:1.5em;height:1.5em;border:2px solid var(--acc);font-size:1.3em;line-height:1;padding-top:.08em">M</span>ansionly</span>', 'wax'],
+  ['X9 · Column capital', 'The top of a classical column: the house standing on solid ground.', '<span class="row" style="' + F('Fraunces', 800, '-.02em', 'clamp(30px,3.2vw,38px)') + ';font-variation-settings:\'SOFT\' 0,\'WONK\' 0">' + s('capital', 1.15) + 'Mansionly</span>', 'capital'],
+  ['X10 · Wax seal', 'A gold wax seal with M, the way a family seals its letters.', '<span class="row" style="' + F('Libre Baskerville', 700, '0', 'clamp(28px,3vw,34px)') + '">' + s('wax', 1.4) + 'Mansionly</span>', 'wax'],
+  ['X11 · Bank plaque', 'Name between two heavy bars, like the brass plaque at a private bank.', '<span class="col" style="gap:.3em;' + F('Libre Caslon Text', 700, '.24em', 'clamp(20px,2.2vw,26px)') + '"><i style="display:block;width:100%;height:.22em;background:var(--acc)"></i><span style="margin-right:-.24em">MANSIONLY</span><i style="display:block;width:100%;height:.22em;background:var(--acc)"></i></span>', 'wax'],
+  ['X12 · Arched frame', 'The name set inside the outline of an arched doorway.', '<span style="display:inline-block;padding:1.1em .9em .5em;border:2px solid var(--acc);border-radius:3em 3em 0 0;' + F('DM Serif Display', 400, '.01em', 'clamp(26px,2.8vw,32px)') + '">Mansionly</span>', 'keyhole'],
+  ['X13 · Split plate', 'Bold M on the left, name on the right, split by a gold rule. Strong on a door.', '<span class="row" style="gap:.4em;' + F('Rozha One', 400, '0', 'clamp(30px,3.2vw,38px)') + '"><span style="font-size:1.9em;line-height:.8">M</span><span class="vr"></span><span>Mansionly</span></span>', 'wax'],
+  ['X14 · Keyhole', 'A solid, classic keyhole with a gold centre, beside a heavy serif.', '<span class="row" style="' + F('Abril Fatface', 400, '0', 'clamp(32px,3.4vw,40px)') + '">' + s('keyhole', 1.1) + '<span>mansionly<span class="acc">.</span></span></span>', 'keyhole'],
+  ['X15 · Monogram tile', 'A square gold tile with M, then the name in capitals. Ready for a car door.', '<span class="row" style="gap:.5em;' + F('Playfair Display', 800, '.14em', 'clamp(20px,2.2vw,26px)') + '"><span style="display:inline-grid;place-items:center;width:1.9em;height:1.9em;background:var(--acc);color:var(--bgc);font-size:1.25em;letter-spacing:0">M</span><span style="margin-right:-.14em">MANSIONLY</span></span>', 'wax']
+];
+var icon = function (k, size, bg, fg, acc) {
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';--bgc:' + bg + ';--acc:' + acc + ';border-radius:' + (size > 24 ? 14 : 3) + '%"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(16,16) scale(.68)">' + SYM[k] + '</g></svg>';
+};
+document.getElementById('g').innerHTML = L.map(function (d) {
+  return '<article class="card"><div class="tile n">' + d[2] + '</div><div class="tile i">' + d[2] + '</div><div class="cap"><b>' + d[0] + '</b><span>' + d[1] + '</span></div>' +
+    '<div class="icons"><small>Icon</small>' + icon(d[3], 52, '#0E2343', '#EFE7D6', '#C6A867') + icon(d[3], 52, '#F1ECE2', '#0F2747', '#A88A4E') + icon(d[3], 20, '#0E2343', '#EFE7D6', '#C6A867') + '</div></article>';
+}).join('');
+</script>
