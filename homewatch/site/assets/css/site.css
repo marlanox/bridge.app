@@ -537,3 +537,18 @@ em,i:not([class]){font-style:normal}
 @media (max-width:900px){.divs-grid{grid-template-columns:1fr}.dcore{grid-template-columns:1fr}.dcore .dfacts{grid-column:1;grid-row:auto;margin-top:12px}}
 @media (max-width:560px){.dtrust{display:grid;grid-template-columns:1fr 1fr;gap:12px}.dtrust li{font-size:13px;align-items:flex-start}}
 @media (max-width:860px){.hart{height:50vw}.hart svg{bottom:-9vw}}
+/* v12: scroll-linked hero lights */
+.hart .L{opacity:clamp(0,calc((var(--p,0) - var(--t)) * 9),1)}
+.hart .dusk{opacity:calc(var(--p,0) * .85);animation:none}
+@media (max-width:860px){.hart svg{transform:translateX(calc(-50% - 4vw))}}
+/* v12: ivory accents, used sparingly: light sections and primary buttons on navy */
+:root{--ivory:#F6F1E7;--ivory2:#EFE7D8}
+.stone,.divs,.tband{background:var(--ivory)!important}
+.dcard{border-color:#E6DDCC}
+.hdr .btn,.mbar .btn:not(.line),.burger nav .btn,.on-dark .btn:not(.line),.dark .form .btn,.form.dk .btn,.plan.featured .btn,.total .btn,.scene .btn:not(.line){background:var(--ivory)!important;border-color:var(--ivory)!important;color:#0F2747!important}
+.hdr .btn:hover,.on-dark .btn:not(.line):hover{background:#fff!important}
+.dcore .dnum,.dcore .dgo{color:#E9DFCB}
+.divs-head .eyebrow,.stone .eyebrow{color:#8A7A60}
+@media (max-width:860px){.hart{height:46vw}.hart svg{width:200vw;height:80vw;bottom:-8vw;transform:translateX(calc(-50% - 5vw))}}
+@media (min-width:861px){.hart{margin-top:8px}}
+.hart svg{max-width:none}

@@ -1,153 +1,157 @@
-// Home hero art: two variants, plain inline SVG + CSS keyframes (no JS, no scroll-jacking).
-// A: modern mansion on a Hollywood hillside at dusk, rooms lighting up one by one.
-// B: the LA basin seen from a hillside terrace, the city lighting up from downtown outward.
-// Lights run once on load (about 3 s). Reduced motion shows the finished, lit state.
+// Home hero art: a modern hillside house above Los Angeles. Inline SVG, no images.
+// Scroll-linked: site.js sets --p (0 → 1) over the first ~third of a screen of scrolling;
+// every light has its own threshold --t and fades in as --p passes it.
+// Reduced motion: --p is 1, so the scene shows fully lit.
 
 function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
 const f = (n) => Math.round(n * 10) / 10;
+const L = (t, inner) => `<g class="L" style="--t:${t}">${inner}</g>`;
 
-function sky(id) {
-  return `<defs>
-<linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F2747"/><stop offset=".45" stop-color="#173763"/><stop offset=".64" stop-color="#2E5286"/><stop offset=".7" stop-color="#4A6C9C"/></linearGradient>
-<linearGradient id="${id}n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1E3A" stop-opacity="0"/><stop offset=".35" stop-color="#0B1E3A"/><stop offset=".7" stop-color="#11284B"/></linearGradient>
-<radialGradient id="${id}h" cx=".5" cy="1" r=".6"><stop offset="0" stop-color="#A3B7D6" stop-opacity=".45"/><stop offset="1" stop-color="#A3B7D6" stop-opacity="0"/></radialGradient>
-<linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8EA"/><stop offset=".55" stop-color="#F8DFAE"/><stop offset="1" stop-color="#EDBE78"/></linearGradient>
-<radialGradient id="${id}g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F2CF92" stop-opacity=".28"/><stop offset="1" stop-color="#F2CF92" stop-opacity="0"/></radialGradient>
-<linearGradient id="${id}sp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE2A8" stop-opacity=".28"/><stop offset="1" stop-color="#FFE2A8" stop-opacity="0"/></linearGradient>
-<linearGradient id="${id}p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5D93C6"/><stop offset=".35" stop-color="#21497A"/><stop offset="1" stop-color="#0F2747"/></linearGradient>
-<linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14294A"/><stop offset="1" stop-color="#0C1B33"/></linearGradient>
-</defs>
-<rect width="1600" height="640" fill="url(#${id}s)"/>
-<rect class="dusk" width="1600" height="640" fill="url(#${id}n)"/>
-<ellipse cx="800" cy="430" rx="900" ry="120" fill="url(#${id}h)"/>`;
+const defs = `<defs>
+<linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F2747"/><stop offset=".42" stop-color="#1A3A68"/><stop offset=".6" stop-color="#34588C"/><stop offset=".68" stop-color="#5D7BA6"/></linearGradient>
+<linearGradient id="hNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1B36" stop-opacity="0"/><stop offset=".3" stop-color="#0A1B36"/><stop offset=".68" stop-color="#0E2544"/></linearGradient>
+<radialGradient id="hHaze" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F0CC97" stop-opacity=".34"/><stop offset=".6" stop-color="#C9A57A" stop-opacity=".1"/><stop offset="1" stop-color="#C9A57A" stop-opacity="0"/></radialGradient>
+<linearGradient id="hBasin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E3B66"/><stop offset=".25" stop-color="#14294A"/><stop offset="1" stop-color="#0B1A31"/></linearGradient>
+<linearGradient id="hHill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E203C"/><stop offset="1" stop-color="#050E1E"/></linearGradient>
+<linearGradient id="hRoom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3DC"/><stop offset=".18" stop-color="#F9DFAF"/><stop offset=".75" stop-color="#E7B77A"/><stop offset="1" stop-color="#C99256"/></linearGradient>
+<linearGradient id="hDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A3459"/><stop offset="1" stop-color="#0F2340"/></linearGradient>
+<linearGradient id="hCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E8" stop-opacity=".75"/><stop offset="1" stop-color="#FFF8E8" stop-opacity="0"/></linearGradient>
+<linearGradient id="hGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".09"/><stop offset=".55" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="hStone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFC5B1"/><stop offset="1" stop-color="#8F8674"/></linearGradient>
+<linearGradient id="hWash" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7BD" stop-opacity=".55"/><stop offset="1" stop-color="#FFE7BD" stop-opacity="0"/></linearGradient>
+<linearGradient id="hSlab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F7F9"/><stop offset="1" stop-color="#C9D1DD"/></linearGradient>
+<linearGradient id="hConc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22395F"/><stop offset="1" stop-color="#132644"/></linearGradient>
+<linearGradient id="hWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A5785"/><stop offset="1" stop-color="#163A62"/></linearGradient>
+<linearGradient id="hWaterL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD6F5"/><stop offset="1" stop-color="#2F86C6"/></linearGradient>
+<linearGradient id="hUp" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFE2B0" stop-opacity=".5"/><stop offset="1" stop-color="#FFE2B0" stop-opacity="0"/></linearGradient>
+<linearGradient id="hTower" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22406B"/><stop offset="1" stop-color="#172F52"/></linearGradient>
+<radialGradient id="hBloom"><stop offset="0" stop-color="#FFE6B8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE6B8" stop-opacity="0"/></radialGradient>
+</defs>`;
+
+function stars() {
+  const r = rng(7); let d = '';
+  for (let i = 0; i < 90; i++) { const x = f(r() * 1600), y = f(r() * 290), s = r() > .9 ? 1.8 : 1.1; d += `M${x} ${y}h${s}v${s}h-${s}z`; }
+  return L(.5, `<path d="${d}" fill="#fff" opacity=".65"/>`);
 }
 
-function stars(seed, n) {
-  const r = rng(seed); let d = '';
-  for (let i = 0; i < n; i++) { const x = f(r() * 1600), y = f(r() * 300), s = r() > .85 ? 2 : 1.3; d += `M${x} ${y}h${s}v${s}h-${s}z`; }
-  return `<path class="on tw" style="animation-delay:1.4s" d="${d}" fill="#fff" opacity=".7"/>`;
-}
-
-// City lights in perspective, split into groups that switch on in waves.
-function city({ seed, y0, y1, groups, rows, perRow, cx = 800, wave = false, start = .5, step = .22 }) {
-  const r = rng(seed); const g = Array.from({ length: groups }, () => ({ w: '', y: '' }));
-  for (let j = 0; j < rows; j++) {
-    const t = j / (rows - 1); const y = y0 + (y1 - y0) * t * t; const s = .9 + t * 2.4; const n = Math.round(perRow * (1 - t * .35));
-    for (let i = 0; i < n; i++) {
-      if (r() < .18) continue;
-      const x = r() * 1700 - 50; const yy = y + (r() - .5) * (2 + t * 10);
-      const k = wave ? Math.min(groups - 1, Math.floor((Math.abs(x - cx) / 900 + t * .5) * groups * .8)) : Math.floor(r() * groups);
-      const warm = r() < .62; const sz = f(s * (r() * .6 + .7));
-      g[k][warm ? 'y' : 'w'] += `M${f(x)} ${f(yy)}h${sz}v${sz}h-${sz}z`;
-    }
-  }
-  return g.map((p, k) => `<g class="on" style="animation-delay:${(start + k * step).toFixed(2)}s"><path d="${p.y}" fill="#FFD99A"/><path d="${p.w}" fill="#F4F7FF"/></g>`).join('');
-}
-
-function palm(x, y, h, lean = 0, sc = 1) {
-  const tx = x + lean, ty = y - h;
-  const fr = [[-62, 10], [-48, 26], [-26, 34], [0, 30], [26, 34], [48, 24], [62, 8], [-38, -6], [38, -8], [0, -14]]
-    .map(([dx, dy]) => `M${tx} ${ty}q${f(dx * .5 * sc)} ${f((-22 + dy * .2) * sc)} ${f(dx * sc)} ${f(dy * sc)}`).join('');
-  return `<path d="M${x} ${y}Q${f(x + lean * .2)} ${f(y - h * .55)} ${tx} ${ty}" stroke="#081529" stroke-width="${f(4.2 * sc)}" fill="none" stroke-linecap="round"/><path d="${fr}" stroke="#081529" stroke-width="${f(3 * sc)}" fill="none" stroke-linecap="round"/>`;
-}
-
-function pane(x, y, w, h, d, id, inside = '') {
-  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#132A4C"/><g class="on" style="animation-delay:${d}s"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${id}w)"/>${inside}</g>`;
-}
-
-function skyline(cx, base, n) {
-  const r = rng(41); let t = '', w = '';
+// Downtown towers with lit windows and red aviation lights.
+function skyline(cx, base) {
+  const r = rng(41); let t = '', w = '', cap = '';
+  const n = 15;
   for (let i = 0; i < n; i++) {
-    const bw = 10 + r() * 14, h = 20 + r() * 90 * (1 - Math.abs(i - n / 2) / (n * .6)), x = cx - n * 6 + i * 12 + r() * 5;
+    const bw = 9 + r() * 12, h = 18 + r() * 92 * (1 - Math.abs(i - n / 2) / (n * .62)), x = cx - n * 5.5 + i * 11 + r() * 4;
     t += `M${f(x)} ${base}V${f(base - h)}h${f(bw)}V${base}z`;
-    for (let yy = base - h + 5; yy < base - 3; yy += 6) for (let xx = x + 2; xx < x + bw - 2; xx += 4) if (r() < .5) w += `M${f(xx)} ${f(yy)}h1.5v2h-1.5z`;
+    if (h > 70) cap += `<rect x="${f(x + bw / 2 - 1)}" y="${f(base - h - 3)}" width="2" height="2" fill="#FF7A66"/>`;
+    for (let yy = base - h + 4; yy < base - 2; yy += 4.5) for (let xx = x + 1.5; xx < x + bw - 1.5; xx += 3) if (r() < .42) w += `M${f(xx)} ${f(yy)}h1.3v1.8h-1.3z`;
   }
-  return `<path d="${t}" fill="#1B355E"/><path class="on" style="animation-delay:.25s" d="${w}" fill="#FFE2AE"/>`;
+  return `<path d="${t}" fill="url(#hTower)"/>` + L(.04, `<path d="${w}" fill="#FFE3B4"/>${cap}`);
 }
 
-export function artA() {
-  const id = 'ha';
-  const glow = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#132A4C"/>`;
-  // Lower floor: living room, five tall panes; interiors are simple silhouettes.
-  const lowIn = [
-    '<rect x="664" y="430" width="44" height="12" rx="2" fill="#8A6A40" opacity=".5"/>',
-    '<rect x="736" y="398" width="22" height="16" fill="#C79A5C" opacity=".35"/><path d="M748 384v14" stroke="#7A5E3A"/>',
-    '<path d="M874 384v20" stroke="#7A5E3A"/><circle cx="874" cy="407" r="5" fill="#FFFBF0"/><rect x="852" y="432" width="48" height="10" rx="2" fill="#8A6A40" opacity=".45"/>',
-    '<circle cx="944" cy="426" r="8" fill="#5E6B4A" opacity=".55"/><circle cx="938" cy="420" r="6" fill="#5E6B4A" opacity=".5"/><rect x="940" y="430" width="8" height="12" fill="#6F5636" opacity=".6"/>',
-    '']
-  const lower = [0.9, 1.5, 1.1, 1.8, 1.3].map((d, i) => { const x = 652 + i * 64; return glow(x, 386, 60, 64) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="386" width="60" height="64" fill="url(#${id}w)"/><rect x="${x}" y="386" width="60" height="5" fill="#C9A26A" opacity=".35"/>${lowIn[i] || ''}</g>`; }).join('');
-  const upIn = ['', '<rect x="918" y="356" width="42" height="12" fill="#8A6A40" opacity=".45"/>', '', '<path d="M1048 320v14" stroke="#7A5E3A"/><circle cx="1048" cy="337" r="4" fill="#FFFBF0"/>', ''];
-  const upper = [1.6, 1.2, 2.0, 1.45, 2.2].map((d, i) => { const x = 854 + i * 59; return glow(x, 320, 56, 56) + `<g class="on" style="animation-delay:${d}s"><rect x="${x}" y="320" width="56" height="56" fill="url(#${id}w)"/><rect x="${x}" y="320" width="56" height="4" fill="#C9A26A" opacity=".35"/>${upIn[i]}</g>`; }).join('');
-  const refl = [0, 1, 2, 3, 4].map((i) => `<rect x="${662 + i * 64}" y="457" width="40" height="7" fill="#FFE7B8" opacity=".35"/>`).join('');
-  const stone = [392, 400, 408, 416, 424, 432, 440].map((y) => `M974 ${y}h76`).join('');
-  const joints = Array.from({ length: 13 }, (_, i) => `M${620 + i * 40} 466v22`).join('');
-  return `<svg viewBox="0 0 1600 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-${sky(id)}${stars(7, 70)}
-<path d="M0 372C140 352 250 366 380 344 520 320 610 352 760 336 900 320 1010 300 1150 318 1300 338 1440 312 1600 326V440H0Z" fill="#1D3B66"/>
-<ellipse class="on" style="animation-delay:1.2s" cx="800" cy="430" rx="980" ry="70" fill="url(#${id}g)"/>
-<path d="M0 418C200 404 420 414 640 402 860 392 1100 410 1320 400 1450 394 1540 402 1600 400V640H0Z" fill="url(#${id}b)"/>
-${skyline(1150, 404, 13)}${city({ seed: 11, y0: 408, y1: 570, groups: 9, rows: 20, perRow: 190, wave: true, cx: 1150, start: .25, step: .26 })}
-<path d="M0 640V566C140 552 300 526 460 500 530 488 572 474 606 466H1092C1150 478 1230 500 1330 524 1450 550 1530 560 1600 562V640Z" fill="#0A1830"/>
-<path d="M0 640V604C200 596 420 606 640 616 900 628 1200 608 1600 616V640Z" fill="#071226"/>
-<g transform="translate(-84 0)">
-<ellipse class="on" style="animation-delay:1.6s" cx="860" cy="400" rx="360" ry="120" fill="url(#${id}g)"/>
-<rect x="600" y="466" width="500" height="22" fill="#152B4E"/><path d="${joints}" stroke="#1F3A63" stroke-width="1.5"/>
-<ellipse cx="616" cy="462" rx="22" ry="12" fill="#091629"/><ellipse cx="1080" cy="460" rx="18" ry="14" fill="#091629"/>
-${palm(548, 476, 236, -14)}${palm(586, 470, 198, 10, .9)}${palm(1206, 488, 222, 16, .95)}
-<rect x="560" y="456" width="420" height="10" fill="#3F6FA3"/><g class="on" style="animation-delay:2.3s"><rect x="560" y="456" width="420" height="10" fill="#8CC8F0"/>${refl}</g>
-<rect x="640" y="450" width="420" height="6" fill="#E9EEF5"/>
-${lower}
-<rect x="972" y="386" width="80" height="64" fill="#9AA8BF"/><path d="${stone}" stroke="#8695AE" stroke-width="1"/>
-<path d="M650 386v64M714 386v64M778 386v64M842 386v64M906 386v64M970 386v64" stroke="#E9EEF5" stroke-width="2.5"/>
-<rect x="628" y="376" width="444" height="10" fill="#F1F4F8"/>
-<g class="on" style="animation-delay:2.5s" fill="#FFE7B8"><circle cx="680" cy="388" r="1.6"/><circle cx="744" cy="388" r="1.6"/><circle cx="808" cy="388" r="1.6"/><circle cx="872" cy="388" r="1.6"/><circle cx="936" cy="388" r="1.6"/></g>
-<rect x="640" y="360" width="150" height="16" fill="#A3B7D6" opacity=".14"/><path d="M640 360H790M640 360v16M715 360v16" stroke="#C9D3E3" stroke-width="1.4" opacity=".7"/>
-<rect x="792" y="320" width="62" height="56" fill="#C4CEDD"/>
-${upper}
-<path d="M852 320v56M911 320v56M970 320v56M1029 320v56M1088 320v56M1147 320v56" stroke="#E9EEF5" stroke-width="2.5"/>
-<rect x="772" y="304" width="410" height="12" fill="#F4F6FA"/><rect x="772" y="316" width="410" height="4" fill="#8E9CB4"/>
-<rect class="on" style="animation-delay:2.7s" x="780" y="316" width="394" height="2" fill="#FFE2A8"/>
-<rect x="852" y="376" width="300" height="4" fill="#DDE3EC"/>
-<g class="on" style="animation-delay:2.8s" fill="#FFE7B8"><circle cx="618" cy="500" r="1.8"/><circle cx="586" cy="514" r="1.8"/><circle cx="548" cy="528" r="1.8"/><circle cx="1110" cy="498" r="1.8"/><circle cx="1150" cy="512" r="1.8"/><circle cx="1196" cy="526" r="1.8"/></g>
-</g>
-</svg>`;
-}
-
-export function artB() {
-  const id = 'hb';
-  const r = rng(23); let towers = '', tw = '';
-  for (let i = 0; i < 17; i++) {
-    const w = 12 + r() * 16, h = 26 + r() * 110 * (1 - Math.abs(i - 8) / 10), x = 700 + i * 12 + r() * 6;
-    towers += `M${f(x)} 406V${f(406 - h)}h${f(w)}V406z`;
-    for (let yy = 406 - h + 5; yy < 402; yy += 6) for (let xx = x + 2; xx < x + w - 2; xx += 4) if (r() < .5) tw += `M${f(xx)} ${f(yy)}h1.6v2.2h-1.6z`;
-  }
-  // Boulevards: lines of lights running from downtown toward the viewer.
-  const V = [800, 406]; const lines = Array.from({ length: 9 }, () => ({ y: '', w: '' }));
-  for (let ex = -2200; ex <= 3800; ex += 200) {
-    for (let k = 1; k <= 26; k++) {
-      const t = Math.pow(k / 26, 1.7); const x = V[0] + (ex - V[0]) * t, y = V[1] + (640 - V[1]) * t; if (x < -40 || x > 1640 || y > 600) continue;
-      const sz = f(.9 + t * 3.2); const g = Math.min(8, Math.floor((Math.abs(x - 800) / 1000 + t * .6) * 7));
-      lines[g][k % 3 ? 'y' : 'w'] += `M${f(x)} ${f(y)}h${sz}v${sz}h-${sz}z`;
+// The basin: rows of lights in perspective plus boulevards running toward downtown.
+// Lights switch on in a wave that starts downtown (cx) and rolls outward.
+function city(cx) {
+  const r = rng(11); const G = 10; const g = Array.from({ length: G }, () => ({ a: '', b: '' }));
+  let always = '';
+  for (let j = 0; j < 22; j++) {
+    const t = j / 21; const y = 410 + 150 * t * t; const s = .7 + t * 2.1; const n = Math.round(200 * (1 - t * .3));
+    for (let i = 0; i < n; i++) {
+      if (r() < .15) continue;
+      const x = r() * 1700 - 50, yy = y + (r() - .5) * (1.5 + t * 9), sz = f(s * (r() * .6 + .7));
+      const d = `M${f(x)} ${f(yy)}h${sz}v${sz}h-${sz}z`;
+      if (r() < .05) { always += d; continue; }
+      const k = Math.min(G - 1, Math.floor((Math.abs(x - cx) / 1200 + t * .45) * G * .85));
+      g[k][r() < .6 ? 'a' : 'b'] += d;
     }
   }
-  const blvd = lines.map((p, k) => `<g class="on" style="animation-delay:${(.45 + k * .24).toFixed(2)}s"><path d="${p.y}" fill="#FFD08A"/><path d="${p.w}" fill="#FFFFFF"/></g>`).join('');
-  return `<svg viewBox="0 0 1600 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-${sky(id)}${stars(5, 80)}
-<path d="M0 386C160 368 300 380 450 360 600 340 700 372 820 362 960 350 1080 330 1220 346 1380 364 1480 344 1600 352V420H0Z" fill="#1D3B66"/>
-<ellipse class="on" style="animation-delay:.9s" cx="800" cy="410" rx="1000" ry="90" fill="url(#${id}g)"/>
-<path d="M0 406H1600V640H0Z" fill="url(#${id}b)"/>
-<path d="${towers}" fill="#1B355E"/>
-<path class="on" style="animation-delay:.3s" d="${tw}" fill="#FFE2AE"/>
-<rect class="on tw" style="animation-delay:.5s" x="796" y="276" width="3" height="3" fill="#FF8C7A"/>
-${city({ seed: 31, y0: 408, y1: 600, groups: 9, rows: 24, perRow: 170, wave: true, start: .5, step: .24 })}
-${blvd}
-<path class="flow" d="M-40 590C260 560 520 470 790 410" stroke="#FFFFFF" stroke-width="1.8" fill="none" opacity=".75"/>
-<path class="flow rev" d="M1640 600C1340 560 1060 470 812 410" stroke="#FF8C7A" stroke-width="1.8" fill="none" opacity=".75"/>
-<path d="M0 640V584C120 570 220 556 330 546 380 541 420 546 452 554 520 572 600 584 700 590H900C1000 584 1080 572 1148 554 1180 546 1220 541 1270 546 1380 556 1480 570 1600 584V640Z" fill="#081529"/>
-${palm(330, 550, 250, -10)}${palm(372, 550, 206, 14, .9)}${palm(1268, 550, 236, 12, .95)}
-<rect x="0" y="600" width="1600" height="40" fill="#0E2444"/><g class="on" style="animation-delay:2.4s"><rect x="0" y="600" width="1600" height="40" fill="url(#${id}p)"/></g>
-<rect x="0" y="598" width="1600" height="2" fill="#C9D3E3" opacity=".8"/>
+  for (let ex = -2400; ex <= 4000; ex += 230) for (let k = 2; k <= 24; k++) {
+    const t = Math.pow(k / 24, 1.8), x = cx + (ex - cx) * t, y = 408 + 220 * t; if (x < -30 || x > 1630 || y > 572) continue;
+    const sz = f(.8 + t * 2.6), gi = Math.min(G - 1, Math.floor((Math.abs(x - cx) / 1200 + t * .45) * G * .85));
+    g[gi].a += `M${f(x)} ${f(y)}h${sz}v${sz}h-${sz}z`;
+  }
+  const bl = Array.from({ length: 26 }, () => { const x = f(r() * 1600), y = f(420 + r() * 130); return `<circle cx="${x}" cy="${y}" r="${f(3 + r() * 4)}" fill="url(#hBloom)" opacity=".55"/>`; });
+  return `<path d="${always}" fill="#FFD9A0" opacity=".8"/>` + g.map((p, k) => L(f(.06 + k * .065), `<path d="${p.a}" fill="#FFD59A"/><path d="${p.b}" fill="#F2F5FF"/>${bl.slice(k * 2.6 | 0, (k + 1) * 2.6 | 0).join('')}`)).join('');
+}
+
+function palm(x, y, h, lean, sc, t) {
+  const tx = x + lean, ty = y - h;
+  const trunk = `<path d="M${f(x - 3.2 * sc)} ${y}Q${f(x + lean * .25)} ${f(y - h * .55)} ${f(tx - 1.2 * sc)} ${ty}h${f(2.4 * sc)}Q${f(x + lean * .25 + 2 * sc)} ${f(y - h * .55)} ${f(x + 3.2 * sc)} ${y}z" fill="#07142A"/>`;
+  const leaves = [[-70, 18], [-58, 34], [-36, 46], [-12, 50], [12, 50], [36, 44], [58, 32], [70, 16], [-50, -4], [50, -6], [-22, -12], [22, -14]].map(([dx, dy]) => {
+    const ex = tx + dx * sc, ey = ty + dy * sc, mx = tx + dx * .5 * sc, my = ty + (-18 + dy * .15) * sc;
+    return `M${tx} ${ty}Q${f(mx)} ${f(my - 3 * sc)} ${f(ex)} ${f(ey)}Q${f(mx)} ${f(my + 3 * sc)} ${tx} ${ty}z`;
+  }).join('');
+  const up = L(t, `<path d="M${x - 1} ${y}L${f(tx - 30 * sc)} ${f(ty + 10)}H${f(tx + 30 * sc)}Z" fill="url(#hUp)" opacity=".28"/><circle cx="${x}" cy="${y - 1}" r="2" fill="#FFF1D2"/>`);
+  return up + trunk + `<path d="${leaves}" fill="#07142A"/>`;
+}
+
+function cypress(x, y, h, w) {
+  return `<path d="M${x} ${y - h}C${x + w * .7} ${y - h * .7} ${x + w * .6} ${y - h * .2} ${x + w * .35} ${y}H${x - w * .35}C${x - w * .6} ${y - h * .2} ${x - w * .7} ${y - h * .7} ${x} ${y - h}z" fill="#081630"/><path d="M${x + 1} ${y - h + 6}C${x + w * .6} ${y - h * .65} ${x + w * .52} ${y - h * .25} ${x + w * .3} ${y - 2}" stroke="#1F3B63" stroke-width="1" fill="none" opacity=".7"/>`;
+}
+
+// One room behind glass: dark when off, warm with downlight cones and furniture when on.
+function room(x, y, w, h, t, furn) {
+  const n = Math.max(1, Math.round(w / 46));
+  const cones = Array.from({ length: n }, (_, i) => { const cx = x + (i + .5) * (w / n); return `<path d="M${f(cx - 3)} ${y + 2}h6l9 ${f(h * .7)}h-24z" fill="url(#hCone)" opacity=".45"/><rect x="${f(cx - 2)}" y="${y + 1}" width="4" height="1.6" fill="#fff"/>`; }).join('');
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#hDark)"/>` +
+    L(t, `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#hRoom)"/><rect x="${x}" y="${y}" width="${w}" height="${f(h * .1)}" fill="#E0B47C" opacity=".45"/>${cones}${furn}<rect x="${x}" y="${y + h - 3}" width="${w}" height="3" fill="#B07D45" opacity=".5"/>`);
+}
+const ink = '#5E4329';
+
+export function art() {
+  const y1 = 392, h1 = 70;
+  const living = room(560, y1, 164, h1, .14,
+    `<rect x="580" y="${y1 + 14}" width="44" height="28" fill="#2E3A4F" opacity=".75"/><rect x="583" y="${y1 + 17}" width="38" height="22" fill="#B97A4A" opacity=".55"/><path d="M572 ${y1 + 52}h70a4 4 0 0 1 4 4v8h-78v-8a4 4 0 0 1 4-4z" fill="${ink}" opacity=".7"/><rect x="574" y="${y1 + 47}" width="66" height="7" rx="3" fill="${ink}" opacity=".5"/><rect x="662" y="${y1 + 58}" width="30" height="4" fill="${ink}" opacity=".6"/><path d="M706 ${y1 + 66}V${y1 + 22}q0-10 -12 -12" stroke="${ink}" stroke-width="1.4" fill="none" opacity=".7"/><circle cx="694" cy="${y1 + 12}" r="4.5" fill="#FFFBF1"/>`);
+  const dining = room(726, y1, 108, h1, .3,
+    `<path d="M748 ${y1 + 2}v14M812 ${y1 + 2}v14" stroke="${ink}" stroke-width="1" opacity=".6"/><rect x="744" y="${y1 + 16}" width="72" height="3" rx="1.5" fill="#FFFBF1"/><rect x="744" y="${y1 + 46}" width="72" height="4" fill="${ink}" opacity=".7"/><path d="M752 ${y1 + 50}v16M808 ${y1 + 50}v16" stroke="${ink}" stroke-width="2" opacity=".6"/>${[750, 766, 782, 798].map((cx) => `<rect x="${cx}" y="${y1 + 38}" width="8" height="18" rx="2" fill="${ink}" opacity=".55"/>`).join('')}`);
+  const kitchen = room(836, y1, 164, h1, .22,
+    `<rect x="846" y="${y1 + 10}" width="144" height="20" fill="#6B5238" opacity=".35"/><path d="M846 ${y1 + 20}h144" stroke="#4B3A28" stroke-width=".8" opacity=".4"/>${[882, 918, 954].map((cx) => `<path d="M${cx} ${y1}v20" stroke="${ink}" stroke-width=".8"/><circle cx="${cx}" cy="${y1 + 22}" r="3" fill="#FFFBF1"/>`).join('')}<rect x="862" y="${y1 + 44}" width="112" height="22" fill="#D8CDB8" opacity=".85"/><rect x="862" y="${y1 + 44}" width="112" height="3" fill="#F4EEE2"/>`);
+  const y2 = 324, h2 = 60;
+  const suite = room(772, y2, 216, h2, .42,
+    `<rect x="800" y="${y2 + 22}" width="70" height="18" fill="#3C3226" opacity=".55"/><path d="M790 ${y2 + 40}h92v14h-92z" fill="${ink}" opacity=".6"/><rect x="792" y="${y2 + 36}" width="88" height="6" rx="2" fill="#F3E9D6" opacity=".9"/><circle cx="780" cy="${y2 + 30}" r="5" fill="#FFF7E4"/><circle cx="892" cy="${y2 + 30}" r="5" fill="#FFF7E4"/><rect x="926" y="${y2 + 12}" width="40" height="26" fill="#2E3A4F" opacity=".6"/>`);
+  const study = room(990, y2, 160, h2, .54,
+    `${[1004, 1020, 1036, 1052].map((x) => `<rect x="${x}" y="${y2 + 8}" width="14" height="44" fill="#5A4530" opacity=".45"/>`).join('')}<path d="M1002 ${y2 + 22}h66M1002 ${y2 + 36}h66" stroke="#3E2F20" stroke-width="1.2" opacity=".55"/><rect x="1086" y="${y2 + 38}" width="52" height="4" fill="${ink}" opacity=".7"/><path d="M1130 ${y2 + 38}l-6-14" stroke="${ink}" stroke-width="1.2"/><circle cx="1123" cy="${y2 + 23}" r="3.5" fill="#FFF7E4"/>`);
+  const mull = (x0, x1, y, h, step) => { let d = ''; for (let x = x0; x <= x1 + .1; x += step) d += `M${f(x)} ${y}v${h}`; return `<path d="${d}" stroke="#E6EBF2" stroke-width="1.6"/>`; };
+  const slats = Array.from({ length: 17 }, (_, i) => `M${704 + i * 4} ${y2}v${h2}`).join('');
+  const joints = Array.from({ length: 6 }, (_, i) => `M1002 ${y1 + 10 + i * 11}h80`).join('') + 'M1040 392v10M1022 403v11M1058 414v11M1030 425v11M1050 436v11M1018 447v11';
+  const board = Array.from({ length: 5 }, (_, i) => `M500 ${474 + i * 6}h610`).join('');
+  const refl = [600, 650, 760, 790, 880, 930].map((x, i) => `<rect x="${x}" y="${465 + (i % 2)}" width="${18 + (i % 3) * 8}" height="1.6" fill="#FFE7B8" opacity=".75"/>`).join('');
+  const soffit = Array.from({ length: 12 }, (_, i) => { const x = 700 + i * 40; return `<rect x="${x}" y="322" width="5" height="1.6" fill="#fff"/><path d="M${x} 323.6h5l14 60h-33z" fill="url(#hWash)" opacity=".5"/>`; }).join('');
+  const under = Array.from({ length: 13 }, (_, i) => `<rect x="${566 + i * 42}" y="391" width="4" height="1.4" fill="#fff"/>`).join('');
+  const lamps = [[600, 506], [570, 520], [536, 534], [498, 548], [1120, 504], [1160, 518], [1202, 532]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.7" fill="#FFE7B8"/><ellipse cx="${x}" cy="${y + 3}" rx="9" ry="2.4" fill="#FFE7B8" opacity=".18"/>`).join('');
+
+  return `<svg viewBox="0 0 1600 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">${defs}
+<rect width="1600" height="640" fill="url(#hSky)"/><rect class="dusk" width="1600" height="640" fill="url(#hNight)"/>
+${stars()}
+<path d="M0 360C120 344 230 352 350 336 470 320 560 338 690 326 820 314 930 296 1060 306 1200 318 1330 300 1460 310 1530 314 1570 318 1600 318V430H0Z" fill="#3A5A88" opacity=".55"/>
+<path d="M0 384C150 368 280 378 420 362 560 348 650 370 800 360 950 350 1080 336 1230 348 1380 360 1490 344 1600 350V430H0Z" fill="#26497A"/>
+${L(.1, '<ellipse cx="760" cy="412" rx="1000" ry="74" fill="url(#hHaze)"/>')}
+<path d="M0 404C200 398 420 404 640 400 860 396 1100 404 1320 400 1450 398 1540 402 1600 401V640H0Z" fill="url(#hBasin)"/>
+${skyline(430, 406)}
+${city(430)}
+<path d="M0 640V560C140 548 290 526 440 506 500 498 540 486 568 478H1110C1160 488 1240 506 1340 526 1450 548 1530 556 1600 558V640Z" fill="url(#hHill)"/>
+<path d="M0 560C140 548 290 526 440 506 500 498 540 486 568 478M1110 478C1160 488 1240 506 1340 526 1450 548 1530 556 1600 558" stroke="#2A4672" stroke-width="1.2" fill="none" opacity=".7"/>
+<path d="M0 640V606C200 598 420 608 640 616 900 628 1200 610 1600 616V640Z" fill="#040B18"/>
+${L(.86, lamps)}
+${cypress(508, 480, 92, 20)}${cypress(530, 480, 70, 16)}
+${palm(474, 498, 236, -12, 1, .84)}${palm(1172, 498, 250, 14, 1.05, .88)}${palm(1206, 506, 196, 22, .85, .9)}
+<rect x="500" y="470" width="610" height="32" fill="url(#hConc)"/><path d="${board}" stroke="#2B4670" stroke-width=".7" opacity=".7"/>
+<rect x="470" y="462" width="430" height="9" fill="url(#hWater)"/>${L(.76, `<rect x="470" y="462" width="430" height="9" fill="url(#hWaterL)"/>${refl}`)}
+<rect x="470" y="461" width="430" height="1.4" fill="#E9EEF5"/>
+<rect x="540" y="462" width="560" height="6" fill="url(#hSlab)"/>
+${living}${dining}${kitchen}
+${mull(560, 1000, y1, h1, 55)}
+<rect x="560" y="${y1}" width="440" height="${h1}" fill="url(#hGlass)"/>
+<rect x="1002" y="${y1}" width="80" height="${h1}" fill="url(#hStone)"/><path d="${joints}" stroke="#7E7564" stroke-width=".8" opacity=".8"/>${L(.66, `<rect x="1002" y="${y1}" width="80" height="${h1}" fill="url(#hWash)"/>`)}
+<rect x="528" y="384" width="584" height="8" fill="url(#hSlab)"/><rect x="528" y="391" width="584" height="1.4" fill="#7F8DA4"/>${L(.7, under)}
+<rect x="540" y="368" width="160" height="16" fill="#A3B7D6" opacity=".12"/><path d="M540 368H700M540 368v16M620 368v16M700 368v16" stroke="#D5DDE8" stroke-width="1.1" opacity=".75"/>
+<rect x="700" y="${y2}" width="70" height="${h2}" fill="#4A3826"/><path d="${slats}" stroke="#8C6B48" stroke-width="2"/>${L(.6, `<rect x="700" y="${y2}" width="70" height="${h2}" fill="url(#hWash)"/>`)}
+${suite}${study}
+${mull(772, 1150, y2, h2, 54)}
+<rect x="772" y="${y2}" width="378" height="${h2}" fill="url(#hGlass)"/>
+<rect x="768" y="384" width="384" height="3" fill="#C9D1DD"/>
+<rect x="680" y="308" width="500" height="13" fill="url(#hSlab)"/><rect x="680" y="320" width="500" height="2.4" fill="#7F8DA4"/>
+${L(.62, soffit)}
+<ellipse cx="560" cy="476" rx="26" ry="10" fill="#081630"/><ellipse cx="1092" cy="474" rx="22" ry="9" fill="#081630"/><ellipse cx="1120" cy="478" rx="16" ry="7" fill="#081630"/>
 </svg>`;
 }
 
-export const heroArt = (v = 'a') => `<div class="hart" aria-hidden="true">${v === 'b' ? artB() : artA()}</div>`;
+export const heroArt = () => `<div class="hart" aria-hidden="true">${art()}</div>`;

@@ -252,7 +252,7 @@ export function homePage(lang = 'en') {
         <div class="log-f"><span>${t.logFoot[0]}</span><b>${t.logFoot[1]}</b></div>
       </div>
     </div>
-    ${heroArt(process.env.HERO || 'a')}
+    ${heroArt()}
     <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>

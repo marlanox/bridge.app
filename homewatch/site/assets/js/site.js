@@ -8,13 +8,13 @@
   if (scene && !reduce) {
     // Eased follow: the scene glides toward the scroll position instead of jumping with it.
     var target = 0, cur = 0, running = false;
+    // The hero lights up over the first third of a screen of scrolling: one light touch is enough.
     var read = function () {
-      var r = scene.getBoundingClientRect();
-      var max = r.height - window.innerHeight;
-      target = max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
+      var d = Math.max(140, window.innerHeight * 0.33);
+      target = Math.min(1, Math.max(0, (window.scrollY || window.pageYOffset) / d));
     };
     var frame = function () {
-      cur += (target - cur) * 0.09;
+      cur += (target - cur) * 0.12;
       if (Math.abs(target - cur) < 0.0005) cur = target;
       scene.style.setProperty('--p', cur.toFixed(4));
       if (cur !== target) requestAnimationFrame(frame); else running = false;
