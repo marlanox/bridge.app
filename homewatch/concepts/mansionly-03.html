@@ -1,0 +1,98 @@
+<title>Mansionly Option 03</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Variations of shortlist option 03: 1) period colours, 2) other home-and-trust symbols. Navy, white, app icon. */
+:root{--bg:#F7F6F3;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E6E3DC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:52px 92px;display:grid;gap:44px}
+h1{font:800 clamp(30px,4.4vw,44px)/1.05 "Manrope",sans-serif;letter-spacing:-.04em;margin:0}
+h2{font:600 12.5px/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:640px}
+.intro p{color:var(--muted)}
+.group{display:grid;gap:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tiles{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;min-height:140px;padding:20px 10px;overflow:hidden}
+.n{background:#0E2343}.w{background:#FFFFFF}
+.cap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap div{display:grid;gap:2px}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.ic{display:flex;flex-direction:row;gap:8px;flex:none}
+.ic svg{display:block}
+.lk{white-space:nowrap;line-height:1;display:inline-flex;align-items:center;font:800 clamp(28px,3vw,36px)/1 "Manrope",sans-serif;letter-spacing:-.05em;color:var(--r)}
+.lk>svg{height:.98em;width:.98em;margin-right:.24em;flex:none;color:var(--s)}
+.fm{color:var(--m)}.dt{color:var(--d)}
+.foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Option 03 · variations</h1>
+    <p>Your pick: keyhole shield, bright m, quieter letters. First the period in different colours, then other symbols that say home and reliability.</p>
+  </header>
+  <section class="group"><h2>1 · Period colour</h2><div class="grid" id="dots"></div></section>
+  <section class="group"><h2>2 · Other symbols</h2><div class="grid" id="syms"></div></section>
+  <p class="foot">Tell me a dot code and a symbol code, for example “D3 + H2”.</p>
+</div>
+
+<script>
+var NAVY = '#0E2343', WHITE = '#FFFFFF', SKY = '#A3B7D6', SLATE = '#7D8AA0', GOLD = '#C6A867', GOLDD = '#A88A4E';
+var kh = function (cx, cy, s, f) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" fill="' + f + '"/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" fill="' + f + '"/>'; };
+var SYM = {
+  shield: function (bg) { return '<path d="M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z" fill="currentColor"/>' + kh(50, 38, 1.1, bg); },
+  H1: function (bg) { return '<path d="M4 46 50 6l46 40v50H4z" fill="currentColor"/>' + kh(50, 50, 1, bg); },
+  H2: function (bg) { return '<path d="M12 98V44a38 38 0 0 1 76 0v54z" fill="currentColor"/>' + kh(50, 48, 1.05, bg); },
+  H3: function (bg) { return '<path d="M26 44V30L50 12l24 18v14" fill="none" stroke="currentColor" stroke-width="10" stroke-linejoin="miter"/><rect x="12" y="44" width="76" height="52" rx="8" fill="currentColor"/>' + kh(50, 58, .8, bg); },
+  H4: function (bg) { return '<path d="M0 96V44l17-18 17 18 16-30 16 30 17-18 17 18v52z" fill="currentColor"/>' + kh(50, 50, .9, bg); },
+  H5: function (bg) { return '<rect x="4" y="4" width="92" height="92" rx="10" fill="currentColor"/><path d="M26 92V50a24 24 0 0 1 48 0v42" fill="none" stroke="' + bg + '" stroke-width="8"/>' + kh(50, 46, .7, bg); },
+  H6: function (bg) { return '<circle cx="50" cy="50" r="46" fill="currentColor"/><path d="M22 74V48l28-22 28 22v26z" fill="' + bg + '"/>' + kh(50, 50, .6, 'currentColor'); },
+  H7: function (bg) { return '<path d="M50 3 92 27v46L50 97 8 73V27z" fill="currentColor"/>' + kh(50, 38, 1, bg); },
+  H8: function (bg) { return '<rect x="8" y="4" width="20" height="92" fill="currentColor"/><rect x="72" y="4" width="20" height="92" fill="currentColor"/><path d="M28 30Q50 12 72 30v66H28z" fill="currentColor"/>' + kh(50, 50, .85, bg); }
+};
+var lock = function (sym, n, dot) {
+  var c = n ? { s: WHITE, m: WHITE, r: SKY } : { s: NAVY, m: NAVY, r: SLATE };
+  var bg = n ? NAVY : WHITE;
+  return '<span class="lk" style="--s:' + c.s + ';--m:' + c.m + ';--r:' + c.r + ';--d:' + dot + '"><svg viewBox="0 0 100 100" aria-hidden="true">' + SYM[sym](bg) + '</svg><span class="fm">m</span>ansionly<span class="dt">.</span></span>';
+};
+var icon = function (sym, size, n) {
+  var bg = n ? NAVY : WHITE, fg = n ? WHITE : NAVY;
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="border-radius:22%;' + (n ? '' : 'box-shadow:inset 0 0 0 1px #DAD6CE') + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(17,16) scale(.66)" style="color:' + fg + '">' + SYM[sym](bg) + '</g></svg>';
+};
+var card = function (code, desc, n, w, ic) {
+  return '<article class="card"><div class="tiles"><div class="tile n">' + n + '</div><div class="tile w">' + w + '</div></div><div class="cap"><div><b>' + code + '</b><span>' + desc + '</span></div>' + (ic || '') + '</div></article>';
+};
+var DOTS = [
+  ['D1 · Gold', 'The current version: warm gold.', GOLD, GOLDD],
+  ['D2 · Same as the m', 'White on navy, navy on white. The cleanest.', WHITE, NAVY],
+  ['D3 · Light blue', 'Matches the quieter letters: calm and modern.', '#7FA6E0', '#2F5FA8'],
+  ['D4 · Signal red', 'A small, confident red point, like a bank or a watch brand.', '#E0533F', '#C2412E'],
+  ['D5 · Emerald', 'Deep green: money, growth, “all clear”.', '#3FB083', '#1F7A56'],
+  ['D6 · Champagne', 'Lighter, softer gold.', '#E4D2A6', '#B79A5C']
+];
+document.getElementById('dots').innerHTML = DOTS.map(function (d) { return card(d[0], d[1], lock('shield', 1, d[2]), lock('shield', 0, d[3])); }).join('');
+var SY = [
+  ['H1 · Keyhole house', 'A solid house with the keyhole as its door.'],
+  ['H2 · Arched front door', 'A heavy arched door with the keyhole.'],
+  ['H3 · House padlock', 'A padlock whose shackle is a roof.'],
+  ['H4 · Three connected houses', 'A row of homes, the middle one locked. A network of protected homes.'],
+  ['H5 · Vault door', 'An arch inside a square, like the door of a vault.'],
+  ['H6 · Seal with a house', 'A house in a round seal: an official stamp of care.'],
+  ['H7 · Hexagon vault', 'A keyhole in a hexagon, like the nut of a safe.'],
+  ['H8 · Estate gate', 'Two pillars and an arched gate with a lock: the entrance we guard.']
+];
+document.getElementById('syms').innerHTML = SY.map(function (s) {
+  var k = s[0].slice(0, 2);
+  return card(s[0], s[1], lock(k, 1, GOLD), lock(k, 0, GOLDD), '<div class="ic">' + icon(k, 40, 1) + icon(k, 40, 0) + '</div>');
+}).join('');
+</script>
