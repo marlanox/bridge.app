@@ -1,0 +1,78 @@
+<title>Mansionly First Letter</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Board: ten ways to make the first letter of the chosen lockup stand out. Navy and ivory for each. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:44px 84px;display:grid;gap:36px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.03em;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:740px}
+.intro p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tiles{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;min-height:150px;padding:22px 12px;overflow:hidden}
+.n{background:#0E2343;color:#EFE7D6;--acc:#C6A867;--bgc:#0E2343}
+.i{background:#F1ECE2;color:#0F2747;--acc:#A88A4E;--bgc:#F1ECE2}
+.cap{display:grid;gap:3px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.lk{white-space:nowrap;line-height:1;display:inline-flex;align-items:center;font:800 clamp(28px,3vw,36px)/1 "Manrope",sans-serif;letter-spacing:-.05em}
+.lk>svg{height:.95em;width:.95em;margin-right:.24em;flex:none}
+.acc{color:var(--acc)}
+.m{display:inline-block;position:relative}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>mansionly<span style="color:#A88A4E">.</span> the first letter</h1>
+    <p>Ten ways to make the “m” stand out in the chosen logo (shield with the gold roof and keyhole). Pick by code, for example “F3”.</p>
+  </header>
+  <div class="grid" id="g"></div>
+  <p class="foot">Tell me the code you like and I finish the logo with it, then redo the site.</p>
+</div>
+
+<script>
+var A = 'style="fill:var(--acc)"', AS = 'style="stroke:var(--acc)"', BG = 'style="fill:var(--bgc)"';
+var kh = function (cx, cy, s) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" ' + BG + '/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" ' + BG + '/>'; };
+var shield = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 90 30v18c0 25-17 40-40 50C27 88 10 73 10 48V30z" fill="currentColor"/><path d="M4 32 50 4l46 28" fill="none" ' + AS + ' stroke-width="8" stroke-linejoin="miter"/>' + kh(50, 50, 1) + '</svg>';
+var rest = 'ansionly<span class="acc">.</span>';
+var V = [
+  ['F1 · Gold m', 'The first letter in gold, matching the period at the end. The name is framed by gold on both sides.',
+    shield + '<span class="acc">m</span>' + rest],
+  ['F2 · m in a gold block', 'The m cut out of a solid gold square, like a stamp on the start of the name.',
+    shield + '<span class="m" style="background:var(--acc);color:var(--bgc);padding:.02em .08em .14em;margin-right:.04em">m</span>' + rest],
+  ['F3 · Outlined m', 'Only the outline of the m, in gold. Light against the heavy letters next to it.',
+    shield + '<span class="m" style="color:transparent;-webkit-text-stroke:.045em var(--acc)">m</span>' + rest],
+  ['F4 · Gold bar under the m', 'A short gold bar under the first letter, like a signature line.',
+    shield + '<span class="m">m<i style="position:absolute;left:.04em;right:.04em;bottom:-.16em;height:.09em;background:var(--acc)"></i></span>' + rest],
+  ['F5 · Taller M', 'A capital M slightly taller than the rest, in gold. Reads like a proper name.',
+    shield + '<span class="acc" style="font-size:1.14em;letter-spacing:-.03em">M</span>' + rest],
+  ['F6 · Gold roof over the m', 'The roof sits on the first letter instead of the shield. The m becomes the house.',
+    '<span class="m"><svg viewBox="0 0 100 40" aria-hidden="true" style="position:absolute;left:-.05em;top:-.42em;width:1.1em;height:.42em;overflow:visible"><path d="M4 36 50 6l46 30" fill="none" ' + AS + ' stroke-width="11" stroke-linejoin="miter"/></svg>m</span>' + rest],
+  ['F7 · m in a gold shield', 'The shield holds the m itself, so the symbol and the name become one word.',
+    '<span class="m" style="display:inline-grid;place-items:center;width:1.05em;height:1.2em;margin-right:.04em;background:var(--acc);color:var(--bgc);clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%);font-size:1em;padding-bottom:.18em">m</span>' + rest],
+  ['F8 · Gold m + gold shield roof', 'Gold appears three times: roof, first letter, period. Balanced and rich.',
+    shield + '<span class="acc">m</span>' + rest],
+  ['F9 · Two-tone “mansion” and “ly.”', 'The m and “ly.” in gold, “ansion” in the main colour: the word “mansion” starts and the brand ends in gold.',
+    shield + '<span class="acc">m</span>ansion<span class="acc">ly.</span>'],
+  ['F10 · m in a gold circle', 'The m inside a gold circle, like a seal pressed at the start of the name.',
+    shield + '<span class="m" style="display:inline-grid;place-items:center;width:1.12em;height:1.12em;border-radius:50%;background:var(--acc);color:var(--bgc);margin-right:.05em;padding-bottom:.1em;font-size:.92em">m</span>' + rest]
+];
+// F8 differs from F1 only by a slightly heavier shield roof, to show the gold balance.
+V[7][2] = V[7][2].replace('stroke-width="8"', 'stroke-width="11"');
+document.getElementById('g').innerHTML = V.map(function (d) {
+  var l = '<span class="lk">' + d[2] + '</span>';
+  return '<article class="card"><div class="tiles"><div class="tile n">' + l + '</div><div class="tile i">' + l + '</div></div><div class="cap"><b>' + d[0] + '</b><span>' + d[1] + '</span></div></article>';
+}).join('');
+</script>
