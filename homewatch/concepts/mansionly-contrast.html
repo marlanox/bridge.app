@@ -1,0 +1,104 @@
+<title>Mansionly Contrast and Marks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Board: shield without the roof. 1) colour schemes for the first letter, 2) new symbols, 3) branded M. Navy and white tiles. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:44px 84px;display:grid;gap:44px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.03em;margin:0}
+h2{font:600 12.5px/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:740px}
+.intro p{color:var(--muted)}
+.group{display:grid;gap:14px}
+.group>p{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tiles{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;min-height:150px;padding:22px 12px;overflow:hidden}
+.n{background:#0E2343}
+.w{background:#FFFFFF;border-left:1px solid var(--line)}
+.cap{display:grid;gap:3px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.lk{white-space:nowrap;line-height:1;display:inline-flex;align-items:center;font:800 clamp(28px,3vw,36px)/1 "Manrope",sans-serif;letter-spacing:-.05em;color:var(--r)}
+.lk>svg{height:.95em;width:.95em;margin-right:.24em;flex:none;color:var(--s)}
+.fm{color:var(--m)}
+.dt{color:var(--d)}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>mansionly. contrast &amp; marks</h1>
+    <p>The shield no longer has a roof. First, colour schemes for the first letter; then new symbols; then ways to brand the M itself. Each on navy and on white.</p>
+  </header>
+  <section class="group"><h2>1 · First-letter colour</h2><p>Same plain keyhole shield, only the colours change.</p><div class="grid" id="c"></div></section>
+  <section class="group"><h2>2 · New symbols</h2><p>With the gold first letter; any colour scheme above can go with any symbol.</p><div class="grid" id="s"></div></section>
+  <section class="group"><h2>3 · Branded M</h2><p>The M itself becomes part of the mark.</p><div class="grid" id="m"></div></section>
+  <p class="foot">Tell me a colour code and a symbol code, for example “K3 + S5”.</p>
+</div>
+
+<script>
+var NAVY = '#0E2343', IVORY = '#EFE7D6', WHITE = '#FFFFFF', GOLD = '#C6A867', GOLDD = '#A88A4E', SKY = '#8FB0DA', SLATE = '#7D8AA0', BLUE = '#2F5FA8';
+var kh = function (cx, cy, s, f) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" fill="' + f + '"/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" fill="' + f + '"/>'; };
+var SH = 'M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z';
+// symbols: fn(bg, acc) -> svg inner; currentColor = symbol colour
+var SYM = {
+  shield: function (bg) { return '<path d="' + SH + '" fill="currentColor"/>' + kh(50, 38, 1.1, bg); },
+  shieldGold: function (bg, acc) { return '<path d="' + SH + '" fill="currentColor"/>' + kh(50, 38, 1.1, acc); },
+  shieldLine: function (bg, acc) { return '<path d="' + SH + '" fill="none" stroke="currentColor" stroke-width="7"/>' + kh(50, 38, .95, acc); },
+  shieldSplit: function (bg, acc) { return '<path d="' + SH + '" fill="currentColor"/><path d="M50 4h38v42c0 26-17 41-38 50z" fill="' + acc + '"/>' + kh(50, 38, 1.05, bg); },
+  circle: function (bg) { return '<circle cx="50" cy="50" r="46" fill="currentColor"/>' + kh(50, 38, 1.15, bg); },
+  square: function (bg, acc) { return '<rect x="4" y="4" width="92" height="92" rx="10" fill="currentColor"/>' + kh(50, 36, 1.15, bg) + '<rect x="30" y="82" width="40" height="4" fill="' + acc + '"/>'; },
+  keyBow: function (bg, acc) { return '<circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="12"/>' + kh(50, 38, 1, acc); },
+  diamond: function (bg) { return '<path d="M50 2 98 50 50 98 2 50z" fill="currentColor"/>' + kh(50, 36, 1, bg); },
+  mShield: function (bg) { return '<path d="' + SH + '" fill="currentColor"/><path d="M30 68V30l20 22 20-22v38" fill="none" stroke="' + bg + '" stroke-width="9" stroke-linejoin="miter"/>'; },
+  mKey: function (bg, acc) { return '<path d="M8 92V8h18l24 34L74 8h18v84H74V40L58 62H42L26 40v52z" fill="currentColor"/>' + kh(50, 62, .62, acc); },
+  mTile: function (bg, acc) { return '<rect x="4" y="4" width="92" height="92" rx="10" fill="currentColor"/><text x="50" y="72" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="70" letter-spacing="-3" fill="' + bg + '">m</text><circle cx="80" cy="70" r="5" fill="' + acc + '"/>'; },
+  mCircle: function (bg, acc) { return '<circle cx="50" cy="50" r="46" fill="none" stroke="' + acc + '" stroke-width="5"/><text x="50" y="68" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="58" letter-spacing="-3" fill="currentColor">M</text>'; }
+};
+// colour schemes: [code, name, desc, navy tile {s,m,r,d}, white tile {s,m,r,d}]
+var SCHEMES = [
+  ['K1', 'Gold first letter', 'm and period in gold, the rest in ivory or navy.', { s: IVORY, m: GOLD, r: IVORY, d: GOLD }, { s: NAVY, m: GOLDD, r: NAVY, d: GOLDD }],
+  ['K2', 'White on navy, navy on white', 'The m is the brightest letter; the rest is quieter.', { s: WHITE, m: WHITE, r: SKY, d: GOLD }, { s: NAVY, m: NAVY, r: SLATE, d: GOLDD }],
+  ['K3', 'Blue first letter', 'A clear brand blue on the m, the rest neutral.', { s: SKY, m: SKY, r: WHITE, d: SKY }, { s: BLUE, m: BLUE, r: NAVY, d: BLUE }],
+  ['K4', 'Reverse: gold name, bright m', 'The whole name in gold, only the m in white or navy.', { s: GOLD, m: WHITE, r: GOLD, d: WHITE }, { s: GOLDD, m: NAVY, r: GOLDD, d: NAVY }],
+  ['K5', 'Gold symbol + gold m', 'Shield and m in gold, rest in ivory or navy. Richest version.', { s: GOLD, m: GOLD, r: IVORY, d: IVORY }, { s: GOLDD, m: GOLDD, r: NAVY, d: NAVY }],
+  ['K6', 'Quiet: white m, slate name', 'Very calm, almost monochrome. The m and shield carry the brand.', { s: WHITE, m: WHITE, r: SLATE, d: WHITE }, { s: NAVY, m: NAVY, r: '#9AA5B6', d: NAVY }]
+];
+var lock = function (sym, c, bg, acc) {
+  return '<span class="lk" style="--s:' + c.s + ';--m:' + c.m + ';--r:' + c.r + ';--d:' + c.d + '"><svg viewBox="0 0 100 100" aria-hidden="true">' + SYM[sym](bg, acc) + '</svg><span class="fm">m</span>ansionly<span class="dt">.</span></span>';
+};
+var card = function (code, desc, n, w) {
+  return '<article class="card"><div class="tiles"><div class="tile n">' + n + '</div><div class="tile w">' + w + '</div></div><div class="cap"><b>' + code + '</b><span>' + desc + '</span></div></article>';
+};
+document.getElementById('c').innerHTML = SCHEMES.map(function (k) { return card(k[0] + ' · ' + k[1], k[2], lock('shield', k[3], NAVY, GOLD), lock('shield', k[4], WHITE, GOLDD)); }).join('');
+var SYMS = [
+  ['S1', 'Keyhole shield', 'Plain shield, keyhole cut through. No roof.', 'shield'],
+  ['S2', 'Gold keyhole', 'Solid shield with the keyhole filled in gold.', 'shieldGold'],
+  ['S3', 'Outline shield', 'An engraved outline with a gold keyhole. Lighter, more refined.', 'shieldLine'],
+  ['S4', 'Two-tone shield', 'Half navy, half gold, like a heraldic shield.', 'shieldSplit'],
+  ['S5', 'Round seal', 'Keyhole in a solid circle: calm, like a bank seal.', 'circle'],
+  ['S6', 'Square vault', 'Keyhole in a square with a gold line: the door of a vault.', 'square'],
+  ['S7', 'Key ring', 'A heavy ring with a gold keyhole: we hold the keys.', 'keyBow'],
+  ['S8', 'Diamond', 'Keyhole in a diamond: precious, protected.', 'diamond']
+];
+var K1 = SCHEMES[0];
+document.getElementById('s').innerHTML = SYMS.map(function (x) { return card(x[0] + ' · ' + x[1], x[2], lock(x[3], K1[3], NAVY, GOLD), lock(x[3], K1[4], WHITE, GOLDD)); }).join('');
+var MS = [
+  ['M1', 'M in the shield', 'The shield carries an M instead of the keyhole.', 'mShield'],
+  ['M2', 'Keyhole M', 'A solid M with a gold keyhole between its legs.', 'mKey'],
+  ['M3', 'm tile', 'A square tile with the lowercase m and the gold period.', 'mTile'],
+  ['M4', 'M in a gold ring', 'Capital M in a thin gold ring, like a monogram.', 'mCircle']
+];
+document.getElementById('m').innerHTML = MS.map(function (x) { return card(x[0] + ' · ' + x[1], x[2], lock(x[3], K1[3], NAVY, GOLD), lock(x[3], K1[4], WHITE, GOLDD)); }).join('');
+</script>
