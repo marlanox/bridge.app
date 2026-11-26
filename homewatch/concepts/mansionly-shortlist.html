@@ -33,13 +33,15 @@ p{margin:0}
 .fm{color:var(--m)}
 .ko{background:var(--m);color:var(--kb);padding:.02em .07em .13em;margin-right:.03em}
 .dt{color:var(--d)}
+.rm{position:relative;display:inline-block}
+.rm svg{position:absolute;left:-.05em;top:-.4em;width:1.1em;height:.4em;overflow:visible}
 .foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
 </style>
 
 <div class="wrap">
   <header class="intro">
     <h1>mansionly. shortlist</h1>
-    <p>Everything you liked, reduced to six clean finalists. No roofs anywhere. Each is shown on navy, on white, and as the app icon.</p>
+    <p>Everything you liked, reduced to ten clean finalists. No roof on the shield; options 07–10 put the gold roof over the m. Each is shown on navy, on white, and as the app icon.</p>
   </header>
   <div id="list" style="display:grid;gap:48px"></div>
   <p class="foot">Choose one. I then make the final files and rebuild the whole site with it.</p>
@@ -60,16 +62,21 @@ var OPTS = [
   ['03', 'Keyhole shield + contrast m', 'The plain shield (no roof) with the bright m.', shield, CONTRAST, 0],
   ['04', 'Keyhole shield + gold m', 'Your favourite from the first-letter board, now without the roof.', shield, GOLDM, 0],
   ['05', 'Gold keyhole shield + contrast m', 'Solid shield with a gold keyhole; the gold repeats in the period.', shieldGold, CONTRAST, 0],
-  ['06', 'Name only, m knocked out', 'The m cut out of a block in the background colour, like a stamp.', null, KO, 1]
+  ['06', 'Name only, m knocked out', 'The m cut out of a block in the background colour, like a stamp.', null, KO, 1],
+  ['07', 'Roof over the m, one colour name', 'The gold roof sits on the first letter; the rest of the name is one calm colour.', null, [{ s: IVORY, m: IVORY, r: IVORY, d: GOLD }, { s: NAVY, m: NAVY, r: NAVY, d: GOLDD }], 0, 1],
+  ['08', 'Roof over the m, contrast m', 'Bright m under the gold roof, the rest quieter.', null, CONTRAST, 0, 1],
+  ['09', 'Roof over the m, gold m', 'Roof, first letter and period all in gold.', null, GOLDM, 0, 1],
+  ['10', 'Keyhole shield + roof over the m', 'The shield stays plain (no roof); the roof moves to the m. The most detailed option.', shield, CONTRAST, 0, 1]
 ];
 var lock = function (o, c, bg, a) {
   var sym = o[3] ? '<svg viewBox="0 0 100 100" aria-hidden="true">' + o[3](bg, a) + '</svg>' : '';
-  return '<span class="lk" style="--s:' + c.s + ';--m:' + c.m + ';--r:' + c.r + ';--d:' + c.d + ';--kb:' + (c.kb || bg) + '">' + sym + '<span class="' + (o[5] ? 'ko' : 'fm') + '">m</span>ansionly<span class="dt">.</span></span>';
+  return '<span class="lk" style="--s:' + c.s + ';--m:' + c.m + ';--r:' + c.r + ';--d:' + c.d + ';--kb:' + (c.kb || bg) + '">' + sym + (o[6] ? '<span class="rm fm"><svg viewBox="0 0 100 40" aria-hidden="true"><path d="M4 36 50 6l46 30" fill="none" stroke="' + c.d + '" stroke-width="11" stroke-linejoin="miter"/></svg>m</span>' : '<span class="' + (o[5] ? 'ko' : 'fm') + '">m</span>') + 'ansionly<span class="dt">.</span></span>';
 };
 var icon = function (o, size, bg, fg, a, mcol) {
+  if (o[6] && o[3]) o = [o[0], o[1], o[2], null, o[4], 0, 1];
   var r = 'border-radius:' + (size > 24 ? 22 : 4) + '%;' + (bg === WHITE ? 'box-shadow:inset 0 0 0 1px #DAD6CE' : '');
   var inner = o[3] ? '<g transform="translate(17,16) scale(.66)" style="color:' + fg + '">' + o[3](bg, a) + '</g>'
-    : '<text x="46" y="68" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="64" letter-spacing="-3" fill="' + mcol + '">m</text><rect x="78" y="60" width="9" height="9" fill="' + a + '"/>';
+    : (o[6] ? '<path d="M24 40 48 22l24 18" fill="none" stroke="' + a + '" stroke-width="7" stroke-linejoin="miter"/>' : '') + '<text x="46" y="' + (o[6] ? 76 : 68) + '" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="' + (o[6] ? 54 : 64) + '" letter-spacing="-3" fill="' + mcol + '">m</text><rect x="78" y="60" width="9" height="9" fill="' + a + '"/>';
   return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="' + r + '"><rect width="100" height="100" fill="' + bg + '"/>' + inner + '</svg>';
 };
 document.getElementById('list').innerHTML = OPTS.map(function (o) {
