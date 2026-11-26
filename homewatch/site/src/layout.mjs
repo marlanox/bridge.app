@@ -109,7 +109,7 @@ ${hreflang}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${asset('favicon.svg')}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${asset('app-icon.svg')}">
-<link rel="preload" href="${asset('fonts/EBGaramond-normal.woff2')}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${asset('fonts/Manrope-800.woff2')}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${asset('fonts/Inter.woff2')}" as="font" type="font/woff2" crossorigin>
 <style>${css.replaceAll('url(FONT/', 'url(' + asset('fonts/'))}</style>
 ${[orgSchema(), ...schema].map(jsonLd).join('\n')}`;

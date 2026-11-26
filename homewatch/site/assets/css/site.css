@@ -1,8 +1,5 @@
 /* Mansionly — Midnight & Stone with Porcelain.
    Layout: night-blue hero and footer, porcelain pages in between; one sticky scroll scene on the home page only. */
-@font-face{font-family:"Cormorant Garamond";src:url(FONT/Cormorant-600.woff2) format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"EB Garamond";src:url(FONT/EBGaramond-normal.woff2) format("woff2");font-weight:400 600;font-display:swap}
-@font-face{font-family:"EB Garamond";src:url(FONT/EBGaramond-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
 @font-face{font-family:"Manrope";src:url(FONT/Manrope-800.woff2) format("woff2");font-weight:800;font-display:swap}
 @font-face{font-family:"Inter";src:url(FONT/Inter.woff2) format("woff2");font-weight:400 600;font-display:swap}
 :root{
