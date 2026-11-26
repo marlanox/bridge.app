@@ -1,0 +1,106 @@
+<title>Mansionly Combined Marks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@800&family=EB+Garamond:wght@700&family=Inter:wght@400;500;600&family=Libre+Caslon+Text:wght@700&family=Manrope:wght@800&family=Newsreader:opsz,wght@6..72,700&family=Spectral:wght@700&display=swap">
+<style>
+/* Board: 1) the picked pieces combined (shield, keyhole, heavy gold roof, bold lowercase with period); 2) the same brand in intelligent institutional serifs. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:44px 84px;display:grid;gap:44px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.03em;margin:0}
+h2{font:600 12.5px/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:760px}
+.intro p{color:var(--muted)}
+.group{display:grid;gap:14px}
+.group>p{color:var(--muted);font-size:14px;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tiles{display:grid;grid-template-columns:1fr}
+.tile{display:flex;align-items:center;justify-content:center;min-height:170px;padding:26px 16px;overflow:hidden}
+.tile.n{background:#0E2343;color:#EFE7D6;--acc:#C6A867;--bgc:#0E2343}
+.tile.i{background:#F1ECE2;color:#0F2747;--acc:#A88A4E;--bgc:#F1ECE2}
+.cap{display:grid;gap:4px;padding:13px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13.5px;color:var(--muted)}
+.icons{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.icons small{font-size:12px;color:var(--muted);margin-right:auto}
+.icons svg{display:block}
+.lk{white-space:nowrap;line-height:1;font-size:clamp(30px,3.4vw,42px)}
+.lk svg.s{height:.9em;width:.9em;vertical-align:baseline;margin-right:.24em;overflow:visible}
+.bold{font-family:"Manrope",sans-serif;font-weight:800;letter-spacing:-.05em}
+.dot{color:var(--acc)}
+.over{display:inline-block;position:relative}
+.over svg.r{display:block;height:auto;overflow:visible}
+.rm{position:relative;display:inline-block}
+.rm svg{position:absolute;left:-.06em;top:-.42em;width:1.12em;height:.42em;overflow:visible}
+.desc{display:inline-block;vertical-align:.32em;margin-left:.6em;padding-left:.6em;border-left:1px solid var(--acc);font:600 .2em/1.5 "Inter",sans-serif;letter-spacing:.26em;text-transform:uppercase;white-space:normal;width:9.5em;text-align:left;opacity:.85}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>mansionly<span style="color:#A88A4E">.</span> combined</h1>
+    <p>The pieces you liked, joined into single marks: the keyhole shield, the heavy gold roof, the roof over the m and the bold lowercase name with its period. Then the same brand in intelligent, institutional serifs.</p>
+  </header>
+
+  <section class="group"><h2>1 · Your picks, combined</h2>
+    <div class="grid" id="combo"></div>
+  </section>
+
+  <section class="group"><h2>2 · Intelligent serif: institutional, not decorative</h2>
+    <p>The serifs of old law firms, auction houses and serious newspapers: solid letters, classic proportions, nothing thin.</p>
+    <div class="grid" id="serif"></div>
+  </section>
+
+  <p class="foot">Pick one or two codes. Next I show them large on a business card, a car door, the site header and a visit report.</p>
+</div>
+
+<script>
+var A = 'style="fill:var(--acc)"', AS = 'style="stroke:var(--acc)"', BG = 'style="fill:var(--bgc)"', BGS = 'style="stroke:var(--bgc)"';
+var keyhole = function (cx, cy, s, st) { st = st || BG; return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" ' + st + '/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" ' + st + '/>'; };
+var SH = 'M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z';
+var SYM = {
+  shield: '<path d="' + SH + '" fill="currentColor"/>' + keyhole(50, 38, 1.1),
+  roofShield: '<path d="M50 6 90 30v18c0 25-17 40-40 50C27 88 10 73 10 48V30z" fill="currentColor"/><path d="M4 32 50 4l46 28" fill="none" ' + AS + ' stroke-width="8" stroke-linejoin="miter"/>' + keyhole(50, 50, 1),
+  chevShield: '<path d="' + SH + '" fill="currentColor"/><path d="M26 40 50 22l24 18" fill="none" ' + AS + ' stroke-width="8" stroke-linejoin="miter"/>' + keyhole(50, 50, .85),
+  tile: '<rect x="2" y="2" width="96" height="96" rx="12" fill="currentColor"/><path d="M18 42 50 18l32 24" fill="none" ' + AS + ' stroke-width="9" stroke-linejoin="miter"/>' + keyhole(50, 52, 1),
+  outlineShield: '<path d="' + SH + '" fill="none" stroke="currentColor" stroke-width="5"/><path d="M20 11h60v35c0 21-14 34-30 41C34 80 20 67 20 46z" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".55"/>' + keyhole(50, 38, .95, A)
+};
+var s = function (k) { return '<svg class="s" viewBox="0 0 100 100" aria-hidden="true">' + SYM[k] + '</svg>'; };
+var nm = '<span class="bold">mansionly<span class="dot">.</span></span>';
+var bigRoof = function (inner, w) { return '<span class="over"><svg class="r" viewBox="0 0 200 50" style="width:' + (w || '62%') + ';margin:0 0 .06em .02em" aria-hidden="true"><path d="M6 46 100 8l94 38" fill="none" style="stroke:var(--acc)" stroke-width="14" stroke-linejoin="miter"/></svg>' + inner + '</span>'; };
+var roofM = function (font, extra) { return '<span class="' + font + '"' + (extra || '') + '><span class="rm"><svg viewBox="0 0 100 40" aria-hidden="true"><path d="M4 36 50 6l46 30" fill="none" style="stroke:var(--acc)" stroke-width="11" stroke-linejoin="miter"/></svg>m</span>ansionly<span class="dot">.</span></span>'; };
+var COMBO = [
+  ['C1 · Roof-topped shield', 'The shield gets a gold roof for its top edge: house and protection in one symbol.', '<span class="lk">' + s('roofShield') + nm + '</span>', 'roofShield'],
+  ['C2 · Shield under the roof', 'The heavy gold roof (B4) covers both the shield and the name.', '<span class="lk">' + bigRoof(s('shield') + nm, '74%') + '</span>', 'shield'],
+  ['C3 · Shield + roof over the m', 'A1 and Q8 together: shield on the left, gold roof over the first letter.', '<span class="lk">' + s('shield') + roofM('bold') + '</span>', 'shield'],
+  ['C4 · Roof line, refined', 'B4 without the line underneath: just the gold roof and the name.', '<span class="lk">' + bigRoof(nm) + '</span>', 'tile'],
+  ['C5 · Roof inside the shield', 'Gold roof above the keyhole, inside the shield. Strong as an app icon.', '<span class="lk">' + s('chevShield') + nm + '</span>', 'chevShield'],
+  ['C6 · The app tile', 'Roof and keyhole in a square seal, for the phone and the car door.', '<span class="lk">' + s('tile') + nm + '</span>', 'tile']
+];
+var SERIF = [
+  ['I1 · Spectral', 'Editorial, like a serious newspaper. Title case with the period.', '<span class="lk" style="font-family:Spectral,serif;font-weight:700;letter-spacing:-.01em">' + s('shield') + 'Mansionly<span class="dot">.</span></span>', 'shield'],
+  ['I2 · Libre Caslon', 'The type of old American law firms. Name and role on one line, split by a gold hairline.', '<span class="lk" style="font-family:\'Libre Caslon Text\',serif;font-weight:700;letter-spacing:-.01em">Mansionly<span class="desc">Private estate stewards</span></span>', 'outlineShield'],
+  ['I3 · Newsreader', 'Lowercase with the period, but in a confident serif.', '<span class="lk" style="font-family:Newsreader,serif;font-weight:700;letter-spacing:-.02em">' + s('roofShield') + 'mansionly<span class="dot">.</span></span>', 'roofShield'],
+  ['I4 · EB Garamond', 'Auction-house classic, set in strong capitals with an engraved shield.', '<span class="lk" style="font-family:\'EB Garamond\',serif;font-weight:700;letter-spacing:.12em;font-size:clamp(26px,2.9vw,36px)">' + s('outlineShield') + 'MANSIONLY</span>', 'outlineShield'],
+  ['I5 · Crimson Pro', 'The heavy gold roof over a sturdy serif name.', '<span class="lk" style="font-family:\'Crimson Pro\',serif;font-weight:800;letter-spacing:-.01em">' + bigRoof('Mansionly<span class="dot">.</span>', '60%') + '</span>', 'tile'],
+  ['I6 · Caslon + roof m', 'The roof over the first letter, in a scholarly serif.', '<span class="lk">' + roofM('', ' style="font-family:\'Libre Caslon Text\',serif;font-weight:700;letter-spacing:-.01em"') + '</span>', 'chevShield']
+];
+var icon = function (k, size, bg, fg, acc) {
+  var r = 'border-radius:' + (size > 24 ? 14 : 3) + '%';
+  if (k === 'tile') return '<svg width="' + size + '" height="' + size + '" viewBox="2 2 96 96" aria-hidden="true" style="color:' + bg + ';--bgc:' + fg + ';--acc:' + acc + ';' + r + '">' + SYM[k] + '</svg>';
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';--bgc:' + bg + ';--acc:' + acc + ';' + r + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(17,15) scale(.66)">' + SYM[k] + '</g></svg>';
+};
+var card = function (d) {
+  return '<article class="card"><div class="tiles"><div class="tile n">' + d[2] + '</div><div class="tile i">' + d[2] + '</div></div><div class="cap"><b>' + d[0] + '</b><span>' + d[1] + '</span></div>' +
+    '<div class="icons"><small>App and browser icon</small>' + icon(d[3], 56, '#0E2343', '#EFE7D6', '#C6A867') + icon(d[3], 56, '#F1ECE2', '#0F2747', '#A88A4E') + icon(d[3], 20, '#0E2343', '#EFE7D6', '#C6A867') + '</div></article>';
+};
+document.getElementById('combo').innerHTML = COMBO.map(card).join('');
+document.getElementById('serif').innerHTML = SERIF.map(card).join('');
+</script>
