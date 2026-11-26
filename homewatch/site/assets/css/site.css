@@ -442,3 +442,49 @@ legend{font:500 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase
 
 .menu a{white-space:nowrap}
 @media (max-width:1320px){.wm-sub{display:none}}
+
+/* ===== v9: strict system that matches the logo ===== */
+:root{--porcelain:#FFFFFF;--paper:#FFFFFF;--line:#E3E7ED;--gold:#A3B7D6;--glow:#FFFFFF;--muted:#5B6576;--text:#2A3343}
+body{background:#FFFFFF}
+.stone{background:#F3F5F8}
+.paper{background:#FFFFFF}
+h1,h2,h3,h4,.scene h1,.phero h1{font-family:"Manrope","Inter",system-ui,sans-serif!important;font-weight:800!important;letter-spacing:-.035em!important;font-style:normal!important}
+h1{font-size:clamp(38px,5.2vw,64px);line-height:1.04}
+h2{font-size:clamp(28px,3.4vw,42px);line-height:1.1}
+h3{font-size:19px;line-height:1.3;letter-spacing:-.02em!important}
+em,i:not([class]){font-style:normal}
+.scene h1 em{color:inherit}
+.eyebrow{color:#5B6576}
+.dark .eyebrow,.phero .eyebrow,.scene .eyebrow{color:#A3B7D6!important}
+/* hero: flat navy, no drawn sky or house */
+.scene{height:auto!important;background:#0F2747}
+.scene .stage{position:relative!important;top:0!important;height:auto!important;min-height:0!important;padding-block:clamp(56px,9vw,120px)}
+.scene .sky,.scene .night,.scene .stars,.scene .land,.scene .house,.cue{display:none!important}
+.scene .copy{height:auto;align-items:center;padding-top:0!important}
+.scene h1{max-width:16ch;font-size:clamp(40px,5.4vw,70px)!important;line-height:1.02!important}
+.scene .lead{color:#C9D3E3}
+.log{background:#132F57;border-color:#24406B;backdrop-filter:none;-webkit-backdrop-filter:none}
+.log li{opacity:1!important}
+.log li i::after{background:#FFFFFF;transform:scale(1)!important}
+.log-f b{opacity:1!important;color:#FFFFFF}
+@media (max-width:860px){.log{display:grid!important;margin-top:36px}.scene .copy{grid-template-columns:1fr}}
+/* quieter accents */
+.facts b{color:#0F2747}
+.plan.featured{background:#0F2747}
+.plan .badge{color:#A3B7D6}
+.rcard .stars,.stars{color:#0F2747}
+.dark .stars{color:#FFFFFF}
+.price-tag{color:#FFFFFF;font-family:"Manrope",sans-serif;font-weight:800;letter-spacing:-.02em}
+.review q,.rcard blockquote{font-family:"Inter",sans-serif;font-style:normal;font-weight:500}
+.faq summary{font-family:"Inter",sans-serif;font-weight:600}
+.sample{color:#5B6576}
+.btn{border-radius:8px}
+.hero-trust span{border-radius:6px;background:transparent;border-color:#2C4670}
+.hero-trust span::before{border-color:#A3B7D6}
+.tband{background:#F3F5F8}
+.trust li::before{background:#A3B7D6}
+:root{--serif:"Manrope","Inter",system-ui,sans-serif;--display:"Manrope","Inter",system-ui,sans-serif;--stone:#F1F4F8}
+.tband b,.facts b,.plan .amt,.addons b,.total .amt,.kpi b,.incl h3,.checks h3,.trustlist h3,.facts h3{font-family:"Manrope",sans-serif!important;font-weight:800!important;letter-spacing:-.03em}
+.btn{background:#0F2747;border-color:#0F2747;color:#fff}
+.on-dark .btn,.dark .form .btn,.form.dk .btn,.plan.featured .btn,.total .btn{background:#FFFFFF;border-color:#FFFFFF;color:#0F2747}
+.hdr .btn,.mbar .btn:not(.line),.burger nav .btn{background:#FFFFFF!important;border-color:#FFFFFF!important;color:#0F2747!important}

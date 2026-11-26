@@ -39,7 +39,7 @@ section{display:grid;gap:20px}
 .sw i{display:block;height:72px;border:1px solid var(--line)}
 .sw b{color:var(--ink);font-weight:600}
 .sw span{font:500 12.5px/1.4 "Inter",sans-serif;color:var(--muted)}
-.slogan{font:500 clamp(30px,4vw,44px)/1.15 "EB Garamond",Georgia,serif;color:var(--ink)}
+.slogan{font:800 clamp(30px,4vw,44px)/1.1 "Manrope",sans-serif;letter-spacing:-.035em;color:var(--ink)}
 table{border-collapse:collapse;width:100%;min-width:720px;font-size:14.5px}
 th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -49,7 +49,7 @@ td b{color:var(--ink)}
 @media (max-width:760px){.fam{grid-template-columns:1fr}}
 .fam .tile{min-height:150px}
 .fam .txt{padding:20px;display:grid;gap:8px;align-content:start}
-.tag{font:500 20px/1.35 "EB Garamond",Georgia,serif;color:var(--ink)}
+.tag{font:600 18px/1.4 "Inter",sans-serif;color:var(--ink)}
 ul{margin:0;padding-left:18px;display:grid;gap:5px}
 .do{border-left:3px solid #2F6B4F}.dont{border-left:3px solid #9B2C2C}
 .mini{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -82,14 +82,14 @@ ul{margin:0;padding-left:18px;display:grid;gap:5px}
 
   <section>
     <span class="k">03 · Colours</span>
-    <h2>Navy carries the brand. Gold is a small accent on the site, never in the logo.</h2>
+    <h2>Navy and white carry the brand. Gold appears only in the app icon.</h2>
     <div class="grid4">
       <div class="sw"><i style="background:#0F2747"></i><b>Mansionly Navy</b><span>#0F2747 · main colour, logo background, header, footer</span></div>
       <div class="sw"><i style="background:#FFFFFF"></i><b>White</b><span>#FFFFFF · the bright m on navy, page backgrounds</span></div>
       <div class="sw"><i style="background:#A3B7D6"></i><b>Sky</b><span>#A3B7D6 · quiet letters of the logo on navy</span></div>
       <div class="sw"><i style="background:#7D8AA0"></i><b>Slate</b><span>#7D8AA0 · quiet letters of the logo on white</span></div>
-      <div class="sw"><i style="background:#F1ECE2"></i><b>Ivory</b><span>#F1ECE2 · warm section backgrounds</span></div>
-      <div class="sw"><i style="background:#BCA683"></i><b>Gold</b><span>#BCA683 · one word or one line per screen, maximum</span></div>
+      <div class="sw"><i style="background:#F3F5F8"></i><b>Cloud</b><span>#F3F5F8 · light grey section backgrounds</span></div>
+      <div class="sw"><i style="background:#BCA683"></i><b>Gold</b><span>#C6A867 · only the roof and period of the app icon</span></div>
       <div class="sw"><i style="background:#141B2A"></i><b>Ink</b><span>#141B2A · body text on light backgrounds</span></div>
       <div class="sw"><i style="background:#2F6B4F"></i><b>All-clear green</b><span>#2F6B4F · only for “all clear” in reports and the portal</span></div>
     </div>
@@ -98,8 +98,8 @@ ul{margin:0;padding-left:18px;display:grid;gap:5px}
   <section>
     <span class="k">04 · Type</span>
     <div class="grid3">
-      <div class="box"><span class="k">Logo only</span><p style="font:800 34px/1 Manrope,sans-serif;letter-spacing:-.05em;color:var(--ink)">Manrope 800</p><p class="muted">Used only in the logo and its sub-brand names. Never for headlines.</p></div>
-      <div class="box"><span class="k">Headlines</span><p style="font:500 34px/1 'EB Garamond',serif;color:var(--ink)">EB Garamond</p><p class="muted">Calm, classic serif for headlines and the slogan.</p></div>
+      <div class="box"><span class="k">Logo only</span><p style="font:800 34px/1 Manrope,sans-serif;letter-spacing:-.05em;color:var(--ink)">Manrope 800</p><p class="muted">The logo: bright m, quiet letters, period.</p></div>
+      <div class="box"><span class="k">Headlines</span><p style="font:800 34px/1 Manrope,sans-serif;letter-spacing:-.04em;color:var(--ink)">Manrope 800</p><p class="muted">The same bold sans as the logo, for headlines and the slogan. No italics, no serifs.</p></div>
       <div class="box"><span class="k">Everything else</span><p style="font:600 30px/1 Inter,sans-serif;color:var(--ink)">Inter</p><p class="muted">Body text, buttons, forms, reports, the app.</p></div>
     </div>
   </section>

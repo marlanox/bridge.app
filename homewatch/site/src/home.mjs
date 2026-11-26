@@ -69,7 +69,7 @@ const T = {
     title: 'Home Watch in Los Angeles & Southern California | Weekly Visits & Photo Reports | Mansionly',
     description: 'Premium home watch for empty and second homes across Southern California: Los Angeles, Beverly Hills, Malibu, Orange County, Palm Springs and San Diego. Weekly visits, same-day photo reports. From $189/mo.',
     eyebrow: 'Mansionly Home Watch · Southern California',
-    h1: 'While you’re away, we <em>keep watch.</em>',
+    h1: 'While you’re away, we keep watch.',
     lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
     chips: ['Bonded & insured', 'Background-checked inspectors', 'Photo proof of every visit', 'From $189/mo · no contract'],
     tband: [['Bonded & insured', 'Certificate of insurance on request, sent to you or your insurer.'], ['The same vetted inspector', 'Background-checked, trained on our 34-point visit, every single time.'], ['Proof of every visit', '30 to 40 timestamped, location-tagged photos, the same day.'], ['Keys coded, never labeled', 'Kept in a safe, every use logged. Month to month, no markups.']],
@@ -123,7 +123,7 @@ const T = {
     title: 'Vigilancia de casas en Los Ángeles y el Sur de California | Mansionly',
     description: 'Vigilancia de casas vacías y segundas residencias en Beverly Hills, West Hollywood y Los Ángeles. Visitas semanales e informes con fotos el mismo día. Desde $189/mes.',
     eyebrow: 'Vigilancia de casas · Todo el Sur de California',
-    h1: 'Mientras usted no está, <em>nosotros vigilamos.</em>',
+    h1: 'Mientras usted no está, nosotros vigilamos.',
     lead: 'Visitas semanales a su casa vacía. Cada habitación, cerradura y sistema revisados, y un informe con fotos en su teléfono el mismo día.',
     chips: ['Afianzados y asegurados', 'Inspectores verificados', 'Prueba de cada visita', 'Desde $189/mes · sin contrato'],
     tband: [['Afianzados y asegurados', 'Certificado de seguro a pedido, para usted o su aseguradora.'], ['El mismo inspector verificado', 'Con verificación de antecedentes y capacitado en 34 puntos.'], ['Prueba de cada visita', 'De 30 a 40 fotos con fecha, hora y ubicación, el mismo día.'], ['Llaves codificadas', 'En caja fuerte, cada uso registrado. Mes a mes, sin recargos.']],
@@ -204,7 +204,7 @@ export function homePage(lang = 'en') {
     <div class="land">${landSvg()}<div class="ground"></div></div>
     <div class="wrap copy on-dark">
       <div class="hero-in">
-        <span class="eyebrow" style="color:var(--gold)">${t.eyebrow}</span>
+        <span class="eyebrow" style="color:var(--slate)">${t.eyebrow}</span>
         <h1 style="margin-top:18px">${t.h1}</h1>
         <p class="lead">${t.lead}</p>
         <div class="row"><a class="btn arrow" href="#start">${t.cta1}</a><a class="btn line" href="#plans">${t.cta2}</a><a class="tel" href="tel:${site.phoneE164}">${site.phone}</a></div>
@@ -262,7 +262,7 @@ export function homePage(lang = 'en') {
 </div></section>
 
 <section class="sec tight dark"><div class="wrap offer">
-  <div style="display:grid;gap:10px"><span class="eyebrow" style="color:var(--gold)">${offer.title}</span><h2 style="font-size:clamp(26px,3vw,36px)">${es ? offer.es : offer.text}</h2><p>${t.offerP} <a href="${link('referral')}">${t.referral}</a></p></div>
+  <div style="display:grid;gap:10px"><span class="eyebrow" style="color:var(--slate)">${offer.title}</span><h2 style="font-size:clamp(26px,3vw,36px)">${es ? offer.es : offer.text}</h2><p>${t.offerP} <a href="${link('referral')}">${t.referral}</a></p></div>
   <div class="on-dark"><a class="btn arrow" href="#start">${t.offerCta}</a></div>
 </div></section>
 
@@ -284,7 +284,7 @@ export function homePage(lang = 'en') {
 </div></section>
 
 <section class="sec dark" id="start"><div class="wrap split">
-  <div style="display:grid;gap:18px;align-content:start"><span class="eyebrow" style="color:var(--gold)">${t.endEyebrow}</span><h2>${t.endH}</h2><p class="lead">${t.endP}</p>
+  <div style="display:grid;gap:18px;align-content:start"><span class="eyebrow" style="color:var(--slate)">${t.endEyebrow}</span><h2>${t.endH}</h2><p class="lead">${t.endP}</p>
     <p style="margin-top:12px"><a href="tel:${site.phoneE164}" style="font:500 32px/1.2 var(--serif);color:var(--stone);text-decoration:none">${site.phone}</a><br><span>${site.email}</span><br><span>${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.zip}</span></p>
   </div>
   ${leadForm({ path, lang, id: 'start-form', dark: true, source: 'home-bottom' })}
