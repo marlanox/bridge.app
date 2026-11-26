@@ -68,8 +68,8 @@ const tIcons = [
 
 const T = {
   en: {
-    title: 'Home Watch in Los Angeles & Southern California | Weekly Visits & Photo Reports | Mansionly',
-    description: 'Premium home watch for empty and second homes across Southern California: Los Angeles, Beverly Hills, Malibu, Orange County, Palm Springs and San Diego. Weekly visits, same-day photo reports. From $189/mo.',
+    title: 'Home Watch Los Angeles & Southern California | Mansionly',
+    description: 'Home watch for empty and second homes in Los Angeles, Beverly Hills, Malibu and all of SoCal. Weekly visits, same-day photo reports. From $189/mo.',
     eyebrow: 'Mansionly Home Watch · Southern California',
     h1: 'While you’re away, we keep watch.',
     lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
@@ -122,8 +122,8 @@ const T = {
     endEyebrow: 'Start here', endH: 'See what we would check at your home.', endP: 'Book a free 30-minute walkthrough. We show you exactly what we look for, and you keep the written risk check even if you do not sign up.',
   },
   es: {
-    title: 'Vigilancia de casas en Los Ángeles y el Sur de California | Mansionly',
-    description: 'Vigilancia de casas vacías y segundas residencias en Beverly Hills, West Hollywood y Los Ángeles. Visitas semanales e informes con fotos el mismo día. Desde $189/mes.',
+    title: 'Vigilancia de casas en Los Ángeles | Mansionly',
+    description: 'Vigilancia de casas vacías en Los Ángeles, Beverly Hills y el Sur de California. Visitas semanales e informes con fotos. Desde $189/mes.',
     eyebrow: 'Vigilancia de casas · Todo el Sur de California',
     h1: 'Mientras usted no está, nosotros vigilamos.',
     lead: 'Visitas semanales a su casa vacía. Cada habitación, cerradura y sistema revisados, y un informe con fotos en su teléfono el mismo día.',
@@ -206,7 +206,7 @@ export function homePage(lang = 'en') {
     core: 'Servicio principal', more: 'Ver servicio', price: 'Ver precios',
     hw: ['Home Watch', 'Cuidada como si nunca se hubiera ido.', 'Visitas programadas a su casa vacía. Recorremos 34 puntos dentro y fuera y le enviamos el informe con fotos el mismo día.', [['34', 'puntos en cada visita'], ['2 h', 'informe con fotos'], ['$189', 'desde, al mes']]],
     divs: [['Concierge', 'Un mensaje. Hecho, con fotos.', [['vendor-contractor-access', 'Acceso de proveedores'], ['pre-arrival-preparation', 'Preparación de llegada'], ['renovation-oversight', 'Supervisión de obras']], 'concierge'],
-      ['Estates', 'De cuidada a vendida.', [['pre-sale-preparation-staging', 'Preparación y staging'], ['vacant-listing-care', 'Casas en venta vacías'], ['sell-your-home', 'Venta con agente licenciado']], 'sell-your-home'],
+      ['Estates', 'De cuidada a vendida.', [['pre-sale-preparation-staging', 'Preparación y staging'], ['vacant-listing-care', 'Casas en venta vacías'], ['sell-your-home', 'Venta con agente licenciado']], 'es/vender'],
       ['Private Office', 'Sus manos en California.', [['power-of-attorney-services', 'Poder notarial'], ['estate-property-care', 'Sucesiones y herencias'], ['insurance-vacancy-inspections', 'Informes para seguros']], 'power-of-attorney-services']],
     trust: t.tband.map((x) => x[0])
   } : {
@@ -215,7 +215,7 @@ export function homePage(lang = 'en') {
     core: 'Our core service', more: 'Explore', price: 'See pricing',
     hw: ['Home Watch', 'Kept as if you never left.', 'Scheduled visits to your empty home. A 34-point check inside and out, and a photo report on your phone the same day.', [['34', 'points every visit'], ['2 hrs', 'to your photo report'], ['$189', 'from, per month']]],
     divs: [['Concierge', 'One message. Done, with photos.', [['vendor-contractor-access', 'Vendor access'], ['pre-arrival-preparation', 'Arrival preparation'], ['renovation-oversight', 'Renovation oversight']], 'concierge'],
-      ['Estates', 'From kept to sold.', [['pre-sale-preparation-staging', 'Pre-sale prep & staging'], ['vacant-listing-care', 'Vacant listing care'], ['sell-your-home', 'Sell with our licensed agent']], 'sell-your-home'],
+      ['Estates', 'From kept to sold.', [['pre-sale-preparation-staging', 'Pre-sale prep & staging'], ['vacant-listing-care', 'Vacant listing care'], ['sell-your-home', 'Sell with our licensed agent']], 'sell'],
       ['Private Office', 'Your hands in California.', [['power-of-attorney-services', 'Power of attorney'], ['estate-property-care', 'Estate & probate homes'], ['insurance-vacancy-inspections', 'Insurance-ready reports']], 'power-of-attorney-services']],
     trust: t.tband.map((x) => x[0])
   };
