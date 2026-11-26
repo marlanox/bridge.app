@@ -1,0 +1,80 @@
+<title>Mansionly M Icons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Board: ten "m." icons with a keyhole, shield or roof. Each: big icon on navy and white, small sizes, and the header lockup. */
+:root{--bg:#F7F6F3;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E4E1DA}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:48px 90px;display:grid;gap:32px}
+h1{font:800 clamp(30px,4.4vw,44px)/1.05 "Manrope",sans-serif;letter-spacing:-.04em;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:680px}
+.intro p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.icons{display:flex;align-items:center;justify-content:center;gap:18px;padding:26px 14px;flex-wrap:wrap}
+.icons svg{display:block}
+.hd{display:flex;align-items:center;justify-content:center;background:#0F2747;padding:22px 12px;overflow:hidden}
+.lk{display:inline-flex;align-items:center;white-space:nowrap;font:800 30px/1 "Manrope",sans-serif;letter-spacing:-.05em;color:#A3B7D6}
+.lk svg{width:1.15em;height:1.15em;margin-right:.3em;flex:none}
+.lk .m{color:#FFFFFF}
+.cap{display:grid;gap:3px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:800 15px/1.2 "Manrope",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.foot{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>The “m.” icon</h1>
+    <p>Ten icons built from the m and its period, each with a keyhole, a shield or a roof. Under each: how it sits next to the name in the site header.</p>
+  </header>
+  <div class="grid" id="g"></div>
+  <p class="foot">Pick the code you like, for example “I4”. I then put it on the site, the favicon and the brand book.</p>
+</div>
+
+<script>
+var G = '#C6A867';
+// fg = letter colour, bg = background colour. Drawn on a 100×100 tile.
+var M = function (fg, x, y, size) { return '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="' + size + '" letter-spacing="-3" fill="' + fg + '">m</text>'; };
+var keyhole = function (cx, cy, s, f) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (6 * s) + '" fill="' + f + '"/><path d="M' + (cx - 3.4 * s) + ' ' + (cy + 3 * s) + 'L' + (cx - 5.4 * s) + ' ' + (cy + 15 * s) + 'h' + (10.8 * s) + 'L' + (cx + 3.4 * s) + ' ' + (cy + 3 * s) + 'z" fill="' + f + '"/>'; };
+var roof = function (x1, x2, y, top, c, w) { return '<path d="M' + x1 + ' ' + y + ' ' + ((x1 + x2) / 2) + ' ' + top + 'L' + x2 + ' ' + y + '" fill="none" stroke="' + c + '" stroke-width="' + w + '" stroke-linejoin="miter" stroke-linecap="square"/>'; };
+var SH = 'M14 6h72v40c0 26-16 40-36 48C30 86 14 72 14 46z';
+var I = [
+  ['I1 · m. clean', 'The m and its period on navy. Simple, sets the base.',
+    function (fg, bg) { return M(fg, 44, 70, 66) + '<rect x="76" y="61" width="10" height="10" fill="' + fg + '"/>'; }],
+  ['I2 · Keyhole period', 'The period becomes a small keyhole.',
+    function (fg, bg) { return M(fg, 42, 70, 66) + keyhole(82, 56, 1, fg); }],
+  ['I3 · Keyhole seal', 'A round seal holding m. with a keyhole period.',
+    function (fg, bg) { return '<circle cx="50" cy="50" r="42" fill="' + fg + '"/>' + M(bg, 45, 64, 46) + keyhole(72, 52, .6, bg); }],
+  ['I4 · m. in a shield', 'The whole icon is a shield; the m. sits inside it.',
+    function (fg, bg) { return '<path d="' + SH + '" fill="' + fg + '"/>' + M(bg, 46, 62, 50) + '<rect x="70" y="55" width="8" height="8" fill="' + bg + '"/>'; }],
+  ['I5 · Roof over the m', 'A thin roof on the m, period beside it.',
+    function (fg, bg) { return roof(20, 68, 42, 22, fg, 7) + M(fg, 44, 78, 58) + '<rect x="72" y="69" width="9" height="9" fill="' + fg + '"/>'; }],
+  ['I6 · Roof + keyhole period', 'Roof over the m, keyhole as the period. Home and lock in one icon.',
+    function (fg, bg) { return roof(18, 66, 42, 22, fg, 7) + M(fg, 42, 78, 58) + keyhole(80, 62, .9, fg); }],
+  ['I7 · Shield outline', 'A thin shield outline around a bold m. and lots of air.',
+    function (fg, bg) { return '<path d="' + SH + '" fill="none" stroke="' + fg + '" stroke-width="5"/>' + M(fg, 46, 62, 48) + '<rect x="69" y="55" width="7" height="7" fill="' + fg + '"/>'; }],
+  ['I8 · Gold keyhole period', 'The classic m. with a gold keyhole as the period: the only gold in the icon.',
+    function (fg, bg) { return M(fg, 42, 70, 66) + keyhole(82, 56, 1, G); }],
+  ['I9 · m. under a roof tile', 'The tile itself has a pointed top like a house; m. inside.',
+    function (fg, bg) { return '<path d="M8 40 50 8l42 32v52H8z" fill="' + fg + '"/>' + M(bg, 46, 80, 50) + '<rect x="70" y="73" width="8" height="8" fill="' + bg + '"/>'; }],
+  ['I10 · Shield with m. and keyhole', 'Shield, m and a keyhole period: all three ideas, still clean.',
+    function (fg, bg) { return '<path d="' + SH + '" fill="' + fg + '"/>' + M(bg, 44, 62, 48) + keyhole(73, 50, .65, bg); }]
+];
+var tile = function (fn, size, navy, round) {
+  var bg = navy ? '#0F2747' : '#FFFFFF', fg = navy ? '#FFFFFF' : '#0F2747';
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="border-radius:' + round + ';' + (navy ? '' : 'box-shadow:inset 0 0 0 1px #D9D5CD') + '"><rect width="100" height="100" fill="' + bg + '"/>' + fn(fg, bg) + '</svg>';
+};
+document.getElementById('g').innerHTML = I.map(function (x) {
+  var head = '<span class="lk"><svg viewBox="0 0 100 100" aria-hidden="true" style="border-radius:22%"><rect width="100" height="100" fill="#FFFFFF"/>' + x[2]('#0F2747', '#FFFFFF') + '</svg><span class="m">m</span>ansionly<span class="m">.</span></span>';
+  return '<article class="card"><div class="icons">' + tile(x[2], 104, 1, '22%') + tile(x[2], 104, 0, '22%') + tile(x[2], 40, 1, '22%') + tile(x[2], 20, 1, '4px') + '</div>' +
+    '<div class="hd">' + head + '</div><div class="cap"><b>' + x[0] + '</b><span>' + x[1] + '</span></div></article>';
+}).join('');
+</script>
