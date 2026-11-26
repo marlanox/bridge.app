@@ -1,0 +1,106 @@
+<title>Mansionly Top Picks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap">
+<style>
+/* Three finalists from the whole project, each shown in real use: site header, business card, car door, app icon. */
+:root{--bg:#F6F3EC;--card:#FFFFFF;--ink:#0F1E33;--muted:#5A6272;--line:#E2DCCF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:44px 84px;display:grid;gap:56px}
+h1{font:800 clamp(28px,4vw,40px)/1.1 "Manrope",sans-serif;letter-spacing:-.03em;margin:0}
+h2{font:800 clamp(22px,2.8vw,28px)/1.2 "Manrope",sans-serif;letter-spacing:-.02em;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:760px}
+.intro p{color:var(--muted)}
+.pick{display:grid;gap:18px}
+.who{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+.who span{font:600 12px/1 "Inter",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.why{color:var(--muted);max-width:760px}
+.hero{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+@media (max-width:700px){.hero{grid-template-columns:1fr}}
+.tile{display:flex;align-items:center;justify-content:center;min-height:220px;padding:28px 16px;overflow:hidden}
+.n{background:#0E2343;color:#EFE7D6;--acc:#C6A867;--bgc:#0E2343}
+.i{background:#F1ECE2;color:#0F2747;--acc:#A88A4E;--bgc:#F1ECE2}
+.uses{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px}
+@media (max-width:900px){.uses{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.uses{grid-template-columns:1fr}}
+.use{background:var(--card);border:1px solid var(--line);display:grid;grid-template-rows:auto 1fr;min-width:0}
+.use small{display:block;padding:10px 14px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}
+.stage{display:flex;align-items:center;justify-content:center;padding:18px;min-height:170px;overflow:hidden}
+/* site header mock */
+.hdr{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;font-size:22px}
+.hdr nav{display:flex;gap:10px;font:500 9px/1 "Inter",sans-serif;opacity:.75;white-space:nowrap}
+@media (max-width:420px){.hdr nav{display:none}}
+/* business card */
+.bc{width:220px;max-width:100%;aspect-ratio:1.75;display:flex;flex-direction:column;justify-content:space-between;padding:16px;font-size:18px;box-shadow:0 10px 24px -12px rgba(0,0,0,.45)}
+.bc .ct{font:500 7.5px/1.6 "Inter",sans-serif;opacity:.85}
+/* car door */
+.car{width:100%;max-width:280px;aspect-ratio:2.1;background:linear-gradient(180deg,#FAFAF8,#E6E6E2);border-radius:10px 10px 4px 4px;position:relative;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0F2747;--acc:#A88A4E;--bgc:#F3F3F0}
+.car::before{content:"";position:absolute;left:8%;right:8%;top:10%;height:2px;background:#cfcfca}
+.car::after{content:"";position:absolute;right:12%;top:46%;width:22px;height:5px;border-radius:3px;background:#bdbdb8}
+/* app icon */
+.phone{display:grid;grid-template-columns:repeat(3,48px);gap:12px;padding:16px;border-radius:18px;background:#1b2330}
+.phone i{display:block;width:48px;height:48px;border-radius:11px;background:#2c3646}
+.lk{white-space:nowrap;line-height:1;display:inline-flex;align-items:center}
+.lk svg{height:.95em;width:.95em;margin-right:.24em;flex:none}
+.bold{font-family:"Manrope",sans-serif;font-weight:800;letter-spacing:-.05em}
+.caps{font-family:"Cinzel",serif;font-weight:600;letter-spacing:.3em}
+.dot{color:var(--acc)}
+.st{display:inline-flex;flex-direction:column;align-items:center;gap:.5em;line-height:1;text-align:center}
+.st svg{height:2.6em;width:2.6em}
+.tg{font:500 .3em/1 "Inter",sans-serif;letter-spacing:.34em;text-transform:uppercase;opacity:.8}
+.verdict{background:var(--card);border:1px solid var(--line);border-left:4px solid #A88A4E;padding:22px;display:grid;gap:8px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mansionly: the three finalists</h1>
+    <p>From everything we made together, the three that work best, each shown in real life: site header, business card, car door and app icon.</p>
+  </header>
+  <div id="picks"></div>
+  <section class="verdict">
+    <h2>If the husband and wife decide together</h2>
+    <p>Pick 1. It has the solidity he wants (the shield, the heavy letters) and the warmth she wants (the gold roof, the calm colours). Pick 3 works best as the second mark, on reports, letters and the gate sign of each client home.</p>
+  </section>
+</div>
+
+<script>
+var A = 'style="fill:var(--acc)"', AS = 'style="stroke:var(--acc)"', BG = 'style="fill:var(--bgc)"';
+var kh = function (cx, cy, s) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (11 * s) + '" ' + BG + '/><path d="M' + (cx - 6 * s) + ' ' + (cy + 6 * s) + 'L' + (cx - 10 * s) + ' ' + (cy + 28 * s) + 'h' + (20 * s) + 'L' + (cx + 6 * s) + ' ' + (cy + 6 * s) + 'z" ' + BG + '/>'; };
+var SYM = {
+  roofShield: '<path d="M50 6 90 30v18c0 25-17 40-40 50C27 88 10 73 10 48V30z" fill="currentColor"/><path d="M4 32 50 4l46 28" fill="none" ' + AS + ' stroke-width="8" stroke-linejoin="miter"/>' + kh(50, 50, 1),
+  shield: '<path d="M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z" fill="currentColor"/>' + kh(50, 38, 1.1),
+  gate: '<rect x="10" y="30" width="12" height="60" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="78" y="30" width="12" height="60" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M22 52Q50 26 78 52" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M31 46v42M40 41v47M50 39v49M60 41v47M69 46v42M22 72h56M8 90h84" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="23" r="4.5" ' + A + '/><circle cx="84" cy="23" r="4.5" ' + A + '/><circle cx="50" cy="33" r="3.6" ' + A + '/>'
+};
+var sv = function (k) { return '<svg viewBox="0 0 100 100" aria-hidden="true">' + SYM[k] + '</svg>'; };
+var horiz = function (k) { return '<span class="lk bold">' + sv(k) + 'mansionly<span class="dot">.</span></span>'; };
+var stack = function (k, size) { return '<span class="st" style="font-size:' + size + '">' + sv(k) + '<span class="caps">MANSIONLY</span><span class="tg">Private estate stewards</span></span>'; };
+var PICKS = [
+  { title: '1 · My pick as the marketer', who: 'Combines everything you liked: keyhole shield, gold roof, bold lowercase with the period',
+    why: 'House, protection and “we hold the key” in one simple symbol. Heavy letters read as reliable; the gold roof and period add warmth. Readable at phone-icon size, and it does not look like a security company.',
+    sym: 'roofShield', big: function () { return '<span style="font-size:clamp(36px,4.4vw,52px)">' + horiz('roofShield') + '</span>'; }, small: function (s) { return '<span style="font-size:' + s + '">' + horiz('roofShield') + '</span>'; } },
+  { title: '2 · The husband’s pick', who: 'Solid shield, keyhole, bold name',
+    why: 'He is the one who signs and pays. He wants the feeling of his private bank: a solid shield, nothing playful. This is the most direct “your house is protected”.',
+    sym: 'shield', big: function () { return '<span style="font-size:clamp(36px,4.4vw,52px)">' + horiz('shield') + '</span>'; }, small: function (s) { return '<span style="font-size:' + s + '">' + horiz('shield') + '</span>'; } },
+  { title: '3 · The wife’s pick', who: 'The estate gate, engraved capitals',
+    why: 'She decides who comes into the house. She wants taste and care, not a guard. The engraved estate gate says “great home, looked after properly”, with the elegance of an old estate.',
+    sym: 'gate', big: function () { return stack('gate', 'clamp(18px,2vw,22px)'); }, small: function (s) { return stack('gate', s); } }
+];
+var icon = function (k) {
+  return '<svg width="48" height="48" viewBox="0 0 100 100" aria-hidden="true" style="color:#EFE7D6;--bgc:#0E2343;--acc:#C6A867;border-radius:11px;display:block"><rect width="100" height="100" fill="#0E2343"/><g transform="translate(16,14) scale(.68)">' + SYM[k] + '</g></svg>';
+};
+document.getElementById('picks').innerHTML = PICKS.map(function (p) {
+  var bcFront = '<div class="bc n">' + p.small(p.sym === 'gate' ? '12px' : '18px') + '<div class="ct">Alexandra M. · House Manager<br>(323) 333-3967 · mansionly.co</div></div>';
+  return '<section class="pick" style="margin-bottom:56px"><div class="who"><h2>' + p.title + '</h2><span>' + p.who + '</span></div><p class="why">' + p.why + '</p>' +
+    '<div class="hero"><div class="tile n">' + p.big() + '</div><div class="tile i">' + p.big() + '</div></div>' +
+    '<div class="uses">' +
+      '<div class="use"><small>Site header</small><div class="stage n" style="padding:0;align-items:center;min-height:0"><div class="hdr">' + p.small(p.sym === 'gate' ? '9px' : '22px') + '<nav><span>Home watch</span><span>Pricing</span><span>Login</span></nav></div></div></div>' +
+      '<div class="use"><small>Business card</small><div class="stage i">' + bcFront + '</div></div>' +
+      '<div class="use"><small>Car door · App icon</small><div class="stage" style="flex-direction:column;gap:14px;background:#DDE3EA"><div class="car">' + p.small(p.sym === 'gate' ? '10px' : '20px') + '</div><div class="phone"><i></i>' + icon(p.sym) + '<i></i></div></div></div>' +
+    '</div></section>';
+}).join('');
+</script>
