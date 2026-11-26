@@ -67,3 +67,18 @@ export const offer = {
   text: 'Our first 100 clients lock their monthly rate for 24 months and get the first month at half price.',
   es: 'Nuestros primeros 100 clientes fijan su tarifa por 24 meses y pagan la mitad el primer mes.',
 };
+
+// Build-your-own: pick single services; 3 or more items take 10% off the monthly total.
+export const mix = {
+  discountAt: 3, discount: 0.10,
+  items: [
+    { id: 'squat', price: 129, en: ['Squatter & break-in watch', 'Weekly exterior check, every lock, gate and window'], es: ['Vigilancia contra okupas y robos', 'Revisión exterior semanal, cerraduras, portones y ventanas'] },
+    { id: 'inside', price: 119, en: ['Interior check, twice a month', 'Leaks, water heater, AC, power and fridge'], es: ['Revisión interior, dos veces al mes', 'Fugas, calentador, aire, electricidad y refrigerador'] },
+    { id: 'mail', price: 49, en: ['Mail & packages', 'Collected, scanned and forwarded'], es: ['Correo y paquetes', 'Recogido, escaneado y reenviado'] },
+    { id: 'garden', price: 39, en: ['Lawn, garden & tree trimming', 'We book the crew and check the work'], es: ['Césped, jardín y poda', 'Contratamos al equipo y revisamos el trabajo'] },
+    { id: 'pool', price: 39, en: ['Pool service', 'We schedule it and check water and equipment'], es: ['Servicio de piscina', 'Lo programamos y revisamos agua y equipo'] },
+    { id: 'clean', price: 59, en: ['Cleaning', 'Monthly cleaning booked and checked'], es: ['Limpieza', 'Limpieza mensual programada y revisada'] },
+    { id: 'code', price: 29, en: ['City code & fire-clearance watch', 'Brush, branches over sidewalks, dead lawn'], es: ['Normas de la ciudad y despeje contra incendios', 'Maleza, ramas sobre la acera, césped seco'] },
+    { id: 'keys', price: 49, en: ['Key holding & 24/7 response', 'We go when the alarm or a neighbor calls'], es: ['Custodia de llaves y respuesta 24/7', 'Vamos cuando suena la alarma o llama un vecino'] },
+  ],
+};

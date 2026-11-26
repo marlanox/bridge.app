@@ -90,6 +90,29 @@
     builder.addEventListener('change', calc); calc();
   }
 
+  // 4b. Build-your-own on the home page: 3+ services take 10% off.
+  document.querySelectorAll('[data-mix]').forEach(function (box) {
+    var at = Number(box.dataset.at), off = Number(box.dataset.off);
+    var q = function (k) { return box.querySelector(k); };
+    var hint = q('[data-hint]'), go = q('[data-mix-go]');
+    var run = function () {
+      var sub = 0, names = [];
+      box.querySelectorAll('input:checked').forEach(function (i) { sub += Number(i.dataset.price); names.push(i.closest('label').querySelector('b').textContent); });
+      var n = names.length, d = n >= at ? Math.round(sub * off) : 0;
+      q('[data-sub]').textContent = '$' + sub;
+      q('[data-off-amt]').textContent = '−$' + d;
+      q('.moff').classList.toggle('on', d > 0);
+      q('[data-total]').textContent = '$' + (sub - d);
+      hint.textContent = n === 0 ? hint.dataset.none : n >= at ? hint.dataset.yes : hint.dataset.more.replace('{n}', at - n);
+      go.dataset.msg = n ? 'Build your own: ' + names.join(', ') + ' · $' + (sub - d) + '/mo' : '';
+    };
+    box.addEventListener('change', run); run();
+    go.addEventListener('click', function () {
+      var t = document.querySelector('#start form[data-lead] textarea');
+      if (t && go.dataset.msg) t.value = go.dataset.msg;
+    });
+  });
+
   // 5. Close the mobile menu after choosing a link.
   document.querySelectorAll('.burger nav a').forEach(function (a) { a.addEventListener('click', function () { var d = a.closest('details'); if (d) d.open = false; }); });
 })();

@@ -6,6 +6,7 @@ import { reviews } from './data/reviews.mjs';
 import { esc, makeLinker, leadForm, faqBlock, faqSchema } from './layout.mjs';
 import { sceneSvg, landSvg } from './scene.mjs';
 import { heroArt } from './heroart.mjs';
+import { mix } from './config.mjs';
 
 export const checkpoints = {
   en: [
@@ -235,6 +236,37 @@ export function homePage(lang = 'en') {
 </div></section>`;
   const trustHtml = `<ul class="dtrust">${D.trust.map((x, i) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${tIcons[i]}</svg>${x}</li>`).join('')}</ul>`;
 
+
+  const M = es ? {
+    eye: 'Arme su propio plan', h: 'Elija solo lo que necesita.',
+    p: 'Marque los servicios que quiere. Con 3 o más, 10% de descuento cada mes. Los trabajos de proveedores se pagan a costo, sin recargo.',
+    sub: 'Subtotal', off: 'Descuento por 3+ servicios', tot: 'Su precio', mo: '/mes', none: 'Elija al menos un servicio', cta: 'Pedir este plan',
+    more: 'Agregue {n} más para 10% de descuento', yes: '10% de descuento aplicado',
+    laterH: 'Y cuando lo necesite, agregue más', laterP: 'Los clientes de cualquier plan tienen 10% de descuento en estos servicios.',
+    later: [['sell-your-home', 'Vender con nuestro agente licenciado'], ['vacant-listing-care', 'Open houses mientras usted está lejos'], ['pre-sale-preparation-staging', 'Staging antes de las fotos'], ['pre-sale-preparation-staging', 'Arreglos cosméticos antes de vender'], ['renovation-oversight', 'Supervisión de obras'], ['vendor-contractor-access', 'Nosotros contratamos: jardín, piscina, limpieza, poda']]
+  } : {
+    eye: 'Build your own', h: 'Pick only what you need.',
+    p: 'Tick the services you want. Choose 3 or more and save 10% every month. Vendor work is billed at cost, never marked up.',
+    sub: 'Subtotal', off: '3+ services discount', tot: 'Your price', mo: '/mo', none: 'Pick at least one service', cta: 'Request this plan',
+    more: 'Add {n} more to save 10%', yes: '10% discount applied',
+    laterH: 'And when you need it, add more', laterP: 'Clients on any plan save 10% on all of these.',
+    later: [['sell-your-home', 'Sell with our licensed agent'], ['vacant-listing-care', 'Open houses while you are away'], ['pre-sale-preparation-staging', 'Staging before the photos'], ['pre-sale-preparation-staging', 'Cosmetic refresh before a sale'], ['renovation-oversight', 'Oversight of any work on the house'], ['vendor-contractor-access', 'We book it for you: lawn, pool, cleaning, trimming']]
+  };
+  const mixHtml = `<section class="sec" id="build"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">${M.eye}</span><h2>${M.h}</h2><p class="lead">${M.p}</p></div>
+  <div class="mix" data-mix data-at="${mix.discountAt}" data-off="${mix.discount}">
+    <div class="mix-opts">${mix.items.map((it) => { const [n, d] = es ? it.es : it.en; return `<label class="mopt"><input type="checkbox" name="mix" value="${it.id}" data-price="${it.price}"><span><b>${n}</b><small>${d}</small></span><em>$${it.price}<small>${M.mo}</small></em></label>`; }).join('')}</div>
+    <aside class="mix-tot">
+      <div class="mrow"><span>${M.sub}</span><span data-sub>$0</span></div>
+      <div class="mrow moff"><span>${M.off}</span><span data-off-amt>−$0</span></div>
+      <div class="mbig"><span>${M.tot}</span><b><span data-total>$0</span><small>${M.mo}</small></b></div>
+      <p class="mhint" data-hint data-none="${M.none}" data-more="${M.more}" data-yes="${M.yes}">${M.none}</p>
+      <a class="btn arrow" data-mix-go href="#start">${M.cta}</a>
+    </aside>
+  </div>
+  <div class="later"><h3>${M.laterH}</h3><p class="muted">${M.laterP}</p><div class="more-svcs">${M.later.map(([sl, n]) => `<a href="${link(sl)}">${n}</a>`).join('')}</div></div>
+</div></section>`;
+
   const body = `
 <section class="scene" id="top" aria-label="${es ? 'Introducción' : 'Introduction'}">
   <div class="stage">
@@ -269,8 +301,11 @@ export function homePage(lang = 'en') {
   <div class="plans rv">${plansHtml}</div>
   <h3 style="margin-top:40px">${t.addH}</h3>
   <div class="addons">${addHtml}</div>
+  <p class="member">${es ? 'Con cualquier plan: 10% de descuento en todos los extras y servicios adicionales.' : 'On any plan: 10% off every add-on and extra service.'}</p>
   <p style="margin-top:22px"><a href="${link(es ? 'es/precios' : 'pricing')}">${t.compare} →</a></p>
 </div></section>
+
+${mixHtml}
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.howEyebrow}</span><h2>${t.howH}</h2></div>
