@@ -76,8 +76,8 @@ ul{margin:0;padding-left:18px;display:grid;gap:5px}
 
   <section>
     <span class="k">02 · The symbol</span>
-    <h2>The shield stands alone where the name does not fit.</h2>
-    <div class="box"><div class="mini" id="icons"></div><p class="muted">App icon, browser tab, social profile picture, inspector uniform, key tags, car rear window, wax-seal stamp on printed reports.</p></div>
+    <h2>Logo vs app icon: two different jobs.</h2>
+    <div class="grid2"><div class="box"><h3>App icon · m. under the roof</h3><div class="mini" id="appicons"></div><p class="muted">The app on the phone, the browser tab, social profile pictures. White m, gold roof, gold period on navy.</p></div><div class="box"><h3>Shield · inside the logo</h3><div class="mini" id="icons"></div><p class="muted">The shield always stays part of the logo. On its own it is used only on the uniform chest, key tags and the seal on printed reports.</p></div></div>
   </section>
 
   <section>
@@ -128,13 +128,13 @@ ul{margin:0;padding-left:18px;display:grid;gap:5px}
         <tr><td><b>Website header</b></td><td>Full logo + “Home Watch” after a thin line</td><td>—</td></tr>
         <tr><td><b>Home page, first screen</b></td><td>Headline and the promise</td><td>“While you’re away, we keep watch.” + promise line</td></tr>
         <tr><td><b>Website footer</b></td><td>Full logo</td><td>Slogan + promise, address, phone</td></tr>
-        <tr><td><b>Google Business Profile</b></td><td>Shield as the photo</td><td>Business name: “Mansionly Home Watch”</td></tr>
+        <tr><td><b>Google Business Profile</b></td><td>App icon (m. under the roof) as the profile photo</td><td>Business name: “Mansionly Home Watch”</td></tr>
         <tr><td><b>Car doors</b></td><td>Full logo, large</td><td>“Home Watch · Concierge” and the phone number</td></tr>
         <tr><td><b>Inspector uniform</b></td><td>Shield on the chest, logo on the back</td><td>—</td></tr>
         <tr><td><b>Business card</b></td><td>Logo on navy (front), details on white (back)</td><td>Name, role, phone, mansionly.co</td></tr>
         <tr><td><b>Visit report (PDF and app)</b></td><td>Logo top left, shield seal at the bottom</td><td>“Visit report · All clear” and the date</td></tr>
         <tr><td><b>Sign at a client’s gate</b></td><td>Shield + “Looked after by Mansionly” (never “security”)</td><td>Small, discreet plaque</td></tr>
-        <tr><td><b>App icon, favicon, social avatar</b></td><td>Shield on navy</td><td>—</td></tr>
+        <tr><td><b>App icon, favicon, social avatar</b></td><td>m. under the gold roof, on navy</td><td>—</td></tr>
         <tr><td><b>Email signature</b></td><td>Logo, 140 px</td><td>Slogan in small grey text</td></tr>
       </tbody>
     </table></div>
@@ -162,6 +162,8 @@ var SH = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M12 4h76v42c0 2
 var logo = function (sub) { return SH + '<span class="m">m</span>ansionly<span class="m">.</span>' + (sub ? '<span class="sub">' + sub + '</span>' : ''); };
 document.querySelectorAll('[data-logo]').forEach(function (e) { e.innerHTML = logo(); });
 var ic = function (s, bg, fg, r) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 100 100" style="border-radius:' + r + ';color:' + fg + ';--h:' + bg + (bg === '#FFFFFF' ? ';box-shadow:inset 0 0 0 1px #D9D5CD' : '') + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(18,16) scale(.64)">' + SH.replace(/<\/?svg[^>]*>/g, '') + '</g></svg>'; };
+var AP = function (s, r) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 100 100" style="border-radius:' + r + '"><rect width="100" height="100" fill="#0F2747"/><path d="M26 42 50 24l24 18" fill="none" stroke="#C6A867" stroke-width="7"/><path d="M27 80V58M27 62a11 11 0 0 1 22 0v18M49 62a11 11 0 0 1 22 0v18" fill="none" stroke="#FFFFFF" stroke-width="9"/><rect x="77" y="71" width="9" height="9" fill="#C6A867"/></svg>'; };
+document.getElementById('appicons').innerHTML = AP(96, '22%') + AP(64, '22%') + AP(32, '6px') + AP(16, '3px');
 document.getElementById('icons').innerHTML = ic(96, '#0F2747', '#FFFFFF', '22%') + ic(96, '#FFFFFF', '#0F2747', '22%') + ic(64, '#0F2747', '#FFFFFF', '50%') + ic(32, '#0F2747', '#FFFFFF', '6px') + ic(16, '#0F2747', '#FFFFFF', '3px');
 var FAM = [
   ['Home Watch', 'The core service and the reason clients first trust us.', 'Weekly visits, photo reports, squatter and code watch, keys and emergencies.', 'Kept as if you never left.', 'Website header, car doors, Google profile, every report.'],
