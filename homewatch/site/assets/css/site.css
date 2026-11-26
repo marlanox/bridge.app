@@ -552,3 +552,5 @@ em,i:not([class]){font-style:normal}
 @media (max-width:860px){.hart{height:46vw}.hart svg{width:200vw;height:80vw;bottom:-8vw;transform:translateX(calc(-50% - 5vw))}}
 @media (min-width:861px){.hart{margin-top:8px}}
 .hart svg{max-width:none}
+.dcore[hidden]{display:none}
+.incl+.dtrust{margin-top:28px}
