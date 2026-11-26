@@ -1,0 +1,104 @@
+<title>Mansionly New Directions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=Jost:wght@600;700&family=Playfair+Display:wght@900&family=Sora:wght@700&family=Zilla+Slab:wght@700&display=swap">
+<style>
+/* Board: ten directions unlike anything shown before: architecture, California, fashion monogram, poster type. */
+:root{--bg:#FAF8F4;--card:#FFFFFF;--ink:#0F1E33;--muted:#586275;--line:#E4DED2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 80px;display:grid;gap:36px}
+h1{font:700 clamp(28px,4vw,40px)/1.1 "Jost",sans-serif;margin:0}
+p{margin:0}
+.intro{display:grid;gap:10px;max-width:720px}
+.intro p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);display:grid;min-width:0}
+.tile{display:flex;align-items:center;justify-content:center;min-height:180px;padding:24px 18px;overflow:hidden}
+.tile.n{background:#0F2747;color:#F1ECE2;--bgc:#0F2747}
+.tile.i{background:#F1ECE2;color:#0F2747;--bgc:#F1ECE2}
+.icons{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px;border-top:1px solid var(--line)}
+.icons svg{display:block}
+.cap{display:grid;gap:4px;padding:12px 16px;border-top:1px solid var(--line)}
+.cap b{font:700 15px/1.2 "Jost",sans-serif}
+.cap span{font-size:13px;color:var(--muted)}
+.lg{display:flex;align-items:center;gap:16px;white-space:nowrap}
+.lg.st{flex-direction:column;gap:12px;text-align:center}
+.lg svg.mk{width:56px;height:56px;flex:none}
+.lg.st svg.mk{width:66px;height:66px}
+.jost{font:700 clamp(24px,2.8vw,32px)/1 "Jost",sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.jostl{font:600 clamp(30px,3.6vw,42px)/1 "Jost",sans-serif;letter-spacing:-.01em}
+.play{font:900 clamp(26px,3vw,36px)/1 "Playfair Display",serif;letter-spacing:.04em;text-transform:uppercase}
+.playl{font:900 clamp(34px,4.2vw,50px)/1 "Playfair Display",serif;letter-spacing:-.02em}
+.bebas{font:400 clamp(40px,5vw,60px)/.9 "Bebas Neue",sans-serif;letter-spacing:.06em}
+.sora{font:700 clamp(28px,3.4vw,40px)/1 "Sora",sans-serif;letter-spacing:-.04em}
+.slab{font:700 clamp(30px,3.6vw,42px)/1 "Zilla Slab",serif;letter-spacing:.01em}
+.sub{display:block;font:600 9.5px/1 "Inter",sans-serif;letter-spacing:.28em;text-transform:uppercase;opacity:.7;margin-top:10px}
+.bar{display:block;height:4px;width:40%;background:#BCA683;margin:10px auto 0}
+.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mansionly: ten new directions</h1>
+    <p>Nothing here repeats the earlier boards: new symbols (columns, portico, facade, California sun) and new type styles (geometric, poster, slab, heavy didone). Pick by code, for example “R4”.</p>
+  </header>
+  <div class="grid">
+    <div class="card" data-l="R1"><div class="cap"><b>R1 · The colonnade</b><span>An M built from three columns under a pediment, like the front of a great house.</span></div></div>
+    <div class="card" data-l="R2"><div class="cap"><b>R2 · Fashion monogram</b><span>M and L locked together in a ring, the way great fashion houses sign their name.</span></div></div>
+    <div class="card" data-l="R3"><div class="cap"><b>R3 · California dusk</b><span>The sun setting behind a roofline on the hills: Southern California, the hour we keep watch.</span></div></div>
+    <div class="card" data-l="R4"><div class="cap"><b>R4 · The facade</b><span>Nine windows of a modern house, one is lit. Clean architecture, works at any size.</span></div></div>
+    <div class="card" data-l="R5"><div class="cap"><b>R5 · Double roof</b><span>Two roofs stacked, like a badge of rank: protection on top of protection. Tall poster type.</span></div></div>
+    <div class="card" data-l="R6"><div class="cap"><b>R6 · The portico</b><span>Three arches of a Mediterranean villa. Strong American slab type.</span></div></div>
+    <div class="card" data-l="R7"><div class="cap"><b>R7 · Key M</b><span>A solid M whose middle is cut like the teeth of a key.</span></div></div>
+    <div class="card" data-l="R8"><div class="cap"><b>R8 · Poster wordmark</b><span>Tall, condensed, confident letters with one gold bar. Reads from across the street.</span></div></div>
+    <div class="card" data-l="R9"><div class="cap"><b>R9 · Heavy didone</b><span>Bold magazine-cover serif. Luxury, but with weight, not softness.</span></div></div>
+    <div class="card" data-l="R10"><div class="cap"><b>R10 · Two buildings</b><span>Two blocks of different heights form an M; the gap between them is a door.</span></div></div>
+  </div>
+  <p class="foot">Choose one or two, and I will show them large next to each other before finishing.</p>
+</div>
+
+<script>
+var G = '#BCA683';
+var S = {
+  colonnade: '<path d="M8 30 50 8l42 22z" fill="currentColor"/><rect x="8" y="34" width="84" height="6" fill="currentColor"/><rect x="14" y="44" width="14" height="40" fill="currentColor"/><rect x="43" y="44" width="14" height="40" fill="' + G + '"/><rect x="72" y="44" width="14" height="40" fill="currentColor"/><rect x="6" y="86" width="88" height="7" fill="currentColor"/>',
+  monogram: '<circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="5"/><path d="M28 70V32l18 22 18-22v38" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M58 40v30h16" fill="none" stroke="' + G + '" stroke-width="7"/>',
+  dusk: '<path d="M24 62a26 26 0 0 1 52 0z" fill="' + G + '"/><path d="M8 62h84" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M8 72h84M20 84h60" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>',
+  facade: (function () { var o = '', c = 0; for (var r = 0; r < 3; r++) for (var k = 0; k < 3; k++) { var x = 12 + k * 27, y = 12 + r * 27; o += '<rect x="' + x + '" y="' + y + '" width="22" height="22" fill="' + (r === 1 && k === 2 ? G : 'currentColor') + '"/>'; } return o; })(),
+  chevrons: '<path d="M10 52 50 22l40 30" fill="none" stroke="currentColor" stroke-width="11" stroke-linejoin="miter"/><path d="M10 80 50 50l40 30" fill="none" stroke="' + G + '" stroke-width="11" stroke-linejoin="miter"/>',
+  portico: '<path d="M6 90V40h88v50" fill="none" stroke="currentColor" stroke-width="0"/><rect x="6" y="30" width="88" height="10" fill="currentColor"/><path d="M10 90V60a10 10 0 0 1 20 0v30M40 90V60a10 10 0 0 1 20 0v30M70 90V60a10 10 0 0 1 20 0v30" fill="none" stroke="currentColor" stroke-width="7"/><rect x="44" y="64" width="12" height="26" fill="' + G + '"/><rect x="4" y="88" width="92" height="6" fill="currentColor"/>',
+  keyM: '<path d="M10 88V12h18l22 30 22-30h18v76H72V44L60 60v8h-6v8h6v12H40V60L28 44v44z" fill="currentColor"/><rect x="45" y="70" width="10" height="4" fill="' + G + '"/>',
+  initial: '<rect x="6" y="6" width="88" height="88" fill="currentColor"/><text x="50" y="80" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="82" style="fill:var(--bgc)">M</text><rect x="30" y="84" width="40" height="4" fill="' + G + '"/>',
+  didone: '<rect x="6" y="6" width="88" height="88" fill="currentColor"/><text x="50" y="74" text-anchor="middle" font-family="Playfair Display, serif" font-weight="900" font-size="66" style="fill:var(--bgc)">M</text><rect x="38" y="82" width="24" height="3" fill="' + G + '"/>',
+  buildings: '<path d="M8 90V30h34v60h-8V68a6 6 0 0 0-12 0v22zM58 90V12h34v78z" fill="currentColor"/><path d="M42 90V56h16v34" fill="none" stroke="currentColor" stroke-width="0"/><rect x="66" y="22" width="8" height="8" fill="' + G + '"/>'
+};
+var mk = function (k) { return '<svg class="mk" viewBox="0 0 100 100" aria-hidden="true">' + S[k] + '</svg>'; };
+var sub = function (t) { return '<span class="sub">' + t + '</span>'; };
+var L = {
+  R1: ['<div class="lg">' + mk('colonnade') + '<span><span class="jost">Mansionly</span>' + sub('Home watch · Estates') + '</span></div>', 'colonnade'],
+  R2: ['<div class="lg">' + mk('monogram') + '<span><span class="play">Mansionly</span>' + sub('Southern California') + '</span></div>', 'monogram'],
+  R3: ['<div class="lg">' + mk('dusk') + '<span class="jostl">mansionly</span></div>', 'dusk'],
+  R4: ['<div class="lg">' + mk('facade') + '<span class="sora">mansionly</span></div>', 'facade'],
+  R5: ['<div class="lg">' + mk('chevrons') + '<span class="bebas">MANSIONLY</span></div>', 'chevrons'],
+  R6: ['<div class="lg">' + mk('portico') + '<span class="slab">Mansionly</span></div>', 'portico'],
+  R7: ['<div class="lg">' + mk('keyM') + '<span><span class="jost">Mansionly</span>' + sub('Home watch · Concierge') + '</span></div>', 'keyM'],
+  R8: ['<div class="lg st"><span><span class="bebas" style="font-size:clamp(48px,6vw,72px)">MANSIONLY</span><span class="bar"></span></span></div>', 'initial'],
+  R9: ['<div class="lg st"><span><span class="playl">mansionly</span>' + sub('Home watch &amp; estates') + '</span></div>', 'didone'],
+  R10: ['<div class="lg">' + mk('buildings') + '<span class="sora">mansionly</span></div>', 'buildings']
+};
+var isFull = function (k) { return k === 'initial' || k === 'didone'; };
+var icon = function (k, size, bg, fg) {
+  var rr = size > 24 ? 'border-radius:22%' : 'border-radius:4px';
+  if (isFull(k)) return '<svg width="' + size + '" height="' + size + '" viewBox="6 6 88 88" aria-hidden="true" style="color:' + bg + ';--bgc:' + fg + ';' + rr + '">' + S[k] + '</svg>';
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true" style="color:' + fg + ';--bgc:' + bg + ';' + rr + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(17,17) scale(.66)">' + S[k] + '</g></svg>';
+};
+document.querySelectorAll('[data-l]').forEach(function (c) {
+  var d = L[c.dataset.l];
+  c.insertAdjacentHTML('afterbegin', '<div class="tile n">' + d[0] + '</div><div class="tile i">' + d[0] + '</div><div class="icons">' +
+    icon(d[1], 64, '#0F2747', '#F1ECE2') + icon(d[1], 64, '#F1ECE2', '#0F2747') + icon(d[1], 20, '#0F2747', '#F1ECE2') + '</div>');
+});
+</script>
