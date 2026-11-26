@@ -48,7 +48,7 @@ export const ui = {
     needs: ['Weekly home watch', 'Mail & package handling', 'Letting vendors in', 'Vacant listing care', 'Pre-sale preparation & staging', 'Selling my home', 'Estate or probate property', 'Renovation or rebuild oversight', 'Something else'],
     fServices: 'Services', fWho: 'Who we serve', fAreas: 'Areas', fCompany: 'Company',
     company: [['about', 'About us'], ['how-it-works', 'How it works'], ['pricing', 'Pricing'], ['partners', 'Partner program'], ['referral', 'Refer a friend'], ['careers', 'Careers'], ['faq', 'FAQ'], ['contact', 'Contact'], ['login', 'Client login']],
-    notSecurity: 'Homeward provides home watch, concierge and coordination services. We are not a security, alarm or guard company. Real estate services are provided by a licensed California real estate salesperson under their supervising broker. Legal services are provided only by independent licensed attorneys.',
+    notSecurity: 'Mansionly provides home watch, concierge and coordination services. We are not a security, alarm or guard company. Real estate services are provided by a licensed California real estate salesperson under their supervising broker. Legal services are provided only by independent licensed attorneys.',
     privacy: 'Privacy', terms: 'Terms', lang: 'ES', langLabel: 'Ver en español',
   },
   es: {
@@ -61,12 +61,13 @@ export const ui = {
     needs: ['Vigilancia semanal de la casa', 'Correo y paquetes', 'Dar acceso a proveedores', 'Casa vacía en venta', 'Preparación para la venta', 'Vender mi casa', 'Propiedad en sucesión (probate)', 'Supervisión de remodelación', 'Otra cosa'],
     fServices: 'Servicios', fWho: 'Para quién', fAreas: 'Zonas', fCompany: 'Empresa',
     company: [['es/sobre-nosotros', 'Nosotros'], ['es/precios', 'Precios'], ['es/socios', 'Programa de socios'], ['es/preguntas-frecuentes', 'Preguntas frecuentes'], ['es/contacto', 'Contacto'], ['login', 'Acceso clientes']],
-    notSecurity: 'Homeward ofrece vigilancia de casas, conserjería y coordinación. No somos una empresa de seguridad, alarmas ni guardias. Los servicios inmobiliarios los presta un agente con licencia de California bajo su corredor supervisor. Los servicios legales los prestan solo abogados independientes con licencia.',
+    notSecurity: 'Mansionly ofrece vigilancia de casas, conserjería y coordinación. No somos una empresa de seguridad, alarmas ni guardias. Los servicios inmobiliarios los presta un agente con licencia de California bajo su corredor supervisor. Los servicios legales los prestan solo abogados independientes con licencia.',
     privacy: 'Privacidad', terms: 'Términos', lang: 'EN', langLabel: 'View in English',
   },
 };
 
-export const logoSvg = `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 16 5.5l11.5 10" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><path d="M8 13.2V27h16V13.2" fill="none" stroke="#F1ECE2" stroke-width="1.3"/><rect x="13.6" y="17" width="4.8" height="6" fill="#BCA683"/></svg>`;
+export const logoSvg = `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z" fill="currentColor"/><circle cx="50" cy="38" r="12" fill="var(--logo-bg,#0F2747)"/><path d="M43.4 44.6 39 69h22l-4.4-24.4z" fill="var(--logo-bg,#0F2747)"/></svg>`;
+export const wordmark = '<span class="wm"><span class="wm-m">m</span>ansionly<span class="wm-m">.</span></span>';
 
 const jsonLd = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 
@@ -120,7 +121,7 @@ export function header({ path, lang, current }) {
   const nav = t.nav.map(([href, label]) => `<a href="${link(href)}"${current === href ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   return `<a class="skip" href="#main">${t.skip}</a>
 <header class="hdr"><div class="wrap">
-  <a class="logo" href="${link(lang === 'es' ? 'es/index' : 'index')}" aria-label="${site.name} home">${logoSvg}<span><b>${site.name}</b><small>${lang === 'es' ? 'Vigilancia de casas' : 'Home Watch &amp; Estate'}</small></span></a>
+  <a class="logo" href="${link(lang === 'es' ? 'es/index' : 'index')}" aria-label="${site.name} home">${logoSvg}${wordmark}<small class="wm-sub">${lang === 'es' ? 'Vigilancia de casas' : 'Home Watch'}</small></a>
   <nav class="menu" aria-label="Main">${nav}<a href="${link('login')}">${t.login}</a></nav>
   <div class="hdr-r">
     <a class="tel" href="tel:${site.phoneE164}">${site.phone}</a>
@@ -177,8 +178,8 @@ export function footer({ path, lang }) {
   return `<footer class="ftr"><div class="wrap">
   <div class="cols">
     <div class="nap">
-      <a class="logo" href="${link(lang === 'es' ? 'es/index' : 'index')}">${logoSvg}<span><b>${site.name}</b></span></a>
-      <p style="margin-top:12px;max-width:34ch">${lang === 'es' ? 'Cuidamos su casa mientras usted está lejos. Todo el Sur de California.' : 'We look after your home while you are away. All of Southern California.'}</p>
+      <a class="logo" href="${link(lang === 'es' ? 'es/index' : 'index')}">${logoSvg}${wordmark}</a>
+      <p style="margin-top:12px;max-width:34ch"><strong style="color:var(--stone);font-weight:600">${lang === 'es' ? site.sloganEs : site.slogan}</strong><br>${lang === 'es' ? site.promiseEs : site.promise}</p>
       <address class="nap" style="margin-top:8px">
         <span>${site.address.street}<br>${site.address.city}, ${site.address.region} ${site.address.zip}</span>
         <a href="tel:${site.phoneE164}">${site.phone}</a>

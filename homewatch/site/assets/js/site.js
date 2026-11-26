@@ -1,4 +1,4 @@
-// Homeward site script: scroll scene, lead forms, plan builder. No dependencies.
+// Mansionly site script: scroll scene, lead forms, plan builder. No dependencies.
 (function () {
   var cfg = window.HW || {};
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;

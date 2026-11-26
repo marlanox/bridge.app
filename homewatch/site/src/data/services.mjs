@@ -13,7 +13,7 @@ export const services = [
     title: 'Home Watch Services in Los Angeles | Weekly Visits & Photo Reports',
     description: 'Scheduled home watch visits for vacant and second homes in Los Angeles. 34-point inspection, timestamped photo report within 2 hours, from $189/mo.',
     h1: 'Home watch visits, done the way you would do them yourself.',
-    lead: 'A trained Homeward inspector visits your home on a fixed schedule, walks every room and the whole exterior, and sends you a timestamped photo report before you have finished your coffee.',
+    lead: 'A trained Mansionly inspector visits your home on a fixed schedule, walks every room and the whole exterior, and sends you a timestamped photo report before you have finished your coffee.',
     price: 'From $189/mo',
     includes: [
       'Exterior walk: roof line, gutters, fences, gates, windows and doors',
@@ -163,7 +163,7 @@ export const services = [
   {
     slug: 'sell-your-home', group: 'sell', name: 'Sell With Our Licensed Agent',
     title: 'Sell Your Los Angeles Home From Anywhere | In-House Licensed Agent',
-    description: 'Sell your home while you are away: our in-house licensed agent handles pricing, open houses, showings and offers, with Homeward managing the home itself. One team you already trust.',
+    description: 'Sell your home while you are away: our in-house licensed agent handles pricing, open houses, showings and offers, with Mansionly managing the home itself. One team you already trust.',
     h1: 'Sell your home with the people who already look after it.',
     lead: 'We know your home better than any agent you could hire: every room, every repair, every photo since the day you joined. Our licensed agent uses that to price, present and sell it.',
     price: 'Commission agreed with the agent’s brokerage',
@@ -180,7 +180,7 @@ export const services = [
       ['Full history for buyers', 'A documented maintenance history builds buyer confidence and shortens inspections.'],
     ],
     faqs: [
-      ['Is Homeward a brokerage?', 'No. Real estate services are provided by our in-house agent, who is licensed by the California Department of Real Estate and works under their brokerage. Homeward handles the home itself.'],
+      ['Is Mansionly a brokerage?', 'No. Real estate services are provided by our in-house agent, who is licensed by the California Department of Real Estate and works under their brokerage. Mansionly handles the home itself.'],
       ['Can I use my own agent?', 'Of course. We work with any agent and give them full access to our reports.'],
     ],
     note: 'Real estate services are provided by a licensed California real estate salesperson under their supervising broker. License number shown on request and in all listing materials.',
@@ -189,7 +189,7 @@ export const services = [
   {
     slug: 'power-of-attorney-services', group: 'behalf', name: 'On Your Behalf (Power of Attorney)',
     title: 'Act On My Behalf for My House | Power of Attorney Home Services LA',
-    description: 'With a limited power of attorney, Homeward signs for deliveries, meets inspectors, handles permits, utilities, HOA and insurance claims for your home while you are away.',
+    description: 'With a limited power of attorney, Mansionly signs for deliveries, meets inspectors, handles permits, utilities, HOA and insurance claims for your home while you are away.',
     h1: 'Your hands in Los Angeles, when you cannot be here.',
     lead: 'Some things need a person with authority: the permit counter, the utility company, the HOA, an insurance adjuster, a property auction. With a limited power of attorney for your home, we can be that person.',
     price: 'Hourly, from $95/hour · quoted per task',
@@ -256,7 +256,7 @@ export const services = [
   },
   {
     slug: 'squatter-prevention', group: 'watch', name: 'Squatter & Trespass Prevention',
-    title: 'How to Prevent Squatters in a Vacant Home in Los Angeles | Homeward',
+    title: 'How to Prevent Squatters in a Vacant Home in Los Angeles | Mansionly',
     description: 'Squatters target homes that look empty. Weekly visits, lived-in signals, lock checks and fast documentation are the best prevention. Here is how we protect vacant homes in LA.',
     h1: 'Squatters look for empty homes. We make yours look lived in.',
     lead: 'Removing squatters in California can take weeks to months through the courts. Prevention costs a fraction of that: regular visits, a home that looks occupied, and proof of when it was last checked.',

@@ -19,7 +19,7 @@ export const guides = [
     h1: 'How much does home watch cost in Los Angeles?', minutes: 4, related: ['what-is-home-watch', 'vacant-home-insurance-california'],
     body: [
       ['Typical prices', ['Across the United States, home watch usually costs about $100 to $280 a month for weekly visits, and less for visits every two weeks. Los Angeles sits at the upper end because of drive times, larger homes and higher insurance costs for providers.']],
-      ['What Homeward charges', [['Essential: $189/mo for two visits a month', 'Signature: $349/mo for weekly visits with mail handling', 'Estate: $690/mo for twice-weekly visits and a dedicated house manager']]],
+      ['What Mansionly charges', [['Essential: $189/mo for two visits a month', 'Signature: $349/mo for weekly visits with mail handling', 'Estate: $690/mo for twice-weekly visits and a dedicated house manager']]],
       ['What changes the price', [['How often we visit', 'Size of the home and the number of buildings (guest house, pool house)', 'Extras such as mail scanning, arrival preparation or vendor hours', 'Distance from our West Hollywood office']]],
       ['Is it worth it?', ['One undetected water leak in Los Angeles commonly costs $10,000 to $50,000 to repair, before any argument with the insurer. A year of weekly home watch costs less than the deductible on many policies. For most owners the math is simple.']],
     ],
@@ -43,7 +43,7 @@ export const guides = [
       ['The clause most owners never read', ['Many standard homeowner policies limit coverage when a home has been vacant for a set number of consecutive days, often 30 or 60. After that, claims for vandalism, glass breakage, theft or water damage may be reduced or denied. Every policy is different, so read yours or ask your broker.']],
       ['Vacant vs unoccupied', ['Insurers often treat "unoccupied" (your furniture is there but you are away) differently from "vacant" (the home is empty of furnishings). An unoccupied second home is usually treated better than an empty house for sale. The difference matters, so describe your situation accurately to your insurer.']],
       ['What you can do', [['Tell your insurer or broker before a long absence', 'Ask whether a vacancy permit or endorsement is available', 'Arrange regular documented inspections', 'Shut off water at the main when practical, or install leak sensors with automatic shut-off', 'Keep the home looking occupied']]],
-      ['Why documentation matters', ['If you ever file a claim, the first questions will be when the home was last checked and what condition it was in. A dated report with photos answers both. That is why every Homeward visit produces one, saved in your portal permanently.']],
+      ['Why documentation matters', ['If you ever file a claim, the first questions will be when the home was last checked and what condition it was in. A dated report with photos answers both. That is why every Mansionly visit produces one, saved in your portal permanently.']],
     ],
   },
   {
@@ -96,7 +96,7 @@ export const guides = [
     description: 'How to sell a house in Los Angeles while living elsewhere: preparation, staging, showings, signing, and who handles the house in the meantime.',
     h1: 'Selling your LA home from out of state', minutes: 5, related: ['probate-house-care', 'vacant-home-checklist'],
     body: [
-      ['Step 1: Get a local team', ['You need three things on the ground: someone to look after the house, someone to prepare it and a licensed agent to sell it. With Homeward, the first two are us and the third can be our in-house agent or your own.']],
+      ['Step 1: Get a local team', ['You need three things on the ground: someone to look after the house, someone to prepare it and a licensed agent to sell it. With Mansionly, the first two are us and the third can be our in-house agent or your own.']],
       ['Step 2: Prepare the home', [['Clean-out and donation', 'Cosmetic repairs and paint', 'Staging, photography and video']]],
       ['Step 3: List and show', ['Vacant listings need care between showings: dust, lights, flowers, lockbox checks. Damage during showings should be documented right away.']],
       ['Step 4: Close remotely', ['Most documents can be signed electronically or with a mobile notary. Inspections, appraisals and final walk-throughs need someone with keys on site.']],

@@ -1,9 +1,13 @@
 // One place for every business detail. Change here, rebuild, done.
 export const site = {
-  name: 'Homeward',
-  legalName: 'Homeward Home Watch LLC', // placeholder until the LLC is registered
+  name: 'Mansionly',
+  legalName: 'Mansionly LLC', // placeholder until the LLC is registered
   descriptor: 'Home Watch & Estate Services',
-  url: 'https://www.homewardla.com', // placeholder domain; used for canonical URLs and sitemap
+  slogan: 'Kept as if you never left.',
+  sloganEs: 'Cuidada como si nunca se hubiera ido.',
+  promise: 'Owning a fine home is a full-time job. While you are away, we do it for you.',
+  promiseEs: 'Tener una gran casa es un trabajo de tiempo completo. Mientras usted no está, lo hacemos por usted.',
+  url: 'https://mansionly.co', // placeholder domain; used for canonical URLs and sitemap
   phone: '(323) 333-3967',
   phoneE164: '+13233333967',
   email: '9138282@gmail.com', // replace with the company email later

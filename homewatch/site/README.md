@@ -1,4 +1,4 @@
-# Homeward website
+# Mansionly website
 
 A static site with 82 pages (English and Spanish) and no frameworks or dependencies. It is built for 100/100 PageSpeed: CSS inlined in every page, self-hosted fonts, one 4 KB script.
 

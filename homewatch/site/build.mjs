@@ -1,4 +1,4 @@
-// Static site generator for Homeward. No dependencies: `node build.mjs`.
+// Static site generator for Mansionly. No dependencies: `node build.mjs`.
 //   CLEAN=1 node build.mjs     -> production build with clean URLs (/pricing), for Cloudflare Pages / Netlify / Vercel
 //   node build.mjs             -> preview build with relative .html links (opens from disk)
 //   ARTIFACT=1 node build.mjs  -> preview build whose index.html is a bare fragment for the Claude artifact viewer

@@ -1,0 +1,175 @@
+<title>Mansionly Brand Book</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap">
+<style>
+/* Brand book: one long reference page. Logo, symbol, colours, type, slogan, brand family, where everything appears, voice, rules. */
+:root{--bg:#F7F6F3;--card:#FFFFFF;--ink:#0F1E33;--text:#2A3445;--muted:#5A6272;--line:#E4E1DA;--navy:#0F2747;--sky:#A3B7D6;--slate:#7D8AA0;--ivory:#F1ECE2;--gold:#BCA683}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--text:#C9D1DE;--muted:#93A0B4;--line:#22304A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1222;--card:#101B30;--ink:#EEF1F6;--text:#C9D1DE;--muted:#93A0B4;--line:#22304A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font:16px/1.65 "Inter",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 96px;display:grid;gap:64px}
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:balance}
+h1{font:800 clamp(34px,5vw,54px)/1.02 "Manrope",sans-serif;letter-spacing:-.045em}
+h2{font:800 clamp(24px,3vw,30px)/1.15 "Manrope",sans-serif;letter-spacing:-.03em}
+h3{font:600 16px/1.3 "Inter",sans-serif}
+p{margin:0}
+.k{font:600 11.5px/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+section{display:grid;gap:20px}
+.lead{font-size:18px;max-width:64ch}
+.muted{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:860px){.grid3,.grid4{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);padding:20px;display:grid;gap:8px;align-content:start;min-width:0}
+.tile{display:flex;align-items:center;justify-content:center;min-height:190px;padding:28px 14px;overflow:hidden}
+.n{background:#0F2747}.w{background:#FFFFFF;border:1px solid var(--line)}
+/* the logo */
+.lg{display:inline-flex;align-items:center;white-space:nowrap;line-height:1;font:800 var(--fs,44px)/1 "Manrope",sans-serif;letter-spacing:-.05em}
+.lg svg{width:.98em;height:.98em;margin-right:.24em;flex:none}
+.on-n{color:#A3B7D6}.on-n .m{color:#FFFFFF}.on-n svg{color:#FFFFFF;--h:#0F2747}
+.on-w{color:#7D8AA0}.on-w .m{color:#0F2747}.on-w svg{color:#0F2747;--h:#FFFFFF}
+.sub{display:inline-block;margin-left:.6em;padding-left:.6em;border-left:1px solid currentColor;font:600 .32em/1.3 "Inter",sans-serif;letter-spacing:.2em;text-transform:uppercase;align-self:center}
+.on-n .sub{color:#A3B7D6;border-color:rgba(163,183,214,.45)}.on-w .sub{color:#0F2747;border-color:#C7CDD7}
+.sw{display:grid;gap:8px}
+.sw i{display:block;height:72px;border:1px solid var(--line)}
+.sw b{color:var(--ink);font-weight:600}
+.sw span{font:500 12.5px/1.4 "Inter",sans-serif;color:var(--muted)}
+.slogan{font:500 clamp(30px,4vw,44px)/1.15 "EB Garamond",Georgia,serif;color:var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14.5px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+td b{color:var(--ink)}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--line)}
+.fam{background:var(--card);border:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+@media (max-width:760px){.fam{grid-template-columns:1fr}}
+.fam .tile{min-height:150px}
+.fam .txt{padding:20px;display:grid;gap:8px;align-content:start}
+.tag{font:500 20px/1.35 "EB Garamond",Georgia,serif;color:var(--ink)}
+ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.do{border-left:3px solid #2F6B4F}.dont{border-left:3px solid #9B2C2C}
+.mini{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.mini svg{display:block}
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:14px">
+    <span class="k">Brand book · v1 · November 2026</span>
+    <h1>mansionly<span style="color:#7D8AA0">.</span> brand book</h1>
+    <p class="lead muted">One page that says how the brand looks, sounds and grows: the logo, the symbol, colours, type, slogan, the family of services, and exactly where each thing appears.</p>
+  </header>
+
+  <section>
+    <span class="k">01 · The logo</span>
+    <h2>Shield, bright m, quiet letters, period.</h2>
+    <div class="grid2"><div class="tile n"><span class="lg on-n" data-logo></span></div><div class="tile w"><span class="lg on-w" data-logo></span></div></div>
+    <div class="grid3">
+      <div class="box"><h3>Why it works</h3><p>The keyhole shield says “your home is protected, and we hold the key”. The bright m starts the name with confidence; the quieter letters keep it calm. The period closes it: a full stop, a promise kept.</p></div>
+      <div class="box"><h3>Clear space</h3><p>Keep empty space around the logo equal to the height of the shield on every side. Nothing (text, photos, edges) comes closer.</p></div>
+      <div class="box"><h3>Minimum size</h3><p>Full logo: 110 px wide on screen, 30 mm in print. Smaller than that, use the shield on its own.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="k">02 · The symbol</span>
+    <h2>The shield stands alone where the name does not fit.</h2>
+    <div class="box"><div class="mini" id="icons"></div><p class="muted">App icon, browser tab, social profile picture, inspector uniform, key tags, car rear window, wax-seal stamp on printed reports.</p></div>
+  </section>
+
+  <section>
+    <span class="k">03 · Colours</span>
+    <h2>Navy carries the brand. Gold is a small accent on the site, never in the logo.</h2>
+    <div class="grid4">
+      <div class="sw"><i style="background:#0F2747"></i><b>Mansionly Navy</b><span>#0F2747 · main colour, logo background, header, footer</span></div>
+      <div class="sw"><i style="background:#FFFFFF"></i><b>White</b><span>#FFFFFF · the bright m on navy, page backgrounds</span></div>
+      <div class="sw"><i style="background:#A3B7D6"></i><b>Sky</b><span>#A3B7D6 · quiet letters of the logo on navy</span></div>
+      <div class="sw"><i style="background:#7D8AA0"></i><b>Slate</b><span>#7D8AA0 · quiet letters of the logo on white</span></div>
+      <div class="sw"><i style="background:#F1ECE2"></i><b>Ivory</b><span>#F1ECE2 · warm section backgrounds</span></div>
+      <div class="sw"><i style="background:#BCA683"></i><b>Gold</b><span>#BCA683 · one word or one line per screen, maximum</span></div>
+      <div class="sw"><i style="background:#141B2A"></i><b>Ink</b><span>#141B2A · body text on light backgrounds</span></div>
+      <div class="sw"><i style="background:#2F6B4F"></i><b>All-clear green</b><span>#2F6B4F · only for “all clear” in reports and the portal</span></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="k">04 · Type</span>
+    <div class="grid3">
+      <div class="box"><span class="k">Logo only</span><p style="font:800 34px/1 Manrope,sans-serif;letter-spacing:-.05em;color:var(--ink)">Manrope 800</p><p class="muted">Used only in the logo and its sub-brand names. Never for headlines.</p></div>
+      <div class="box"><span class="k">Headlines</span><p style="font:500 34px/1 'EB Garamond',serif;color:var(--ink)">EB Garamond</p><p class="muted">Calm, classic serif for headlines and the slogan.</p></div>
+      <div class="box"><span class="k">Everything else</span><p style="font:600 30px/1 Inter,sans-serif;color:var(--ink)">Inter</p><p class="muted">Body text, buttons, forms, reports, the app.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="k">05 · Slogan and promise</span>
+    <p class="slogan">Kept as if you never left.</p>
+    <div class="grid2">
+      <div class="box"><h3>The promise (one sentence under the slogan)</h3><p class="tag">Owning a fine home is a full-time job. While you are away, we do it for you.</p></div>
+      <div class="box"><h3>The explanation (one paragraph)</h3><p>Mansionly looks after homes while their owners are away: weekly visits, a photo report after every one, mail and vendors handled, and one trusted team for everything else the house needs, from a gardener to the sale of the home.</p></div>
+    </div>
+    <div class="box"><h3>Short lines for ads, cars and social</h3><ul><li>Your home. Our watch.</li><li>Someone is always home.</li><li>We hold the keys. You hold the peace of mind.</li><li>While you are away, we keep watch.</li></ul><p class="muted">Spanish: “Cuidada como si nunca se hubiera ido.” · “Su casa. Nuestra vigilancia.”</p></div>
+  </section>
+
+  <section>
+    <span class="k">06 · The brand family</span>
+    <h2>One name, four services. Each has its own line and its own job.</h2>
+    <div id="family" style="display:grid;gap:16px"></div>
+  </section>
+
+  <section>
+    <span class="k">07 · Where everything appears</span>
+    <div class="scroll"><table>
+      <thead><tr><th>Place</th><th>What is shown</th><th>Words</th></tr></thead>
+      <tbody>
+        <tr><td><b>Website header</b></td><td>Full logo + “Home Watch” after a thin line</td><td>—</td></tr>
+        <tr><td><b>Home page, first screen</b></td><td>Headline and the promise</td><td>“While you’re away, we keep watch.” + promise line</td></tr>
+        <tr><td><b>Website footer</b></td><td>Full logo</td><td>Slogan + promise, address, phone</td></tr>
+        <tr><td><b>Google Business Profile</b></td><td>Shield as the photo</td><td>Business name: “Mansionly Home Watch”</td></tr>
+        <tr><td><b>Car doors</b></td><td>Full logo, large</td><td>“Home Watch · Concierge” and the phone number</td></tr>
+        <tr><td><b>Inspector uniform</b></td><td>Shield on the chest, logo on the back</td><td>—</td></tr>
+        <tr><td><b>Business card</b></td><td>Logo on navy (front), details on white (back)</td><td>Name, role, phone, mansionly.co</td></tr>
+        <tr><td><b>Visit report (PDF and app)</b></td><td>Logo top left, shield seal at the bottom</td><td>“Visit report · All clear” and the date</td></tr>
+        <tr><td><b>Sign at a client’s gate</b></td><td>Shield + “Looked after by Mansionly” (never “security”)</td><td>Small, discreet plaque</td></tr>
+        <tr><td><b>App icon, favicon, social avatar</b></td><td>Shield on navy</td><td>—</td></tr>
+        <tr><td><b>Email signature</b></td><td>Logo, 140 px</td><td>Slogan in small grey text</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <span class="k">08 · Voice</span>
+    <div class="grid2">
+      <div class="box do"><h3>We sound like</h3><ul><li>A calm, senior house manager: short sentences, exact facts.</li><li>“We checked every door. All clear.”</li><li>Numbers instead of adjectives: “38 photos, report in 2 hours”.</li><li>Warm, never cute.</li></ul></div>
+      <div class="box dont"><h3>We never</h3><ul><li>Say “security”, “guard”, “patrol” or “protection services” (needs a guard licence in California).</li><li>Say “realty” or “brokerage” for ourselves; real estate is done by our licensed agent under their broker.</li><li>Use emoji, exclamation marks or slang in client messages.</li><li>Promise what a visual inspection cannot see.</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="k">09 · Logo rules</span>
+    <div class="grid2">
+      <div class="box do"><h3>Do</h3><ul><li>Use navy or white backgrounds, or a dark photo with enough contrast.</li><li>Keep the bright m and the quiet letters exactly as designed.</li><li>Use the shield alone at small sizes.</li></ul></div>
+      <div class="box dont"><h3>Don’t</h3><ul><li>Add a roof to the shield, change its shape or rotate it.</li><li>Recolour the letters (no gold, no all-one-colour except one-colour printing).</li><li>Stretch, outline, add shadows or effects.</li><li>Write “Mansionly” in another font next to the logo.</li></ul></div>
+    </div>
+  </section>
+</div>
+
+<script>
+var SH = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M12 4h76v42c0 26-17 41-38 50C29 87 12 72 12 46z" fill="currentColor"/><circle cx="50" cy="38" r="12" style="fill:var(--h)"/><path d="M43.4 44.6 39 69h22l-4.4-24.4z" style="fill:var(--h)"/></svg>';
+var logo = function (sub) { return SH + '<span class="m">m</span>ansionly<span class="m">.</span>' + (sub ? '<span class="sub">' + sub + '</span>' : ''); };
+document.querySelectorAll('[data-logo]').forEach(function (e) { e.innerHTML = logo(); });
+var ic = function (s, bg, fg, r) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 100 100" style="border-radius:' + r + ';color:' + fg + ';--h:' + bg + (bg === '#FFFFFF' ? ';box-shadow:inset 0 0 0 1px #D9D5CD' : '') + '"><rect width="100" height="100" fill="' + bg + '"/><g transform="translate(18,16) scale(.64)">' + SH.replace(/<\/?svg[^>]*>/g, '') + '</g></svg>'; };
+document.getElementById('icons').innerHTML = ic(96, '#0F2747', '#FFFFFF', '22%') + ic(96, '#FFFFFF', '#0F2747', '22%') + ic(64, '#0F2747', '#FFFFFF', '50%') + ic(32, '#0F2747', '#FFFFFF', '6px') + ic(16, '#0F2747', '#FFFFFF', '3px');
+var FAM = [
+  ['Home Watch', 'The core service and the reason clients first trust us.', 'Weekly visits, photo reports, squatter and code watch, keys and emergencies.', 'Kept as if you never left.', 'Website header, car doors, Google profile, every report.'],
+  ['Concierge', 'Everything the house needs, booked in one message.', 'Cleaning, lawn and garden, pool, repairs, deliveries, arrival preparation, letting vendors in.', 'One message. Done, with photos.', 'Client portal “Book a service”, emails after each visit, add-ons on the pricing page.'],
+  ['Estates', 'Preparing and selling the home, with our licensed agent.', 'Pre-sale preparation, staging, photography, open houses, vacant listing care, sale with our licensed agent.', 'From kept to sold.', 'Sell-your-home pages, open-house signs (with the agent’s name and DRE number), partner materials for realtors.'],
+  ['Private Office', 'Acting for the owner, with their authority.', 'Power-of-attorney tasks, probate and estate property, permits, insurance claims, auctions.', 'Your hands in California.', 'Pages for attorneys, executors and families; private client letters.']
+];
+document.getElementById('family').innerHTML = FAM.map(function (f) {
+  return '<div class="fam"><div class="tile n"><span class="lg on-n" style="--fs:clamp(26px,3vw,34px)">' + logo(f[0]) + '</span></div><div class="txt"><h3>mansionly. ' + f[0] + '</h3><p class="tag">“' + f[3] + '”</p><p>' + f[1] + ' ' + f[2] + '</p><p class="muted"><b style="color:var(--ink);font-weight:600">Where it appears:</b> ' + f[4] + '</p></div></div>';
+}).join('');
+</script>

@@ -31,7 +31,7 @@ export const generalFaqs = {
     ['What if I need an extra visit?', 'Ask in the portal or call us. An extra visit on request is $99, for example after a storm warning or before guests arrive.'],
     ['Is mail included?', 'Flyers and packages are always removed so the house does not look empty. Full mail handling (collecting, scanning every envelope and forwarding) is a $49/mo add-on to any plan.'],
     ['How is this different from a property manager?', 'Property managers handle tenants and rent. We look after homes where no one is living, and we never take a percentage of rent.'],
-    ['Are you insured?', 'Yes. Homeward is bonded and insured. We will send a certificate of insurance to you or your insurer.'],
+    ['Are you insured?', 'Yes. Mansionly is bonded and insured. We will send a certificate of insurance to you or your insurer.'],
     ['Is there a long contract?', 'No. Plans are month to month. Cancel any time with 30 days’ notice.'],
     ['How do you keep my keys safe?', 'Keys are coded, never labeled with your address, and stored in a locked safe. Every key use is logged in your portal.'],
     ['Which areas do you cover?', 'All of Southern California: Los Angeles, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of our West Hollywood office; farther out we add a travel fee, quoted for your home.'],
@@ -40,7 +40,7 @@ export const generalFaqs = {
     ['¿Qué es exactamente la vigilancia de casas?', 'Visitas programadas a su casa mientras usted no está. Revisamos el interior y el exterior, enviamos un informe con fotos el mismo día y actuamos rápido si algo anda mal.'],
     ['¿Y si necesito una visita extra?', 'Pídala en el portal o llámenos. Una visita extra cuesta $99, por ejemplo antes de una tormenta o de que lleguen invitados.'],
     ['¿El correo está incluido?', 'Siempre retiramos volantes y paquetes. El manejo completo del correo (recoger, escanear y reenviar) cuesta $49 al mes en cualquier plan.'],
-    ['¿Están asegurados?', 'Sí. Homeward está afianzada y asegurada. Enviamos el certificado a usted o a su aseguradora.'],
+    ['¿Están asegurados?', 'Sí. Mansionly está afianzada y asegurada. Enviamos el certificado a usted o a su aseguradora.'],
     ['¿Hay contrato a largo plazo?', 'No. Los planes son mes a mes. Puede cancelar con 30 días de aviso.'],
     ['¿Cómo protegen mis llaves?', 'Las llaves se codifican, nunca llevan su dirección y se guardan en una caja fuerte. Cada uso queda registrado.'],
     ['¿Hablan español?', 'Sí. Nuestro equipo trabaja en inglés y en español, y también nuestros informes.'],
@@ -66,9 +66,9 @@ const tIcons = [
 
 const T = {
   en: {
-    title: 'Home Watch in Los Angeles & Southern California | Weekly Visits & Photo Reports | Homeward',
+    title: 'Home Watch in Los Angeles & Southern California | Weekly Visits & Photo Reports | Mansionly',
     description: 'Premium home watch for empty and second homes across Southern California: Los Angeles, Beverly Hills, Malibu, Orange County, Palm Springs and San Diego. Weekly visits, same-day photo reports. From $189/mo.',
-    eyebrow: 'Home watch · All of Southern California',
+    eyebrow: 'Mansionly Home Watch · Southern California',
     h1: 'While you’re away, we <em>keep watch.</em>',
     lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
     chips: ['Bonded & insured', 'Background-checked inspectors', 'Photo proof of every visit', 'From $189/mo · no contract'],
@@ -120,7 +120,7 @@ const T = {
     endEyebrow: 'Start here', endH: 'See what we would check at your home.', endP: 'Book a free 30-minute walkthrough. We show you exactly what we look for, and you keep the written risk check even if you do not sign up.',
   },
   es: {
-    title: 'Vigilancia de casas en Los Ángeles y el Sur de California | Homeward',
+    title: 'Vigilancia de casas en Los Ángeles y el Sur de California | Mansionly',
     description: 'Vigilancia de casas vacías y segundas residencias en Beverly Hills, West Hollywood y Los Ángeles. Visitas semanales e informes con fotos el mismo día. Desde $189/mes.',
     eyebrow: 'Vigilancia de casas · Todo el Sur de California',
     h1: 'Mientras usted no está, <em>nosotros vigilamos.</em>',
