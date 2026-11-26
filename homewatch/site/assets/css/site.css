@@ -485,3 +485,20 @@ em,i:not([class]){font-style:normal}
 .btn{background:#0F2747;border-color:#0F2747;color:#fff}
 .on-dark .btn,.dark .form .btn,.form.dk .btn,.plan.featured .btn,.total .btn{background:#FFFFFF;border-color:#FFFFFF;color:#0F2747}
 .hdr .btn,.mbar .btn:not(.line),.burger nav .btn{background:#FFFFFF!important;border-color:#FFFFFF!important;color:#0F2747!important}
+/* v10 hero art: half-screen max, plays once on load, no scroll-jacking */
+.scene .stage{padding-bottom:0!important}
+.hart{position:relative;height:clamp(240px,46vh,500px);margin-top:clamp(28px,4vw,56px);overflow:hidden}
+.hart svg{position:absolute;inset:0;width:100%;height:100%}
+.hart .on{opacity:0;animation:hon 1.1s cubic-bezier(.3,.6,.2,1) forwards}
+.hart .dusk{opacity:0;animation:hdusk 3.6s ease-in-out .2s forwards}
+.hart .tw{animation:hon 1.1s ease forwards,htw 3.2s ease-in-out 2.6s infinite alternate}
+.hart .flow{stroke-dasharray:3 18;opacity:0;animation:hon 1s ease 1.6s forwards,hflow 7s linear infinite}
+.hart .flow.rev{animation:hon 1s ease 1.8s forwards,hflow 7s linear infinite reverse}
+@keyframes hon{to{opacity:1}}@keyframes hdusk{to{opacity:.85}}@keyframes htw{to{opacity:.45}}@keyframes hflow{to{stroke-dashoffset:-210}}
+@media (max-width:860px){.scene .log{display:none!important}.hart{height:clamp(240px,44vh,420px);margin-top:28px}}
+@media (prefers-reduced-motion:reduce){.hart .on,.hart .tw,.hart .flow{opacity:1}.hart .dusk{opacity:.85}}
+.hart::before{content:"";position:absolute;left:0;right:0;top:0;height:32%;background:linear-gradient(#0F2747,rgba(15,39,71,0));z-index:1;pointer-events:none}
+@media (min-width:861px){.hart{height:clamp(300px,50vh,540px);margin-top:-90px}.scene .copy{position:relative;z-index:2}}
+.scene .hero-trust{display:none}
+@media (min-width:861px){.scene .stage{padding-top:72px!important}.hart{margin-top:-40px}}
+@media (max-width:860px){.hart{height:66vw;max-height:420px;margin-top:20px}.hart svg{width:246vw;height:98.4vw;left:50%;top:auto;bottom:0;transform:translateX(-50%)}}

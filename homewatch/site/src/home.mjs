@@ -5,6 +5,7 @@ import { locations, regions, travelRule, travelRuleEs } from './data/locations.m
 import { reviews } from './data/reviews.mjs';
 import { esc, makeLinker, leadForm, faqBlock, faqSchema } from './layout.mjs';
 import { sceneSvg, landSvg } from './scene.mjs';
+import { heroArt } from './heroart.mjs';
 
 export const checkpoints = {
   en: [
@@ -216,6 +217,7 @@ export function homePage(lang = 'en') {
         <div class="log-f"><span>${t.logFoot[0]}</span><b>${t.logFoot[1]}</b></div>
       </div>
     </div>
+    ${heroArt(process.env.HERO || 'a')}
     <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>
