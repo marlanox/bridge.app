@@ -10,18 +10,18 @@ import { mix } from './config.mjs';
 
 export const checkpoints = {
   en: [
-    ['Exterior', ['Roof line, gutters and downspouts', 'Walls, stucco and paint for cracks', 'Windows and screens', 'Fences, gates and latches', 'Exterior lights and timers', 'Drainage and standing water', 'Pests and animal activity']],
+    ['Exterior', ['Roof line, gutters and downspouts', 'Walls, stucco and paint for cracks', 'Windows and screens', 'Fences, gates and latches', 'Exterior lights and timers', 'Drainage and standing water', 'Water meter read for hidden leaks']],
     ['Entry & signs of occupancy', ['Every exterior door and lock tested', 'Garage doors and side entries', 'Signs of forced entry', 'Signs someone is living in the home', 'Alarm system status', 'Police authorization letter current']],
-    ['Interior', ['Ceilings for water stains', 'Floors around toilets, tubs and sinks', 'Walls and windows for moisture or mold', 'Odors, pests and droppings', 'Smoke and CO detectors', 'Doors and windows locked inside', 'Blinds and lights set to look lived-in']],
-    ['Systems', ['Run every tap and flush every toilet', 'Water heater and supply lines', 'HVAC running and thermostat setting', 'Fridge and freezer temperatures', 'Electrical panel and outages', 'Pool and spa equipment', 'Irrigation timer and leaks']],
+    ['Interior · with your key', ['Ceilings for water stains', 'Floors around toilets, tubs and sinks', 'Walls and windows for moisture or mold', 'Odors, pests and droppings', 'Smoke and CO detectors', 'Doors and windows locked inside', 'Blinds and lights set to look lived-in']],
+    ['Systems · with your key', ['Run every tap and flush every toilet', 'Water heater and supply lines', 'HVAC running and thermostat setting', 'Fridge and freezer temperatures', 'Electrical panel and outages', 'Pool and spa equipment', 'Irrigation timer and leaks']],
     ['Lived-in look', ['Flyers and door hangers removed', 'Packages moved out of sight', 'Bins moved on collection day']],
     ['Landscape & city code', ['Branches over sidewalks and roofs', 'Dry brush and fire clearance', 'Lawn and planters cared for', 'City or HOA notices posted']],
   ],
   es: [
-    ['Exterior', ['Techo, canaletas y bajantes', 'Paredes y estuco', 'Ventanas y mosquiteros', 'Cercas, rejas y cerrojos', 'Luces exteriores y temporizadores', 'Drenaje y agua estancada', 'Plagas y animales']],
+    ['Exterior', ['Techo, canaletas y bajantes', 'Paredes y estuco', 'Ventanas y mosquiteros', 'Cercas, rejas y cerrojos', 'Luces exteriores y temporizadores', 'Drenaje y agua estancada', 'Lectura del medidor de agua']],
     ['Entradas y ocupación', ['Cada puerta y cerradura', 'Garaje y entradas laterales', 'Señales de entrada forzada', 'Señales de que alguien vive allí', 'Estado de la alarma', 'Carta de autorización policial vigente']],
-    ['Interior', ['Techos y manchas de agua', 'Pisos junto a baños y lavabos', 'Humedad y moho', 'Olores y plagas', 'Detectores de humo y CO', 'Puertas y ventanas cerradas', 'Persianas y luces para que parezca habitada']],
-    ['Sistemas', ['Abrir llaves y descargar inodoros', 'Calentador y tuberías', 'Aire acondicionado y termostato', 'Temperatura del refrigerador', 'Panel eléctrico', 'Equipo de piscina y spa', 'Riego y fugas']],
+    ['Interior · con su llave', ['Techos y manchas de agua', 'Pisos junto a baños y lavabos', 'Humedad y moho', 'Olores y plagas', 'Detectores de humo y CO', 'Puertas y ventanas cerradas', 'Persianas y luces para que parezca habitada']],
+    ['Sistemas · con su llave', ['Abrir llaves y descargar inodoros', 'Calentador y tuberías', 'Aire acondicionado y termostato', 'Temperatura del refrigerador', 'Panel eléctrico', 'Equipo de piscina y spa', 'Riego y fugas']],
     ['Aspecto habitado', ['Volantes retirados', 'Paquetes fuera de la vista', 'Botes de basura en su día']],
     ['Jardín y código municipal', ['Ramas sobre aceras y techos', 'Maleza seca y prevención de incendios', 'Césped y jardineras', 'Avisos de la ciudad o HOA']],
   ],
@@ -29,7 +29,8 @@ export const checkpoints = {
 
 export const generalFaqs = {
   en: [
-    ['What exactly is home watch?', 'Scheduled visits to your home while you are away. We inspect the inside and outside, report with photos the same day and act fast if something is wrong.'],
+    ['What exactly is home watch?', 'Scheduled visits to your empty home. We walk the whole property outside, check doors, windows, roof, yard and the water meter, send photos the same day and act fast if something is wrong.'],
+    ['Do you go inside my home?', 'Only if you want us to. Every plan starts outside. When you are ready to trust us with a key, we add interior checks: taps, toilets, ceilings, AC and fridge. Keys are coded, kept in a safe and every use is logged.'],
     ['What if I need an extra visit?', 'Ask in the portal or call us. An extra visit on request is $99, for example after a storm warning or before guests arrive.'],
     ['Is mail included?', 'Flyers and packages are always removed so the house does not look empty. Full mail handling (collecting, scanning every envelope and forwarding) is a $49/mo add-on to any plan.'],
     ['How is this different from a property manager?', 'Property managers handle tenants and rent. We look after homes where no one is living, and we never take a percentage of rent.'],
@@ -39,7 +40,8 @@ export const generalFaqs = {
     ['Which areas do you cover?', 'All of Southern California: Los Angeles, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of our West Hollywood office; farther out we add a travel fee, quoted for your home.'],
   ],
   es: [
-    ['¿Qué es exactamente la vigilancia de casas?', 'Visitas programadas a su casa mientras usted no está. Revisamos el interior y el exterior, enviamos un informe con fotos el mismo día y actuamos rápido si algo anda mal.'],
+    ['¿Qué es exactamente la vigilancia de casas?', 'Visitas programadas a su casa vacía. Recorremos toda la propiedad por fuera, revisamos puertas, ventanas, techo, jardín y el medidor de agua, y enviamos fotos el mismo día.'],
+    ['¿Entran a mi casa?', 'Solo si usted quiere. Todos los planes empiezan por fuera. Cuando nos confíe una llave, agregamos revisiones interiores. Las llaves están codificadas y cada uso queda registrado.'],
     ['¿Y si necesito una visita extra?', 'Pídala en el portal o llámenos. Una visita extra cuesta $99, por ejemplo antes de una tormenta o de que lleguen invitados.'],
     ['¿El correo está incluido?', 'Siempre retiramos volantes y paquetes. El manejo completo del correo (recoger, escanear y reenviar) cuesta $49 al mes en cualquier plan.'],
     ['¿Están asegurados?', 'Sí. Mansionly está afianzada y asegurada. Enviamos el certificado a usted o a su aseguradora.'],
@@ -71,23 +73,23 @@ const T = {
     title: 'Home Watch Los Angeles & Southern California | Mansionly',
     description: 'Home watch for empty and second homes in Los Angeles, Beverly Hills, Malibu and all of SoCal. Weekly visits, same-day photo reports. From $189/mo.',
     eyebrow: 'Mansionly Home Watch · Southern California',
-    h1: 'While you’re away, we keep watch.',
-    lead: 'Weekly visits to your empty home. Every room, lock and system checked, and a photo report on your phone the same day.',
+    h1: 'Your house can’t call you. We can.',
+    lead: 'An empty home cannot tell you about a broken window, a leak or someone moving in. We walk the property every week, photograph it and call you the minute something is wrong.',
     chips: ['Bonded & insured', 'Background-checked inspectors', 'Photo proof of every visit', 'From $189/mo · no contract'],
-    tband: [['Bonded & insured', 'Certificate of insurance on request, sent to you or your insurer.'], ['The same vetted inspector', 'Background-checked, trained on our 34-point visit, every single time.'], ['Proof of every visit', '30 to 40 timestamped, location-tagged photos, the same day.'], ['Keys coded, never labeled', 'Kept in a safe, every use logged. Month to month, no markups.']],
+    tband: [['Bonded & insured', 'Certificate of insurance on request, sent to you or your insurer.'], ['The same vetted inspector', 'Background-checked, trained on our 34-point visit, every single time.'], ['Proof of every visit', 'Timestamped, location-tagged photos, the same day.'], ['Keys coded, never labeled', 'Kept in a safe, every use logged. Month to month, no markups.']],
     cta1: 'Book a free walkthrough', cta2: 'See plans', scroll: 'Scroll',
     logHead: ['Tuesday visit', '6:42 pm'],
-    log: [['6:42', 'Arrived · alarm disarmed'], ['6:44', 'Doors, locks & windows'], ['6:49', 'Main floor, room by room'], ['6:53', 'Water, AC & fridge'], ['6:58', 'Upstairs & bathrooms'], ['7:06', 'Grounds, trees & gates'], ['7:11', 'Report sent · 38 photos']],
+    log: [['6:42', 'Arrived · gate and front door'], ['6:45', 'Windows, side doors, garage'], ['6:49', 'Roof line, gutters, trees'], ['6:53', 'Pool, yard and irrigation'], ['6:56', 'Water meter: no flow'], ['6:58', 'Flyers and packages removed'], ['7:02', 'Report sent · 24 photos']],
     logFoot: ['Your inspector', 'All clear'],
     trust: [],
-    inclEyebrow: 'Every visit includes', inclH: 'Everything an empty home needs. Every single visit.',
+    inclEyebrow: 'Every visit includes', inclH: 'The whole property, from the outside. Every visit.',
     incl: [
-      ['Full walk-through, inside and out', 'Every room, every door, the roof line, gates and fences. The same 34-point route every visit, so nothing is skipped.'],
-      ['Photo report the same day', '30 to 40 timestamped photos on your phone within two hours. Saved forever, ready for your insurer.'],
-      ['Squatters and break-ins', 'Every lock and window tested, and any sign that someone got in or is living there. If something is wrong, we call the police and you right away.'],
-      ['Trees, brush and city fines', 'Branches over sidewalks and roofs, dry brush, a dead lawn. We catch it and send a crew before the city sends a notice.'],
-      ['Leaks, power, AC and pool', 'We run every tap and check the water heater, fridge, air conditioning and pool equipment. Small problems stay small.'],
-      ['A home that looks lived in', 'Flyers and packages removed, lights and blinds adjusted, bins moved. Empty homes attract trouble. Yours will not look empty.'],
+      ['A walk around the whole property', 'Every door, window, gate and fence, the roof line, gutters, yard and pool. The same route every visit, so nothing is skipped.'],
+      ['Photo report the same day', 'Timestamped, location-tagged photos on your phone within two hours. Saved forever, ready for your insurer.'],
+      ['Squatters and break-ins', 'Broken glass, a forced lock, a mattress by the pool house. If someone got in or is staying there, we call the police and you right away.'],
+      ['Leaks, without going inside', 'We read the water meter on every visit. If it moves while nobody is home, there is a leak, and you hear about it that day.'],
+      ['A home that does not look empty', 'Flyers, door hangers and packages removed, bins moved. An empty-looking house is the first thing thieves and squatters look for.'],
+      ['Inside too, when you are ready', 'Most owners start outside. When you trust us with a key, we add interior checks: taps, toilets, ceilings, AC and fridge.'],
     ],
     factsEyebrow: 'Why it matters', factsH: 'An empty home is the most expensive home to own.',
     facts: [
@@ -96,7 +98,7 @@ const T = {
       ['Months', 'To remove squatters in California', 'Getting someone out through the courts can take months. A weekly visit and a lived-in look keep them from coming in.'],
       ['$0', 'In city fines, if we see it first', 'Overgrown trees, dry brush and code notices bring fines. We spot them early and fix them before the city does.'],
     ],
-    plansEyebrow: 'Plans', plansH: 'Choose how often we come.', plansP: 'Every plan includes the full inside-and-outside visit, same-day photo reports, squatter and city-code watch, key holding and a 24/7 emergency line.',
+    plansEyebrow: 'Plans', plansH: 'Choose how often we come.', plansP: 'Every plan starts outside: the whole property walked, photographed and reported the same day. Higher plans add interior checks once you trust us with a key. Mail, trees and city-code watch are separate, so you pay only for what you use.',
     choose: 'Choose', mostChosen: 'Most chosen', perMonth: '/mo', addH: 'Add only what you need', compare: 'Build your plan and see the exact price',
     trustEyebrow: 'Why owners trust us', trustH: 'You hand us the keys. Here is what you get in return.',
     trustList: [
@@ -114,7 +116,7 @@ const T = {
     revEyebrow: 'Clients', revH: 'What our clients say.', sample: 'Sample review',
     checkEyebrow: 'The full checklist', checkH: '34 checkpoints, every visit.', checkP: 'The same list every time, photographed every time. So when something changes, we notice.',
     portalEyebrow: 'Your private portal', portalH: 'Every visit, every photo. On your phone.', portalP: 'See your home’s full history, approve a vendor, request an extra visit or message us from anywhere. Your family, attorney or agent can get their own access.', portalCta: 'Preview the portal',
-    portalItems: [['Visit report · all clear', 'Tue, 7:11 pm', ''], ['38 photos added', 'Tue, 7:11 pm', ''], ['Branch over sidewalk', 'Trim booked for Fri', 'warn'], ['Extra visit requested', 'Sat, 10:00 am', '']],
+    portalItems: [['Visit report · all clear', 'Tue, 7:02 pm', ''], ['24 photos added', 'Tue, 7:02 pm', ''], ['Branch over sidewalk', 'Trim booked for Fri', 'warn'], ['Extra visit requested', 'Sat, 10:00 am', '']],
     offerP: 'Refer a friend and you both get one month free.', offerCta: 'Claim a founding spot', referral: 'How referrals work',
     moreEyebrow: 'When you need more', moreH: 'One trusted team for everything else your home needs.', moreP: 'Most clients start with home watch. When they need more, the same people take care of it: vendors, arrivals, mail, preparing and selling the home, and acting on their behalf.', whoLabel: 'Who we work with',
     areasEyebrow: 'Where we work', areasH: 'All of Southern California.',
@@ -125,23 +127,23 @@ const T = {
     title: 'Vigilancia de casas en Los Ángeles | Mansionly',
     description: 'Vigilancia de casas vacías en Los Ángeles, Beverly Hills y el Sur de California. Visitas semanales e informes con fotos. Desde $189/mes.',
     eyebrow: 'Vigilancia de casas · Todo el Sur de California',
-    h1: 'Mientras usted no está, nosotros vigilamos.',
-    lead: 'Visitas semanales a su casa vacía. Cada habitación, cerradura y sistema revisados, y un informe con fotos en su teléfono el mismo día.',
+    h1: 'Su casa no puede llamarle. Nosotros sí.',
+    lead: 'Una casa vacía no puede avisarle de una ventana rota, una fuga o alguien que se mudó. Recorremos la propiedad cada semana, la fotografiamos y le llamamos en cuanto algo anda mal.',
     chips: ['Afianzados y asegurados', 'Inspectores verificados', 'Prueba de cada visita', 'Desde $189/mes · sin contrato'],
     tband: [['Afianzados y asegurados', 'Certificado de seguro a pedido, para usted o su aseguradora.'], ['El mismo inspector verificado', 'Con verificación de antecedentes y capacitado en 34 puntos.'], ['Prueba de cada visita', 'De 30 a 40 fotos con fecha, hora y ubicación, el mismo día.'], ['Llaves codificadas', 'En caja fuerte, cada uso registrado. Mes a mes, sin recargos.']],
     cta1: 'Reserve una visita gratis', cta2: 'Ver planes', scroll: 'Desplace',
     logHead: ['Visita del martes', '6:42 pm'],
-    log: [['6:42', 'Llegada · alarma desactivada'], ['6:44', 'Puertas, cerraduras y ventanas'], ['6:49', 'Planta baja, cuarto por cuarto'], ['6:53', 'Agua, aire y refrigerador'], ['6:58', 'Planta alta y baños'], ['7:06', 'Jardín, árboles y rejas'], ['7:11', 'Informe enviado · 38 fotos']],
+    log: [['6:42', 'Llegada · reja y puerta principal'], ['6:45', 'Ventanas, puertas laterales, garaje'], ['6:49', 'Techo, canaletas, árboles'], ['6:53', 'Piscina, jardín y riego'], ['6:56', 'Medidor de agua: sin flujo'], ['6:58', 'Volantes y paquetes retirados'], ['7:02', 'Informe enviado · 24 fotos']],
     logFoot: ['Su inspector', 'Todo en orden'],
     trust: ['Afianzados y asegurados', 'Informe con fotos el mismo día', 'Inspectores verificados', 'English & Español', 'Oficina en West Hollywood'],
-    inclEyebrow: 'Cada visita incluye', inclH: 'Todo lo que una casa vacía necesita. En cada visita.',
+    inclEyebrow: 'Cada visita incluye', inclH: 'Toda la propiedad, por fuera. En cada visita.',
     incl: [
-      ['Recorrido completo, dentro y fuera', 'Cada habitación, cada puerta, el techo, las rejas y las cercas. La misma ruta de 34 puntos en cada visita.'],
-      ['Informe con fotos el mismo día', 'De 30 a 40 fotos con fecha y hora en su teléfono en dos horas. Guardadas para siempre.'],
-      ['Okupas y robos', 'Probamos cada cerradura y ventana. Si algo está mal, llamamos a la policía y a usted de inmediato.'],
-      ['Árboles, maleza y multas', 'Ramas sobre aceras y techos, maleza seca, césped muerto. Lo resolvemos antes de que llegue el aviso de la ciudad.'],
-      ['Fugas, luz, aire y piscina', 'Abrimos cada llave y revisamos calentador, refrigerador, aire acondicionado y piscina.'],
-      ['Una casa que parece habitada', 'Retiramos volantes y paquetes, ajustamos luces y persianas. Su casa no parecerá vacía.'],
+      ['Recorrido por toda la propiedad', 'Cada puerta, ventana, reja y cerca, el techo, las canaletas, el jardín y la piscina. La misma ruta en cada visita.'],
+      ['Informe con fotos el mismo día', 'Fotos con fecha, hora y ubicación en su teléfono en dos horas. Guardadas para siempre.'],
+      ['Okupas y robos', 'Vidrios rotos, una cerradura forzada, señales de que alguien se queda allí. Llamamos a la policía y a usted de inmediato.'],
+      ['Fugas, sin entrar', 'Leemos el medidor de agua en cada visita. Si se mueve sin nadie en casa, hay una fuga, y usted lo sabe ese mismo día.'],
+      ['Una casa que no parece vacía', 'Retiramos volantes y paquetes y movemos los botes de basura. Una casa que parece vacía atrae problemas.'],
+      ['También por dentro, cuando quiera', 'Muchos empiezan por fuera. Cuando nos confíe una llave, agregamos revisiones interiores.'],
     ],
     factsEyebrow: 'Por qué importa', factsH: 'Una casa vacía es la casa más cara de mantener.',
     facts: [
@@ -150,7 +152,7 @@ const T = {
       ['Meses', 'Para sacar okupas en California', 'El proceso judicial puede tardar meses. Una visita semanal evita que entren.'],
       ['$0', 'En multas, si lo vemos primero', 'Árboles, maleza y avisos de código traen multas. Los detectamos antes que la ciudad.'],
     ],
-    plansEyebrow: 'Planes', plansH: 'Elija cada cuánto venimos.', plansP: 'Todos los planes incluyen la visita completa, informe con fotos el mismo día, control de okupas y código municipal, custodia de llaves y línea de emergencia 24/7.',
+    plansEyebrow: 'Planes', plansH: 'Elija cada cuánto venimos.', plansP: 'Todos los planes empiezan por fuera: la propiedad recorrida, fotografiada e informada el mismo día. Los planes superiores agregan revisiones interiores cuando nos confía una llave. El correo y el control de árboles y código se pagan aparte.',
     choose: 'Elegir', mostChosen: 'El más elegido', perMonth: '/mes', addH: 'Agregue solo lo que necesita', compare: 'Arme su plan y vea el precio exacto',
     trustEyebrow: 'Por qué confían en nosotros', trustH: 'Usted nos da las llaves. Esto es lo que recibe.',
     trustList: [
@@ -188,7 +190,7 @@ export function homePage(lang = 'en') {
   const facts = t.facts.map(([b, h, p]) => `<div class="rv"><b>${b}</b><h3>${h}</h3><p>${p}</p></div>`).join('');
   const startLink = link(es ? 'es/contacto' : 'get-started');
   const plansHtml = plans.map((p) => `<div class="plan${p.featured ? ' featured' : ''}">${p.featured ? `<span class="badge">${t.mostChosen}</span>` : ''}<h3>${p.name}</h3><p class="small" style="opacity:.8">${es ? p.es.cadence : p.cadence}</p><div class="amt">$${p.price}<small>${t.perMonth}</small></div><ul>${(es ? p.es.features : p.features).map((f) => `<li>${f}</li>`).join('')}</ul><a class="btn${p.featured ? '' : ' line'}" href="${startLink}?plan=${p.id}">${t.choose} ${p.name}</a></div>`).join('');
-  const addHtml = addons.filter((a) => ['visit', 'mail', 'vendor', 'event', 'arrival'].includes(a.id)).map((a) => `<div><b>$${a.price}</b><span>${es ? a.es : a.name}</span><small>${a.unit === '/mo' ? (es ? 'al mes' : 'per month') : es ? 'por uso' : a.unit}</small></div>`).join('');
+  const addHtml = addons.filter((a) => ['inside', 'mail', 'code', 'visit', 'vendor', 'arrival'].includes(a.id)).map((a) => `<div><b>$${a.price}</b><span>${es ? a.es : a.name}</span><small>${a.unit === '/mo' ? (es ? 'al mes' : 'per month') : es ? 'por uso' : a.unit}</small></div>`).join('');
   const trustL = t.trustList.map(([h, p]) => `<div class="rv"><h3>${h}</h3><p>${p}</p></div>`).join('');
   const steps = t.steps.map(([h, p]) => `<li class="rv"><h3>${h}</h3><p class="muted">${p}</p></li>`).join('');
   const revs = reviews.map((r) => `<figure class="rcard rv"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><blockquote>“${esc(es ? r.es : r.en)}”</blockquote><figcaption><span class="av" aria-hidden="true">${r.initials}</span><span><b>${esc(r.name)}</b><small>${esc(r.area)} · ${r.plan}</small></span></figcaption>${r.sample ? `<span class="sample">${t.sample}</span>` : ''}</figure>`).join('');
@@ -204,7 +206,7 @@ export function homePage(lang = 'en') {
     eye: 'Mansionly · Más allá de Home Watch', h: 'Cuando la casa necesita más que una visita.',
     p: 'Home Watch es lo que hacemos cada semana. Cuando necesita más, el mismo equipo se encarga a través de tres divisiones, con una sola llamada y las mismas fotos.',
     core: 'Servicio principal', more: 'Ver servicio', price: 'Ver precios',
-    hw: ['Home Watch', 'Cuidada como si nunca se hubiera ido.', 'Visitas programadas a su casa vacía. Recorremos 34 puntos dentro y fuera y le enviamos el informe con fotos el mismo día.', [['34', 'puntos en cada visita'], ['2 h', 'informe con fotos'], ['$189', 'desde, al mes']]],
+    hw: ['Home Watch', 'Cuidada como si nunca se hubiera ido.', 'Visitas programadas a su casa vacía. Revisamos toda la propiedad por fuera, leemos el medidor de agua y le enviamos el informe con fotos el mismo día.', [['34', 'puntos en cada visita'], ['2 h', 'informe con fotos'], ['$189', 'desde, al mes']]],
     divs: [['Concierge', 'Un mensaje. Hecho, con fotos.', [['vendor-contractor-access', 'Acceso de proveedores'], ['pre-arrival-preparation', 'Preparación de llegada'], ['renovation-oversight', 'Supervisión de obras']], 'concierge'],
       ['Estates', 'De cuidada a vendida.', [['pre-sale-preparation-staging', 'Preparación y staging'], ['vacant-listing-care', 'Casas en venta vacías'], ['sell-your-home', 'Venta con agente licenciado']], 'es/vender'],
       ['Private Office', 'Sus manos en California.', [['power-of-attorney-services', 'Poder notarial'], ['estate-property-care', 'Sucesiones y herencias'], ['insurance-vacancy-inspections', 'Informes para seguros']], 'power-of-attorney-services']],
@@ -213,7 +215,7 @@ export function homePage(lang = 'en') {
     eye: 'Mansionly · Beyond home watch', h: 'When the house needs more than a visit.',
     p: 'Home watch is what we do every week. When you need more, the same team handles it through three divisions, with one call and the same photo proof.',
     core: 'Our core service', more: 'Explore', price: 'See pricing',
-    hw: ['Home Watch', 'Kept as if you never left.', 'Scheduled visits to your empty home. A 34-point check inside and out, and a photo report on your phone the same day.', [['34', 'points every visit'], ['2 hrs', 'to your photo report'], ['$189', 'from, per month']]],
+    hw: ['Home Watch', 'Kept as if you never left.', 'Scheduled visits to your empty home. The whole property checked from the outside, the water meter read, and a photo report on your phone the same day.', [['34', 'points every visit'], ['2 hrs', 'to your photo report'], ['$189', 'from, per month']]],
     divs: [['Concierge', 'One message. Done, with photos.', [['vendor-contractor-access', 'Vendor access'], ['pre-arrival-preparation', 'Arrival preparation'], ['renovation-oversight', 'Renovation oversight']], 'concierge'],
       ['Estates', 'From kept to sold.', [['pre-sale-preparation-staging', 'Pre-sale prep & staging'], ['vacant-listing-care', 'Vacant listing care'], ['sell-your-home', 'Sell with our licensed agent']], 'sell'],
       ['Private Office', 'Your hands in California.', [['power-of-attorney-services', 'Power of attorney'], ['estate-property-care', 'Estate & probate homes'], ['insurance-vacancy-inspections', 'Insurance-ready reports']], 'power-of-attorney-services']],
@@ -290,6 +292,11 @@ export function homePage(lang = 'en') {
     <span class="cue" aria-hidden="true">${t.scroll}</span>
   </div>
 </section>
+<section class="sec stone"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">${t.factsEyebrow}</span><h2>${t.factsH}</h2></div>
+  <div class="facts">${facts}</div>
+</div></section>
+
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.inclEyebrow}</span><h2>${t.inclH}</h2></div>
   <div class="incl">${incl}</div>
@@ -315,11 +322,6 @@ ${mixHtml}
 <section class="sec stone"><div class="wrap">
   <div class="sec-head"><span class="eyebrow">${t.checkEyebrow}</span><h2>${t.checkH}</h2><p class="lead">${t.checkP}</p></div>
   <div class="checks">${checks}</div>
-</div></section>
-
-<section class="sec"><div class="wrap">
-  <div class="sec-head"><span class="eyebrow">${t.factsEyebrow}</span><h2>${t.factsH}</h2></div>
-  <div class="facts">${facts}</div>
 </div></section>
 
 <section class="sec stone"><div class="wrap portal">

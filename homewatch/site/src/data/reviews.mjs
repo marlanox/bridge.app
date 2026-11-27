@@ -4,11 +4,11 @@
 // When you have a real review, replace the entry and delete the sample line.
 export const reviews = [
   { sample: true, name: 'Melissa R.', initials: 'MR', area: 'Beverly Hills', plan: 'Signature',
-    en: 'We were in Europe for five months. Every week the report came with photos of every room. I stopped worrying about the house.',
-    es: 'Pasamos cinco meses en Europa. Cada semana llegaba el informe con fotos de cada habitación. Dejé de preocuparme por la casa.' },
+    en: 'We were in Europe for five months. Every week the report came with photos of the whole property. I stopped worrying about the house.',
+    es: 'Pasamos cinco meses en Europa. Cada semana llegaba el informe con fotos de toda la propiedad. Dejé de preocuparme por la casa.' },
   { sample: true, name: 'Joseph M.', initials: 'JM', area: 'Hollywood Hills', plan: 'Signature',
-    en: 'In the second week they found a slow leak under a guest bathroom sink. That one visit paid for the whole year.',
-    es: 'En la segunda semana encontraron una fuga lenta bajo un lavabo. Esa visita pagó todo el año.' },
+    en: 'In the second week the water meter was moving with nobody home. A slow leak under a sink. That one visit paid for the whole year.',
+    es: 'En la segunda semana el medidor de agua se movía sin nadie en casa: una fuga lenta bajo un lavabo. Esa visita pagó todo el año.' },
   { sample: true, name: 'Rebecca S.', initials: 'RS', area: 'Bel Air', plan: 'Estate',
     en: 'Our house manager knows every gate code, every vendor and every quirk of the house. It feels like family looking after it.',
     es: 'Nuestro gerente conoce cada código, cada proveedor y cada detalle de la casa. Es como si la cuidara la familia.' },
