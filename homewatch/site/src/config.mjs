@@ -10,7 +10,7 @@ export const site = {
   url: 'https://mansionly.co', // placeholder domain; used for canonical URLs and sitemap
   phone: '(323) 333-3967',
   phoneE164: '+13233333967',
-  email: '9138282@gmail.com', // replace with the company email later
+  email: 'support@mansionly.co',
   address: {
     street: '1351 N Crescent Heights Blvd',
     city: 'West Hollywood',

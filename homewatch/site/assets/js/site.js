@@ -54,13 +54,20 @@
       ['utm_source', 'utm_medium', 'utm_campaign', 'ref', 'plan'].forEach(function (k) { var v = store('hw_' + k); if (v) data[k] = v; });
       var btn = form.querySelector('button[type=submit]'); if (btn) btn.disabled = true;
       var done = function () { form.classList.add('sent'); if (window.gtag) gtag('event', 'generate_lead', { form: data.source }); };
+      // Fill the hidden fields so every lead arrives with its source.
+      Object.keys(data).forEach(function (k) { var f = form.querySelector('input[type=hidden][name="' + k + '"]'); if (f) f.value = data[k]; });
+      var netlify = function () {
+        var body = new URLSearchParams(new FormData(form)).toString();
+        return fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+          .then(function (r) { if (!r.ok) throw r; done(); });
+      };
       if (cfg.supabaseUrl && cfg.supabaseAnonKey) {
         fetch(cfg.supabaseUrl + '/rest/v1/leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', apikey: cfg.supabaseAnonKey, Authorization: 'Bearer ' + cfg.supabaseAnonKey, Prefer: 'return=minimal' },
           body: JSON.stringify(data),
         }).then(function (r) { if (!r.ok) throw r; done(); }).catch(function () { mailFallback(data); done(); });
-      } else { mailFallback(data); done(); }
+      } else { netlify().catch(function () { mailFallback(data); done(); }); }
     });
   });
   function mailFallback(d) {

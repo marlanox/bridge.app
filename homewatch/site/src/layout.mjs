@@ -136,7 +136,8 @@ export function header({ path, lang, current }) {
 export function leadForm({ path, lang = 'en', id = 'lead', title, sub, need = 0, dark = false, source = '' }) {
   const t = ui[lang];
   const opts = t.needs.map((n, i) => `<option${i === need ? ' selected' : ''}>${esc(n)}</option>`).join('');
-  return `<form class="form${dark ? ' dk' : ''}" id="${id}" data-lead data-source="${esc(source || path)}" novalidate>
+  return `<form class="form${dark ? ' dk' : ''}" id="${id}" name="lead" method="POST" data-netlify="true" netlify-honeypot="company_website" data-lead data-source="${esc(source || path)}" novalidate>
+  <input type="hidden" name="form-name" value="lead">
   <h3>${esc(title || t.formTitle)}</h3>
   <p class="muted small">${esc(sub || t.formSub)}</p>
   <div class="f2">
@@ -150,7 +151,7 @@ export function leadForm({ path, lang = 'en', id = 'lead', title, sub, need = 0,
   <div class="field"><label for="${id}-need">${t.need}</label><select id="${id}-need" name="need">${opts}</select></div>
   <div class="field"><label for="${id}-msg">${t.message}</label><textarea id="${id}-msg" name="message" rows="3"></textarea></div>
   <input class="hp" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <input type="hidden" name="lang" value="${lang}">
+  <input type="hidden" name="lang" value="${lang}"><input type="hidden" name="source"><input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="ref"><input type="hidden" name="plan">
   <button class="btn arrow" type="submit">${t.send}</button>
   <p class="consent">${t.consent}</p>
   <div class="form-ok" role="status"><h3>${t.okTitle}</h3><p>${t.okText}<a href="tel:${site.phoneE164}">${site.phone}</a>.</p></div>
