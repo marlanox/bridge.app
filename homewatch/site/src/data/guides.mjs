@@ -20,7 +20,7 @@ export const guides = [
     body: [
       ['Typical prices', ['Across the United States, home watch usually costs about $100 to $280 a month for weekly visits, and less for visits every two weeks. Los Angeles sits at the upper end because of drive times, larger homes and higher insurance costs for providers.']],
       ['What Mansionly charges', [['Essential: $189/mo for two visits a month', 'Signature: $349/mo for weekly visits with mail handling', 'Estate: $690/mo for twice-weekly visits and a dedicated house manager']]],
-      ['What changes the price', [['How often we visit', 'Size of the home and the number of buildings (guest house, pool house)', 'Extras such as mail scanning, arrival preparation or vendor hours', 'Distance from our West Hollywood office']]],
+      ['What changes the price', [['How often we visit', 'Size of the home and the number of buildings (guest house, pool house)', 'Extras such as mail scanning, arrival preparation or vendor hours', 'Distance from our Santa Monica office']]],
       ['Is it worth it?', ['One undetected water leak in Los Angeles commonly costs $10,000 to $50,000 to repair, before any argument with the insurer. A year of weekly home watch costs less than the deductible on many policies. For most owners the math is simple.']],
     ],
   },

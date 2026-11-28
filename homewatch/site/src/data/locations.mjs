@@ -1,11 +1,11 @@
 // Area pages across Southern California. Each has facts specific to that area so pages are genuinely different.
-// region groups the areas hub; far: true means more than 30 miles from the West Hollywood office (travel fee, quoted).
+// region groups the areas hub; far: true means more than 30 miles from the Santa Monica office (travel fee, quoted).
 export const regions = ['Los Angeles', 'South Bay', 'Conejo Valley', 'Orange County', 'Santa Barbara', 'Coachella Valley', 'San Diego'];
-export const travelRule = 'Standard prices within 30 miles of our West Hollywood office. Farther out, we add a travel fee per visit, quoted individually for your home.';
-export const travelRuleEs = 'Precios estándar dentro de 30 millas de nuestra oficina en West Hollywood. Más lejos, agregamos un cargo de traslado por visita, cotizado para su casa.';
+export const travelRule = 'Standard prices within 30 miles of our Santa Monica office. Farther out, we add a travel fee per visit, quoted individually for your home.';
+export const travelRuleEs = 'Precios estándar dentro de 30 millas de nuestra oficina en Santa Monica. Más lejos, agregamos un cargo de traslado por visita, cotizado para su casa.';
 export const locations = [
   { slug: 'west-hollywood', name: 'West Hollywood', zips: '90046, 90048, 90069',
-    intro: 'Our office is on Crescent Heights, so West Hollywood is home turf. We look after condos south of Sunset, hillside homes in the Hollywood Hills West and everything in between.',
+    intro: 'West Hollywood is a short drive from our Santa Monica office. We look after condos south of Sunset, hillside homes in the Hollywood Hills West and everything in between.',
     risks: ['Package theft on busy streets', 'HOA rules and notices for condos and townhomes', 'Hillside drainage above Sunset during winter storms', 'City limits on short-term rentals, which makes neighbors notice unfamiliar visitors'],
     nearby: ['hollywood-hills', 'beverly-hills', 'hancock-park'] },
   { slug: 'beverly-hills', name: 'Beverly Hills', zips: '90210, 90211, 90212',
@@ -25,7 +25,7 @@ export const locations = [
     risks: ['Wildfire evacuation zones near the Santa Monica Mountains', 'Mature trees over roofs and sidewalks', 'Pools and spas left without supervision'],
     nearby: ['pacific-palisades', 'santa-monica', 'bel-air'] },
   { slug: 'santa-monica', name: 'Santa Monica', zips: '90401, 90402, 90403, 90404, 90405',
-    intro: 'Close to the ocean, Santa Monica homes face salt air, marine-layer moisture and heavy foot traffic near the beach.',
+    intro: 'Our office is here, on Pennsylvania Avenue, so Santa Monica is home turf. Close to the ocean, Santa Monica homes face salt air, marine-layer moisture and heavy foot traffic near the beach.',
     risks: ['Mold and mildew from the marine layer in closed-up homes', 'Corrosion on metal fixtures and HVAC units', 'Package theft and trespassing near busy streets'],
     nearby: ['venice', 'brentwood', 'pacific-palisades'] },
   { slug: 'pacific-palisades', name: 'Pacific Palisades', zips: '90272',

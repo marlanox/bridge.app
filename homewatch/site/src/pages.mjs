@@ -82,8 +82,8 @@ export function locationPage(l) {
   const near = l.nearby.map((n) => locations.find((x) => x.slug === n)).filter(Boolean);
   const faqs = [
     [`How much does home watch cost in ${l.name}?`, `Plans start at $189/mo for two visits a month. Weekly visits are $349/mo. Large estates are usually on our Estate plan at $690/mo.`],
-    l.far ? [`Do you charge more for ${l.name}?`, `${l.name} is more than 30 miles from our West Hollywood office, so a travel fee is added per visit. We quote it individually after the free walkthrough, and visits run on fixed route days.`]
-      : [`How fast can you get to a home in ${l.name}?`, `Our office is in West Hollywood. For clients we respond to emergencies in ${l.name} as fast as traffic allows, usually within the hour.`],
+    l.far ? [`Do you charge more for ${l.name}?`, `${l.name} is more than 30 miles from our Santa Monica office, so a travel fee is added per visit. We quote it individually after the free walkthrough, and visits run on fixed route days.`]
+      : [`How fast can you get to a home in ${l.name}?`, `Our office is in Santa Monica. For clients we respond to emergencies in ${l.name} as fast as traffic allows, usually within the hour.`],
     [`Do you serve all of ${l.name}?`, `Yes, including ZIP codes ${l.zips}.`],
   ];
   const body = `${hero(path, { crumbs: c, eyebrow: `Home watch · ${l.name} · ${l.region || 'Los Angeles'}`, h1: `Home watch in ${esc(l.name)}.`, lead: l.intro, price: l.far ? 'From $189/mo + travel fee, quoted for your home' : 'From $189/mo · weekly from $349/mo' })}
@@ -144,7 +144,7 @@ export function areasHub() {
   const body = `${hero(path, { crumbs: [['Home', 'index'], ['Areas', path]], eyebrow: 'Areas we serve', h1: 'Home watch across Southern California.', lead: site.coverage + '. ' + travelRule })}
 <section class="sec"><div class="wrap">${groups}
 <p class="muted" style="margin-top:32px">Your area is not listed? We work anywhere in Southern California. <a href="${link('contact')}">Ask us for a quote</a>.</p></div></section>`;
-  return { path, lang: 'en', title: 'Areas We Serve | Home Watch Across Southern California | Mansionly', description: 'Mansionly home watch covers Los Angeles, Beverly Hills, Malibu, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of West Hollywood.', body, schema: [] };
+  return { path, lang: 'en', title: 'Areas We Serve | Home Watch Across Southern California | Mansionly', description: 'Mansionly home watch covers Los Angeles, Beverly Hills, Malibu, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of Santa Monica.', body, schema: [] };
 }
 
 export function audiencesHub() {
@@ -197,7 +197,7 @@ export function pricingPage(lang = 'en') {
     <p class="small" style="color:var(--glow)">${offer.title}: ${es ? 'primer mes a mitad de precio' : 'first month at half price'}</p>
     <a class="btn arrow" id="reserve" href="${link(es ? 'es/contacto' : 'get-started')}">${es ? 'Reservar este plan' : 'Reserve this plan'}</a>
     <p class="small" style="color:var(--slate)">${es ? 'Sin cargo de alta. Cancele con 30 días de aviso.' : 'No setup fee. Cancel with 30 days’ notice.'}</p>
-    <p class="small" style="color:var(--slate)">${es ? 'Más de 30 millas de West Hollywood: cargo de traslado, cotizado.' : 'More than 30 miles from West Hollywood: travel fee, quoted for your home.'}</p>
+    <p class="small" style="color:var(--slate)">${es ? 'Más de 30 millas de Santa Monica: cargo de traslado, cotizado.' : 'More than 30 miles from Santa Monica: travel fee, quoted for your home.'}</p>
   </div>
 </div></section>
 <section class="sec stone"><div class="wrap split">
@@ -219,11 +219,11 @@ export function corePages() {
     { crumbs: [['Home', 'index'], ['Get started', 'get-started']], eyebrow: 'Get started', h1: 'Book your free walkthrough.', lead: 'Thirty minutes at your home, or by video if you are away. You keep the written risk check, whether or not you sign up.', cta: false },
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">What happens next</h2><ul><li>We call you within one business hour to pick a time.</li><li>We walk the home with you or your representative, or by video.</li><li>Within a day you receive a written risk check and a plan recommendation.</li><li>If you go ahead, your first visit can happen the same week.</li></ul><p class="note">${offer.title}: ${offer.text}</p></div><div id="lead">${leadForm({ path: 'get-started', id: 'lead-main', source: 'get-started' })}</div></div></section>`));
 
-  out.push(simple('contact', 'Contact Mansionly | Home Watch in West Hollywood & Los Angeles', `Call ${site.phone}, email us or visit our office at ${site.address.street}, ${site.address.city}.`,
+  out.push(simple('contact', 'Contact Mansionly | Home Watch in Santa Monica & Los Angeles', `Call ${site.phone}, email us or visit our office at ${site.address.street}, ${site.address.city}.`,
     { crumbs: [['Home', 'index'], ['Contact', 'contact']], eyebrow: 'Contact', h1: 'Talk to a person, not a call center.', lead: site.hoursText, cta: false },
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">Office</h2><p>${site.address.street}<br>${site.address.city}, ${site.address.region} ${site.address.zip}</p><h2>Phone</h2><p><a href="tel:${site.phoneE164}">${site.phone}</a></p><h2>Email</h2><p><a href="mailto:${site.email}">${site.email}</a></p><p><a href="https://maps.google.com/?q=${encodeURIComponent(site.address.street + ', ' + site.address.city + ' ' + site.address.zip)}" rel="noopener" target="_blank">Open in Google Maps →</a></p></div><div id="lead">${leadForm({ path: 'contact', source: 'contact' })}</div></div></section>`));
 
-  out.push(simple('about', 'About Mansionly | A Home Watch Company Built on Trust', 'Mansionly is a Los Angeles home watch and estate services company based in West Hollywood. Our standards, our team and why we started.',
+  out.push(simple('about', 'About Mansionly | A Home Watch Company Built on Trust', 'Mansionly is a Los Angeles home watch and estate services company based in Santa Monica. Our standards, our team and why we started.',
     { crumbs: [['Home', 'index'], ['About', 'about']], eyebrow: 'About Mansionly', h1: 'We look after homes the way their owners would.', lead: 'Mansionly started with a simple observation: people trust their homes to strangers with a clipboard and an old pickup. Owners deserve better.', cta: false },
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">Our standards</h2><ul><li>Every inspector is background-checked, trained on our 34-point visit and covered by our insurance.</li><li>Every visit is photographed, timestamped and saved permanently.</li><li>Keys are coded and never labeled with an address.</li><li>We never mark up vendor invoices.</li><li>We tell you the truth, including when you do not need a service.</li></ul><h2>One team for the whole life of your home</h2><p>We begin with home watch because it is how trust is earned: week after week, visit after visit. Over time our clients ask us for more: managing repairs, preparing a home for sale, selling it with our licensed agent, or acting for them with a power of attorney. We built Mansionly so that the same team can do all of it.</p><h2>What we are not</h2><p>We are not a security company, a brokerage or a law firm. Where a license is required, the work is done by licensed professionals: our in-house real estate agent working under their broker, licensed contractors and independent attorneys.</p></div><div id="lead">${leadForm({ path: 'about', source: 'about' })}</div></div></section>`));
 
@@ -333,7 +333,7 @@ export function spanishPages() {
     { eyebrow: 'Programa de socios', h1: 'Las casas de sus clientes, en manos que puede recomendar.', lead: 'Para agentes inmobiliarios, abogados de sucesiones y familia, aseguradoras y administradores.' },
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">Beneficios</h2><ul><li>Su cliente: primer mes a mitad de precio y evaluación de riesgos gratis.</li><li>Usted: acceso a los informes con el permiso del cliente.</li><li>Recompensas por referencia donde las reglas de su profesión lo permitan.</li></ul></div><div id="lead">${leadForm({ path: 'es/socios', lang: 'es', title: 'Hágase socio', need: 8, source: 'es-partner' })}</div></div></section>`, [], 'es'));
 
-  out.push(simple('es/sobre-nosotros', 'Sobre Mansionly | Vigilancia de casas en Los Ángeles', 'Mansionly es una empresa de vigilancia de casas con oficina en West Hollywood.',
+  out.push(simple('es/sobre-nosotros', 'Sobre Mansionly | Vigilancia de casas en Los Ángeles', 'Mansionly es una empresa de vigilancia de casas con oficina en Santa Monica.',
     { eyebrow: 'Nosotros', h1: 'Cuidamos las casas como lo harían sus dueños.', lead: 'Inspectores verificados, informes con fotos en cada visita y un solo equipo para toda la vida de su casa.', cta: false },
     `<section class="sec"><div class="wrap split"><div class="prose"><h2 style="margin-top:0">Nuestros estándares</h2><ul><li>Inspectores con verificación de antecedentes y capacitación.</li><li>Cada visita fotografiada y guardada.</li><li>Llaves codificadas, nunca con su dirección.</li><li>Nunca aumentamos las facturas de proveedores.</li></ul><h2>Lo que no somos</h2><p>No somos empresa de seguridad, corredora inmobiliaria ni bufete de abogados. Donde se requiere licencia, el trabajo lo hacen profesionales con licencia.</p></div><div id="lead">${leadForm({ path: 'es/sobre-nosotros', lang: 'es', source: 'es-about' })}</div></div></section>`, [], 'es'));
   return out;

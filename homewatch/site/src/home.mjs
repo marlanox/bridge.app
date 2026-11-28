@@ -37,7 +37,7 @@ export const generalFaqs = {
     ['Are you insured?', 'Yes. Mansionly is bonded and insured. We will send a certificate of insurance to you or your insurer.'],
     ['Is there a long contract?', 'No. Plans are month to month. Cancel any time with 30 days’ notice.'],
     ['How do you keep my keys safe?', 'Keys are coded, never labeled with your address, and stored in a locked safe. Every key use is logged in your portal.'],
-    ['Which areas do you cover?', 'All of Southern California: Los Angeles, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of our West Hollywood office; farther out we add a travel fee, quoted for your home.'],
+    ['Which areas do you cover?', 'All of Southern California: Los Angeles, the South Bay, Calabasas, Orange County, Montecito, Palm Springs and San Diego. Standard prices within 30 miles of our Santa Monica office; farther out we add a travel fee, quoted for your home.'],
   ],
   es: [
     ['¿Qué es exactamente la vigilancia de casas?', 'Visitas programadas a su casa vacía. Recorremos toda la propiedad por fuera, revisamos puertas, ventanas, techo, jardín y el medidor de agua, y enviamos fotos el mismo día.'],
@@ -48,7 +48,7 @@ export const generalFaqs = {
     ['¿Hay contrato a largo plazo?', 'No. Los planes son mes a mes. Puede cancelar con 30 días de aviso.'],
     ['¿Cómo protegen mis llaves?', 'Las llaves se codifican, nunca llevan su dirección y se guardan en una caja fuerte. Cada uso queda registrado.'],
     ['¿Hablan español?', 'Sí. Nuestro equipo trabaja en inglés y en español, y también nuestros informes.'],
-    ['¿Qué zonas cubren?', 'Todo el Sur de California. Precios estándar dentro de 30 millas de West Hollywood; más lejos se agrega un cargo de traslado.'],
+    ['¿Qué zonas cubren?', 'Todo el Sur de California. Precios estándar dentro de 30 millas de Santa Monica; más lejos se agrega un cargo de traslado.'],
   ],
 };
 
@@ -135,7 +135,7 @@ const T = {
     logHead: ['Visita del martes', '6:42 pm'],
     log: [['6:42', 'Llegada · reja y puerta principal'], ['6:45', 'Ventanas, puertas laterales, garaje'], ['6:49', 'Techo, canaletas, árboles'], ['6:53', 'Piscina, jardín y riego'], ['6:56', 'Medidor de agua: sin flujo'], ['6:58', 'Volantes y paquetes retirados'], ['7:02', 'Informe enviado · 24 fotos']],
     logFoot: ['Su inspector', 'Todo en orden'],
-    trust: ['Afianzados y asegurados', 'Informe con fotos el mismo día', 'Inspectores verificados', 'English & Español', 'Oficina en West Hollywood'],
+    trust: ['Afianzados y asegurados', 'Informe con fotos el mismo día', 'Inspectores verificados', 'English & Español', 'Oficina en Santa Monica'],
     inclEyebrow: 'Cada visita incluye', inclH: 'Toda la propiedad, por fuera. En cada visita.',
     incl: [
       ['Recorrido por toda la propiedad', 'Cada puerta, ventana, reja y cerca, el techo, las canaletas, el jardín y la piscina. La misma ruta en cada visita.'],
