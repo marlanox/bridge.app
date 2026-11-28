@@ -75,7 +75,7 @@ export const orgSchema = () => ({
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   '@id': site.url + '/#business',
-  name: site.name,
+  name: site.name, legalName: site.legalName,
   description: 'Home watch, concierge and estate services for vacant and second homes across Southern California.',
   url: site.url + '/',
   telephone: site.phoneE164,
@@ -195,7 +195,7 @@ export function footer({ path, lang }) {
     <div><h4>${t.fCompany}</h4><ul>${comp}</ul></div>
   </div>
   <p class="small" style="margin-top:48px;max-width:110ch">${t.notSecurity}</p>
-  <div class="bottom"><span>© ${year} ${site.legalName}</span><span><a href="${link('privacy')}">${t.privacy}</a> · <a href="${link('terms')}">${t.terms}</a> · <a href="${link(lang === 'en' ? 'es/index' : 'index')}">${lang === 'en' ? 'Español' : 'English'}</a></span></div>
+  <div class="bottom"><span>© ${year} ${site.legalName}. Mansionly is a brand of ${site.legalName}.</span><span><a href="${link('privacy')}">${t.privacy}</a> · <a href="${link('terms')}">${t.terms}</a> · <a href="${link(lang === 'en' ? 'es/index' : 'index')}">${lang === 'en' ? 'Español' : 'English'}</a></span></div>
 </div></footer>
 <div class="mbar"><a class="btn line" href="tel:${site.phoneE164}" style="color:var(--stone);border-color:rgba(236,232,225,.4);background:transparent">${t.call}</a><a class="btn" href="${link(t.ctaTarget)}" style="background:var(--stone);color:var(--night);border-color:var(--stone)">${t.cta}</a></div>`;
 }

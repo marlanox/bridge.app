@@ -1,15 +1,15 @@
 // One place for every business detail. Change here, rebuild, done.
 export const site = {
   name: 'Mansionly',
-  legalName: 'Mansionly LLC', // placeholder until the LLC is registered
+  legalName: 'AXELION LLC',
   descriptor: 'Home Watch & Estate Services',
   slogan: 'Kept as if you never left.',
   sloganEs: 'Cuidada como si nunca se hubiera ido.',
   promise: 'An empty house cannot call you. We can, and we will.',
   promiseEs: 'Una casa vacía no puede llamarle. Nosotros sí, y lo haremos.',
   url: 'https://mansionly.co', // placeholder domain; used for canonical URLs and sitemap
-  phone: '(323) 333-3967',
-  phoneE164: '+13233333967',
+  phone: '(424) 624-9007',
+  phoneE164: '+14246249007',
   email: 'support@mansionly.co',
   address: {
     street: '3224 Pennsylvania Ave',
